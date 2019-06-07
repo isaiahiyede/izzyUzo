@@ -1,0 +1,61 @@
+{% extends "base/zaposta_base.html" %}
+
+{% block title %}Thank you for signing up{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+{% block st_content %}
+<div class="st-content-inner">
+    <!-- extra div for emulating position:fixed of the menu -->
+    <!-- Main Section -->
+    <section id="main" class="form-outer">
+        <div class="hero">
+            <div class="container">
+                <div class="form show">
+                    <div class="inner">
+
+                        <!-- Login Account -->
+                        <div class="container" id="login">
+                            <div class="col-md-6 promo">
+                                <h1>Congratulations</h1>
+                            </div>
+                            <div class="col-md-6 left">
+                                <h1>Hurray!!!</h1>
+                                <p>Your account has been successfully created.</p>
+                                {% if messages %}
+                                    {% for msg in messages %}
+                                    <p>{{msg}}</p>
+                                    {% endfor %}
+                                {% endif %}
+                                <p>To login into your newly created account, please click <a href="/user/login/">here</a>.</p>
+                                <!--<p>Thank you for registering with us.</p>-->
+                            </div>
+
+                        </div>
+                        <!-- Login Account -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Main Section -->
+
+    <!-- Other Services -->
+
+    <!-- Other Services -->
+
+    <!-- FOOTER  -->
+    {% include "zaposta_snippet/footer_v1.html" %}
+    <!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endblock %}
+
+
+{% block script %}
+
+
+{% endblock %}

@@ -1,0 +1,20 @@
+table{
+        min-width: 600px;
+        max-width: 600px;
+        border-collapse: collapse;
+        border: 2px solid black;
+    }
+    table td{
+        border: 1px solid black;
+        padding: 5px 10px;
+    }
+    table tr{
+        text-align: justify;
+    }
+    div{
+        min-width: 600px;
+        max-width: 600px;
+    }
+    body{
+        font-family: Arial;
+    }

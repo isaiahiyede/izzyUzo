@@ -1,0 +1,65 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  Shipping Addresses
+              </h1>
+        <ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Shipping Addresses</a></li>
+          <li class="active">Data</li>
+        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+
+        
+
+        <div class="row" style="overflow-x: hidden;">
+           <style>
+                                
+              label{
+                  font-size: 15px;
+              }
+            </style>   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+                   <h3>Shipping Addresses</h3>
+                   <hr>
+                   <div class="card-content shipment_details" id="shipment_details">
+			        <div class="row">
+			        {% with request.user.useraccount.suite_no as suite_no %}
+			            {% for warehouse in warehouses %}
+			                <div class="col-md-10 alert alert-success">
+			                    <div>
+			                        <h5 style="font-size: 15px; font-weight: 100;">
+			                        {{ request.user.get_full_name }}<br/>
+			                        {{ warehouse.address1 }} {{ warehouse.address2 }}, {{ warehouse.city }}
+			                        <br/>
+			                        {{ warehouse.state }}, {{ warehouse.country }}<br/>{{ warehouse.zip_code }} <br/>
+			                        VEI-NUMBER {{ warehouse.suite_no_prefix }} - {{ suite_no }}<br/>
+			                        </h5>
+			                    </div>
+			                </div>
+			            {% endfor %}
+			        {% endwith %}
+			        </div>
+                   </div>
+              </div>
+             </div>
+           </div>
+        </div>
+
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+{% endblock script %}

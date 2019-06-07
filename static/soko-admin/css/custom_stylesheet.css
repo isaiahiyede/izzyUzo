@@ -1,0 +1,7 @@
+
+/*added by AJ*/
+.loading.show{
+    display: block; position: fixed; z-index: 100; background-image: url("https://s3-eu-west-1.amazonaws.com/sokohali/ring-alt.gif");
+    background-color: rgb(102, 102, 102); opacity: 0.4; background-repeat: no-repeat; background-position: center;
+    left: 0; bottom: 0; right: 0; top: 0;
+}

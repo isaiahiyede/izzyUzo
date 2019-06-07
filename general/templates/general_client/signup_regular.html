@@ -1,0 +1,119 @@
+{% extends "base/zaposta_base.html" %}
+
+
+
+{% block title %}User Registration{% endblock %}
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+{% block st_content %}
+<div class="st-content-inner">
+	<!-- extra div for emulating position:fixed of the menu -->
+	<!-- Main Section -->
+	<section id="main" class="form-outer">
+		<div class="hero">
+			<div class="container">
+				<div class="form">
+					<div class="inner">
+						<!-- Register Account -->
+						<div class="container" id="register">
+							<div class="col-md-6 promo two" style="min-height: 741px; background-color: #0B71B9;">
+								{% if not header_msg %}
+								<a href="" class="business_account">
+									<div class="inner1">
+										<p>Now even for business customers.
+											<br/> Register a Business Account for great discount benefits! </p>
+										<span></span>
+									</div>
+									</a>
+								{% endif %}
+									<h1>Already a registered customer?</h1>
+									<a href="{% url 'general:login' %}" class="btn full">Log Into Account</a>
+							</div>
+
+							<form id="signup_regular" action="" method="POST">
+							{% csrf_token %}
+
+							<!-- Regular Account -->
+							<div class="col-md-6 left" style="display: block !important;">
+								{% if header_msg %}
+									<h1>{{header_msg}}</h1>
+								{% else %}
+									<h1>Register your Account</h1>
+								{% endif %}
+
+								{% if messages %}
+									{% for message in messages %}
+									<p style="margin-bottom:0; color: green;">{{message}}</p>
+									{% endfor %}
+								{% else %}
+									<p style="margin-bottom:0;">Create your account, it takes less than a minute. If you already have an account, please login.</p>
+								{% endif %}
+
+								{% if form.non_field_errors %}
+
+								<span class="error_alert">{{form.non_field_errors}}</span>
+								{% endif %}
+								{% for field in form %}
+									{% if field.errors %}
+									<span class="error_alert">{{field.errors}}</span>
+									{% endif %}
+									<div class="col-md-12 {% if field.errors %}error{% endif %}">
+									{{field}}
+									</div>
+								{% endfor %}
+
+								<div class="col-md-12 buttons" style="margin-top:9px;">
+									<!--<a href="#" onclick="submitForm('signup_regular');" class="btn blue">Create Account</a>-->
+									<button class="btn blue">Create Account</button>
+									<a href="#" onclick="formReset('signup_regular');" class="rst"><span><i class="fa fa-key" aria-hidden="true"></i></span>Reset</a>
+								</div>
+							</div>
+
+							</form>
+							<!-- Regular Account -->
+
+						</div>
+						<!-- Register Account -->
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Main Section -->
+
+	<!-- Other Services -->
+
+	<!-- Other Services -->
+
+	<!-- FOOTER  -->
+	{% include "zaposta_snippet/footer_v1.html" %}
+	<!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endblock %}
+
+
+{% block script %}
+<script src="https://www.google.com/recaptcha/api.js" async="" defer=""></script>
+
+	<script>
+
+		function formReset(form_id){
+				$(".input_form").each(function(){
+					$(this).css('border-color',  "rgb(161, 161, 161)");
+		});
+		document.getElementById(form_id).reset();
+		return false;
+		}
+
+		function changeBorderColor(input_id) {
+			document.getElementById(input_id).style.borderColor = "red";
+		}
+	</script>
+
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{% load humanize %}
+{% load currency %}
+{% load staticfiles %}
+{% with storefront_name=request.storefront_name %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>{{ storefront_name|title }} Email Notification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+ <body style="margin: 0; padding: 0;">
+ <table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+   <td style="padding: 10px 0 15px 0;">
+    <table  style="border: 1px solid #cccccc;" align="center" border="0" cellpadding="0" cellspacing="0" width="600">
+     <tr>
+      <td align="center" bgcolor="{{ request.marketing_member.storefront_color }}" style="padding: 40px 0 30px 0;">
+        {% if request.marketing_member.logo %}
+            <img src="{{ request.marketing_member.logo.url }}" alt="{{ request.storefront_name }}" width="500" height="130" style="display: block;" />
+        {% endif %}
+      </td>
+     </tr>
+     <tr>
+      <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+       <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+         <td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
+          <b>Hello {{username}},</b>
+         </td>
+        </tr>
+        <tr>
+         <td style="padding: 20px 0 30px 0;">
+          {{body}}
+         </td>
+        </tr>
+        <tr>
+         <td>
+          <table border="0" cellpadding="0" cellspacing="0" width="100%">
+           <tr>
+            <td>
+             <!--<table border="0" cellpadding="0" cellspacing="0" width="100%">-->
+              <!--<tr>
+               <!--<td>
+                <img src="% static 'sokohali/img/cat1.png' %}" alt="" width="75%" height="140" style="display: block;" />
+               </td>-->
+              <!--</tr>-->
+              <!--<tr>
+               <td style="padding: 25px 0 0 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                Ship all your items directly to Nigeria from anywhere in the world with {{ storefront_name }}. We offer the best competitive price.
+               </td>
+              </tr>-->
+             <!--</table>-->
+            </td>
+            <!--<td style="font-size: 0; line-height: 0;" width="20">
+             &nbsp;
+            </td>-->
+            <td>
+             <table border="0" cellpadding="0" cellspacing="0" width="100%">
+               <tr>
+                <!--<td>
+                 <img src="% static 'sokohali/img/s3_mobile.jpg' %}" alt="" width="75%" height="140" style="display: block;" />
+                </td>-->
+               </tr>
+               <tr>
+                <td style="padding: 25px 0 0 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
+                 {{emailtext|safe}}
+                </td>
+               </tr>
+              </table>
+            </td>
+           </tr>
+          </table>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+     <tr>
+      <td bgcolor="#0B71B9" style="padding: 30px 30px 30px 30px;">
+       <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+         <td width="75%" style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;">
+          &reg; {{ storefront_name }} 2017<br/>
+          {% if not storefront_name =="volkmannexpress" %}
+          {% endif %}
+         </td>
+         <td align="right">
+           <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+
+             <td>
+                {% if request.marketing_member.facebook_link %}
+                    <a href="{{ request.marketing_member.facebook_link }}" target="_blank">
+                        <img src="{% static 'zaposta/imG/s1w.png' %}" />
+                    </a>
+                {% endif %}
+             </td>
+
+             <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+
+             <td>
+                {% if request.marketing_member.twitter_link %}
+                  <a href="{{ request.marketing_member.twitter_link }}" target="_blank">
+                    <img src="{% static 'zaposta/imG/s1w.png' %}" />
+                  </a>
+                {% endif %}
+             </td>
+
+            </tr>
+           </table>
+         </td>
+        </tr>
+       </table>
+      </td>
+     </tr>
+    </table>
+   </td>
+  </tr>
+ </table>
+</body>
+</html>
+{% endwith %}

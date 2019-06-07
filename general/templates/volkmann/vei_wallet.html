@@ -1,0 +1,260 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  FUND VEI WALLET 
+
+
+                  {% if messages %}
+					{% for message in messages %}
+					<h4 style="margin-left:30px; color: green;">{{message}}</h4>
+					{% endfor %}
+				  {% endif %}
+
+
+                  <h5 style="color:blue;margin-left: 30px;">To fund your VEI wallet with bank, please pay the dollar equivalent into our bank accounts listed below the sum of your choice via any means of your choosing. This amount after been verified within 24-48 hours by our accounts department with our current dollar exchange rate for your country if your country is not the United States will then be activated for your use to ship or shop for items.</h5><br>
+
+
+                  {% for bank in mm.banking_details %}
+                  	<p style="color:green;margin-left: 30px; line-height: 4px;">{{bank.account_name}} -- {{bank.account_no}} -- {{bank.bank}}
+                  {% endfor %}
+                  
+
+                  <p style="color:orange;margin-left: 30px; line-height: 4px; margin-top: 40px;">NB: Payment with Paystack and PayPal attracts a transaction fee</p>
+                  
+
+              </h1>
+
+		        <ol class="breadcrumb">
+		          <li><a href="#">Home</a></li>
+		          <li><a href="#">Fund VEI WALLET</a></li>
+		          <li class="active">Data</li>
+		        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+
+		<div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4" id="bank">
+          
+              <div class="card horizontal cardIcon waves-effect waves-dark">
+              <img src="{% static 'vei2018Static/images/bankpay.jpeg' %}">
+              </div>
+   
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4" id="paystackpay">
+          
+              <div class="card horizontal cardIcon waves-effect waves-dark">
+              	<img src="{% static 'vei2018Static/images/paystackpay.png' %}">
+              
+              
+              </div>
+
+            </div>
+
+            <a href="{% url 'payment:process' %}" ><div class="col-xs-12 col-sm-6 col-md-4" id="paypalpay">
+          
+              <div class="card horizontal cardIcon waves-effect waves-dark">
+              <img src="{% static 'vei2018Static/images/paypalpay.png' %}">
+              </div>
+
+            </div></a>
+
+            
+        </div>
+
+        <div class="row" style="overflow-x: hidden;">   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+            	<div class="card-content shipment_details" id="shipment_details">
+            		<!-- this is the wrapper for the content -->
+				<div class="st-content-inner">
+
+
+						<div class="wt two">
+							<div class="container" style="position:relative;">
+							<!--<img src="{{STATIC_URL}}zaposta/img/ism1.png" />
+							<p>21:04</p>
+							<img src="{{STATIC_URL}}zaposta/img/ism2.png" />
+							<p>London, UK</p>-->
+							</div>
+						</div>
+
+						<div class="hero two" id="payment_page">
+
+						<div class="container bank outer">
+							<div class="form">
+								<div class="inner">
+									<!-- Register Account -->
+									<strong style="margin-left: 30px;{% if request.user.useraccount.credit_amount_D > 0 %}color:green;{% else %}color:red;{% endif %}">Wallet balance: $ {{request.user.useraccount.credit_amount_D|floatformat:2|intcomma}}</strong>
+
+									<div class="container" id="register">
+
+
+										<!-- Regular Account -->
+									<form id="bank_deposit_form" action="" method="post">
+										<div class="col-md-6">
+											
+											<h2>Fund your VEI WALLET with Bank</h2><br/>
+
+											<p style="margin-top:0;">Fill out all blank fields with required details
+											{% if error_alert %}
+											
+											<span style="color: red;">{{error_alert}}</span>
+											{% endif %}
+											</p><br/>
+											{% csrf_token %}
+
+											<div class="col-md-12 form-group">
+												<select class="form-control" name="payment_channel" id="id_payment_channel" required 
+												{% if form.purchase_type_1.errors %}style="border-color: red;"{% endif %}>
+													<option value="">Transaction Type</option>
+													<option value="Bank Deposit">Bank Deposit</option>
+													<option value="Wire Transfer">Wire Transfer
+													</option>
+												</select>
+											</div><br><br>
+
+											
+											<!--<div class="col-md-12">
+												<select name="bank" id="id_bank" required {% if form.bank.errors %}style="border-color: red;"{% endif %}>
+													<option value="">Select Bank</option>
+													<!-<option value="Fidelity Bank">Fidelity Bank</option>-->
+													<!--<option value="GT Bank">GT Bank</option>
+													<option value="UBA">UBA</option>-->
+													<!--<option value="Zenith Bank">Zenith Bank</option>-->
+												<!--</select>
+											</div>-->
+
+											<div class="col-md-12 form-group">
+												<select class="form-control" name="bank" id="id_bank" required {% if form.bank.errors %}style="border-color: red;"{% endif %}>
+													<option value="">Select Bank</option>
+													{% for bank in mm.banking_details %}
+													<option value="{{bank.bank}}">{{bank.bank}}</option>
+													{% endfor %}
+													<!--<option value="Zenith Bank">Zenith Bank</option>-->
+												</select>
+											</div>
+											<div class="col-md-12 {% if form.amount.errors %}error{% endif %}">
+												{% if shop_or_ship or pkg %}
+												<input type="text" name="amountz" value="$ {{balance_D|floatformat:2|intcomma}}" readonly="readonly" style="color: red;"/>
+												{% elif local_pkg %}
+												<input type="text" name="amountt" value="{{balance_D|floatformat:2|intcomma}}" readonly="readonly" style="color: red;"/>
+												{% else %}
+												<input type="number" class="form-control" name="amount" placeholder="Amount Paid ($)" />
+												{% endif %}
+											</div>
+											<div class="col-md-12">
+												<input type="text" name="teller_no"  placeholder="Teller Number" />
+											</div>
+
+											<!--<input type="hidden" name="package" value="{pkg.tracking_number}}"/-->
+											<input type="hidden" name="user" id="id_amount" value="{{ user.id }}"/>
+											<!-- <input type="hidden" name="amount" id="id_currency" value="{{balance_D}}"/> -->
+											<input type="hidden" name="purchase_type_2" id="id_purchase_type_2" value="Add"/>
+											<input type="hidden" name="ref_no" id="ref_no" value="{{ ref_no }}"/>
+
+											<div class="col-md-12">
+												<input type="text" style="color: #3AB54B;" value="Ref No: {{ref_no}}" disabled="disabled"/>
+											</div>
+											<div class="col-md-12">
+												<input type="text" style="color: #3AB54B;" value="Date: {{todaysdate|date:'d-m-Y'}}" disabled="disabled"/>
+											</div>
+											<div class="col-md-12 buttons" style="margin-top:9px;">
+												<a href="#" class="btn blue" onclick="submitForm('bank_deposit_form')">Add Funds</a>
+												<a href="#" class="rst" onclick="formReset('bank_deposit_form')">&nbsp;<span class="glyphicon glyphicon-repeat"></span>&nbsp;Clear Form</a>
+
+											</div>
+										</div>
+									</form>
+										<!-- Regular Account -->
+									</div>
+									<!-- Register Account -->
+								</div>
+							</div>
+						</div>
+
+						<div class="container outer hidden paystackpay">
+						  	
+						  	<strong style="margin-left: 16px;{% if request.user.useraccount.credit_amount_D > 0 %}color:green;{% else %}color:red;{% endif %}">Wallet balance: $ {{request.user.useraccount.credit_amount_D|floatformat:2|intcomma}}</strong>				
+							<form method="post" action="{% url 'wallet:mainPay' %}">
+								<div class="col-md-6">
+
+
+									<h2>Fund your VEI WALLET with PayStack(Naira)</h2><br/>
+									{% csrf_token %}
+
+									<div class="col-md-12">
+										<input required placeholder="Enter Amount in Naira" type="number" name="amount" 
+										id="id_amount" required />
+									</div>
+
+									<input type="hidden" name="payment-method" value="card"/>
+
+                                    <input type="hidden" name="bot_catcher" value="botty"/>
+									
+									<div class="col-md-4">
+	                                <button type="submit" class="btn btn-block btn-info">Pay</button>
+	                            </div>
+								</div>
+							</form>
+						</div>
+
+						</div>
+
+			    </div>
+        		</div>
+        	  </div>
+             </div>
+          </div>
+        </div>
+
+
+
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+
+	<script>
+        
+	    $('body').on('click','.vei_wallet',function(e){
+	        // alert('was clicked')                
+	    });
+
+	    //function submitForm(clicked_btn, form_id){
+        function submitForm(form_id){
+            document.getElementById(form_id).submit();
+            return false;
+        }
+
+        function formReset(form_id){
+                $(".input_form").each(function(){
+                    $(this).css('border-color',  "rgb(161, 161, 161)");
+                });
+        document.getElementById(form_id).reset();
+        return false;
+        }
+
+       
+		$('body').on('click','#paystackpay',function(){
+			$('.bank').addClass('hidden');
+			$('.paystackpay').removeClass('hidden');
+		});
+
+		$('body').on('click','#bank',function(){
+			$('.paystackpay').addClass('hidden');
+			$('.bank').removeClass('hidden');
+		});
+	</script>
+
+	{% endblock script %}

@@ -1,0 +1,3236 @@
+
+{% extends "adminBase/base_index.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% load custom_filters %}
+
+{% block set_up %}
+<li>
+    <a href="{% url 'general:profile' user.username %}"><span><i class="fa fa-user" aria-hidden="true"></i></span>My Profile</a>
+</li>
+<li>
+  <a href="{% url 'sokohaliAdmin:help' %}"><span><i class="fa fa-user" aria-hidden="true"></i></span>Help</a>
+</li>
+{% endblock set_up %}
+
+{% block title  %} Trucking {% endblock %}
+
+
+{% block custom-styles %}
+  {{ block.super }}
+  <link href="{% static 'sokohali/css/bootstrap-select.css' %}" rel="stylesheet">
+  <style>
+    select{
+    width: 50% !important;
+    }
+  </style>
+{% endblock %}
+
+
+{% block body %}<body id="green">{% endblock %}
+
+  {% block searchbar %}
+  <div class="searchbar">
+    <form action="{% url 'sokohaliAdmin:search' %}" method="GET" id="shipmentsearch">
+      <div class="container">
+
+        <div class="col-md-12">
+          <input type="text" name="page" class="hidden" value="shipmentpage" />
+          <input type="text" placeholder="Search for orders or shipments, e.g. Order OR235533" name="input_value"/>
+          <i class="fa fa-search t" aria-hidden="true"></i>
+          <span class="bar"></span>
+        </div>
+
+        <div class="search_filter">
+          
+          <div class="longselect">
+            <!-- <a id="search" class="btn btn-xs" onclick="document.getElementById('shipmentsearch').submit()" style="margin:15px 0px 0px 15px; padding:0px 20px; font-size: 14px; min-width:100px; border-radius:12px; height:48px;">Search</a> -->
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  {% endblock %}
+
+  {% block sticky_warning %}
+
+    <div class="sticky_msg">
+      <div class="container">
+
+        <div class="col-md-12">
+          <!-- Alert Warning -->
+          <div style="margin:15px 0px 5px 0px;">
+          {% for msg in messages %}
+            <script>
+              function show_alert(){
+              var alert = '<p style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</p>';
+              document.write(alert);
+              }
+              display = window.setTimeout(show_alert(), 1000);
+              window.clearTimeout(display);
+            </script>
+          {% endfor %}
+          </div>
+					<!-- Alert Warning -->
+					 <div class="alert alert-danger alert-dismissible" role="alert">
+						<i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						{% get_unprocessed_packages request as pending_packages %}
+						{% if pending_packages  %}
+							<strong>Warning! You have {{pending_packages}} unprocessed packages</strong>
+						{% elif not pending_packages %}
+							<strong>You have no unprocessed package(s)</strong>
+						{% endif %}
+							<!-- pagination here  -->
+							<div class="pagination" style="position:relative; font-size:20px; margin:0px; left:500px;">
+								<span class="step-links">
+									{% if shipment.has_previous %}
+										<a style="font-size:20px;" href="?page={{ shipment.previous_page_number }}">&laquo;</a>
+									{% else %}
+										<a style="font-size:20px;" class="hidden" >&laquo;</a>
+
+									{% endif %}
+
+									<span style="font-size:20px;" class="current">
+										Page {{ shipment.number }} of {{ shipment.paginator.num_pages }}.
+									</span>
+
+									{% if shipment.has_next %}
+										<a style="font-size:20px;" href="?page={{ shipment.next_page_number }}">&raquo;</a>
+									{% else %}
+										<a style="font-size:20px;" class="hidden">&raquo;</a>
+
+									{% endif %}
+								</span>
+							</div>
+					</div>
+					<!-- Alert Warning -->
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	{% block inner_content %}
+
+	<div class="inner">
+			<!-- Scrollable Content -->
+		<div class="scrollable">
+			<div class="container">
+				<div class="row-fluid">
+
+					<div class="col-md-3 sticky-wrapper" style="position:relative;">
+							<div id="sticky_left">
+								<div class="panel filters col-md-12" style="position:relative; height:380px; bottom:20px;">
+									<h2 style="position:relative; bottom:20px">Filter By:</h2>
+									<ul class="shipment_statuses" style="position:relative; height:280px;">
+										<li style="position:relative; bottom:55px;">
+											<a href="{% url 'sokohaliAdmin:sidebar' 'New' %}">New<span class="badge">
+												{% getPackageCount request 'New' %}</span></a>
+										</li>
+										<li style="position:relative; bottom:75px;">
+										<a href="{% url 'sokohaliAdmin:sidebar' 'Prepared for shipping' %}">Prepared for shipping<span class="badge">
+											{% getPackageCount request 'Prepared for shipping' %}</span></a>
+										</li>
+
+										<li style="position:relative; bottom:95px;">
+											<a href="{% url 'sokohaliAdmin:sidebar' 'Assigned to batch' %}">Assigned to batch<span class="badge">
+												{% getPackageCount request 'Assigned to batch' %}</span></a>
+										</li>
+										<li style="position:relative; bottom:115px;">
+											<a href="{% url 'sokohaliAdmin:sidebar' 'Processing for delivery' %}">Processing For Delivery<span class="badge">
+												{% getPackageCount request 'Processing for delivery' %}</span></a>
+										</li>
+										<li style="position:relative; bottom:135px;">
+											<a href="{% url 'sokohaliAdmin:sidebar' 'Ready for collection' %}">Ready For Collection<span class="badge">
+												{% getPackageCount request 'Ready for collection' %}</span></a>
+										</li>
+										<li style="position:relative; bottom:155px;">
+											<a href="{% url 'sokohaliAdmin:sidebar' 'Enroute to delivery' %}">Enroute To Delivery<span class="badge">
+												{% getPackageCount request 'Enroute to delivery' %}</span></a>
+										</li>
+										<li style="position:relative; bottom:175px;">
+											<a href="{% url 'sokohaliAdmin:sidebar' 'Delivered' %}">Delivered<span class="badge">
+												{% getPackageCount request 'Delivered' %}</span></a>
+										</li>
+										<!-- <li style="position:relative; bottom:215px;"> -->
+										<li style="position:relative; bottom:200px;">
+											<a href="{% url 'sokohaliAdmin:sidebar' 'revoked' %}">Revoked<span class="badge">
+												{% getPackageCount request 'revoked' %}</span></a>
+										</li>
+										<!-- <li style="position:relative; bottom:215px;">
+											<a href="{% url 'sokohaliAdmin:sidebar' 'flagged' %">Flagged<span class="badge">{% getPackageCount request 'flagged' %</span></a>
+										</li> -->
+										
+									</ul>
+									<div class="col-md-12" style="position:relative; bottom:230px;">
+										<a href="#CreatePackage" class="btn black" data-toggle="modal" data-target="#CreatePackage" id="create_pkg">Create Package</a>
+									</div>
+								</div>
+							</div>
+					</div>
+
+					<div class="col-md-9" style="position:relative;">
+							<div class="header">
+
+								<div class="dropdown options" style="margin-right:0; display:none;">
+									<p>Actions</p>
+									<i class="fa fa-ellipsis-h dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></i>
+									<div class="dropdown-menu two" aria-labelledby="dropdownMenu2">
+										<ul>
+											<li>
+												<a href="#">Assign to batch</a>
+											</li>
+											<li>
+												<a href="#">Flag</a>
+											</li>
+											<li>
+												<a href="#">Cancel</a>
+											</li>
+											<li>
+												<a href="#">Delete</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+								<div class="dropdown pull-right">
+									<div class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="true" style="margin-top:-15px; color:#333; border-radius:12px; font-size:16px;">
+										<strong>Additional Selectors</strong>
+									</div>
+									<ul class="dropdown-menu two select_action" aria-labelledby="dropdownMenu1">
+										<!-- <li class="specials_pkg"><a href="#" style="color:white;">Move</a></li>
+										<li role="separator" class="divider"></li>
+										<li class="specials_pkg"><a href="#" style="color:white;">Delete</a></li>-->
+										<!-- <li role="separator" class="divider"></li>
+										<li class="specials_pkg"><a href="#" style="color:green;">Assign to batch</a></li>  -->
+										<!-- <li role="separator" class="divider"></li> -->
+										<li class="specials_pkg"><a href="#" style="color:green;">Ready for collection</a></li>
+										<li role="separator" class="divider"></li>
+										<li class="specials_pkg"><a href="#" style="color:green;">Enroute to delivery</a></li>
+										<li role="separator" class="divider"></li>
+										<li class="specials_pkg"><a href="#" style="color:green;">Delivered</a></li>
+
+										<!-- <li class="specials_pkg"><a href = "#" action ="fetch-create-new" data-target="#CreateBatchPromo" id="create-batch-promo" style="color:white;">Create Batch Promo</a> -->
+											<!-- <a onclick='window.open("{% url 'sokohaliAdmin:batch_promo' 'create-new' %}", "batch promo", "width=800,height=700,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")'  class="view-invoice" style="cursor:pointer; color:white;" >Create Batch Promo</a> -->
+										</li>
+									</ul>
+								</div>
+
+
+								<div class="hidden">
+									<form action="{% url 'sokohaliAdmin:pkg_final_updates' %}"
+									id="PkgUpdateForm" name="PkgUpdate" method="POST">
+										{% csrf_token %}
+										<input id="update_type" type="text" value="" name="update_type">
+										<input id="pkg_ids" type="text" value="" name="pkg_ids">
+										<input id="old_pkg_status" type="text" value="" name="old_pkg_status">
+										<input id="marketers" type="text" value="" name="marketers">
+										<input type="submit" class='btn' id="update_pkg" value="Update"/>
+									 </form>
+								</div>
+
+
+								<div class="hidden">
+									<form action="{% url 'sokohaliAdmin:apply_discount' %}"
+									id="ApplyDiscountForm" name="ApplyDiscount" method="POST">
+										{% csrf_token %}
+										<input id="pkg_disc_num" type="text" value="" name="pkg_disc_num">
+										<input id="pkg_disc_id" type="text" value="" name="pkg_disc_id">
+										<input type="submit" class='btn' id="apply_dsc" value="Update"/>
+									 </form>
+								</div>
+
+								<div class="dropdown pull-right" id="get_chain" style="position: relative; right: 16px;">
+									<div class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="true" style="margin-top:-15px; color:#333; border-radius:12px; font-size:16px;">
+										<strong>Route Selectors</strong>
+									</div>
+									<ul class="dropdown-menu two select_action" aria-labelledby="dropdownMenu1">
+										{% for route in mm_chains %}
+										<li value="{{route}}"><a href="{% url 'sokohaliAdmin:package_filter' route.id %}" id="route_value" name="route_value" class="route" style="color:green;">{{route}}</a></li>
+										<li role="separator" class="divider"></li>
+										{% endfor %}
+									</ul>
+									<!-- <select id="type" name="route">
+										<option value="hide">Route</option>
+										% for route in mm_chains %}
+										<option value="{route}}"><a href=% url 'sokohaliAdmin:package_filter' %}" id="route_value" name="route_value" class="route">{route}}</a></option>
+										% endfor %}
+									</select> -->
+								</div>
+
+								<div class="dropdown options toggle" id="checkboxes" style="float:left">
+									<p>Select Multiple Packages</p>
+									<i class="fa fa-circle-o hd" aria-hidden="true"></i>
+									<i class="fa fa-check-circle" aria-hidden="true"></i>
+								</div>
+								<!--
+								<div class="dropdown options toggle" id="checkboxes" style="float:left">
+									<p>Select Multiple Batches</p>
+									<i class="fa fa-circle-o hd" aria-hidden="true"></i>
+									<i class="fa fa-check-circle" aria-hidden="true"></i>
+								</div> -->
+							</div>
+
+							{% for item in shipment %}
+
+							<div class="panel item" style="min-height: 240px !important;">
+								<div class="col-md-12 inf">
+									<h4><strong>{% if not item.status == "cancelled" %}{% if not item.deleted == True %}<input type="checkbox" 
+									style="background:green;" value="{{item.status}}" id="{{item.pk}}" name="ch" 
+									marketer="{{item.user.useraccount.marketer}}">{% endif %}{% endif %}&nbsp;&nbsp;&nbsp;{{ item.tracking_number }}</strong></h4>
+									<p>Client:<span>{{item.user.get_full_name}} |</span>
+
+
+										{% if not request.user.useraccount.marketer == "smatpost" %}
+											{% if item.balance_D == 0.00 %}
+												<!-- <span class="three" style="color:green;">Balance:
+													$item.balance_D|floatformat:2|intcomma
+												</span> -->
+												<span class="three" style="color:green;">Paid
+												</span>
+											{% else %}
+												<!-- <span class="three" style="color:red;">Balance:
+													$item.balance_D|floatformat:2|intcomma
+												</span> -->
+												<span class="three" style="color:red;">Unpaid
+												</span>
+											{% endif %}
+										{% else %}
+											{% if item.balance_D == 0.00 %}
+												<span class="three" style="color:green;">Balance:
+													${{item.balance_D|floatformat:2|intcomma}}
+												</span>
+											{% else %}
+												<span class="three" style="color:red;">Balance:
+													${{item.balance_D|floatformat:2|intcomma}}
+												</span>
+											{% endif %}
+										{% endif %}
+
+										<span class="three">| {{item.payment_method|upper}}</span>
+										{% if item.created_by_admin %}
+											<span>| AD</span>
+										{% else %}
+											<span>| CL</span>
+										{% endif %}
+										{% if item.shipment_type == "fixed_weight" %}
+											<span>| FW</span>
+										{% else %}
+											<span>| R</span>
+										{% endif %}
+										<br>
+										Marketer:<span>{{item.user.useraccount.marketer|upper}}</span><br>
+										Package Weight(Dimensional):<span>{{item.box_weight_Dim}}lbs ({{item.box_weight_Dim_K}}kgs)</span><br>
+										Package Weight(Actual):<span>{{item.box_weight_Actual}}lbs ({{item.box_weight_Actual_K}}kgs)</span>
+										{% if item.batch_assigned %}
+											<br> Assigned to batch:<span>{{item.batch_assigned}}</span>
+										{% endif %}
+									</p><br>
+									<p><!--% if item.shipment_type == "import" %}-->
+									<!--Delivery Options: <span>% remove_space item.delivery_method %}</span>&nbsp; | &nbsp;% endif %}-->
+									Shipping Method: <span>{{ item.shipping_method }}</span><br/>
+									Handling Options: <span>{% if item.stripping %}Strip Package; {% endif %} {% if item.consolidation %}Consolidate; {% endif %} {%if item.insure %}Insurance  {% else %}Not Insured {% endif %}</span>
+									{% if item.tracking_number in dockreceipt %}
+									<br>
+									Print Dock Receipt document <a href="{% url 'shipping:dock_template' item.tracking_number %}" target="_blank"><i class="fa fa-print fa-md" aria-hidden="true"></i></a></p>
+									{% endif %}
+									<!--% if item.shipment_type == "import" %}
+									 &nbsp; | &nbsp; Drop-off options:
+									<span>
+										% if item.handling_option == "drop-at-postoffice" %} Drop off at Post Office % else %}
+											% remove_space item.handling_option %}
+										% endif %}
+									</span>
+									% endif %}-->
+									{% if item.handling_option == "drop-at-postoffice" or item.handling_option == "pick-up-package" %}
+											<span><a onclick = 'window.open("{% url 'shipping:package_label' item.tracking_number %}",
+											 "invoice", "width=650,height=650,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")'><i class=" fa fa-eye" style="cursor:pointer; position:relative; left:10px;"
+											title="View label"></i></a></span>
+									{% endif %}
+									<br/>
+									{% if item.prepared_for_shipping %}
+										<a href="{% url 'sokohaliAdmin:pkg_shipping_label' item.tracking_number %}" target="_blank">Processing Label</a>
+									{% endif %}
+								</p>
+
+								</div>
+								<div class="overlay" style="min-height: 236px;">
+									<a href="#" class="link"><span>Open</span></a>
+									{% if item.deleted == True %}
+										<a href="" class="btn not">Processed</a>
+									{% else %}
+										{% if item.prepared_for_shipping %}
+											<a href="" class="btn not">Processed</a>
+										{% elif item.status == "cancelled" %}
+											<a href="" class="btn not">Cancelled</a>
+										{% elif item.status == "Flagged" %}
+											<a href="" class="btn not"><span style="color:red;">Flagged</span></a>
+										{% else %}
+											{% if item.origin_warehouse == subscriber.warehousemember %}
+											<a href="#" class="btn green pkg" data-trackg-no="{{item.tracking_number}}">Process Package</a>
+											{% else %}
+											<a href="" class="btn not">Process Package</a>
+											{% endif %}
+										{% endif %}
+									{% endif %}
+
+
+
+									<div class="dropdown options"><i class="fa fa-ellipsis-h dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></i>
+										<div class="dropdown-menu two" aria-labelledby="dropdownMenu2">
+											<ul>
+
+												<li>
+													<a onclick='window.open("{% url 'shipping:package_invoice' item.tracking_number %}", "invoice", "width=800,height=700,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")'  class="view-invoice" style="cursor:pointer;" ><i class="fa fa-file-text" aria-hidden="true"></i>View Invoice
+													</a>
+												</li>
+
+											{% if not item.status == "Flagged" %}
+
+											  {% if not item.deleted == True %}
+
+												{% if item.status == "Prepared for shipping" and not item.shipment_type == "fixed_weight" and item.origin_warehouse == subscriber.warehousemember %}
+												<li>
+													<a class="redo_package_process" data-trackg-no="{{item.tracking_number}}" style="cursor:pointer !important; position: relative;" onclick="return confirm('Are you sure you want to re-process this package?')">
+													<i class="fa fa-cogs" aria-hidden="true"></i>Process Package
+													</a>
+												</li>
+												{% endif %}
+
+												{% if item.assigned_to_batch %}
+
+												<li>
+													<a href="{% url 'sokohaliAdmin:undo_batchassigned' item.tracking_number %}" class="undo_batch" data-trackg-no="{{item.tracking_number}}" onclick="return confirm('Are you sure you want to remove this package from its batch?')">Remove from batch</a>
+												</li>
+
+												{% endif %}
+
+
+												{% if item.status == "Prepared for shipping" %}
+												  {% if item.origin_warehouse == subscriber.warehousemember %}
+													{% if item.override_payment == True or item.balance_D < 0.1 %}
+														<li>
+															<a href="#" class="override" data-trackg-no="{{item.tracking_number}}" data-action="undo overide"><i class="fa fa-repeat" aria-hidden="true"></i>Undo Override</a>
+														</li>
+														<li>
+															<a href="#" class="batch" onclick="return confirm('Are you sure you want to assign this package to a batch?')" data-trackg-no="{{item.tracking_number}}">Assign to batch</a>
+														</li>
+													{% elif item.override_payment == False %}
+														<li>
+															<a href="#" class="override" data-trackg-no="{{item.tracking_number}}" data-action="overide"><i class="fa fa-undo" aria-hidden="true"></i>Override Payment</a>
+														</li>
+													{% endif %}
+												  {% endif %}
+													<!-- <li>
+													<a class="edit_pkg" pkg_id="item.tracking_number" style="cursor:pointer !important;" onclick="return confirm('Are you sure you want to edit this package?')">Edit</a>
+												</li> -->
+												<!--   <li>
+													<a href="% url 'sokohaliAdmin:del_cncl_package' item.tracking_number 'cancel' %" style="cursor:pointer !important;" onclick="return confirm('Are you sure you want to cancel this package?')">Cancel</a>
+												</li> -->
+
+												{% endif %}
+
+
+
+											{% if item.status == "New" %}
+
+												{% if subscriber == package.get_package_subscriber %}
+												<li>
+													<a href="#applyDiscount" class="applyDiscount" item_id="{{item.tracking_number}}"><i class="fa fa-scissors" aria-hidden="true"></i>Apply Discount</a>
+												</li>
+												{% endif %}
+
+												<!-- <li>
+													<a href="% url 'sokohaliAdmin:del_cncl_package' item.tracking_number 'cancel' %" style="cursor:pointer !important;" onclick="return confirm('Are you sure you want to cancel this package?')">Cancel</a>
+												</li> -->
+
+											{% endif %}
+
+
+
+												<li>
+													<a href="#applyDiscount" class="applyDiscount" item_id="{{item.tracking_number}}"><i class="fa fa-scissors" aria-hidden="true"></i>Apply Discount</a>
+												</li>
+
+												{% if item.shipment_type == "fixed_weight" or item.shipment_type == "Regular" %}
+
+												<li>
+													<a class="edit_pkg" pkg_id="{{item.tracking_number}}" pkg_type={{item.shipment_type}} style="cursor:pointer !important;" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</a>
+												</li>
+
+												<!-- <li>
+													<a href="% url 'sokohaliAdmin:del_cncl_package' item.tracking_number 'cancel' %" style="cursor:pointer !important;" onclick="return confirm('Are you sure you want to cancel this package?')">Cancel</a>
+												</li> -->
+
+												{% endif %}
+
+												{% if item.status == "cancelled" %}
+
+												<li>
+													<a onclick="return confirm('Are you sure you want to revert this package to its original state?')"href="{% url 'sokohaliAdmin:del_cncl_package' item.tracking_number 'revert' %}">Revert</a>
+												</li>
+
+												{% endif %}
+
+											    <li>
+													<a href="" track_num="{{item.tracking_number}}" action="revoke" class="revoke" style="cursor:pointer;" ><i class="fa fa-times" aria-hidden="true"></i>REVOKE</a>
+												</li>
+
+											{% else %}
+
+												{% if request.user.useraccount.sokohali_admin %}
+
+											    <li>
+													<a href="" track_num="{{item.tracking_number}}" action="undorevoke" class="undorevoke" style="cursor:pointer;" ><i class="fa fa-times" aria-hidden="true"></i>UNDO REVOKE</a>
+												</li>
+
+												{% endif %}
+
+											{% endif %}
+												<li>
+													<a onclick='window.open("{% url 'sokohaliAdmin:userhistory' item.id %}", "invoice", "width=800,height=700,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")' class="view-invoice" style="cursor:pointer;" ><i class="fa fa-history" aria-hidden="true"></i>History</a>
+												</li>
+
+											{% if item.origin_warehouse == subscriber.warehousemember %}
+
+											 	{% if item.shipping_method == "Sea Freight" and item.tracking_number not in dockreceipt and item.status == "Prepared for shipping" %}
+													<li>
+														<a href="#{{item.tracking_number}}" item_id="{{item.tracking_number}}" class="operate" title="Shipment Doc"><i class="fa fa-plus" aria-hidden="true"></i>Create Dock Receipt</a>
+													</li>
+												{% elif item.shipping_method == "Sea Freight"  and item.tracking_number in dockreceipt %}
+													<li>
+														<a href="#{{item.tracking_number}}" item_id="{{item.tracking_number}}" class="operate_dock" title="Edit Shipment Doc"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit Dock Receipt</a>
+													</li>
+												<!-- <li>
+														<a href="% url 'shipping:dock_template' item.tracking_number %}" target="_blank"><i class="fa fa-print" aria-hidden="true"></i>Print Dock Receipt</a>
+												</li> -->
+											    {% endif %}
+
+											{% endif %}
+
+
+											{% endif %}
+
+											</ul>
+										</div>
+									</div>
+
+								</div>
+
+								<div class="item_inner two" id="more_info">
+									<div class="col-md-12 table">
+
+										<div class="addinfo">
+											<div class="col-md-12 user_info">
+												<div style="float:left;">
+													<div class="circle">
+														{% if item.user.useraccount.image %}
+														<img src="{{item.user.useraccount.image.url}}" />
+														{% else %}
+														<img src ="{{STATIC_URL}}soko-admin/img/user2.jpg">
+														{% endif %}
+													</div>
+												</div>
+												<div style="float:left;">
+													<h1>{{item.user.get_full_name}}</h1>
+													<p class="title">{{item.user.useraccount.account_type}}</p>
+												</div>
+											</div>
+
+											<div class="col-md-12">
+
+											{% if item.created_by_admin == True %}
+												<p class="title">Delivery Address:</p>
+												{% if request.user.useraccount.marketer == "smatpost" %}
+													{{item.default_destination_address}}
+												{% else %}
+													<p>{{item.default_destination_address}}</p>
+												{% endif %}
+											{% else %}
+												{% if item.local_pickup_address %}
+													<p class="title">Delivery Address:</p>
+													<p>{{item.get_delivery_address}}</p>
+												{% elif item.destination %}
+													<p class="title">Delivery Address:</p>
+													<p>{{item.destination.delivery_address}}</p>
+												{% elif item.delivery_address%}
+													<p class="title">Delivery Address:</p>
+													<p>{{item.delivery_address.address_line1}},{{item.delivery_address.address_line2}},
+														{{item.delivery_address.city}},{{item.delivery_address.state}},
+														{{item.delivery_address.country}}
+														{{item.delivery_address.telephone}}</p>
+												{% endif %}
+											{% endif %}
+
+											{% if item.returnaddress %}
+												<hr/>
+												<p class="title">Return Address:</p>
+												<p>{{item.returnaddress}}</p>
+											{% endif %}
+											</div>
+
+										</div>
+
+										<div class="col-md-12 txt">
+
+										</div>
+
+										<div class="table_inner" style="margin-top:20px;">
+											<table width="100%" borde="0" class="tablet">
+												<tr>
+													<th>Tracking Number</th>
+													<th>Description</th>
+													<th>Quantity</th>
+													<th>Listed Price</th>
+													<th>Status</th>
+
+												</tr>
+											{% for items in item.item_packages %}
+
+												<tr>
+													<td>
+														{{items.courier_tracking_number}}
+													</td>
+													<td>
+														{{items.description}}
+													</td>
+													<td>
+														{{items.quantity}}
+													</td>
+													<td>
+														<strong>${{items.amount}}</strong>
+													</td>
+													<td>
+														<strong>{{items.status}}</strong>
+													</td>
+												</tr>
+												{% endfor %}
+											</table>
+										</div>
+									</div>
+
+											{% if item.item_invoice or item.pkg_image %}
+
+											<div class="col-md-12 pics">
+											{% if item..item_invoice %}
+												{% for item in item.item_invoice %}
+												<a href="{{item.invoice.url}}" target="_blank">
+													<span>
+													<img src="{{STATIC_URL}}soko-admin/img/invoice2.jpg"/>
+													</span>
+												</a>
+												{% endfor %}
+											 {% endif %}
+
+											 {% if item.pkg_image %}
+												<a href="{{item.pkg_image.url}}" target="_blank">
+													<span>
+													<img src="{{STATIC_URL}}soko-admin/img/pkg_image.jpg" />
+													</span>
+												</a>
+											{% endif %}
+
+											</div>
+										{% endif %}
+
+									</div>
+
+							</div>
+							{% empty %}
+								<h2>No Package in this Category</h2>
+						{% endfor %}
+
+
+							<!-- <div class="bottom_sticky">
+								<div class="container">
+
+									<div class="col-md-9 col-md-offset-3">
+										<div class="cancel">
+											<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<a href="#"><i class="fa fa-share" aria-hidden="true"></i>Move</a>
+										<a href="#"><i class="fa fa-flag" aria-hidden="true"></i>Flag</a>
+										<a href="#"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a>
+									</div>
+
+
+								</div>
+							</div> -->
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}
+
+{% block modal %}
+
+
+
+	<div class="modal fade" tabindex="-1" role="dialog" id="assign_to_batchModal" style="overflow-y:scroll!important;">
+	</div>
+
+	<div class="modal fade" tabindex="-1" role="dialog" id="ProcessModal">
+		<div  id="status5" class="hidden" style="padding-bottom:10px;" >
+			<div class="header">
+				Take picture of Package.
+				<span class="close"></span>
+			</div>
+			<div class="row-fluid">
+				<video class="video_div" autoplay width="500px" height="350px"></video>
+				<img src="" width="500px" height="300px" id="itemImage1">
+			</div>
+			<canvas class="canvas_div" style="display:none;"></canvas>
+			<div class="row-fluid" style="text-align:center; padding-top:20px;">
+				<a href="#" id="snapshot1" class="button orange" style="float: left; cursor: pointer">Capture</a>
+				<input class="button" name="status5" style="float: right; margin-right: 98px;" type="submit" value="Save" id="submit">
+				<input type="hidden" name="shipment_item_id" id="shipment_item_id"/>
+				<input type="hidden" name="url" value="" id="url1">
+			</div>
+		</div>
+	</div>
+
+	<div id="testModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Take Picture of Items</h4>
+			</div>
+			<div class="modal-body" style="overflow:scroll!important;">
+				<div class="header">
+				<span class="close"></span>
+			</div>
+			<div class="row-fluid">
+				<video class="video_div" autoplay width="500px" height="350px" style="margin-left:50px;"></video>
+			</div>
+			<canvas class="canvas_div" style="margin-left:50px;"></canvas>
+			<div class="row-fluid" style="text-align:center; padding-top:20px;">
+
+				<input type="hidden" name="shipment_item_id" id="shipment_item_id"/>
+				<input type="hidden" name="url" value="" id="url1">
+			</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="snapshot1"  class="button orange" style="float: left; cursor: pointer; margin-left:50px;">Capture</button>
+				<button class="button orange" name="status5" style="float: right; margin-right: 98px;" type="submit" value="Save" id="saveImg">Save</button>
+			</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="modal fade" role="dialog" tabindex="-1" id="notifyuser">
+		<div class="modal-dialog modal-big" style="overflow-y: scroll;">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">New Package Window</h4>
+				</div>
+
+					<div class="modal-body">
+						<div class="body-inner two" style="overflow-y:scroll !important;">
+							<div class="col-md-12" style="padding:0; position:relative; bottom:145px;">
+
+								<h3>Find user<br>
+									<input type="text" name="query" id="id_query_notify" class="input-lg" placeholder="Search Suite#, First Name, Last Name, email" /><br>
+									<a href="#" id="finduser_notify" rel="notify_user" class="custom_btn go">Go</a>
+								</h3>
+							</div>
+
+							<div class="col-md-8 users" style="padding:0;">
+								<div id="matchingusers_notify_user" class="span12" style="padding-top: 20px; padding-bottom: 20px; position:relative; bottom:150px;">
+
+								 <a href="#" id="" rel="notify_user" style="margin-left: 400px;"></a>
+								</div>
+							</div>
+							<div class="col-md-4 hidden" id="radionotify"style="position:relative; bottom:140px;">
+								<!--<p>Give a brief description of the item(s) received.</p>-->
+								<!--<br/>-->
+								<textarea rows="10" cols="30" id="descrptn" placeholder="Give a brief description of the item(s) received....."></textarea>
+							</div>
+						</div>
+					</div>
+
+				<div class="modal-footer">
+					<button type="button" id="nuBack" class="btn gray left">Back</button>
+					<button type="button" id="sendmail" class="btn green ">Send Mail<i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" role="dialog" tabindex="-1" id="applyDiscount">
+		<div class="modal-dialog modal-small"style="overflow-y: scroll;">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">APPLY DISCOUNT</h4>
+				</div>
+
+					<div class="modal-body">
+						<div class="body-inner two" style="overflow-y:scroll !important;">
+							<div class="col-md-12" style="padding:0; position:relative; bottom:120px;">
+								<div class="col-md-6">
+									<label>Tracking Number:</label>
+									<input type="text" name="apply_disc_user" id="apply_disc_user" value="" readonly>
+								</div>
+							</div>
+							<div class="col-md-12" style="padding:0; position:relative; bottom:120px;">
+								<div class="col-md-6">
+									<label>Discount(%):</label>
+									<input type="number" name="apply_disc_val" id="apply_disc_val" value="">
+								</div>
+							</div>
+						</div>
+					</div>
+
+				<div class="modal-footer">
+					<button type="button" id="apply_discount" class="btn green">Submit<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+					</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" role="dialog" tabindex="-1" id="createPackageForUser">
+		<div class="modal-dialog modal-big" style="overflow-y: scroll;">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">New Package Window</h4>
+				</div>
+
+					<div class="modal-body">
+						<div class="body-inner two" style="overflow-y:scroll !important;">
+							<div class="col-md-12" style="padding:0; position:relative; bottom:145px;">
+
+								<h3>Find user<br>
+									<input type="text" name="query" id="id_query_create_booking_notify" class="input-lg" placeholder="Search Suite#, First Name, Last Name, email"/><br>
+									<a href="#" id="finduser_create_booking" rel="create_booking" class="custom_btn go">Go</a>
+								</h3>
+							</div>
+
+							<div class="col-md-12 users" style="padding:0;">
+								<div id="matchingusers_create_booking" class="span12" style="padding-top: 20px; padding-bottom: 20px; position:relative; bottom:150px;">
+
+								 <a href="#" id="create_booking11" rel="create_booking" style="margin-left: 400px;"></a>
+							 </div>
+							</div>
+						</div>
+					</div>
+
+				<div class="modal-footer">
+					<button type="button" id="cpfuBack" class="btn gray left">Back</button>
+					<button type="button" id="show_add_item" class="btn green ">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" role="dialog" tabindex="-1" id="create_booking_for_user">
+		<div class="modal-dialog modal-big">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" id="dismmiss_special" data-dismiss="modal">&times;</button>
+					<button type="button" class="close hidden"  onclick="javascript:window.location.reload()"  id="dismiss_special2" data-dismiss="modal">&times;</button>
+
+					<h4 class="modal-title">New Package Window</h4>
+				</div>
+
+					<div class="modal-body" style="overflow-y:scroll !important;">
+						<div id="create_booking" style="margin-top:-5px;">
+								<div class="body-inner two">
+									<div class="col-md-12" style="padding:0;">
+
+										<div class="ajax-progress2"></div>
+									</div>
+								</div>
+						</div>
+					</div>
+
+				<div class="modal-footer common_footer1">
+					<button type="button" id="return_to_user_search" class="btn gray left">Back</button>
+					<button type="button" id="go_to_create_box" class="btn green ">Next <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+				</div>
+
+				<div class="modal-footer not_common_footer hidden">
+					<button type="button" id="createPackageBack" class="btn gray left">Back</button>
+					<button type="button" id="createPackageEnd" class="btn green ">Create Package<i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" role="dialog" tabindex="-1" id="EditPackageModal">
+	</div>
+
+	<!-- /.modal -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="editModal{{item.tracking_number}}">
+				<div class="modal-dialog modal-big">
+
+						<div class="modal-content">
+								<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<h4 class="modal-title">Create Dock Receipt Form</h4>
+								</div>
+								
+								<form method ="POST" action="{% url 'shipping:dockreceipts' %}" enctype="multipart/form-data"class="form-horizontal scroll">
+									{% csrf_token %}
+								<div class="modal-c open" id="s0">
+										<div class="modal-body" style="overflow:scroll;">
+													<div class="form-group" style="margin-bottom:5mm;">
+														<div class="col-sm-7">
+															<input type="hidden" class="form-control" name="tracking_number" id="btch_noo" placeholder="Tracking Number" value="{{tracking_number}}" style="margin-left: 15px;"readonly>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Exporter Name and Address</label>
+															{{dock_form.exporter_name_and_address}}
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Zip Code</label>
+															{{dock_form.zip_code}}
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Consigned To</label>
+															{{dock_form.consigned_to}}
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Notify Party(Complete Name and Address)</label>
+															{{dock_form.notify_party_name_and_address}}
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Document Number</label>
+															{{dock_form.document_number}}
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>B/L OR AWB Number</label>
+															{{dock_form.bl_or_awb_number}}
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Export References</label>
+															{{dock_form.export_references}}
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Forwarding Agent / FMC Number</label>
+															{{dock_form.forwarding_agent_fmc_no}}
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Point(State) and Country of Origin or FTZ Number</label>
+															{{dock_form.state_and_country_of_origin_or_ftz_number}}
+														</div>
+													</div>
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn green trigger" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s1">
+										<div class="modal-body" style="overflow:scroll;">
+												<!-- Body Inner Content -->
+												<!-- <div class="body-inner long"> -->
+												<div class="form-group" style="margin-top:5mm; margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Domestic Routing / Export Instruction</label>
+														{{dock_form.domestic_routing}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Loading Pier / Terminal</label>
+														{{dock_form.loading_pier}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Type of Move</label>
+														{{dock_form.type_of_move}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Containerized (Vessel Only)</label>
+														{{dock_form.containerized}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Pre-Carriage By</label>
+														{{dock_form.precarriage_by}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Place of Receipt by Pre-Carrier</label>
+														{{dock_form.place_of_receipt_by_precarrier}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Exporting Carrier</label>
+														{{dock_form.exporting_carrier}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Port of Loading / Export</label>
+														{{dock_form.port_of_loading}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Foreign Port of Unloading (Vessel/Air Only)</label>
+														{{dock_form.foreign_port_of_unloading}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Place of DeliveryBy On-Carrier</label>
+														{{dock_form.place_of_delivery_by_oncarrier}}
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s0">Back</button>
+												<button type="button" class="btn green trigger" rel="s2">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								
+								<div class="loadingDiv hidden">
+								    <p><img src="{{STATIC_URL}}ajax_loader.gif" /> Please Wait</p>
+								</div>
+								 
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s2">
+										<div class="modal-body" style="overflow:scroll;">
+												<!-- Body Inner Content -->
+												<div class="form-group" style="margin-top:5mm; margin-left:15px;">
+													<div class="col-sm-7">
+														<label>MKS. & NOS./CONT. NOS</label>
+														{{dock_form.mks_nos}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Number of Packages</label>
+														{{dock_form.no_of_pkgs}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Description of Packages and Goods</label>
+														{{dock_form.description_of_package_and_goods}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Gross Weight</label>
+														{{dock_form.gross_weight}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Measurement</label>
+														{{dock_form.measurement}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Lighter Truck</label>
+														{{dock_form.lighter_truck}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Arrived Date</label>
+														<!-- {dock_form.arrived_date}} -->
+														<input type="date"  name="arrived_date" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" />
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Arrived Time</label>
+														<!-- {dock_form.arrived_time}} -->
+														<input type="time" placeholder="Arrived Time"  name="arrived_time" style='margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;'>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Unloaded Date</label>
+														<!-- {dock_form.unloaded_date}} -->
+														<input type="date"  name="unloaded_date" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" />
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Unloaded Time</label>
+														<!-- {dock_form.unloaded_time}} -->
+														<input type="time" placeholder="Unloaded Time"  name="unloaded_time" style='margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;'>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Checked By</label>
+														{{dock_form.checked_by}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Placed Location</label>
+														{{dock_form.placed_location}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Receiving Clerk Name</label>
+														{{dock_form.receiving_clerk_name}}
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Date from Receiving Clerk</label>
+														<!-- {dock_form.date_from_receiving_clerk}} -->
+														<input type="date"  name="date_from_receiving_clerk" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" />
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s1">Back</button>
+												<button id="button" type="submit" class="btn green">Submit</button>
+										</div>
+								</div>
+							</form>
+							<!-- <div class="row" id="div2" style="display: none">Show Div 2</div> -->
+								<!-- modal-c -->
+						</div>
+						<!-- /.modal-content -->
+
+				</div>
+				<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<!-- /.modal -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="editDockModal{{item.tracking_number}}">
+				<div class="modal-dialog modal-big">
+
+						<div class="modal-content">
+								<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<h4 class="modal-title">Edit Dock Receipt Form</h4>
+								</div>
+								<!-- <div class="order">
+										<div class="col-md-12">
+
+										</div>
+								</div> -->
+								<!-- modal-c -->
+								<form method ="POST" action="{% url 'shipping:dock_edit' %}" enctype="multipart/form-data"class="form-horizontal scroll">
+									{% csrf_token %}
+								<div class="modal-c open" id="s0">
+										<div class="modal-body" style="overflow:scroll;">
+													<div class="form-group" style="margin-bottom:5mm;" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<input type="hidden" class="form-control" name="tracking_number" placeholder="Tracking Number" value="{{dock_form.tracking_number}}"readonly>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Exporter Name and Address</label>
+															<textarea class="form-control red" name="exporter_name_and_address" value="{{dock_form.exporter_name_and_address}}" placeholder="Exporter Name and Address" rows="4" cols="4" required>{{dock_form.exporter_name_and_address}}</textarea>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Zip Code</label>
+															<!-- {dock_form.zip_code}} -->
+															<input type="text" class="form-control red" name="zip_code" value="{{dock_form.zip_code}}" placeholder="Zip Code" required>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Consigned To</label>
+															<textarea class="form-control red" name="consigned_to" value="{{dock_form.consigned_to}}" placeholder="Consigned To" rows="4" cols="4" required>{{dock_form.consigned_to}}</textarea>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Notify Party(Complete Name and Address)</label>
+															<textarea class="form-control red" name="notify_party_name_and_address" value="{{dock_form.notify_party_name_and_address}}" placeholder="Notify Party Name and Address" rows="4" cols="4" required>{{dock_form.notify_party_name_and_address}}</textarea>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Document Number</label>
+															<!-- {dock_form.document_number}} -->
+															<input type="text" class="form-control red" name="document_number" value="{{dock_form.document_number}}" placeholder="Document Number" required>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>B/L OR AWB Number</label>
+															<!-- {dock_form.bl_or_awb_number}} -->
+															<input type="text" class="form-control red" name="bl_or_awb_number" value="{{dock_form.bl_or_awb_number}}" placeholder="B/L OR AWB Number" required>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Export References</label>
+															<!-- {dock_form.export_references}} -->
+															<textarea class="form-control red" name="export_references" value="{{dock_form.export_references}}" placeholder="Export References" rows="4" cols="4" required>{{dock_form.export_references}}</textarea>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Forwarding Agent / FMC Number</label>
+															<!-- {dock_form.forwarding_agent_fmc_no}} -->
+															<textarea class="form-control red" name="forwarding_agent_fmc_no" value="{{dock_form.forwarding_agent_fmc_no}}" placeholder="Forwarding Agent FMC Number" rows="4" cols="4" required>{{dock_form.forwarding_agent_fmc_no}}</textarea>
+														</div>
+													</div>
+													<div class="form-group" style="margin-left: 15px;">
+														<div class="col-sm-7">
+															<label>Point(State) and Country of Origin or FTZ Number</label>
+															<!-- {dock_form.state_and_country_of_origin_or_ftz_number}} -->
+															<input type="text" class="form-control red" name="state_and_country_of_origin_or_ftz_number" value="{{dock_form.state_and_country_of_origin_or_ftz_number}}" placeholder="Point(State) and Country of Origin or FTZ Number" required>
+														</div>
+													</div>
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn green trigger" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s1">
+										<div class="modal-body" style="overflow:scroll;">
+												<!-- Body Inner Content -->
+												<!-- <div class="body-inner long"> -->
+												<div class="form-group" style="margin-top:5mm; margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Domestic Routing / Export Instruction</label>
+														<!-- {dock_form.domestic_routing}} -->
+														<textarea class="form-control red" name="domestic_routing" value="{{dock_form.domestic_routing}}" placeholder="Domestic Routing / Export Instruction" rows="4" cols="4" required>{{dock_form.domestic_routing}}</textarea>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Loading Pier / Terminal</label>
+														<!-- {dock_form.loading_pier}} -->
+														<input type="text" class="form-control red" name="loading_pier" value="{{dock_form.loading_pier}}" placeholder="Loading Pier / Terminal" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Type of Move</label>
+														<!-- {dock_form.type_of_move}} -->
+														<input type="text" class="form-control red" name="type_of_move" value="{{dock_form.type_of_move}}" placeholder="Type of Move" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Containerized (Vessel Only)</label>
+														<!-- {dock_form.containerized}} -->
+														<input type="checkbox" name="containerized" value="{{dock_form.containerized}}" checked="{{dock_form.containerized}}" placeholder="Containerized (Vessel Only)">
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Pre-Carriage By</label>
+														<!-- {dock_form.precarriage_by}} -->
+														<input type="text" class="form-control red" name="precarriage_by" value="{{dock_form.precarriage_by}}" placeholder="Pre-Carriage By" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Place of Receipt by Pre-Carrier</label>
+														<!-- {dock_form.place_of_receipt_by_precarrier}} -->
+														<input type="text" class="form-control red" name="place_of_receipt_by_precarrier" value="{{dock_form.place_of_receipt_by_precarrier}}" placeholder="Place of Receipt by Pre-Carrier" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Exporting Carrier</label>
+														<!-- {dock_form.exporting_carrier}} -->
+														<input type="text" class="form-control red" name="exporting_carrier" value="{{dock_form.exporting_carrier}}" placeholder="Exporting Carrier" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Port of Loading / Export</label>
+														<!-- {dock_form.port_of_loading}} -->
+														<input type="text" class="form-control red" name="port_of_loading" value="{{dock_form.port_of_loading}}" placeholder="Part of Loading / Export" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Foreign Port of Unloading (Vessel/Air Only)</label>
+														<!-- {dock_form.foreign_port_of_unloading}} -->
+														<input type="text" class="form-control red" name="foreign_port_of_unloading" value="{{dock_form.foreign_port_of_unloading}}" placeholder="Foreign Port of Unloading (Vessel/Air Only)" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Place of DeliveryBy On-Carrier</label>
+														<!-- {dock_form.place_of_delivery_by_oncarrier}} -->
+														<input type="text" class="form-control red" name="place_of_delivery_by_oncarrier" value="{{dock_form.place_of_delivery_by_oncarrier}}" placeholder="Place of DeliveryBy On-Carrier" required>
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s0">Back</button>
+												<button type="button" class="btn green trigger" rel="s2">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s2">
+										<div class="modal-body" style="overflow:scroll;">
+												<!-- Body Inner Content -->
+												<div class="form-group" style="margin-top:5mm; margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>MKS. & NOS./CONT. NOS</label>
+														<!-- {dock_form.mks_nos}} -->
+														<textarea class="form-control red" name="mks_nos" value="{{dock_form.mks_nos}}" placeholder="MKS. & NOS./CONT. NOS" rows="4" cols="4" required>{{dock_form.mks_nos}}</textarea>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Number of Packages</label>
+														<!-- {dock_form.no_of_pkgs}} -->
+														<input type="number" class="form-control red" name="no_of_pkgs" value="{{dock_form.no_of_pkgs}}" placeholder="Number of Packages" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Description of Packages and Goods</label>
+														<!-- {dock_form.description_of_package_and_goods}} -->
+														<textarea class="form-control red" name="description_of_package_and_goods" value="{{dock_form.description_of_package_and_goods}}" placeholder="Description of Packages and Goods" rows="4" cols="4" required>{{dock_form.description_of_package_and_goods}}</textarea>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Gross Weight</label>
+														<!-- {dock_form.gross_weight}} -->
+														<input type="number" class="form-control red" name="gross_weight" value="{{dock_form.gross_weight}}" placeholder="Gross Weight" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Measurement</label>
+														<!-- {dock_form.measurement}} -->
+														<input type="number" class="form-control red" name="measurement" value="{{dock_form.measurement}}" placeholder="Measurement" required>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Lighter Truck</label>
+														<!-- {dock_form.lighter_truck}} -->
+														<input type="text" class="form-control red" name="lighter_truck" value="{{dock_form.lighter_truck}}" placeholder="Lighter Truck" >
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Arrived Date</label>
+														<!-- {dock_form.arrived_date}} -->
+														<input type="date" class="red" value="{{dock_form.arrived_date}}" name="arrived_date" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" />
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Arrived Time</label>
+														<!-- {dock_form.arrived_time}} -->
+														<input type="time" value="{{dock_form.arrived_time}}" placeholder="Arrived Time"  name="arrived_time" style='margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;'>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Unloaded Date</label>
+														<!-- {dock_form.unloaded_date}} -->
+														<input type="date" class="red" value="{{dock_form.unloaded_date}}" name="unloaded_date" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" />
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Unloaded Time</label>
+														<!-- {dock_form.unloaded_time}} -->
+														<input type="time" placeholder="Unloaded Time" value="{{dock_form.unloaded_time}}" name="unloaded_time" style='margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;'>
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Checked By</label>
+														<!-- {dock_form.checked_by}} -->
+														<input type="text" class="form-control red" name="checked_by" value="{{dock_form.checked_by}}" placeholder="Checked By" >
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Placed Location</label>
+														<!-- {dock_form.placed_location}} -->
+														<input type="text" class="form-control red" name="placed_location" value="{{dock_form.placed_location}}" placeholder="Placed Location" >
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Receiving Clerk Name</label>
+														<!-- {dock_form.receiving_clerk_name}} -->
+														<input type="text" class="form-control red" name="receiving_clerk_name" value="{{dock_form.receiving_clerk_name}}" placeholder="Receiving Clerk Name" >
+													</div>
+												</div>
+												<div class="form-group" style="margin-left: 15px;">
+													<div class="col-sm-7">
+														<label>Date from Receiving Clerk</label>
+														<!-- {dock_form.date_from_receiving_clerk}} -->
+														<input type="date" class="red" value="{{dock_form.date_from_receiving_clerk}}" name="date_from_receiving_clerk" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" />
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s1">Back</button>
+												<button id="button" type="submit" class="btn green">Submit</button>
+										</div>
+								</div>
+							</form>
+							<!-- <div class="row" id="div2" style="display: none">Show Div 2</div> -->
+								<!-- modal-c -->
+						</div>
+						<!-- /.modal-content -->
+
+				</div>
+				<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<div class="modal fade" role="dialog" tabindex="-1" id="edit_item_Modal">
+	</div>
+
+
+	{% include 'admin-snippet/create_package_modal.html' %}
+	<!-- <div class="modal fade" role="dialog" id="CreateBatchPromo">
+		<div class="modal-dialog modal-big" style="overflow-y: scroll;">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Create New Promotion</h4>
+				</div>
+
+					<div class="modal-body" style="overflow-y: scroll;">
+						<div class="body-inner two" style="overflow-y:scroll !important;">
+							<div class="col-md-12" style="padding:0; position:relative; bottom:145px;">
+								<strong>PREVIOUSLY CREATED PROMOTIONS</strong>
+								<p>&nbsp;</p>
+								<table class="table table-hover table-bordered">
+									<thead>
+										<tr>
+											<th>Route</th>
+											<th>Estimated Depature</th>
+											<th>Shipping Method</th>
+											<th>Available Space</th>
+											<th>Current Rate</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody id ="existing-promos">
+									</tbody>
+								</table>
+								<div class="pull-right">
+									<a href = "#" action ="create-new" class = "btn green pull-right" id="create-new-promo" >Create New Promo</a>
+								</div>
+
+							</div>
+						</div>
+
+
+						<div class="row hidden" id="promo_form">
+							<form action ="" method = "post" id = "new-promo-form">
+								{% csrf_token %}
+								<div class="col-md-8" id="batch-promo-form">
+									<div class="well" style="background-color: #666666 !important; color:#ffffff; border: 1px solid #ffffff !important;">
+										<h4><strong>CREATE NEW PROMOTION</strong></h4><hr>
+										<div class="row">
+											<div class="col-md-4"><strong>Shipment Type</strong></div>
+											<div class="col-md-8 inner">
+												<select class="" name = "shipment_type">
+													<option value="Air Freight"> Air Freight</option>
+													<option value="Sea Freight"> Sea Freight</option>
+													<option value="Express Air"> Express Air</option>
+												</select>
+											</div>
+										</div>
+										 <br>
+
+										 <div class="row">
+											<div class="col-md-2"><strong>From: </strong></div>
+											<div class="col-md-4 swidget">
+												<select class="" name = "origin">
+													<option value="Ghana"> Ghana</option>
+													<option value="Nigeria"> Nigeria</option>
+													<option value="UK"> UK</option>
+													<option value="United States">United States</option>
+												</select>
+											</div>
+											<div class="col-md-2"><strong>To: </strong></div>
+											<div class="col-md-4">
+												<select class="" name = "destination">
+													<option value="Ghana"> Ghana</option>
+													<option value="Nigeria"> Nigeria</option>
+													<option value="UK"> UK</option>
+													<option value="United States">United States</option>
+												</select>
+											</div>
+										</div>
+										 <br>
+
+										 <div class="row">
+											<div class="col-md-4"><strong>Estimated Departure Time: </strong></div>
+											<div class="col-md-8">
+												<input type="date" class="form-control" name="estimated_departure_time" />
+											</div>
+										</div>
+										 <br>
+
+										 <div class="row">
+											<div class="col-md-4"><strong>Available Space (lb - kg): </strong></div>
+											<div class="col-md-8">
+												<input type="text" class="form-control" name = "available_space"placeholder ="52lb - 25kg" />
+											</div>
+										</div>
+										 <br>
+
+										 <div class="row">
+											<div class="col-md-4"><strong>Current Rate (per lb): </strong></div>
+											<div class="col-md-8">
+												<input type="text" class="form-control" name="current_rate" />
+											</div>
+										</div>
+										 <br>
+
+										 <div class="row">
+											<div class="col-md-4"><strong>Min. Weight range (lb - kg): </strong></div>
+											<div class="col-md-8">
+												<input type="text" class="form-control" name="weight_range_at_rate" placeholder ="52lb - 25kg"/>
+											</div>
+										</div>
+										 <br>
+
+										<div class="row">
+											<div class="col-md-4"><strong>Start Now: </strong></div>
+											<div class="col-md-8">
+												<input type="checkbox" class="" name="is_active" />
+											</div>
+										</div>
+										 <br>
+										 <div class="row">
+											<div class="col-md-7">
+												<div id="error_div" class="text-danger hidden" style="background-color:#ffffff !important; padding:7.5px !important;"></div>
+											</div>
+											<div class="col-md-5">
+												<a href = "#" action ="create-new" class = "btn green pull-right" id="submit-new-promo" >Create</a>
+											</div>
+										</div>
+										 <br>
+									</div>
+								</div>
+								<div class="col-md-4">
+								</div>
+							</form>
+						</div>
+					</div>
+				<div class="modal-footer">
+
+				</div>
+			</div>
+		</div>
+ -->
+
+{% endblock %}
+
+
+
+{% block script %}
+
+<!--Target the class that carries the button to show the modal form,
+	set a variable to it (data-trackg-no) to get the package tracking number;
+	then prevent it from doing its default action
+	assign a variable to the tracking number
+	use ajax to send the data and then replace the div with the returned data.-->
+
+<script>
+
+	$("#submit-new-promo").click(function(){
+		var form  = $("#new-promo-form");
+		var action = $(this).attr('action');
+		var url = "{% url 'sokohaliAdmin:batch_promo' 'create-new' %}";
+		// validate_form();
+
+
+		$.ajax({
+			url: url,
+			type:"POST",
+			data: form.serialize(),
+			success: function(data){
+				// alert('success');
+				$("#existing-promos").html(data);
+				$("#new-promo-form").trigger('reset');
+				$("#promo_form").addClass('hidden');
+			},
+			error: function(data){
+				$("#error_div").html('<strong>Opps! An error occured while saving promo. Refresh the page and try again.</strong>');
+				$("#error_div").removeClass('hidden');
+			}
+		})
+	})
+
+	$("#create-new-promo").on('click', function(){
+		$("#promo_form").removeClass('hidden');
+	})
+
+
+	$(".overlay .link").click(function () {
+	$(this).parent().parent().toggleClass('open');
+	$(this).text($(this).text() == 'Open' ? 'Close' : 'Open');
+
+});
+
+	$(".panel.item").click(function () {
+	if ($(this).hasClass("active")) {
+		$(this).toggleClass('selected');
+	}
+});
+
+	$('body').on('click', '.modal-footer .trigger', function () {
+		$('.modal-c').removeClass('open');
+		var target = $(this).attr('rel');
+		$(".modal-c#" + target).addClass('open');
+	});
+
+	$('.btn.green.pkg').on('click', function(e) {
+		var trackg_no = $(this).attr("data-trackg-no");
+		$.ajax({
+			url: "{% url 'sokohaliAdmin:item_details' %}",
+			type: 'GET',
+			data: {'trackg_no': trackg_no},
+			success: function(data){
+				$('#ProcessModal').replaceWith(data);
+				$('#ProcessModal').modal('show');
+				$('.file-upload').hide();
+				$('#file-upload1').show();
+				initializeVideo();
+
+			}
+		});
+	});
+
+$('body').on('click','#assign',function(e){
+	e.preventDefault();
+	if($("input[name='batchName']").is(':checked')){
+		$('#assign_to_batch').submit();
+	}else{
+		alert("Please select a batch");
+		return false;
+	}
+});
+
+
+$('body').on('click', '.reveal-file', function () {
+	alert("was clicked");
+	$('#file-upload2').show();
+	$(this).click(function (event) {
+		$('#file-upload3').show();
+		$(this).click(function (event) {
+			$('#file-upload4').show();
+			$(this).hide();
+		})
+	})
+});
+
+
+$('body').on('click', '.batch', function(){
+	var tracking_number = $(this).attr("data-trackg-no");
+	$.ajax({
+			url: "{% url 'sokohaliAdmin:assign_to_batch' %}",
+			type: 'GET',
+			data: {'tracking_number': tracking_number},
+			success: function(data){
+				$('#assign_to_batchModal').replaceWith(data);
+				$('#assign_to_batchModal').modal('show');
+			}
+	})
+})
+
+
+$('body').on('click', '.user_pk', function(){
+//var radioValue = $("input[name='gender']:checked").val();
+	$('#radionotify').removeClass('hidden');
+})
+
+
+	$('body').on('click', '#create_booking11', function(){
+		$('.user_pk').each(function(){
+			$('.user_pk:checked').each(function(){
+				var user_id = $(this).val();
+				$.ajax({
+					url: "{% url 'sokohaliAdmin:user_info' %}",
+					type: 'GET',
+					data: {'user_id': user_id},
+					success: function(data){
+					if (data.result != 'fail'){
+						$('#create_booking').replaceWith(data);
+						$('#createPackageForUser').hide();
+						$('#myModal').modal('show');
+					}
+					else {
+						$('fo').html(data.result);
+					}
+					}
+				});
+			})
+		});
+		return false;
+
+	});
+
+	function showHideDivs(div1, div2) {
+		$('#'+div1).show();
+		$('#'+div2).hide();
+		return false;
+	};
+
+
+	$('body').on('change', '#category', function(){
+		var category = $('#category').val();
+		$.ajax({
+			url: "{% url 'sokohaliAdmin:sub_category' %}",
+			type: 'GET',
+			data: {'category': category},
+			success: function(data){
+				//alert('i got here');
+				$('#sub_category').html('<option value=""></option>');
+				$.each($.parseJSON(data.response), function(index, element){
+				$('#sub_category').append('<option value="'+element.name+'"data-content="'+element.content+'">'+ element.name+'</option>');
+				$("#sub_category").append('<span id="sub_categoryspan" data-value="'+element.id+'"data-content="'+element.content+'">'+ element.name+'</span>')
+				})
+			}
+		});
+
+	});
+
+
+	$('body').on('change', '#fixed_weight_categories', function(){
+
+			var qty = $('#id_cb_quantity').val();
+			var category = $('#fixed_weight_categories').val();
+			var cat_id = $('#fixed_weight_categories option:selected').attr('cat_id');
+			var chain_id = $('#shipping_direction3 option:selected').attr('sh_chain');
+
+
+			$.ajax({
+				url: "{% url 'sokohaliAdmin:fixed_weight_info' %}",
+				type: 'GET',
+				data: {'category': category, 'chain_id':chain_id, 'cat_id':cat_id},
+				success: function(data){
+					console.log('working');
+					$('#fxd_wgt_id').val(cat_id);
+					$('#fixed_rate').val(data.fixed_wgt_rate);
+					if(qty == ""){
+						$('#id_cb_total_value').val('');
+					}else{
+						$('#id_cb_total_value').val(data.fixed_wgt_rate * qty);
+					}
+				},
+				error: function(data){
+					console.log('not working');
+				}
+			});
+		});
+
+
+
+	$('body').on('click', "#cb_add_item", function(e){
+		e.preventDefault();
+		fxd_wgt_val = $("#fixed_weight_categories").val();
+		var qty = $('#id_cb_quantity').val();
+
+
+		if(qty == " "){
+			alert('Please enter desired quantity');
+		}
+
+		else if(!$('input[type=radio][name=pkg_type]:checked').val()){
+			alert("Please select a item type to be created");
+		}
+
+		else{
+		$('.loadingDiv').removeClass('hidden');
+		var user_id = $("#user_id").val();
+		var cb_quantity = $("#id_cb_quantity").val();
+		var cb_total_value = $("#id_cb_total_value").val();
+		var csrf_token     = $('input[name="csrfmiddlewaretoken"]').val();
+		var cb_pkg_type  = $('input[name=pkg_type]:checked', '#add_item_form').val();
+
+		if (cb_pkg_type == "Export") {
+			var uniquetrait1 = $('#category').val();
+			var uniquetrait2 = $('#sub_category').val();
+			var uniquetrait3 = $('#sub_categoryspan').attr('data-content');
+			var extra_charges = "extra_charges"
+			var fxd_wgt_desc = "fxd_wgt_desc"
+
+
+		}
+
+		else if (cb_pkg_type == "Import") {
+			var sh_chain = $('#shipping_direction3 option:selected').attr('sh_chain');
+			var uniquetrait1 = $("#id_cb_courier_trk").val();
+			var uniquetrait2 = $("#id_cb_description").val();
+			var uniquetrait3 = "import";
+			var extra_charges = "extra_charges"
+			var fxd_wgt_desc = "fxd_wgt_desc"
+
+		}
+
+		else if (cb_pkg_type == "FixedWeight") {
+			// alert(fxd_wgt_desc);
+			var sh_chain = $('#shipping_direction3 option:selected').attr('sh_chain');
+			var uniquetrait1  = 12345678;
+			var uniquetrait2  = $("#fixed_weight_categories").val();
+			var uniquetrait3  = "fixedWgt";
+			var extra_charges = $("#extra_charges").val();
+			var fxd_wgt_desc  = $("#fxd_wgt_desc").val()
+			var fxd_id        = $("#fxd_wgt_id").val()
+
+			if ((fxd_wgt_val == null) || (fxd_wgt_val == 'Select Category')){
+			alert('Please select an appropriate category. If you do not have a category list please add categories for fixed weight shipments by clicking on "SetUp" in the top navigation bar, scroll to and select "FIXED WEIGHT SHIPMENTS" ')
+			return false;
+			}
+
+			else if (extra_charges == ""){
+			alert('Please enter extra charges for fixed weight items such as trucking, loading etc..');
+			return false;
+			}
+
+			// else if (fxd_wgt_desc == "undefined"){
+			// 	alert("Please enter other necessary details of this item");
+			// 	return false;
+			// }
+		}
+
+		$.ajax({
+			url:"{% url 'sokohaliAdmin:add_item' %}",
+			type: 'POST',
+			data: { csrfmiddlewaretoken: csrf_token, 'cb_pkg_type': cb_pkg_type, 'user_id': user_id, 'cb_quantity': cb_quantity,'cb_total_value': cb_total_value, 'uniquetrait1':uniquetrait1, 
+			'uniquetrait2': uniquetrait2,'sh_chain':sh_chain,'fxd_id':fxd_id,
+			 'uniquetrait3': uniquetrait3, 'extra_charges':extra_charges, "fxd_wgt_desc":fxd_wgt_desc },
+			success: function(data) {
+				if (data.result != 'fail'){
+					$('input[type="text"]').val('');
+					$('.loadingDiv').addClass('hidden');
+					$('#item_list').replaceWith(data);
+					$('#item_list').show();
+					$('#cb_create_box').removeClass('hidden');
+					$('#shipping_direction3 option:selected').val(" ");
+				}
+				else {
+				    $('.loadingDiv').addClass('hidden');
+					alert("Wrong values supplied");
+					$('#msg_not').html(data.alert);
+					$('#shipping_direction3 option:selected').val(" ");
+
+				}
+			}
+		});
+		return false;
+		}
+	});
+
+
+	$('body').on('click',".itt span",function () {
+		$('.itt span').removeClass('active');
+		$(this).toggleClass('active');
+		var target = $(this).attr('rel');
+		$('.box').removeClass('active');
+		$(".box#" + target).addClass('active');
+	});
+
+
+	$('body').on('click', '#snapshot1', function () {
+		ctx.drawImage(video_elements[1],0,0,500,350);
+		document.getElementById('itemImage1').src = canvas_elements[1].toDataURL('image/jpeg');
+		var pic = document.getElementById('itemImage1').src
+		//var img_number = $('#show_modal').attr("img-trackg-no");
+		//pic = img_number
+		console.log(pic);
+		//document.getElementById('pkgImage').value = pic
+		document.getElementById('pkgImage').value = document.getElementById('itemImage1').src;
+		return false;
+	});
+</script>
+
+<script>
+	var retrieve = function(className){
+		return document.getElementsByClassName(className);
+	};
+
+	navigator.getUserMedia  = navigator.getUserMedia ||
+					navigator.webkitGetUserMedia ||
+					navigator.mozGetUserMedia ||
+					navigator.msGetUserMedia;
+
+
+
+	var video_elements = document.querySelectorAll('.video_div');
+	var canvas_elements = document.querySelectorAll('.canvas_div');
+
+	for (var i = 0; i < canvas_elements.length; i++){
+		canvas_elements[i].width=500;//horizontal resolution (?) - increase for better looking text
+		canvas_elements[i].height=300;//vertical resolution (?) - increase for better looking text
+		canvas_elements[i].style.width=600;//actual height of canvas
+		canvas_elements[i].style.height=350;//actual height of canvas
+		var ctx = canvas_elements[i].getContext('2d');
+		var localMediaStream = null;
+	};
+
+
+	function fallback(e) {
+		for (var i = 0; i < video_elements.length; i++){
+			video_elements[i].src = '/fallbackvideo.webm';
+		};
+
+	}
+
+
+	function success(stream) {
+		console.log(stream)
+		for (var i = 0; i < video_elements.length; i++){
+			video_elements[i].src = window.URL.createObjectURL(stream);
+			console.log(video_elements[i].src)
+		};
+	}
+
+	function getImageURL(){
+		return canvas.toDataURL('image/webp');
+	}
+
+
+	function initializeVideo() {
+		if (!navigator.getUserMedia) {
+			console.log('fallback')
+			fallback();
+		} else {
+			console.log('success')
+			navigator.getUserMedia({ video:{
+						mandatory: {
+							minWidth: 1280,
+							minHeight: 720
+						}
+						}}, success, fallback);
+		}
+	};
+
+
+	$('body').on('click', '#saveImg', function (e) {
+		$('#testModal').modal('hide');
+		var imgg = $('.image-box').children('img');
+		function showImage() {
+			var input = document.getElementById('pkgImage');
+			// alert('i reach here');
+			var reader = new FileReader();
+			reader.onload = function (e) {
+			var urll = e.target.result;
+			$(imgg).attr('src', urll);
+			imgg.parent().css('background', 'transparent');
+			imgg.show();
+			imgg.siblings('p').hide();
+			}
+		 reader.readAsDataURL(input.files[0]);
+		}
+	});
+
+
+
+	$('body').on('click','#sendmail',function(){
+		var user_id = $('input[type=radio][name=user_id]:checked').attr('user_id');
+		var description = $('#descrptn').val();
+		if (user_id) {
+			$.ajax({
+					url: "{% url 'sokohaliAdmin:notify_user' %}",
+					type: 'GET',
+					data: {'user_id': user_id, 'description':description },
+					success: function(data){
+						alert("message sent successfully");
+						$('#notifyuser').modal('hide');
+						 },
+					error: function(data){
+						console.log('not working');
+					}
+				});
+		}else{
+				alert("Please select a user!!!")
+		}
+	});
+
+	// scripts written by isaiah
+
+	$('body').on('click','#proceedtoshipping',function(){
+		$('#createPackageForUser').modal('show');
+		$('#CreatePackage').modal('hide');
+	});
+
+
+	$('body').on('click','#notifyUser',function(){
+		$('#CreatePackage').modal('hide');
+		$('#notifyuser').modal('show');
+
+	});
+
+
+	$('body').on('click','#nuBack',function(){
+		$('#notifyuser').modal('hide');
+		$('#CreatePackage').modal('show');
+
+	});
+
+
+	$('body').on('click','#cpfuBack',function(){
+		$('#createPackageForUser').modal('hide');
+		$('#CreatePackage').modal('show');
+
+	});
+
+
+	$('body').on('click','#return_to_user_search',function(){
+		$('#create_booking_for_user').modal('hide');
+		$('#createPackageForUser').modal('show');
+
+	});
+
+
+	$('body').on('click','#create-batch-promo',function(){
+		var action = $(this).attr('action');
+		if (action === "fetch-create-new"){
+			var url = "{% url 'sokohaliAdmin:batch_promo' 'fetch-promos' %}";
+		$.ajax({
+			url: url,
+			type:"GET",
+			data:{},
+			success:function(data){
+				$("#existing-promos").html(data);
+				$('#CreateBatchPromo').modal('show');
+			 },
+			 error: function(data){
+				alert("failed to conect");
+			 }
+
+			})
+		}
+
+	});
+
+
+	$('body').on('click','#show_add_item',function(){
+	    $('.loadingDiv').removeClass('hidden');
+		var user_id = $('input[type=radio][name=user_id]:checked').attr('user_id');
+		if ($("#matching_users_table tr td").length > 0){
+			if(user_id){
+				$.ajax({
+					url: "{% url 'sokohaliAdmin:user_info' %}",
+					type: 'GET',
+					data: {'user_id': user_id},
+					success: function(data){
+					    $('.loadingDiv').addClass('hidden');
+						$('#createPackageForUser').modal('hide');
+						$('#create_booking').replaceWith(data);
+						$('#create_booking_for_user').modal('show');
+
+					},
+					error: function(data){
+					    $('.loadingDiv').addClass('hidden');
+						console.log('not working');
+					}
+				});
+			}else{
+				alert("Please make sure you have searched for and selected a customer")
+			}
+		}else{
+			alert("Please make sure you have searched for and selected a customer")
+		 }
+	});
+
+
+	$('body').on('click', "#go_to_create_box", function(){
+
+		if ($('input[type=radio][name=pkg_type]:checked').length > 0){
+			if($('input[type=radio][name=pkg_type]:checked').val() == "Export"){
+				if($('#nobk1 tr td').length > 0){
+					$('#item_list').addClass('hidden');
+					$('#form1').addClass('hidden');
+					$('#create_box_by_admin').removeClass('hidden');
+					$('.common_footer1').addClass('hidden');
+					$('.not_common_footer').removeClass('hidden');
+					$('#dismiss_special2').removeClass('hidden');
+					$('#dismmiss_special').addClass('hidden');
+					$('#WHaddress').addClass('hidden');
+					$('.fixed_weight_shipping_method').addClass('hidden');
+					$('.direction2').addClass('hidden');
+
+
+				}else{
+					alert("No item added for this item");
+				}
+			}
+			if($('input[type=radio][name=pkg_type]:checked').val() == "Import"){
+				if($('#nobk1 tr td').length > 0){
+					$('#item_list').addClass('hidden');
+					$('#form1').addClass('hidden');
+					$('#box_units').removeClass('hidden');
+					$('#box_dimensions').removeClass('hidden');
+					$('#create_box_by_admin').removeClass('hidden');
+					$('.common_footer1').addClass('hidden');
+					$('.not_common_footer').removeClass('hidden');
+					$('#dismiss_special2').removeClass('hidden');
+					$('#dismmiss_special').addClass('hidden');
+					$('.fixed_weight_shipping_method').addClass('hidden');
+					$('.direction2').addClass('hidden');
+
+				}else{
+					alert("No item added for this item");
+				}
+			}
+			if($('input[type=radio][name=pkg_type]:checked').val() == "FixedWeight"){
+				if($('#nobk1 tr td').length > 0){
+					$('#item_list').addClass('hidden');
+					$('#form1').addClass('hidden');
+					$('#box_units').addClass('hidden');
+					$('#box_dimensions').addClass('hidden');
+					$('#create_box_by_admin').removeClass('hidden');
+					$('.fixed_weight_shipping_method').removeClass('hidden');
+					$('.direction2').removeClass('hidden');
+					$('#WHaddress2').removeClass('hidden');
+					$('.common_footer1').addClass('hidden');
+					$('.not_common_footer').removeClass('hidden');
+					$('#dismiss_special2').removeClass('hidden');
+					$('#dismmiss_special').addClass('hidden');
+				}else{
+					alert("No item has been added");
+				}
+			}
+		}else{
+			alert("Please select a package type");
+		 }
+	});
+
+
+	$('body').on('click','#createPackageBack',function(){
+		$('#item_list').removeClass('hidden');
+		$('#form1').removeClass('hidden');
+		$('#create_box_by_admin').addClass('hidden');
+		$('.common_footer1').removeClass('hidden');
+		$('.not_common_footer').addClass('hidden');
+		$('#dismiss_special2').addClass('hidden');
+		$('#dismmiss_special').removeClass('hidden');
+
+	});
+
+
+	$('body').on('click', 'input[type=radio][name=pkg_type]', function() {
+			$('.loadingDiv').removeClass('hidden');
+			$('#id_cb_quantity').val(' ');
+			$('#id_cb_total_value').val(' ');
+			$('#fixed_weight_category').val(' ');
+			$('#fixed_rate').val(' ');
+
+			var type = $('input[name=pkg_type]:checked').val();
+			var user_id = $('input[type=radio][name=pkg_type]:checked').attr('user_id');
+
+			if (type == "Export") {
+				$.ajax({
+					 url: "{% url 'sokohaliAdmin:admin_add_item' %}",
+					type: 'GET',
+					data: {'user_id': user_id,'items_type':type},
+
+				success: function(data){
+					$('.loadingDiv').addClass('hidden');
+					$('.import').addClass('hidden');
+					$('.fixedWeight').addClass('hidden');
+					$('.export').removeClass('hidden');
+					$('#item_list').replaceWith(data);
+					$('.extra_charges').addClass('hidden');
+					$('.mm_routes').addClass('hidden');
+
+				},
+				error: function(data){
+			    $('.loadingDiv').addClass('hidden');
+				console.log('not working');
+				}
+			});
+
+			}
+
+			if (type == "Import") {
+				$.ajax({
+					 url: "{% url 'sokohaliAdmin:admin_add_item' %}",
+					type: 'GET',
+					data: {'user_id': user_id,'items_type':type},
+
+				success: function(data){
+					$('.loadingDiv').addClass('hidden');
+					$('.export').addClass('hidden');
+					$('.fixedWeight').addClass('hidden');
+					$('.import').removeClass('hidden');
+					$('.show_add_item_link').removeClass('hidden');
+					$('.qty_val').removeClass('hidden');
+					$('.mm_routes').addClass('hidden');
+					$('.extra_charges').addClass('hidden');
+					$('.fxd_wgt_desc').addClass('hidden');
+					$('#item_list').replaceWith(data);
+				},
+				error: function(data){
+			    $('.loadingDiv').addClass('hidden');
+				console.log('not working');
+				}
+			});
+
+			}
+
+			if (type == "FixedWeight") {
+				$.ajax({
+					url: "{% url 'sokohaliAdmin:admin_add_item' %}",
+					type: 'GET',
+					data: {'user_id': user_id,'items_type':type},
+
+				success: function(data){
+					$('.loadingDiv').removeClass('hidden');
+					$('.export').addClass('hidden');
+					$('.import').addClass('hidden');
+					$('.fixedWeight').removeClass('hidden');
+					$('.qty_val').removeClass('hidden');
+					$('.mm_routes').removeClass('hidden');
+					$('.extra_charges').removeClass('hidden');
+					$('.fxd_wgt_desc').removeClass('hidden');
+					$('.show_add_item_link').removeClass('hidden');
+					$('#item_list').replaceWith(data);
+				},
+				error: function(data){
+			    $('.loadingDiv').addClass('hidden');
+				console.log('not working');
+				}
+			});
+		}
+	});
+
+
+	$('body').on('click', '.custom_btn.go', function(){
+		var query = $(this).parent().find('.input-lg').val()
+		var identifier = $(this).attr('rel');
+		$('.loadingDiv').removeClass('hidden');
+		if (query != ""){
+			$.ajax({
+				url: "{% url 'sokohaliAdmin:find_user' %}",
+				type: 'GET',
+				data: {'query': query, 'identifier': identifier},
+				success: function(data){
+					//alert(data);
+					if(identifier == "create_booking"){
+					    $('.loadingDiv').addClass('hidden');
+						$('#matchingusers_create_booking').replaceWith(data);
+					}else{
+					    $('.loadingDiv').addClass('hidden');
+						$('#matchingusers_notify_user').replaceWith(data);
+					}
+					},
+				error: function(data){
+					$('.loadingDiv').addClass('hidden');
+					 console.log("not working");
+				}
+			 });
+			}else{
+			$('.loadingDiv').addClass('hidden');
+			alert("Please enter a search parameter");
+		}
+	});
+
+
+	$('body').on('change', '#shipping_direction',function(){
+
+		var direction = $('#shipping_direction option:selected').attr('sh_chain');
+		$.ajax({
+			data: {'direction':direction},
+			type: 'GET',
+			url: "{% url 'sokohaliAdmin:get_warehouse_addresses' %}",
+			success: function(data){
+				$('#WHaddress').removeClass('hidden');
+				$('#WHaddress').replaceWith(data);
+				
+			},
+		});
+	});
+
+
+	$('body').on('change', '#shipping_direction2',function(){
+		var searchIDs = [];
+		$("#nobk input:checkbox:checked").map(function(){
+		searchIDs.push($(this).val());
+
+			});
+
+		var direction = $('#shipping_direction2 option:selected').attr('sh_chain');
+
+		$.ajax({
+			data: {'direction':direction, 'fxd_wgt_val':'fxd_wgt_val','searchIDs':searchIDs},
+			type: 'GET',
+			url: "{% url 'sokohaliAdmin:get_warehouse_addresses' %}",
+
+			success: function(data){
+				if(data.result == "fail"){
+					alert("You cannot create a package for items with different routes...Please go 'BACK' and edit the item(s) with a diffennt route");
+					$('#shipping_direction2').val("");
+					$('#WHaddress2').addClass('hidden');
+
+				}else if(data.result == "fail again"){
+					alert("The route you have selected does not correspond to the item(s) routes you added...Please select the appropriate route");
+					$('#shipping_direction2').val("");
+					$('#WHaddress2').addClass('hidden');
+
+
+				}else{
+					$('#WHaddress2').removeClass('hidden');
+					$('#WHaddress2').replaceWith(data);
+			  }
+			},
+			error: function(data){
+				console.log('not working');
+			}
+		});
+	});
+
+
+$('body').on('click','#createPackageEnd',function(e){
+	e.preventDefault()
+	var user_id = $('input[type=radio][name=pkg_type]:checked').attr('user_id')
+	var pkg_type = $('input[type=radio][name=pkg_type]:checked').attr('pkg_type')
+	var origin 	= $("#id_WHaddress option:selected").val();
+	var destination = $("#id_WHaddress2 option:selected").val();
+	var origin3 	= $("#id_WHaddress3 option:selected").val();
+	var destination4 = $("#id_WHaddress4 option:selected").val();
+	shipping_route2 = $("#shipping_direction2 option:selected").attr('sh_chain');
+	shipping_route = $("#shipping_direction option:selected").attr('sh_chain');
+	$('#shipment_type').val(pkg_type);
+
+	var searchIDs = [];
+
+		$("#nobk input:checkbox:checked").map(function(){
+		searchIDs.push($(this).val());
+
+			});
+
+		$('#user_items_selected').val(searchIDs);
+		$('#user_package_created').val(user_id);
+		$('#client_pkg_type').val(pkg_type);
+
+
+		if (pkg_type == "Regular"){
+
+			if (searchIDs.length <= 0){
+				alert("Please select items to be added to package")
+				return false;
+			}
+
+			else if(($('#id_length').val() == "") || ($('#id_length').val() <= 0)){
+				alert("Length of the package cannot be empty or 0");
+				return false;
+			}
+			else if(($('#id_width').val() == "") || ($('#id_width').val() <= 0)){
+				alert("Width of the package cannot be empty or 0");
+				return false;
+			}
+			else if(($('#id_height').val() == "") || ($('#id_height').val() <= 0)){
+				alert("Height of the package cannot be empty or 0");
+				return false;
+			}
+			else if(($('#id_weight').val() == "") || ($('#id_weight').val() <= 0)){
+				alert("Weight of the package cannot be empty or 0");
+				return false;
+			}
+			else if(!$('input[type=radio][name=unit]:checked').val()){
+				alert("Please select the units for the weight");
+				return false;
+			}
+			else if (origin == ""){
+				alert("Please select the warehouse where you are processing from");
+				return false;
+			}
+			else if (destination == ""){
+				alert("please select the destination warehouse address");
+				return false;
+			}
+			else if (shipping_route == ""){
+				alert("Please select an appropriate shipping route");
+				return false;
+			}
+			else{
+				$('#goCreatePackegeForm').submit();
+				return true;
+			}
+		}
+
+		else if (pkg_type == "FixedWeight"){
+
+			if (searchIDs.length <= 0){
+				alert("Please select items to be added to package")
+				return false;
+			}
+			else if(!$('input[type=radio][name=pkg_ship_method]:checked').val()){
+				alert("Please select an appropriate shipping method");
+				return false;
+			}	
+			else if (shipping_route2 == ""){
+				alert("Please select an appropriate shipping route");
+				return false;
+			}
+			else if (origin3 == ""){
+				alert("Please select the warehouse where you are processing from");
+				return false;
+			}
+			else if (destination4 == ""){
+				alert("please select the destination warehouse address");
+				return false;
+
+			}
+			else{
+				$('#goCreatePackegeForm').submit();
+				return true;
+			}
+		}
+	});
+
+	$('body').on('click','.admin_selected_items',function(){
+		get_id = $(this).val();
+		get_pkg = $(this).attr('pkg_id');
+		if($(this).is(':checked')){
+			$.ajax({
+				data: {'get_id':get_id, 'checked':'checked','get_pkg':get_pkg},
+				url: "{% url 'sokohaliAdmin:change_item_status' %}",
+				type: "POST",
+
+				success:function(data){
+					$("#s0").replaceWith(data);
+					console.log("working");
+				},
+
+				error:function(data){
+					console.log("not working");
+				}
+
+			})
+		}else{
+			$.ajax({
+				data: {'get_id':get_id, 'unchecked':'unchecked','get_pkg':get_pkg},
+				url: "{% url 'sokohaliAdmin:change_item_status' %}",
+				type: "POST",
+
+				success:function(data){
+					$("#s0").replaceWith(data);
+					console.log("working");
+				},
+
+				error:function(data){
+					console.log("not working");
+				}
+
+			})
+		}
+	});
+
+	$('body').on('click','#check_items_in_package',function(){
+		var adminSelectedIDs = [];
+
+		$("#get_selected_items input:checkbox:checked").map(function(){
+			adminSelectedIDs.push($(this).val());
+			console.log(adminSelectedIDs)
+		});
+
+		$("#put_selected_items").val(adminSelectedIDs);
+
+		if((adminSelectedIDs == []) || (adminSelectedIDs == "")){
+			alert("You have not selected any item!");
+			return false;
+		}else{
+			var response = confirm('Please confirm that the items checked have been received before proceeding');
+			if (response){
+				$('.modal-c').removeClass('open');
+				var target = $(this).attr('rel');
+				$(".modal-c#" + target).addClass('open');
+					return true;
+			}else{
+				return false;
+			}
+
+		}
+
+	});
+
+
+	$('body').on('click','#check_package_image',function(){
+		if($('#itemImage1').attr('src')== ""){
+			alert("Please capture package image before proceeding");
+		}else{
+		$('.modal-c').removeClass('open');
+		var target = $(this).attr('rel');
+		$(".modal-c#" + target).addClass('open');
+			return true;
+		}
+	});
+
+
+	// $('body').on('click','#check_package_dimensions',function(){
+	//     if($('#pkg_length').val() == ""){
+	//         alert("Please enter package LENGTH before proceeding");
+	//     }
+	//     else if($('#pkg_width').val() == ""){
+	//         alert("Please enter package WIDTH before proceeding");
+	//     }
+	//     else if($('#pkg_height').val() == ""){
+	//         alert("Please enter package HEIGHT before proceeding");
+	//     }
+	//     else if($('#pkg_weight').val() == ""){
+	//         alert("Please enter package WEIGHT before proceeding");
+	//     }else{
+
+	//         $('.modal-c').removeClass('open');
+	//         var target = $(this).attr('rel');
+	//         $(".modal-c#" + target).addClass('open');
+	//             return true;
+	//         }
+	//    });
+
+
+	$('body').on('click','#check_package_dimensions',function(){
+
+		var lgt = $('#pkg_length').val();
+		var hgt = $('#pkg_height').val();
+		var wdth = $('#pkg_width').val();
+		var wgt = $('#pkg_weight').val();
+		var pkg_id = $('#pkg_id_here').val();
+
+		if((lgt == "") || (lgt <= 0)){
+			alert("Length value cannot be empty or 0");
+		}
+		else if((hgt == "") || (hgt <= 0)){
+			alert("Height value cannot be empty or 0");
+		}
+		else if((wdth == "") || (wdth <= 0)){
+			alert("Width value cannot be empty or 0");
+		}
+		else if((wgt == "") || (wgt <= 0)){
+			alert("Weight value cannot be empty or 0");
+		}else{
+			$.ajax({
+				url: "{% url 'sokohaliAdmin:get_dimensions_of_package' %}",
+				data: {'lgt':lgt, 'hgt':hgt, 'wdth':wdth, 'wgt':wgt, 'pkg_id':pkg_id},
+				type: "POST",
+
+				success:function(data){
+					console.log('working');
+					$('#get_dimensions').replaceWith(data);
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+			});
+				$('.modal-c').removeClass('open');
+				var target = $(this).attr('rel');
+				$(".modal-c#" + target).addClass('open');
+				return true;
+			}
+	 });
+
+	$(document).ready(function(){
+		$(".shipment_statuses li").each(function(){
+		var href = $(this).find('a').attr('href');
+		var pathName = window.location.pathname
+		console.log("href " + href);
+		console.log("Path " + pathName);
+		if (href === pathName) {
+		$(this).addClass('active');
+		}
+		});
+	});
+
+
+	$('body').on('click','#checkboxes',function(){
+		if($(this).hasClass('allChecked')){
+			$('input[type="checkbox"]',".inf").prop('checked',false);
+		}
+		else{
+			$('input[type="checkbox"]',".inf").prop('checked',true);
+		}
+		 $(this).toggleClass('allChecked');
+	});
+
+
+	// $('body').on('click','.admin_delete',function(){
+	//     var item_id = $(this).attr('item_id');
+	//     var user_id = $(this).attr('user_id');
+	//     alert(item_id + " " + user_id);
+	//     $.ajax({
+	//         url: "% url 'sokohaliAdmin:admin_delete_item' %",
+	//         type: "POST",
+	//         data: {"item_id":item_id, 'user_id':user_id},
+
+	//         sucess: function(data){
+	//             conole.log("working");
+	//             $("#deleted").removeClass('hidden');
+	//             $('input[type="text"]').val('');
+	//             $('.ajax-progress2').hide();
+	//             $('#item_list').replaceWith(data);
+	//             $('#item_list').show();
+	//             $('#cb_create_box').removeClass('hidden');
+	//         },
+	//         error: function(data){
+	//             console.log("not working");
+	//             $('#notdelted').removeClass('hidden');
+	//         }
+	//     });
+	// });
+
+
+	$('body').on('click','.edit_pkg',function(){
+		var pkg_id = $(this).attr("pkg_id");
+		var pkg_type = $(this).attr("pkg_type");
+
+		$.ajax({
+
+			url: "{% url 'sokohaliAdmin:edit_package' %}",
+			type: "GET",
+			data: {"pkg_id":pkg_id},
+
+			success: function(data){
+				$('.modal-backdrop').remove();
+				$('#EditPackageModal').replaceWith(data);
+				$('#EditPackageModal').modal('show');
+
+				if (pkg_type == "fixed_weight"){
+					$('.dimensions').addClass('hidden');
+				}else{
+					$('.dimensions').removeClass('hidden');
+				}
+			},
+			error: function(data){
+				console.log("not working");
+			}
+		});
+	});
+
+
+	$('body').on('click','#pkg_delivery_method_office',function(){
+		$('.get_address_form').addClass('hidden');
+		$('.get_locations').removeClass('hidden');
+
+	});
+
+	$('body').on('click','#pkg_delivery_method_home',function(){
+		$('.get_locations').addClass('hidden');
+		$('.get_address_form').removeClass('hidden');
+	});
+
+	$('body').on('click','#pkg_delivery_method_return',function(){
+		$('.get_address_form').removeClass('hidden');
+	});
+
+	$('body').on('click','#pkg_delivery_method_delivery',function(){
+		$('.get_address_form').removeClass('hidden');
+	});
+
+
+	$('body').on('click','#pkg_editing',function(){
+
+		var pkg_pickup_location = $("#dm_location option:selected").val();
+		var title = $('#id_title').val();
+		var first_name = $('#id_first_name').val();
+		var last_name = $('#id_last_name').val();
+		var city = $('#id_city').val();
+		var address = $('#id_address').val();
+		var telephone = $('#id_telephone').val();
+		var state = $('#id_state option:selected').val();
+		var country = $('#id_country option:selected').val();
+
+
+		if($('#pkg_length').val() == ""){
+			alert("Please Specify the Package length");
+			return false;
+		}
+
+		else if($('#pkg_width').val() == ""){
+			alert("Please Specify the Package width");
+			return false;
+		}
+
+		else if($('#pkg_height').val() == ""){
+			alert("Please Specify the Package height");
+			return false;
+		}
+
+		else if($('#pkg_weight').val() == ""){
+			alert("Please Specify the Package weight");
+			return false;
+		}
+
+		else if(!$('input[type=radio][name=pkg_unit]:checked').val()){
+			alert("Please Specify the Package unit");
+			return false;
+		}
+
+		else if(!$('input[type=radio][name=pkg_ship_method]:checked').val()){
+			alert("Please select a shipping method");
+			return false;
+		}
+
+		else if(($('input[type=radio][name=pkg_delivery_method]:checked').val() == "Home delivery")
+			&& ((title == "selected") || (first_name == "") ||
+			(last_name == "") || (state == "") ||
+			(city == "") || (country == "") ||
+			(telephone == "") || (address == ""))){
+			alert("Please make sure to fill out all the fields in Shipping Address Form");
+			return false;
+		}
+
+		else{
+			$('#editing_pkg_form').submit();
+		}
+	});
+
+
+	$('body').on('click','.specials_pkg',function(){
+
+		var current_status = $(this).text();
+		var checked_items = []
+		var old_status = []
+		var marketers = []
+
+		$("input:checkbox[name=ch]:checked").each(function(){
+			checked_items.push($(this).attr("id"));
+			old_status.push($(this).val());
+			marketers.push($(this).attr("marketer"));
+		});
+
+		if (checked_items == ""){
+			alert('No Package(es) has been selected for ' + '"' + current_status  + '"' + ' update');
+		}else{
+			var response = confirm('Please confirm that the selected action for this Package(es) is ' + '"' + current_status + '"');
+			if (response){
+				$("#update_type").val(current_status);
+				$("#pkg_ids").val(checked_items);
+				$("#old_pkg_status").val(old_status);
+				$("#marketers").val(marketers);
+
+				//submit form
+				$("#PkgUpdateForm").submit();
+				return true;
+			}else{
+				return false;
+			}
+		}
+	});
+
+	$('body').on('click','.applyDiscount',function(){
+		var track_num = $(this).attr('item_id');
+		$.ajax({
+			data: {'track_num':track_num},
+			type: "GET",
+			url: "{% url 'sokohaliAdmin:check_user_access' %}",
+
+			success:function(data){
+				if (data.result=="OK"){
+					$('#apply_disc_user').val(track_num);
+					$('#applyDiscount').modal('show');
+					}
+				else{
+					alert("You do not have access to apply discount to this package");
+				}
+			},
+
+			error:function(data){
+				alert("Oops something went wrong");
+			}
+		});
+	});
+
+	$('body').on('click','#apply_discount',function(){
+		var disc_user = $('#apply_disc_user').val();
+		var disc_val = $('#apply_disc_val').val();
+		if(disc_val == ""){
+			alert("You have not entered a discount value");
+			return false;
+		}else{
+			var response = confirm('Are you sure you want to apply a discount to this package?');
+			if (response){
+				$('#pkg_disc_id').val(disc_user);
+				$('#pkg_disc_num').val(disc_val);
+				$('#ApplyDiscountForm').submit();
+				return true;
+
+			}else{
+				return false;
+			}
+		}
+	});
+
+
+	$('body').on('blur','#id_cb_quantity',function(e){
+		var qty = $('#id_cb_quantity').val();
+		var rate = $('#fixed_rate').val();
+		if($('input[type=radio][name=pkg_type]:checked()').val() == "FixedWeight"){
+			if($('#fixed_weight_category').val() != "Select Category"){
+				if(qty != ""){
+					$.ajax({
+						url: "{% url 'sokohaliAdmin:get_cost' %}",
+						data: {'qty':qty,'rate':rate},
+						type: 'GET',
+
+						success:function(data){
+							console.log('working');
+							$('#id_cb_total_value').val(data.total_value);
+						},
+						error:function(data){
+							console.log('not working');
+						}
+					});
+				}else{
+					alert('Please enter and appropriate quantity');
+				}
+			}else{
+				alert('Please select a category');
+			}
+		}
+	});
+
+
+	$('body').on('click','#id_FixedWeight',function(e){
+		alert('To create a fixed weight item, select a route, select an appropriate category form the "CATEGORY DROPDOWN LIST" enter the desired quantity in the "QUANTITY" field and click once in the "VALUE($)" field');
+	});
+
+
+	$('body').on('click','.admin_delete',function(e){
+		var item_id = $(this).attr('item_id');
+		var item_type = $(this).attr('item_type');
+		var user_id = $('input[type=radio][name=user_id]:checked').attr('user_id');
+		var response = confirm("Are you sure you want to delete this item?");
+
+		if (!response){
+			return false;
+		}else{
+
+		$.ajax({
+			url: "{% url 'sokohaliAdmin:delete_admin_added_items' %}",
+			data: {'item_id':item_id,'item_type':item_type,'user_id':user_id},
+			type: "POST",
+
+			success:function(data){
+				$('#item_list').replaceWith(data);
+				console.log("Working");
+			},
+
+			error:function(data){
+				console.log("Not working");
+			}
+
+		});
+	  }
+	});
+
+	$('.redo_package_process').on('click', function(e) {
+		var trackg_no = $(this).attr("data-trackg-no");
+		$.ajax({
+			url: "{% url 'sokohaliAdmin:item_details' %}",
+			type: 'GET',
+			data: {'trackg_no': trackg_no},
+			success: function(data){
+				$('#ProcessModal').replaceWith(data);
+				$('#ProcessModal').modal('show');
+				$('.file-upload').hide();
+				$('#file-upload1').show();
+				initializeVideo();
+
+			}
+		});
+	});
+
+
+	$('body').on('change','.mm_routes',function(e){
+
+		var chain_id = $('#shipping_direction3 option:selected').attr('sh_chain');
+
+		$.ajax({
+			url: "{% url 'sokohaliAdmin:get_fixed_weight_cat' %}",
+			type: 'GET',
+			data: {'chain_id': chain_id},
+			success: function(data){
+				$('#new_fixed_weight_cat').replaceWith(data);
+			},
+			error: function(data){
+				console.log('not working');
+			}
+		});
+	})
+
+
+	$('body').on('click','.operate',function(){
+			var id = $(this).attr('item_id');
+			// alert(id);
+			$('#btch_noo').val(id);
+				// alert(batch_id + " " + 'was clicked');
+
+			$('#editModal').modal('show');
+	});
+
+
+    $('body').on('click','.operate_dock',function(){
+        var tracking_number = $(this).attr('item_id');
+        console.log("Tracking Number is : "+ tracking_number);
+        var csrf_token     = $('input[name="csrfmiddlewaretoken"]').val();
+        // console.log("csrf_token is : "+ csrf_token);
+          $.ajax({
+            url: "{% url 'shipping:dock_form_edit'  %}",
+            type: "POST",
+            data: {"tracking_number":tracking_number, "csrfmiddlewaretoken":csrf_token},
+
+
+            success: function(data){
+                //console.log("Data is : "+ each_awb);
+                // console.log("GOT HERE")
+                $('#editDockModal').replaceWith(data);
+                $('#editDockModal').modal('show');
+                // console.log("GOT HERE2")
+            },
+            error: function(data){
+                console.log("Not working");
+            }
+        });      
+    });
+
+
+	$("#button").click(function() {
+		// $("input").each(function() {
+		// console.log("GOT HERE");
+		$(".red").each(function() {
+				if($(this).val() == "")
+					{
+						$(this).css("border", "2px solid red");
+					}
+				else{
+						$(this).css("border", "2px solid green");
+				}
+			});
+	});
+
+
+	$('body').on('click','.override',function(){
+		var action = $(this).attr('data-action');
+		var tracking_number = $(this).attr('data-trackg-no');
+		// alert(action + "," + tracking_number);
+		var response = confirm("Are you sure you want to overide this payment");
+
+		if (!response){
+			return false;
+		}else{
+		$.ajax({
+
+			url:"{% url 'sokohaliAdmin:override_payment' %}",
+			data: {"tracking_number":tracking_number, "action":action},
+			type: "POST",
+
+			success: function(data){
+				console.log('working');
+				location.reload();
+			},
+			error: function(data){
+				console.log('not working');
+				location.reload();
+			}
+		});
+	  };
+	})
+
+
+	$('body').on('click','.admin_edit',function(e){
+		e.preventDefault();
+		var item_id = $(this).attr('item_id');
+		var ship_chain = $(this).attr('item_chain');
+		var item_total = $(this).attr('item_total');
+		var item_qty = $(this).attr('item_qty');
+		var item_desc = $(this).attr('item_desc');
+		var cat_id  = $(this).attr('fxdWeight_id');
+		var owner = $(this).attr('user_id');
+
+		// $('#edit_item_Modal').replaceWith(data);
+		$.ajax({
+			url:"{% url 'sokohaliAdmin:admin-edit-item' %}",
+			data:{"item_id":item_id, "cat_id":cat_id},
+			type:"GET",
+
+			success: function(data){
+				$('.remove_select_hidden').removeClass('select-hidden');
+				$('#edit_item_Modal').replaceWith(data);
+				$('#item_owner_id').val(owner)
+        		$('#edit_item_Modal').modal('show');
+        		console.log("working");
+			},
+			error: function(data){
+				console.log("not working");
+			}
+		})
+
+		
+	});
+
+	$('body').on('change','.FIXEDweight',function(e){
+
+		var chain_id = $('#shipping_direction_fixedWeight option:selected').attr('sh_chain_item');
+		var item_type = $('#fixed_weight_Item_type').val();
+
+		$.ajax({
+			url: "{% url 'sokohaliAdmin:get_fixed_weight_cat' %}",
+			type: 'GET',
+			data: {'chain_id': chain_id, 'fixed_weight':item_type},
+			success: function(data){
+				$('#FixedWeight').replaceWith(data);
+
+			},
+			error: function(data){
+				console.log('not working');
+			}
+		});
+	})
+
+
+	$('body').on('change', '#item_Cat', function(){
+
+			var qty = $('#item_Qty').val();
+			var category = cat_id = $('#item_Cat').val();
+			var chain_id = $('#shipping_direction_fixedWeight option:selected').attr('sh_chain_item');
+
+
+			$.ajax({
+				url: "{% url 'sokohaliAdmin:fixed_weight_info' %}",
+				type: 'GET',
+				data: {'category': category, 'chain_id':chain_id, 'cat_id':cat_id},
+				success: function(data){
+					console.log('working');
+					$('#item_Rate').val(data.fixed_wgt_rate);
+					$('#fxd_item_desc').html(data.fxd_item_desc);
+					if(qty == ""){
+						$('#item_val').val('');
+					}else{
+						$('#item_val').val(data.fixed_wgt_rate * qty);
+					}
+				},
+				error: function(data){
+					console.log('not working');
+				}
+			});
+		});
+
+
+	$('body').on('blur','#item_Qty',function(e){
+		var item_type = $('#fixed_weight_Item_type').val();
+		var qty = $('#item_Qty').val();
+		var rate = $('#item_Rate').val();
+
+			if($('#item_Cat').val() != "Select Category"){
+				if(qty != ""){
+					$.ajax({
+						url: "{% url 'sokohaliAdmin:get_cost' %}",
+						data: {'qty':qty,'rate':rate},
+						type: 'GET',
+
+						success:function(data){
+							console.log('working');
+							$('#item_val').val(data.total_value);
+						},
+						error:function(data){
+							console.log('not working');
+						}
+					});
+				}else{
+					alert('Please enter and appropriate quantity');
+				}
+			}else{
+				alert('Please select a category');
+			}
+		});
+
+
+	$('body').on('click', '#edit_item_btn', function(e){
+
+		var item_id = $('#fixed_weight_Item_id').val();
+		var chain_id = $('#shipping_direction_fixedWeight option:selected').attr('sh_chain_item');
+		var category = $('#item_Cat option:selected').val();
+		var extra_charge = $('#item_ext_charge').val();
+		var desc = $('#fxd_item_desc').val();
+		var qty = $('#item_Qty').val();
+		var qty_reg = $('#item_Qty_reg').val();
+		var item_type = $('#fixed_weight_Item_type').val();
+		var item_val = $('#item_val').val();
+		var owner_item = $('#item_owner_id').val();
+		var item_tracking_number = $('#item_tracking_number_reg').val();
+
+ 
+
+		// if(item_type == "fixed_weight"){
+			if(chain_id == ""){
+				alert("Please select an appropriate direction");
+				return false;
+			}else if(category == "Select Category"){
+				alert("Please select an appropriate category");
+				return false;
+			}else if(desc == ""){
+				alert("Please enter breif escription of the item");
+				return false;
+			}else if(qty == ""){
+				alert("Please enter an appropriate quantity");
+				return false;
+			}
+
+		// }else if(item_type == "Regular"){
+		// 	if(desc == ""){
+		// 		alert("Please enter breif escription of the item");
+		// 		return false;
+		// 	}else if(qty_reg == ""){
+		// 		alert("Please enter an appropriate quantity");
+		// 		return false;
+		// 	}else if(item_tracking_number == ""){
+		// 		alert("Please enter an appropriate courier tracking number");
+		// 		return false;
+
+		// 	}else if(item_val == ""){
+		// 		alert("Please enter an appropriate value for the item");
+		// 		return false;
+		// 	}
+				
+		else{
+
+			$.ajax({
+				url:"{% url 'sokohaliAdmin:editSpecial' %}",
+				data: {'item_id':item_id, 'chain_id':chain_id, 'extra_charge':extra_charge, 'desc':desc, 'qty':qty,
+				 'item_type':item_type, 'item_val':item_val, 'owner_id':owner_item, 'qty_reg':qty_reg, 'item_tracking_number':item_tracking_number},
+				type: "POST",
+
+				success:function(data){
+					console.log('working');
+
+					$('#item_list').replaceWith(data);
+					$('#item_list').show();
+					$('#edit_item_Modal').modal('hide');
+
+
+				},
+
+				error:function(data){
+					console.log('not working');
+				}
+			});
+		}
+
+	})
+
+
+	$('body').on('click', '.revoke', function(){
+
+		var response = confirm("Please Note that by 'REVOKING' this order/booking any and all references and notices and documents pertaining to it have become void and ceases to exists or to be a valid legal tender under the laws of your legal jurisdiction");
+
+		var track_num = $(this).attr('track_num');
+		var new_action = $(this).attr('action');
+
+			if(response){
+				$.ajax({
+					data: {'track_num':track_num, 'action':new_action},
+					type: 'POST',
+					url: "{% url 'sokohaliAdmin:revoke_order' %}",
+
+					success:function(data){
+							console.log('working');
+			
+					},
+
+					error:function(data){
+						console.log('not working')
+					}
+				});
+			  }else{
+			  	return false;
+			}
+		});
+
+
+
+	$('body').on('click', '.undorevoke', function(){
+
+		var response = confirm("Are you sure want to undo revoke for this package?");
+
+		var track_num = $(this).attr('track_num');
+		var new_action = $(this).attr('action');
+
+			if(response){
+				$.ajax({
+					data: {'track_num':track_num, 'action':new_action},
+					type: 'POST',
+					url: "{% url 'sokohaliAdmin:revoke_order' %}",
+
+					success:function(data){
+							console.log('working');
+			
+					},
+
+					error:function(data){
+						console.log('not working')
+					}
+				});
+			  }else{
+			  	return false;
+			}
+		});
+
+	</script>
+
+{% endblock %}

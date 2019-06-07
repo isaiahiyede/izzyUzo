@@ -1,0 +1,153 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="CreateBatch">
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title">CREATE BATCH</h2>
+                </div>
+                <!-- <div class="order">
+                    <div class="col-md-12">
+                        <h1>CREATE BATCH</h1>
+                    </div>
+                </div> -->
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop" style="overflow:scroll;">
+                        <!-- Body Inner Content -->
+                        <form action="{% url 'sokohaliAdmin:create-batch' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                                  <div class="body-inner long" style="margin-top:-140px;">
+                                    <div class="col-md-12">
+                                        <p>Under this page you can as an adimistrator create batches for packages.<br/>
+                                        </p>
+                                    </div>
+
+                                    <style>
+                                        
+                                        .modal-body select{
+                                                margin-bottom: 0;
+                                                width: 100%;
+                                                height: 48px;
+                                                padding: 0;
+                                                border-radius: 4px;
+                                                line-height: 48px;
+                                                color: rgb(121, 121, 121);
+                                                border: none;
+                                                box-shadow: none;
+                                                padding-left: 15px;
+                                                background: rgb(245, 245, 245);
+                                                min-width: 60px;
+                                                float: left;
+                                                position: relative;
+                                            }
+
+                                       
+                                    </style>
+
+
+                                    <div class="col-md-6 form">
+                                        <div class="col-md-12 fourth-select" style="margin-bottom:-10px;">
+                                            <label class="required">Shipping Method:</label>
+                                            {{form.shipping_method}}
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="required">Carrier:</label>
+                                            <input class="two" id="carrier" type="text" name="carrier" required/>
+                                        </div>
+                                        <div class="col-md-12 hidden" >
+                                            <input class="two" id="user_email" type="text" name="user_email" value=""/>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Booking Ref #:</label>
+                                            <input class="two" type="text" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Departure Date/Time:</label>
+                                            <input class="two" type="text" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Arrival Date/Time:</label>
+                                            <input class="two" type="text" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Hazmat Status:</label>
+                                            <input class="two" type="text" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Clearing Cost ($):</label>
+                                            <input class="two" type="number" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Port Of Arrival:</label>
+                                            <input class="two" id="port_of_arrival" name="port_of_arrival" type="text"/>
+                                        </div>
+                                        <div class="col-md-12 second-select">
+                                            <label class="required">Batch Type:</label>
+                                            <!-- form.batch_type -->
+                                            <select id="shipping_direction" name="shipping_direction" required>
+                                                {% for route in routes %}
+                                                    <option value="{{route}}">{{route}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 form">
+                                        <div class="col-md-12 third-select">
+                                            <label class="required">Freight Type:</label>
+                                               {{form.freight_type}}
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="">AWB/DL:</label>
+                                            <input type="file" id="id_awb_doc" name="awb_doc" style="cursor:pointer;"/>
+                                       </div>
+
+                                       <div class="col-md-12" style="margin-top:14px;">
+                                            <label class="">BOL/DL:</label>
+                                            <input type="file" id="id_bol_doc" name="bol_doc" style="cursor:pointer;"/>
+                                       </div>
+
+                                        <div class="col-md-12">
+                                            <label>Total Pellets:</label>
+                                            <input class="two" type="text" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Shipping Cost ($):</label>
+                                            <input class="two" type="number" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Package Count:</label>
+                                            <input class="two" id="pkg_count" name="pkg_count" type="text" value=""/>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Port Of Exit:</label>
+                                            <input class="two" id="port_of_exit" name="port_of_exit" type="text"/>
+                                        </div>
+                                         <div class="col-md-12 first-select">
+                                            <label>Batch Status:</label>
+                                            {{form.status}}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" style="padding:0;">
+                                        <label>Notes:</label>
+                                        <textarea></textarea>
+                                    </div>
+                                </div>
+                                <!-- Body Inner Content -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="submitForm" class="btn green">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                <!-- modal-c -->
+
+            </div>
+            <!-- /.modal-content -->
+
+        </div>
+        <!-- /.modal-dialog -->
+</div>

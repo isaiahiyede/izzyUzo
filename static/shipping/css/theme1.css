@@ -1,0 +1,175 @@
+
+
+/* ===== Primary Styles ========================================================
+   Author: Rosu Octavian // Cloud Design Studio // http://www.cloudesign.ro
+   ========================================================================== */
+   
+/***** Theme Style *****/   
+
+/***** Desktop view CSS under here (767px+) *****/
+
+body { background:url(../img/bg2.png) left top repeat-x rgb(247,247,247); }
+
+.wrapper-content {
+-moz-box-shadow: 0 0 5px rgb(221,221,221);
+-webkit-box-shadow: 0 0 5px rgb(221,221,221);
+box-shadow: 0 3px 5px rgb(221,221,221);
+}
+
+#register { background:url(../img/register2.png) center center no-repeat; }
+
+#package { background:url(../img/package1.png) center center no-repeat; }
+
+#adress { background:url(../img/adress1.png) center center no-repeat; }
+
+#review { background:url(../img/review1.png) center center no-repeat; }
+
+#pay { background:url(../img/pay1.png) center center no-repeat; }
+
+#selectbox { background:url(../img/selectbox1.png) center center no-repeat; }
+
+.button, .button.orange, .your_cart .button.gray, .fieldset .ammount.one.three .right.one { box-shadow:none;
+border: solid 1px #da7c0c;
+background: #f78d1d;
+
+}
+
+.button:hover, .button.orange:hover, .your_cart .button.gray {
+background: #f37210;
+}
+
+.button:active {
+position: relative;
+top: 1px;
+color: #fcd3a5;
+background: -webkit-gradient(linear, left top, left bottom, from(#f47a20), to(#faa51a));
+background: -moz-linear-gradient(top,  #f47a20,  #faa51a);
+filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#f47a20', endColorstr='#faa51a')
+}
+
+.button.gray, .fieldset ul.tabs li a, #step31 #pack .button, #dropdown.fieldset.two .options ul li .button { background: #00a8f2; border:1px solid rgb(0, 125, 207); }
+
+.button.gray:hover, .fieldset ul.tabs li a:hover, #step31 #pack .button:hover { background:#0091d0; }
+
+.button.back { background:rgb(231,231,231); }
+
+.button.back:hover { background:rgb(215,215,215); }
+
+.navigation { background:rgb(231,231,231); }
+
+.navigation ul li a:hover, .navigation ul li.active a { background: rgb(221,221,221); }
+
+.navigation .button .break1, .container-left .fieldset .span12 .button .break1 { border-left:1px solid #fbb23b !important; }
+
+.navigation .button .break, .container-left .fieldset .span12 .button .break { border-left:1px solid #da7c0c !important; }
+
+.search .button:first-child .break, #motto .button .break { background:#da7c0c !important; border-right:1px solid #fbb23b !important; }
+
+.navigation .right-side p span, .hero-unit h1 span, .navigation ul li a:hover, .navigation ul li.active a, .hero-unit h2, a:hover, .fieldset a:hover, .hero-unit a:hover, .fieldset h2 span, .subtil1, h2 span, 
+.your_cart .list .prices span, .your_cart .total span, .cart h2 span, .countdown .time span, .tab .cinfo h2, .fieldset .notification p span, .fieldset p span.green, .purchasebox h2
+{ color:#f47a20; }
+
+.steps h1 span, #lastrow h2, #contact h2, .fieldset h3, #dropdown.fieldset.two .options ul li a:hover, .fieldset ul.tabs.two li a .total span { color:#01b4d5; }
+
+.search {
+background: rgb(231,231,231); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(231,231,231,1) 0%, rgba(215,215,215,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(231,231,231,1)), color-stop(100%,rgba(215,215,215,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(231,231,231,1) 0%,rgba(215,215,215,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(231,231,231,1) 0%,rgba(215,215,215,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(231,231,231,1) 0%,rgba(215,215,215,1) 100%); /* IE10+ */
+background: linear-gradient(top,  rgba(231,231,231,1) 0%,rgba(215,215,215,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e7e7e7', endColorstr='#d7d7d7',GradientType=0 ); /* IE6-9 */
+}
+
+.search .span5 { text-align:right; width:33%; }
+
+.search .span4 { width:37%; }
+
+.search-inner { background:url(../img/shipping2.png) -15px 40px no-repeat; padding-left:50px; }
+
+.search h2 { padding-left:110px; }
+
+#motto { background:rgb(241,241,241); }
+
+#breadcrumbs { background:rgb(247,247,247); }
+
+#breadcrumbs ul li.active { color:rgb(244, 122, 32); }
+
+#breadcrumbs.two ul li a {  border-right:1px solid rgb(211,211,211); }
+
+#breadcrumbs.two ul li.active a, #breadcrumbs.two ul li a:hover { border-top:3px solid rgb(244, 122, 32); background:rgb(250,250,250); color:rgb(244, 122, 32); }
+
+.fieldset { box-shadow:none; }
+
+.fieldset.two h2 { background:rgb(237,237,237); border-bottom:1px solid rgb(221,221,221); }
+
+#account { background:#fff; }
+
+#account h1 { border-bottom:3px solid rgb(244, 122, 32); color:rgb(244, 122, 32) !important; background:rgb(247,247,247); }
+
+#account .credit.green, .fieldset .ammount.one.two .right { background:#93c01f; }
+
+#account .credit.red { background:rgb(255, 48, 25); }
+
+#account .credit.red .topcurrency { border-bottom:1px solid #ff5e4c; }
+
+#account .credit.gray { background:rgb(200, 200, 200); }
+
+#account .credit.gray .topcurrency { border-bottom:1px solid rgb(211,211,211); }
+
+#searchtable th { background:rgb(231,231,231); }
+
+#step31 #pack.select.sticky, .fieldset .ammount.one.selected, .purchasebox:hover { border:2px solid #f47a20; }
+
+#pack h3 { color:rgb(1, 180, 213); }
+
+.fieldset .ammount.one .right, .moreinfo { background:rgb(227,227,227); }
+
+#pack.two { box-shadow:none; }
+
+#dropdown.fieldset.two .options { background:rgb(245,245,245); }
+
+#boxcontent1.two tr.pack td { color:#f47a20; }
+
+#dropdown.fieldset.two .options ul li .button { padding-left:10px; padding-right:10px; margin-right:0px; margin-left:10px; }
+
+.tabheader, .tab .gradient, .tab .cinfo, .modal-box .header { background:rgb(231,231,231); }
+
+.tabheader.two li a:hover, .tabheader.two li a.active { background:rgb(221,221,221); color:rgb(244, 122, 32); }
+
+.tab { background:rgb(250,250,250); margin-bottom:10px;
+-moz-box-shadow: 0 0 5px rgb(241,241,241);
+-webkit-box-shadow: 0 0 5px rgb(241,241,241);
+box-shadow: 0 3px 3px rgb(241,241,241);
+}
+
+.pagination a { background:#fff; }
+
+.pagination a:hover { background:rgb(241,241,241); }
+
+
+
+/***** End *****/	
+
+
+
+/***** iPhone portrait view CSS under here (<320px) *****/
+
+@media only screen and (max-width: 767px) {
+
+
+} /***** End *****/	
+
+
+
+
+
+/***** iPhone landscape view CSS under here (456+px) *****/
+
+ @media only screen and (min-width: 460px) and (max-width: 767px) {
+
+
+} /***** End *****/
+
+

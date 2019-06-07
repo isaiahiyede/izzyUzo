@@ -1,0 +1,48 @@
+{% load custom_tags %}
+<div class="bottom">
+        <div class="container">
+
+            <p style="line-height:35px;"> &copy; {{ request.storefront_name }} {% current_year %}. All rights Reserved<br>Powered by <a href="https://www.sokohali.com" target="_blank">Sokohali</a></p>
+
+            <div class="social">
+                {% if request.marketing_member.facebook_link %}
+                    <a href="{{ request.marketing_member.facebook_link }}" target="_blank">
+                        <img src="{{STATIC_URL}}zaposta/img/s1w.png " />
+                    </a>
+                {% endif %}
+
+                {% if request.marketing_member.twitter_link %}
+                    <a href="{{ request.marketing_member.twitter_link }}" target="_blank">
+                        <img src="{{STATIC_URL}}zaposta/img/s2w.png " />
+                    </a>
+                {% endif %}
+
+                {% if request.marketing_member.googleplus_link %}
+                    <a href="{{ request.marketing_member.googleplus_link }}" target="_blank">
+                        <img src="{{STATIC_URL}}zaposta/img/s3w.png " />
+                    </a>
+                {% endif %}
+
+                {% if request.marketing_member.linkedin_link %}
+                    <a href="{{ request.marketing_member.linkedin_link }}" target="_blank">
+                        <img src="{{STATIC_URL}}zaposta/img/s4w.png " />
+                    </a>
+                {% endif %}
+            </div>
+            <nav class="links">
+                <li>
+                    <a href="#">Terms and Conditions</a>
+                </li>
+                <li>
+                    <a href="#">FAQ</a>
+                </li>
+                <li>
+                    <a href="#">Support</a>
+                </li>
+                <li>
+                    <!--<a href="/blog/">Blog</a>-->
+                </li>
+            </nav>
+
+        </div>
+    </div>

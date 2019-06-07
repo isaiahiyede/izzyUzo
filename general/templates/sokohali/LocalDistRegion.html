@@ -1,0 +1,371 @@
+{% extends "adminBase/base_index.html" %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load humanize %}
+{% load activelink %}
+
+{% block title  %}{{ payment_type|title }} Local Distribution Region {% endblock %}
+
+{% block custom-styles %}
+<style>
+
+    /*div.sidebar-link:hover{
+        background-color: #E3E3E3;
+    }*/
+
+      table, th, td {
+          border: 1px solid black;
+        }
+
+        select {
+      height: 48px;
+      min-width: 200px;
+      padding: 0;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+      line-height: 48px;
+      color: rgb(121, 121, 121);
+      border: none;
+      box-shadow: none;
+      padding-left: 15px;
+      border: 2px solid rgb(231, 231, 231);
+      background: rgb(245, 245, 245);
+      min-width: 367px;
+      float: left;
+      position: relative;
+      margin-bottom: 15px;
+      }
+
+      .modal-dialog{
+    overflow-y: initial !important
+      }
+      .modal-body{
+    height: 600px;
+    overflow-y: auto;
+      }
+
+    tr{
+      width:400px;
+    }
+
+</style>
+
+{% endblock %}
+
+{% block body %}<body>{% endblock %}
+
+
+  {% block searchbar %}
+      <div class="searchbar">
+          <div class="container">
+              <div class="col-md-12">
+                  <input type="text" />
+                  <i class="fa fa-search t" aria-hidden="true"></i>
+                  <span class="bar"></span>
+              </div>
+          </div>
+      </div>
+  {% endblock %}
+
+  {% block navbar %}
+  <ul class="nav navbar-nav">
+     <li>
+        <a href="{% url 'sokohaliAdmin:local_dist_member' %}">Local Distribution Member</a>
+     </li>
+     <li>
+        <a href="{% url 'sokohaliAdmin:local_dist_region' %}">Local Distributor Region</a>
+     </li>
+     <li>
+        <a href="{% url 'sokohaliAdmin:local_dist_location' %}">Local Distributor Location</a>
+     </li>
+     <li>
+        <a href="{% url 'sokohaliAdmin:local_dist_price' %}">Local Distributor Price</a>
+     </li>
+   </ul>
+  {% endblock %}
+
+  {% block set_up %}
+  {% endblock set_up %}
+
+    {% block sticky_warning %}
+        <div class="sticky_msg">
+            <div class="container">
+                <div class="col-md-12">
+                    <div class="alert" role="alert">
+                        <h3><strong>Welcome Administrator,</strong></h3>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {% for msg in messages %}
+                          <blockquote style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</blockquote>
+                        {% endfor %}
+                    </div>
+                    <!-- Alert Warning -->
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block inner_content %}
+        <div class="inner">
+            <!-- Scrollable Content -->
+            <div class="scrollable">
+
+                <div class="container">
+                    <div class="row-fluid">
+                        
+                        <div class="col-md-12 user_list" style="position:relative; bottom:0px;">
+
+                            <div ng-controller="AppCtrl" class="datepickerdemoBasicUsage" ng-app="MyApp">
+                                <md-content>
+                                    <md-datepicker ng-model="myDate" md-placeholder="Fecha"></md-datepicker>
+
+                                </md-content>
+                            </div>
+   
+                            <div class="tab-content" style="padding-bottom: 10px;">
+                              <div>
+                                    <button  class="btn green" style="float:center;" data-toggle="modal" data-target="#myModal">Add Distributor Region</button>
+                              </div>
+                                  <table border="1"  style="position: relative; bottom:-20px" width="400px">
+                                      <tr>
+                                          <th align="center" style="position: relative;left: 15px;" width="30px">S/N</th>
+                                          <th align="center" style="position: relative;left: 25px;" width="75px">Courier</th>
+                                          <th align="center" style="position: relative;left: 25px;">Name</th>
+                                          <th align="center" style="position: relative;left: 25px;">Edit</th>
+                                          <th align="center" style="position: relative;left: 25px;">Location</th>
+                                      </tr>
+
+                                      {% for dis_reg in dist_region %}
+                                        <tr>
+                                            <td align="center" width="20px">{{forloop.counter}}</td>
+                                            <td align="center" width="50px"><strong>{{dis_reg.courier }}</strong></td>
+                                            <td align="center" width="50px">{{dis_reg.name }} </td>
+                                            <td align="center" width="50px"><a href="#{{dis_reg.id}}" item_id="{{dis_reg.id}}" class="edit_region" title="Edit Local Distr Region"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>
+                                            <td align="center" width="70px"><a href="#{{dis_reg.id}}" item_id="{{dis_reg.id}}" value="{{dis_reg.name}}" class="location">View Location</a></td>
+                                        </tr>
+                                      {% endfor %}
+
+                                  </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Scrollable Content -->
+
+            <div class="loading">
+
+            </div>
+        </div>
+    {% endblock %}
+
+{% block modal %}
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Local Distributor Region</h4>
+      </div>
+      <div class="modal-body">
+        <div class="scrollbar">
+            <form action="{% url 'sokohaliAdmin:local_dist_region' %}" method="POST">
+                {% csrf_token %}
+                <div class="col-md-8" style="margin-top:15px;">
+                  <strong>Courier</strong>
+                  <select name="courier">
+                      {% for member in dist_member %}
+                      <option value="{{member}}">{{member}}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-8">
+                  <strong>Region Name</strong> {{loc_dist_reg.name}} 
+                </div>
+                <div class="col-md-12" style="margin-top:15px;">
+                  <button type="submit" class="btn green pull-right" value="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="submit" class="btn green" data-dismiss="modal">Submit</button> -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div id="editRegionModal{{dis_mem.id}}" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit Local Distributors Region</h4>
+      </div>
+      <div class="modal-body">
+        <div class="scrollbar">
+            <form action="{% url 'sokohaliAdmin:edit_local_dist_region' %}" method="POST">
+                {% csrf_token %}
+                <div class="col-md-8" style="margin-top:15px;">
+                  <input type='hidden' name='id' value='{{mem_form.id}}'>
+                  <strong>Courier</strong>
+                  <select name="courier">
+                      {% for region in mark_mem %}
+                      <option value="{{region}}">{{region}}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-8">
+                  <strong>Region Name</strong>
+                  <input type="text" name="name" value="{{mem_form.name}} " placeholder="Name of Region">
+                </div>
+                <div class="col-md-12" style="margin-top:15px;">
+                  <button type="submit" class="btn green pull-right" value="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="submit" class="btn green" data-dismiss="modal">Submit</button> -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div id="RegionModalLocation{{dis_reg.id}}" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Location</h4>
+      </div>
+      <div class="modal-body">
+        <div class="scrollbar">
+          {% if locations %}
+          <table border="1"  style="position: relative; bottom:-20px; left:20px;">
+              <tr>
+                  <th align="center" style="position: relative;left: 20px;">Name</th>
+                  <th align="center" style="position: relative;left: 20px;">Address</th>
+                  <th align="center" style="position: relative;left: 20px;">State</th>
+                  <th align="center" style="position: relative;left: 20px;">Country</th>
+                  <th align="center" style="position: relative;left: 20px;">Phone Number</th>
+                  <th align="center" style="position: relative;left: 20px;">Zip Code</th>
+                  <th align="center" style="position: relative;left: 20px;">Region</th>
+                  <th align="center" style="position: relative;left: 20px;">Pickup Available</th>
+                  <th align="center" style="position: relative;left: 20px;">Drop Off Available</th>
+                  <th align="center" style="position: relative;left: 20px;">Offered Location</th>
+              </tr>
+
+              {% for dis_loc in locations %}
+                <tr>
+                    <td align="center" width="60px"><strong>{{dis_loc.name }}</strong></td>
+                    <td align="center" width="100px">{{dis_loc.address1 }} {{dis_loc.address2 }} {{dis_loc.city }}</td>
+                    <td align="center" width="50px">{{dis_loc.state }}</td>
+                    <td align="center" width="60px">{{dis_loc.country }}</td>
+                    <td align="center" width="100px">{{dis_loc.phone_number }}</td>
+                    <td align="center" width="70px">{{dis_loc.zip_code }}</td>
+                    <td align="center" width="70px">{{dis_loc.region }}</td>
+                    {% if dis_loc.pickup_available = True %}
+                    <td align="center" width="70px"><a href="#">&#9989;</a></td>
+                    {% else %}
+                    <td align="center" width="70px"><a href="#" >&#10008;</a></td>
+                    {% endif %}
+                    {% if dis_loc.drop_off_available = True %}
+                    <td align="center" width="70px"><a href="#">&#9989;</a></td>
+                    {% else %}
+                    <td align="center" width="70px"><a href="#" >&#10008;</a></td>
+                    {% endif %}
+                    {% if dis_loc.offered_location = True %}
+                    <td align="center" width="70px"><a href="#">&#9989;</a></td>
+                    {% else %}
+                    <td align="center" width="70px"><a href="#" >&#10008;</a></td>
+                    {% endif %}
+                </tr>
+              {% endfor %}
+
+          </table>
+          {% else %}
+          <p align="center">No Location for these Local Distribution Member</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="submit" class="btn green" data-dismiss="modal">Submit</button> -->
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block custom_select %}
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'soko-admin/js/rates_processing.js' %}"></script>
+<!-- <script src="{% static 'soko-admin/js/rates_processing.js' %}"></script> -->
+<script>
+$('body').on('click','.edit_region',function(){
+        var item_id = $(this).attr('item_id');
+        console.log("Item ID is : "+ item_id);
+        var csrf_token     = $('input[name="csrfmiddlewaretoken"]').val();
+        // console.log("csrf_token is : "+ csrf_token);
+          $.ajax({
+            url: "{% url 'sokohaliAdmin:local_dist_region_edit'  %}",
+            type: "POST",
+            data: {"item_id":item_id, "csrfmiddlewaretoken":csrf_token},
+
+
+            success: function(data){
+                // console.log("GOT HERE")
+                $('#editRegionModal').replaceWith(data);
+                $('#editRegionModal').modal('show');
+                // console.log("GOT HERE2")
+            },
+            error: function(data){
+                console.log("Not working");
+            }
+        });      
+    });
+
+
+$('body').on('click','.location',function(){
+        var item_id = $(this).attr('item_id');
+        console.log("Item ID is : "+ item_id);
+        var value = $(this).attr('value');
+        console.log("Item Location is : "+ value);
+        var csrf_token     = $('input[name="csrfmiddlewaretoken"]').val();
+        // console.log("csrf_token is : "+ csrf_token);
+          $.ajax({
+            url: "{% url 'sokohaliAdmin:view_location'  %}",
+            type: "POST",
+            data: {"item_id":item_id, "value":value, "csrfmiddlewaretoken":csrf_token},
+
+
+            success: function(data){
+                // console.log("GOT HERE")
+                $('#RegionModalLocation').replaceWith(data);
+                $('#RegionModalLocation').modal('show');
+                // console.log("GOT HERE2")
+            },
+            error: function(data){
+                console.log("Not working");
+            }
+        });      
+    });
+</script>
+{% endblock %}

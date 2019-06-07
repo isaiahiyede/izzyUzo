@@ -1,0 +1,181 @@
+{% extends 'base/base_user_account.html' %}
+{% load account_standing %}
+{% load currency %}
+{% load custom_filters %}
+{% load humanize %}
+
+
+{% block shop_or_ship %}
+<div class="right_btns col-md-4">
+    <div class="col-md-12">
+        <!--<a href="step1.html" class="btn yellow">-->
+        <!--<a href="#support" class="btn yellow" data-toggle="modal" data-target="#select_country.shp">-->
+		<a href="#support" class="btn yellow" data-toggle="modal" data-target="#no_service">
+            <span><img src="{{STATIC_URL}}zaposta/img/add2.png"></span> Place an order 
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block shop_or_ship_account_tab %}
+    <section id="steps" class="three">
+        
+{% endblock %}
+
+{% block shop_or_ship_account_tab_1 %}
+    <div class="account_tab two">
+{% endblock %}
+
+{% block inner_content %}
+<!-- Content -->
+<div class="col-md-8 content_outer">
+    <div class="col-md-12 shipment_outer">
+        <div class="search_outer">
+            <div class="col-md-6">
+                <input class="search" type="text" id="tracking_number_input" placeholder="Shopping Order Tracking Number" />
+            </div>
+            <div class="col-md-6">
+                <!-- Select -->
+                <select name="sources" id="shipping_method" class="custom-select sources" placeholder="Shipping Method">
+                    <!--<option value="">Select Shipping Method</option>-->
+                    <option value="all" selected="selected">All</option>
+                    <option value="AF - OP">AF - OP</option>
+                    <option value="AF - AP">AF - AP</option>
+                    <option value="AF - WL">AF - WL</option>
+                    <option value="AF - AL">AF - AL</option>
+                    <option value="SF - OP">SF - OP</option>
+                    <option value="SF - AP">SF - AP</option>
+                    <option value="SF - WL">SF - WL</option>
+                    <option value="SF - AL">SF - AL</option>
+                    <option value="EX - OP">EA - OP</option>
+                    <option value="EX - AP">EA - AP</option>
+                    <option value="EX - WL">EA - WL</option>
+                    <option value="EX - AL">EA - AL</option>
+                </select>
+                <!-- Select -->
+                <!-- Select -->
+                <select name="sources" id="status" class="custom-select sources" placeholder="Status">
+                    <!--<option value="">Select Status</option>-->
+                    <option value="all" selected="selected">All</option>
+                    <option value="new">New</option>
+                    <option value="approved">Approved</option>
+                    <option value="processing">Processing</option>
+                    <option value="archive">Archive</option>
+                    <option value="in-question">In Question</option>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="completed">Completed</option>
+
+                </select>
+                <!-- Select -->
+            </div>
+
+        </div>
+        <div class="inner shopping_list" style="min-height: 400px;">
+			
+			{% for message in messages %}
+                <p style="padding-left: 20px; color: red;">{{message}}</p>
+            {% endfor %}
+			
+            {% for order in orders %}
+                <!--include 'zaposta_snippet/user_order_snippet.html' with order=order -->
+				{% with credit_bal_D=order.order_balance_D%}
+				<!-- Shipment -->
+				<!--<div class="col-md-12 shipment" style="padding-right:0;" data-status="{{order.status}}" data-shipping-method="{{order.shipping_method}}">-->
+				<div class="col-md-12 shipment_div" style="padding-right:0;" data-status="{{order.status}}" data-shipping-method="{{order.shipping_method}}">
+					<div class="shipment">
+						<div class="first">
+							<div class="col-md-6">
+								<div class="col-md-12">
+									<h1>Order: <strong class="{{order.status}}">{{order.tracking_number}}</strong></h1>
+									<div class="status" style="min-height: 140px;">
+										<h2>Status:</h2>
+										<p>{% shipment_objs_info order.order_pkgs_info 'Package' 'p' %} </p>
+										<p>{% shipment_objs_info order.order_items_info 'Item' 'p' %} </p>
+									</div>
+									<!--<p>03/02/13 / AF / OP / <strong>$1200</strong> / C / PH / JJ / Consolidated</p>-->
+									<p>{{order.date_joined|date:"d/m/y"}} / {{ order.shipping_method }} / <strong>{% country_currency_v1 order.country %} {{order.admin_total_order_cost_D|floatformat:"2"|intcomma}}</strong> <!--/ C / PH / JJ--> {% if order.strip_package %}/ Strip {% endif %} {% if order.consolidate %}/ Consolidated {% endif %} {% if order.insure %}/ Ins.{% endif %}</p>
+								</div>
+							</div>
+							<div class="col-md-6 two">
+								<div class="col-md-12">
+									{% if credit_bal_D > 0 %}
+									<a href="{% url 'userAccount:select_payment_option' order.user.username 'order' order.pk %}" class="btn yellow">Pay Balance
+										<span>{% country_currency_v1 order.country %} {{credit_bal_D|floatformat:"2"|intcomma}}</span>
+									</a>
+									{% else %}
+										{% if not order.status == "new" %}<a href="#" class="btn green">Already Paid</a>{% endif %}
+									{% endif %}
+									<span class="btn w" obj_id="{{order.pk}}">View Order</span>
+									<a href="#" class="more"></a>
+								</div>
+							</div>
+						</div>
+						<!--Collapse Order div -->
+						<div class="second">
+							
+						</div>
+						<!--Collapse Order div -->
+					</div>
+				</div>
+				{% endwith %}
+				
+            {% endfor %}
+            <!-- Shipment -->
+            
+            <div class="divLoading" style="display: none;">
+					
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
+<!-- Content -->
+{% endblock %}
+
+{% block include_acct_standing %}
+    {% zaposta_acct_standing request True 'three' 'OrderPackage' %}
+{% endblock %}
+
+{% block edit_shipment_order %}
+	
+{% for order in orders %}
+<!-- Delete Booking  Modal -->
+<div class="modal clean" id="delete{{order.pk}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog two modal-lg">
+        <div class="modal-content">
+            <div class="col-md-12 alert">
+                <h1 class="red">Cancel Order</h1>
+                <p>Please note that order cancellation is IRREVERSIBLE!</p>
+                <p>Are you sure you want to cancel this order?</p>
+                <a href="#" class="btn dark" data-dismiss="modal">No</a>
+                <a href="{% url 'userAccount:open_order_cancellation' order.user.username order.pk %}" class="btn red">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete Booking  Modal -->
+{% endfor %}
+
+<!-- Edit Shipment/Shopping Booking Modal -->
+<div class="modal clean in" id="S1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel" style="display:none;">Mobile App</h4>
+            </div>
+            
+        </div>
+        
+        <div class="divLoading" style="display: none;">
+					
+		</div>
+        
+    </div>
+</div>
+<!-- Edit Shipment Modal -->
+
+{% endblock %}

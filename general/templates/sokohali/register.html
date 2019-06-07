@@ -1,0 +1,408 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="shortcut icon" href="{% static 'sokohali.ico' %}">
+
+	<title>Sokohali - Register</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="{% static 'soko-admin/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+
+	<script src="https://use.fontawesome.com/a728b8f481.js"></script>
+
+	<link href="{% static 'soko-admin/css/lightgallery.css' %}" rel="stylesheet">
+
+	<!-- Calendar Angular -->
+	<link rel='stylesheet prefetch' href="{% static 'soko-admin/css/angular-material.css' %}">
+
+	<!-- Custom styles for the dashboard -->
+	<link href="{% static 'soko-admin/css/style.css' %}" rel="stylesheet">
+	<!--<script type="text/javascript" src="{% static 'sokohali/js/countries.js' %}"></script>-->
+	<script type="text/javascript" src="{% static 'sokohali/js/country.js' %}"></script>
+
+	<style>
+
+	.login .center_inner .lcont input{
+		border-radius:0px;
+	}
+
+	input[type="password"], textarea {
+			height: 48px;
+			min-width: 200px;
+			padding: 0;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			line-height: 48px;
+			color: rgb(121, 121, 121);
+			border: none;
+			box-shadow: none;
+			padding-left: 15px;
+			border: 2px solid rgb(231, 231, 231);
+			background: rgb(245, 245, 245);
+			min-width: 60px;
+			float: left;
+			position: relative;
+			}
+
+	input[type="number"], textarea {
+			height: 48px;
+			min-width: 200px;
+			padding: 0;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			line-height: 48px;
+			color: rgb(121, 121, 121);
+			border: none;
+			box-shadow: none;
+			padding-left: 15px;
+			border: 2px solid rgb(231, 231, 231);
+			background: rgb(245, 245, 245);
+			min-width: 60px;
+			float: left;
+			position: relative;
+			}
+
+	select {
+			height: 48px;
+			min-width: 200px;
+			padding: 0;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			line-height: 48px;
+			color: rgb(121, 121, 121);
+			border: none;
+			box-shadow: none;
+			padding-left: 15px;
+			border: 2px solid rgb(231, 231, 231);
+			background: rgb(245, 245, 245);
+			min-width: 355px;
+			float: left;
+			position: relative;
+			}
+
+	.success{
+            color:green;
+          }
+    .warning{
+            color: red;
+          }
+
+	</style>
+
+</head>
+
+	<body class="login two">
+
+	<div class="floater_top"></div>
+	<div class="container">
+		<div class="center_inner">
+			<div class="img">
+				<a href="/"><img src="{% static 'soko-admin/img/logo.jpg' %}" /></a>
+			</div>
+			<form action="{% url 'general:subscriber_register' %}" method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="lcont">
+				<h4><b>Login Details</b></h4>
+
+				<div class="col-md-12">
+					{{user_form.first_name}} 
+				</div>
+				
+				<div class="col-md-12">
+					{{user_form.last_name}} 
+				</div>
+				
+				{% if username_is_taken %}          
+					<div class="col-md-12">
+					<!-- <input type="text" required placeholder="Username" id="id_username" name="id_username"/>-->		{{user_form.username}} 
+						<span style="color:red; position:relative; left:6px;">This username is taken</span>
+					</div>
+				{% else %}
+					<div class="col-md-12">
+						 {{user_form.username}} 
+
+					</div>
+				{% endif %}
+
+				{% if email_taken %}
+					<div class="col-md-12">
+						{{user_form.email}}
+						<span style="color:red; position:relative; left:6px;">This email address is already attached to an account </span>
+					</div>
+				{% else %}
+					<div class="col-md-12">
+						{{user_form.email}}
+					</div>
+				{% endif %}
+
+
+				{% if password_mismatch %}
+					<div class="col-md-12">
+						{{user_form.password}}
+						<span style="color:red; position:relative; left:6px;">The passwords do not match...Please try again</span>
+					</div>
+
+					<div class="col-md-12">
+						{{user_form.password1}} 
+						<span style="color:orange; position:relative; left:6px;">NB: Passwords must be Alphanumeric and not less than 8 characters long</span>
+					</div>
+
+				{% elif password_too_short %}
+					<div class="col-md-12">
+						{{user_form.password}} 
+						<span style="color:red; position:relative; left:6px;">The password is too short...Password must be at least 6 characters in length</span>
+					</div>
+
+					<div class="col-md-12">
+						{{user_form.password1}} 
+						<span style="color:orange; position:relative; left:6px;">NB: Passwords must be Alphanumeric and not less than 8 characters long</span>
+					</div>
+
+				{% elif password_same_as_first_name %}
+					<div class="col-md-12">
+						{{user_form.password}} 
+						<span style="color:red; position:relative; left:6px;">The password cannot be the same with First name</span>
+					</div>
+
+					<div class="col-md-12">
+						{{user_form.password1}} 
+						<span style="color:orange; position:relative; left:6px;">NB: Passwords must be Alphanumeric and not less than 8 characters long</span>
+					</div>
+
+				{% elif password_should_be_alphanumeric %}
+					<div class="col-md-12">
+						{{user_form.password}} 
+						<span style="color:red; position:relative; left:6px;">The password needs to be Alphanumeric</span>
+					</div>
+
+					<div class="col-md-12">
+						{{user_form.password1}} 
+						<span style="color:orange; position:relative; left:6px;">NB: Passwords must be Alphanumeric and not less than 8 characters long</span>
+					</div>
+
+				{% else %}
+					<div class="col-md-12">
+						{{user_form.password}}
+					</div>
+
+					<div class="col-md-12">
+						{{user_form.password1}} 
+						<span style="color:orange; position:relative; left:6px;">NB: Passwords must be Alphanumeric and not less than 8 characters long</span>
+					</div>
+
+				{% endif %}
+
+				<h4><b>Profile Details</b></h4>
+				
+				<div class="col-md-12">
+					{{subscribers_form.address1}}
+				</div>
+				<div class="col-md-12">
+					{{subscribers_form.address2}}
+				</div>
+				<div class="col-md-12">
+					{{subscribers_form.city}}
+				</div>
+				<div class="col-md-12">
+					{{subscribers_form.phone_number}}
+				</div>
+				<div class="col-md-12">
+					<!--<select onchange="print_state('state',this.selectedIndex);" id="country" value="country" class="country" name ="country" selected="selected"></select>-->
+					<select id="country" required name="country" selected="selected"></select>
+					<!-- {subscribers_form.country}} -->
+				</div>
+				<div class="col-md-12">
+					<!--<select name ="state" id ="state"></select>
+					<script language="javascript">print_country("country");</script>-->
+					<select name="state" id="state" required ></select>
+					<script language="javascript">
+						populateCountries("country", "state");
+						// populateCountries("country2");
+					</script>
+					<!-- {subscribers_form.state}} -->
+				</div>
+				<div class="col-md-12">
+					{{subscribers_form.zip_code}}
+				</div>
+				<div class="col-md-12">
+					<input type="file" name="photo_id" id="photo_id" required>
+					<label style="display: block;"> Upload either International Passport/Driver's  License/National ID card</label>
+				</div>
+
+				<div class="col-md-12">
+					<!-- <a href="#" class="btn red">Register</a> -->
+					<button class="btn red">Register</button>
+				</div>
+				<div class="col-md-12 fg">
+					<span></span>
+					<p>Already a registered user?</p>
+				</div>
+				<div class="col-md-12" style="padding-bottom:0;">
+					<a href="/login/" class="btn black">Log In</a>
+				</div>
+			</div>
+			</form>
+		</div>
+		<div class="promo">
+			<div class="promo_inner">
+				<h1>Why choose Sokohali?</h1>
+				<p><strong>Offer your facilities</strong> to other shippers who want to complete their delivery chain. Or you can <strong>rent the services</strong> you don’t have, anywhere, to complete your own delivery chain!</p>
+				<div class="panel two">
+					<div class="img">
+						<img src="{% static 'soko-admin/img/i21.png' %}" />
+					</div>
+					<p>Strong security with ID verification and fraud reporting systems</p>
+				</div>
+				<div class="panel">
+					<div class="img">
+						<img src="{% static 'soko-admin/img/i6.png' %}" />
+					</div>
+					<p>Integrated and secure payment system</p>
+				</div>
+				<div class="panel two">
+					<div class="img">
+						<img src="{% static 'soko-admin/img/i5.png' %}" />
+					</div>
+					<p>Flexible package processing on mobile with cloud enabled label printing</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="js/bootstrap.min.js"></script>
+
+	<script src="js/script.js"></script>
+	<script src="js/jquery.sticky.js"></script>
+
+	<!-- Lightweight Gallery -->
+	<script src="js/lg/lg-autoplay.js"></script>
+	<script src="js/lg/lg-fullscreen.js"></script>
+	<script src="js/lg/lg-hash.js"></script>
+	<script src="js/lg/lg-pager.js"></script>
+	<script src="js/lg/lg-thumbnail.js"></script>
+	<script src="js/lg/lg-video.js"></script>
+	<script src="js/lg/lg-zoom.js"></script>
+	<script src="js/lg/lightgallery.js"></script>
+	<!-- Lightweight Gallery -->
+
+	<script>
+		function checkForm(form)
+		{
+
+			console.log(form.password);
+			console.log(form.password1);
+			re = /^\w+$/;
+			if(!re.test(form.username.value)){
+				alert("Error: Username must contain only letters, number and underscores!");
+				form.username.focus();
+				return false;
+			}
+
+				if(form.password.value.length < 8) {
+					alert("Error: Password must contain at least six characters!");
+					form.password.focus();
+					return false;
+				}
+				if(form.password.value == form.first_name.value) {
+					alert("Error: Password must be different from First Name!");
+					form.password.focus();
+					return false;
+				}
+				if(form.password.value == form.last_name.value) {
+					alert("Error: Password must be different from Last Name!");
+					form.password.focus();
+					return false;
+				}
+				// re = /[0-9]/;
+				// if(!re.test(form.password.value)) {
+				// 	alert("Error: password must contain at least one number (0-9)!");
+				// 	form.password.focus();
+				// 	return false;
+				// }
+				// re = /[a-z]/;
+				// if(!re.test(form.password.value)) {
+				// 	alert("Error: password must contain at least one lowercase letter (a-z)!");
+				// 	form.password.focus();
+				// 	return false;
+				// }
+				// re = /[A-Z]/;
+				// if(!re.test(form.password.value)) {
+				// 	alert("Error: password must contain at least one uppercase letter (A-Z)!");
+				// 	form.password.focus();
+				// 	return false;
+				// }
+		}
+	</script>
+
+	<script>
+		(function ($) {
+
+			//check if the browser width is less than or equal to the large dimension of an iPad
+			if ($(window).width() >= 767) {
+
+				$("#sticky_left").sticky({
+					topSpacing: 220
+				});
+			}
+		})(jQuery);
+	</script>
+
+	<script>
+		$("tr:even").css("background-color", "rgb(248,248,248)");
+	</script>
+
+	<!-- Lightweight Gallery -->
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#lightgallery").lightGallery();
+		});
+	</script>
+	<!-- Lightweight Gallery -->
+
+	<script>
+		$('#ProcessModal').modal('hide');
+	</script>
+
+	<script>
+		$(function () {
+			$('[data-toggle="tooltip"]').tooltip()
+		})
+	</script>
+
+	<!-- Calendar Angular JS Script -->
+	<!-- <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-route.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-messages.min.js'></script>
+	<script src='js/angular-material.js'></script>
+	<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script> -->
+
+	<script src="{% static 'soko-admin/js/index.js' %}"></script>
+	<!-- Calendar Angular JS Script -->
+	</body>
+
+
+</html>

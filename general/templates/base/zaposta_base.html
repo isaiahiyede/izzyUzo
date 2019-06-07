@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<!-- load account_standing operation_countries -->
+{% load staticfiles %}
+<html lang="en">
+
+{% block doctype %}
+{% endblock %}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="google-site-verification" content="lWZYl4s54HKKF8MbdojmZeZDSCGeGAz8BgwBpO4gPFA" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!--<link rel="apple-touch-icon" href="STATIC_URLzaposta/apple-touch-icon.png">-->
+
+    {% if request.marketing_member.ico %}
+    <link rel="shortcut icon" href="{{ request.marketing_member.ico.url }}">
+    {% endif %}
+
+    <title>{{ request.storefront_name }} - {% block title %}{% endblock %}</title>
+    <meta name="description" content="{{ request.storefront_name }} - Ship easy from Nigeria to the US, North America and the Rest of the World. Affordable International Mail and Package Delivery from Nigeria. Easily Export goods and Send Mail from Nigeria to the rest of the World. Now Shipping from Nigeria to over 200 Countries. Print the Shipping Label and drop the Package off or we can come pick it up." />
+
+    <meta name="keywords" content="{{ request.storefront_name }} - What can you Ship. What you can not Ship. Package Box. Select or Specify a Delivery Address.Payment Option. How it works." />
+
+
+    <meta name="author" content="">
+
+
+     <!--block header_2-->
+    {% block header_2 %}
+        <!-- <script type="text/javascript" src="{% static 'sokohali/js/countries.js' %}"></script> -->
+        <script type="text/javascript" src="{% static 'sokohali/js/country.js' %}"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}zaposta/js/time.js"></script>
+
+    <script language="javascript">var STATIC_URL = "{{STATIC_URL|escapejs }}";</script>
+
+    <!-- Bootstrap -->
+    <link href="{{STATIC_URL}}export/css/bootstrap.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}export/css/main.css" rel="stylesheet">
+    {% endblock %}
+
+    <!-- Font -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+    <!-- Special Font for Icons -->
+    <link rel="stylesheet" href="{{STATIC_URL}}zaposta/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{STATIC_URL}}zaposta/css/font-awesome.css">
+    <link href="{% static 'soko-admin/css/custom_stylesheet.css' %}" rel="stylesheet" />
+    <!--<link rel="stylesheet" href="{{STATIC_URL}}zaposta/css/additional_style.css">-->
+
+
+    <style>
+    </style>
+    {% block extra_head_3 %}
+
+    <style type="text/css">
+        .btn_add_item {
+            border: 2px solid #fff; border-radius: 4px;
+            float: left;
+            font-size: 14px;
+            padding: 15px 30px;
+            text-transform: uppercase;
+            font-weight: 600;
+            font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            width: 212px;
+            position: absolute;
+            right: 30px;
+            bottom: 30px;
+            background: #fff;
+            color: #3ab54a;
+
+
+        }
+        .logo {
+            background-image: url("{{ request.storefront_logo_url }}") center center no-repeat !important;
+        }
+
+        .errorlist{
+          color: red !important;
+        }
+
+        .new{ color: #3ab54a !important; }
+        .approved{ color: green !important;}
+        .processing{ color: #FF9900 !important;}
+        .in-question{ color: red;}
+        .archive{ color: red;}
+        .active{ color: blue !important; }
+        .cancelled{ color: #B3B3B3 !important;}
+        .archive{color: #CC00CC !important;}
+        .flagged{color: #CC00CC !important;}
+        .inquestion{color: red !important;}
+        .completed{color: black !important;}
+
+        /*.clean .t .three input[type="text"] {
+            width: 49.5%;
+        }*/
+
+        .cus_radio{
+            cursor: pointer; float: left;width: auto; height: 20px; width: 20px !important; margin-right: 15px !important; margin-top: 2px;
+        }
+
+        .btn.paid{
+            color: green !important; border-color: rgb(250, 250, 250); cursor: auto; background: rgb(250, 250, 250) !important; margin-top: -10px;
+        }
+
+        @media (max-width: 767px){
+            .logo {
+                background: url({{ request.storefront_logo_url }}) center center no-repeat !important;
+                background-size: 100% !important;
+
+            }
+        }
+
+
+
+    </style>
+    {% endblock %}
+
+    <style type="text/css">
+      .alert.alert-info.three {
+                background: #DA7070;
+                border-color: #DA7070;
+                color: #fff;
+            }
+      .two .page .account_tab ul li a {
+            background: none;
+            border-right: none;
+            min-width: 160px;
+        }
+        .page .account_tab ul li a {
+
+            min-width: 160px;
+        }
+        .page .standing .inner {
+            height: 315px !important;
+        }
+        .alert_green{color: green !important;}
+        #alert{color: red; font-size: medium;}
+        /*.alert{color: red !important;}*/
+        .error_alert{color: red !important;}
+        .error{color: red;}
+    </style>
+
+    {% block extra_head %}
+    {% endblock %}
+    {% block extra_head_1 %}
+    <style type="text/css">
+        .packages .item .items .col-md-12 .ins {
+            padding-left: 133px;}
+    </style>
+
+    {% endblock %}
+
+    {% block extra_head_2 %}
+    {% endblock %}
+
+</head>
+
+{% block body_head %}
+<!--<body onload="updateTime(); setInterval('updateTime()', 1000)">-->
+<body onload="updateTime(); setInterval('updateTime()', 1000)">
+{% endblock %}
+
+    <div id="st-container" class="st-container">
+        <!-- overlay here -->
+        <!-- header top side -->
+        {% block header %}
+        <header class="log">
+            {% if not 'address-activation' in request.path %}
+                {% include 'zaposta_snippet/header.html' %}
+            {% endif %}
+        </header>
+        {% endblock header %}
+        <!-- header top side -->
+        <!-- content push wrapper -->
+
+        <div class="st-pusher">
+            {% include "zaposta_snippet/nav-menu.html" %}
+
+              <div class="overlay"></div>
+              <div class="st-content">
+
+                  {% block st_content %}
+                  {% endblock %}
+
+                  {% block modal %}
+                  {% endblock modal %}
+
+
+                <div class="loading">
+                </div>
+            </div>
+
+            </div>
+
+            {% block edit_shipment_order %}
+            {% endblock %}
+
+
+    </div>
+    <!-- /st-container -->
+
+    {% block operation_countries %}
+        <!-- operatingcountries request.user.is_staff -->
+    {% endblock %}
+
+    {% block popup %}
+        {{ block.super }}
+
+    {% endblock %}
+    {% block footer %}
+    {% endblock %}
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js "></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.js"></script>
+
+    {% block script %}
+    {% endblock %}
+
+    {% include 'session_security/all.html' %}
+
+    <script type="text/javascript" src="{{STATIC_URL}}zaposta/js/countdown.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{STATIC_URL}}zaposta/js/bootstrap.min.js"></script>
+    <script src="{% static 'sokohali/js/general.js' %}"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}shipping/js/jquery.validate.js"></script>
+
+
+    <script>
+      function filterShops(){
+        alert("working");
+      }
+    </script>
+
+
+    {% block default_script %}
+      <script src="{{STATIC_URL}}zaposta/js/script.js"></script>
+    {% endblock %}
+
+    {% block scroll %}
+    <script src="{{STATIC_URL}}zaposta/js/base.js"></script>
+    {% endblock %}
+
+    {% block extra_script %}
+
+    {% endblock %}
+
+    <script>
+        //function submitForm(clicked_btn, form_id){
+        function submitForm(form_id){
+            document.getElementById(form_id).submit();
+            return false;
+        }
+
+        function formReset(form_id){
+                $(".input_form").each(function(){
+                    $(this).css('border-color',  "rgb(161, 161, 161)");
+                });
+        document.getElementById(form_id).reset();
+        return false;
+    }
+
+        function changeBorderColor(input_id) {
+            document.getElementById(input_id).style.borderColor = "red";
+        }
+
+        function goNext(hide_div, show_div) {
+            $("#"+hide_div).hide();
+            $("#"+show_div).show();
+            return false;
+        }
+
+        function temp_unavailable(){
+          alert("Our UK Service is Temporarily Unavailable. Please bear with us.")
+        }
+
+
+    </script>
+
+    <script type="text/javascript">
+      // Popup window code
+      function newPopup(url) {
+              popupWindow = window.open(
+                      url,'popUpWindow','height=700,width=800,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+      }
+    </script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-63872389-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+    {% if request.subdomain_name == 'volkmannexpress' %}
+    <script src="{% static 'sokohali/js/volkmann_livechat.js' %}"></script>
+    {% endif %}
+
+</body>
+
+</html>

@@ -1,0 +1,638 @@
+{% extends "adminBase/base_index.html" %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load humanize %}
+{% load activelink %}
+
+{% block title  %}{{ payment_type|title }} Payments Log{% endblock %}
+
+{% block set_up %}
+<li>
+    <a href="{% url 'general:profile' user.username %}"><span><i class="fa fa-user" aria-hidden="true"></i></span>My Profile</a>
+</li>
+<li>
+	<a href="{% url 'sokohaliAdmin:help' %}"><span><i class="fa fa-user" aria-hidden="true"></i></span>Help</a>
+</li>
+{% endblock set_up %}
+
+{% block custom-styles %}
+<style type="text/css">
+	/*table{
+		min-width: 600px;
+		max-width: 600px;
+		border-collapse: collapse;
+		border: 2px solid black;
+	}*/
+	table th,td{
+		border: 1px solid black;
+		padding: 8px 10px;
+		font-size: 15;
+	}
+	table tr{
+		text-align: justify;
+	}
+	/*div{
+		min-width: 600px;
+		max-width: 600px;
+	}
+	body{
+		font-family: Arial;
+	}*/
+
+	.password {
+			height: 45px;
+			min-width: 200px;
+			padding: 0;
+			-webkit-border-radius: 4px;
+			-moz-border-radius: 4px;
+			border-radius: 4px;
+			line-height: 48px;
+			color: rgb(121, 121, 121);
+			border: none;
+			box-shadow: none;
+			padding-left: 15px;
+			border: 2px solid rgb(231, 231, 231);
+			background: rgb(245, 245, 245);
+			min-width: 355px;
+			float: left;
+			position: relative;
+			left: 17px;
+			margin-top: 40px;
+			}
+
+	/*.select-hidden {*/
+		/*visibility: hidden;*/
+/*		visibility:visible;
+		padding-right: 10px;
+		float: left;
+	}*/
+
+	.select-options{
+		display:none;
+	}
+
+	.select-styled{
+		display: none;
+	}
+</style>
+{% endblock %}
+
+{% block body %}<body>{% endblock %}
+
+	{% block searchbar %}
+		 <div class="searchbar">
+		<form action="{% url 'sokohaliAdmin:paySearch' %}" method="GET" id="paysearch">
+			{% csrf_token %}
+			<div class="container">
+				<div class="col-md-12">
+					<input type="text" id="searchInput" placeholder="Search for user, Reference, payment channel, amount, status, date, e.g. Order OR235533" name="input_value" />
+					<i class="fa fa-search t" aria-hidden="true"></i>
+					<span class="bar"></span>
+				</div>
+			</div>
+		</form>
+		</div>
+	{% endblock %}
+
+	{% block sticky_warning %}
+		<div class="sticky_msg">
+			<div class="container">
+
+				<div class="col-md-12">
+					<!-- Alert Warning -->
+					<div style="margin:15px 0px 5px 0px;">
+					{% for msg in messages %}
+						<script>
+							function show_alert(){
+							var alert = '<blockquote style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</blockquote>';
+							document.write(alert);
+							}
+							display = window.setTimeout(show_alert(), 1000);
+							window.clearTimeout(display);
+						</script>
+					{% endfor %}
+					</div>
+					
+					<!-- Alert Warning -->
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	{% block inner_content %}
+		<div class="inner">
+			<!-- Scrollable Content -->
+			<div class="scrollable">
+
+				<div class="container">
+					<div class="row-fluid">
+						<div class="col-md-3 sticky-wrapper" style="position:relative;">
+							<div id="sticky_left">
+								<div class="panel filters col-md-12" style="min-height: 370px!important;">
+									<h2>Filter By:</h2>
+									<ul>
+										{% if not request.user.useraccount.marketer.storefront_name == "smatpost" %}
+										<li class="dropdown {% ifstartswith '/backend/card/' %}active{% endifstartswith %}">
+											<a class="dropdown-toggle" data-toggle="dropdown" href="#">Card
+											</a>
+											<ul class="dropdown-menu">
+											<li><a href="{% url 'sokohaliAdmin:payments_log' 'card' 'successful' %}">Successful</a></li>
+											<li><a href="{% url 'sokohaliAdmin:payments_log' 'card' 'unsuccessful' %}">Unsuccessful</a></li>
+											</ul>
+										</li>
+
+										<li class="dropdown {% ifstartswith '/backend/veiwallet/' %}active{% endifstartswith %}">
+											<a class="dropdown-toggle" data-toggle="d" href="{% url 'sokohaliAdmin:payments_log' 'veiwallet' 'Approved' %}">VEI Wallet</a>
+											</a>
+											<ul class="dropdown-menu">
+											<li><a href="{% url 'sokohaliAdmin:payments_log' 'veiwallet' 'successful' %}">Successful</a></li>
+											<li><a href="{% url 'sokohaliAdmin:payments_log' 'veiwallet' 'unsuccessful' %}">Unsuccessful</a></li>
+											</ul>
+										</li>
+										{% endif %}
+
+										<li class="dropdown {% ifstartswith '/backend/bank-deposit/' %}active{% endifstartswith %}">
+											<a class="dropdown-toggle" data-toggle="dropdown" href="#">Bank Payments
+											</a>
+											<ul class="dropdown-menu">
+											<li><a href="{% url 'sokohaliAdmin:payments_log' 'bank-deposit' 'approved' %}">Approved</a></li>
+											<li><a href="{% url 'sokohaliAdmin:payments_log' 'bank-deposit' 'declined' %}">Declined</a></li>
+											<li><a href="{% url 'sokohaliAdmin:payments_log' 'bank-deposit' 'pending' %}">Pending</a></li>
+											</ul>
+										</li>
+
+									</ul>
+									<!--<div class="col-md-12">-->
+									<!--    <a href=" url 'sokohaliAdmin:payment_history' %}"class="btn black">SokoPay History</a>-->
+									<!--</div>-->
+								</div>
+							</div>
+						</div>
+						<div class="col-md-9 user_list" style="position:relative;">
+
+
+
+							<div ng-controller="AppCtrl" class="datepickerdemoBasicUsage" ng-app="MyApp">
+								<md-content>
+									<md-datepicker ng-model="myDate" md-placeholder="Fecha"></md-datepicker>
+
+								</md-content>
+							</div>
+
+
+							<div class="header">
+
+								<div class="dropdown options toggle">
+									<p>{{ payment_type|title }} Payments</p>
+									<!-- <i class="fa fa-circle-o hd" aria-hidden="true"></i>
+									<i class="fa fa-check-circle" aria-hidden="true"></i> -->
+
+								</div>
+							</div>
+							<!-- Item "open" when triggered -->
+							<div class="tab-content">
+									<div>
+
+									</div>
+									
+								
+									<table id="pay_log" class="table table-info table-striped table-bordered table-hover">
+										{% csrf_token %}
+										<thead>
+											<tr>
+												{% if payment_type == "bank-deposit" %}
+												<th></th>
+												{% endif %}
+
+												<th>S/N</th>
+												<th>User</th>
+
+												{% if status != "pending" %}
+												<th>Reference #</th>
+												{% endif %}
+
+												{% if status == "Successful" %}
+												<th>Tranx ID</th>
+												{% endif %}
+
+												{% if status == "Approved" or status == "pending" %}
+												<th>Teller No</th>
+												{% endif %}
+
+												{% if status == "pending" %}
+												<th>Bank</th>
+												{% endif %}
+
+												<th>Payment Channel</th>
+												<th>Amount</th>
+												<th>Status</th>
+												
+												<th>Date</th>
+
+												{% if status == "pending" %}
+												<th>Approve</th>
+												<th>Decline</th>
+												{% endif %}
+
+
+												{% if payment_type == "bank-deposit" or "card" in request.path %}
+													{% if status == "Approved" or "Successful" %} 
+													<th>Approved By:</th>
+													{% elif status == "Declined"  %}
+													<th>Declined By:</th>
+													{% endif %}
+													<th>Message</th>
+												{% endif %}
+
+												{% if 'veiwallet' in request.path %}
+													<th>Message</th>
+												{% endif %}
+											
+											</tr>
+										</thead>
+										<tbody id="fbody">
+											{% for obj in payments_log %}
+											<tr>
+												{% if not "veiwallet" in request.path %}
+													{% if payment_type == "bank-deposit" and request.user.useraccount.securityquestion.created == True and obj.status == "Approved" or obj.status == "Successful" %}
+													<td></td>
+													{% elif payment_type == "bank-deposit" and request.user.useraccount.securityquestion.created == True and obj.status == "Declined" or obj.status == "Unsuccessful" %}
+													<td></td>
+													{% elif payment_type == "bank-deposit" and request.user.useraccount.securityquestion.created == True and obj.status == "Pending Approval" %}
+													<td><input type="radio" class="checks"         name="check" value="{{obj.id}}"/>&nbsp;</td>
+													{% elif obj.status == "Pending Approval" %}
+													<td><input type="radio" class="checks" 
+													name="check" value="{{obj.id}}"/>&nbsp;</td>
+													{% endif %}
+												{% endif %}
+
+												<td>{{ forloop.counter }}</td>
+												<td>{{ obj.user.user.get_full_name|lower }}</td>
+												<td>{{ obj.ref_no }}</td>
+
+												{% if status == "Successful" %}
+												<td>{{ obj.payment_gateway_tranx_id }}</td>
+												{% elif status == "Approved"%}
+												<td>{{ obj.bank|lower }}</td>
+												{% elif status == "pending" %}
+												<td>{{ obj.bank }}</td>
+												{% endif %}
+
+												<td>{{ obj.payment_channel|lower }}</td>
+												<td>${{ obj.amount|floatformat:2|intcomma }}</td>
+												<td>{{ obj.status|lower }}</td>
+												<td>{{ obj.created_at|date:'d/M/Y' }}</td>
+
+												{% if status == "pending" %}
+													{% if 'veiwallet' in request.path %}
+														<td><a href="#" class="check" attr="yes" path="veiwallet" item_id={{obj.id}}>&#9989;</a></td>
+														<td><a href="#" class="check" attr ="no" path="veiwallet" item_id={{obj.id}}>&#10008;</a></td>
+													{% elif 'bank-deposit' in request.path %}
+														<td><a href="#" class="check" attr="yes" path="bank-deposit" item_id={{obj.id}}>&#9989;</a></td>
+														<td><a href="#" class="check" attr ="no" path="bank-deposit" item_id={{obj.id}}>&#10008;</a></td>
+													{% endif %}
+
+
+												{% elif obj.status == "Approved" or obj.status == 					"Declined" %}
+													{% if not 'veiwallet' in request.path %}
+														<td>{{obj.approved_by}}</td>
+														<td>{{obj.message|lower}}</td>
+													{% endif %}
+														
+												{% endif %}
+
+
+												{% if 'veiwallet' in request.path %}
+													<td>{{obj.message}}</td>
+												{% endif %}
+
+												<td height="65" value="{{obj.id}}" class="hidden">
+													<div id="{{obj.id}" class="desc" >
+														<input type="password" name="users" value="{{request.user}}" class="pwd" />
+													</div>
+												</td>
+
+											</tr>
+										  {% endfor %}
+										</tbody>
+
+									</table>
+									<!-- </div> -->
+									<br>
+									<button  class="btn green" style="float:right;" onclick="tablesToExcel(['tbl1'], 'PaymentRecord.xls', 'PaymentRecord')">Export to Excel</button>
+								</div>
+
+
+
+
+
+							<!-- Bottom Sticky with Options -->
+							<div class="bottom_sticky three">
+								<div class="container">
+
+									<div class="col-md-9 col-md-offset-3">
+										<div class="cancel">
+											<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<a href="#" class="long"><i class="fa fa-users" aria-hidden="true"></i>Build Customers</a>
+										<a href="#" class="long"><i class="fa fa-user-plus" aria-hidden="true"></i>Make Admin</a>
+										<a href="#" class="long"><i class="fa fa-line-chart" aria-hidden="true"></i>Apply Special Rate</a>
+										<a href="#"><i class="fa fa-flag" aria-hidden="true"></i>Flag</a>
+										<a href="#"><i class="fa fa-user-times" aria-hidden="true"></i>Deactivate</a>
+									</div>
+								</div>
+							</div>
+							<!-- Bottom Sticky with Options -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Scrollable Content -->
+			</form>
+		</div>
+	{% endblock %}
+
+{% block modal %}
+	{% include 'admin-snippet/create_user_modal.html' %}
+<!-- Modal -->
+ <div class="modal fade" id="myModal" role="dialog">
+	<div class="modal-dialog">
+	
+	<!-- Modal content-->
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Create a Security Question</h4>
+		</div>
+		<div class="modal-body">
+			<form action="{% url 'sokohaliAdmin:security_question' %}" method="POST">
+			{% csrf_token %}
+				<!-- <div class="col-md-12" id="secret_ques"> -->
+				<select name ="question" selected="selected" style="display:block; height: 45px;min-width: 200px;padding: 0;
+			-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;line-height: 48px;color: rgb(121, 121, 121);
+			border: none;box-shadow: none;padding-left: 15px;border: 2px solid rgb(231, 231, 231);background: rgb(245, 245, 245);min-width: 355px;float: left;position: relative;eft: 17px;margin-top: 40px; visibility:visible;padding-right: 10px;float: left;" class="select" required>
+					<option value="What is the name of your favorite pet?">What is the name of your favorite pet?</option>
+					<option value="In what city were you born?">In what city were you born?</option>
+					<option value="What street did you grow up on?">What street did you grow up on?</option>
+					<option value="What is your favorite movie?">What is your favorite movie?</option>
+					<option value="What is your favorite color?">What is your favorite color?</option>
+					<option value="What high school did you attend?">What high school did you attend?</option>
+					<option value="What is the name of your first school?">What is the name of your first school?</option>
+				</select>
+				<!-- </div> -->
+				<div class="col-md-12">
+					<input type="text" name="answer" placeholder="Answer" style="width:63%; left: 17px; margin-top: 50px; margin-bottom: 45px;" required>
+				</div>
+				<div class="col-md-12">
+					<input type="checkbox" name="created" class="hidden" checked>
+				</div>
+				<br>
+				<br>
+				<div class="modal-footer">
+					<button id="button" type="submit" class="btn green">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	</div>
+</div>
+
+
+
+
+ <div class="modal fade" id="answerModal" role="dialog">
+	<div class="modal-dialog">
+	
+	<!-- Modal content-->
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<h4 class="modal-title">Answer a Security Question</h4>
+		</div>
+		<div class="modal-body">
+			<form action="{% url 'sokohaliAdmin:approve_bankpayment' %}" method="POST">
+			{% csrf_token %}
+				<div class="col-md-12" >
+					<h3 style"width:63%; left: 17px; margin-top: 50px;"><strong>{{staff_form}}</strong>
+					</h3>
+				</div>
+				<div class="col-md-12">
+					<input type="password" name="answer" class="password" placeholder="Answer" style="width:63%; left: 5px; margin-top: 15px; margin-bottom: 45px;" required>
+				</div>
+				<div class="col-md-12">
+					<input type="hidden" name="obj_id" value="{{obj_id}}" required>
+					<input type="hidden" name="decision" value="{{decision}}" required>
+				</div>
+				<div class="modal-footer">
+					<button id="button_2" type="submit" class="btn green">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	</div>
+</div>
+{% endblock %}
+
+{% block modal_script %}
+	<script>
+		$('#ProcessModal').modal('hide');
+	</script>
+{% endblock %}
+
+{% block script %}
+
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-route.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-messages.min.js'></script>
+	<!-- <script src="{% static 'soko-admin/js/angular-material.js' %}"></script>-->
+	<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
+	<script src="{% static 'soko-admin/js/index.js' %}"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+
+<script>
+var tablesToExcel = (function() {
+	var uri = 'data:application/vnd.ms-excel;base64,'
+	, tmplWorkbookXML = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
+		+ '<DocumentProperties xmlns="urn:schemas-microsoft-com:office:office"><Author>Axel Richter</Author><Created>{created}</Created></DocumentProperties>'
+		+ '<Styles>'
+		+ '<Style ss:ID="Currency"><NumberFormat ss:Format="Currency"></NumberFormat></Style>'
+		+ '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>'
+		+ '</Styles>'
+		+ '{worksheets}</Workbook>'
+	, tmplWorksheetXML = '<Worksheet ss:Name="{nameWS}"><Table>{rows}</Table></Worksheet>'
+	, tmplCellXML = '<Cell{attributeStyleID}{attributeFormula}><Data ss:Type="{nameType}">{data}</Data></Cell>'
+	, base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+	, format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(tables, wsnames, wbname, appname) {
+		var ctx = "";
+		var workbookXML = "";
+		var worksheetsXML = "";
+		var rowsXML = "";
+
+		for (var i = 0; i < tables.length; i++) {
+		if (!tables[i].nodeType) tables[i] = document.getElementById(tables[i]);
+		for (var j = 0; j < tables[i].rows.length; j++) {
+			rowsXML += '<Row>'
+			for (var k = 0; k < tables[i].rows[j].cells.length; k++) {
+			var dataType = tables[i].rows[j].cells[k].getAttribute("data-type");
+			var dataStyle = tables[i].rows[j].cells[k].getAttribute("data-style");
+			var dataValue = tables[i].rows[j].cells[k].getAttribute("data-value");
+			dataValue = (dataValue)?dataValue:tables[i].rows[j].cells[k].innerHTML;
+			var dataFormula = tables[i].rows[j].cells[k].getAttribute("data-formula");
+			dataFormula = (dataFormula)?dataFormula:(appname=='Calc' && dataType=='DateTime')?dataValue:null;
+			ctx = {  attributeStyleID: (dataStyle=='Currency' || dataStyle=='Date')?' ss:StyleID="'+dataStyle+'"':''
+					 , nameType: (dataType=='Number' || dataType=='DateTime' || dataType=='Boolean' || dataType=='Error')?dataType:'String'
+					 , data: (dataFormula)?'':dataValue
+					 , attributeFormula: (dataFormula)?' ss:Formula="'+dataFormula+'"':''
+					};
+			rowsXML += format(tmplCellXML, ctx);
+			}
+			rowsXML += '</Row>'
+		}
+		ctx = {rows: rowsXML, nameWS: wsnames[i] || 'Sheet' + i};
+		worksheetsXML += format(tmplWorksheetXML, ctx);
+		rowsXML = "";
+		}
+
+		ctx = {created: (new Date()).getTime(), worksheets: worksheetsXML};
+		workbookXML = format(tmplWorkbookXML, ctx);
+
+console.log(workbookXML);
+
+
+		var link = document.createElement("A");
+		link.href = uri + base64(workbookXML);
+		link.download = wbname || 'Workbook.xls';
+		link.target = '_blank';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}
+	});
+</script>
+
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="{% static 'soko-admin/js/jquery.simplePagination.js' %}"></script>
+<script >$("#pay_log").simplePagination();</script>
+
+<script>
+
+	$('body').on('click', '.check', function(){
+		var path = $(this).attr('path');
+		var decision = $(this).attr('attr');
+		var obj_id = $(this).attr('item_id');
+
+		// alert(path + " " + decision + " " + obj_id);
+
+		// 
+
+		if (path == "veiwallet"){
+			url = "{% url 'sokohaliAdmin:approve_veipayment' %}"
+		}
+		else{
+			url = "{% url 'sokohaliAdmin:approve_bankpayment' %}"
+		}
+
+		var response = confirm('Are you sure you want to perform this action?')
+
+		if (response){
+			$.ajax({
+				url: "{% url 'sokohaliAdmin:approve_veipayment' %}",
+				type: "POST",
+				data: {"decision":decision, "obj_id":obj_id, "path":path},
+
+				success:function(data){
+					console.log('working');
+					location.reload();
+				},
+				error:function(data){
+					console.log('not working');
+				}
+
+			})
+
+			return true;
+		}
+		else{
+			return false;
+		}	
+	});
+
+
+	$('body').on('click', '.chec', function() {
+	if ($("input:radio[name=check]").is(":checked")){
+		// if ($("input:password[name=pw]").val().length > 0){
+			var decision = $(this).attr('attr');
+			// console.log("decision: "+decision);
+			var obj_id = $('input[type=radio][name=check]:checked').val();
+			// console.log("obj_id: "+obj_id);
+			var csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+				$.ajax({
+						url: "{% url 'sokohaliAdmin:approve_bankpayment' %}",
+						type: 'POST',
+						data: {csrfmiddlewaretoken: csrf_token, 'decision': decision, 'obj_id': obj_id, 'obj_pw':obj_pw},
+						success:function(data){
+								console.log('working');
+								location.reload();
+								},
+						error:function(data){
+						console.log('not working');
+						alert("Please try again later!");
+						}
+				});
+			// }
+			// else{
+			// alert("Please type Answer");
+			// }
+	}
+	else{
+		alert("Please select a user");
+		 }
+	})
+
+
+	$("#searchInput").keyup(function () {
+		    //split the current value of searchInput
+		    var data = this.value.split(" ");
+		    //create a jquery object of the rows
+		    var jo = $("#fbody").find("tr");
+		    if (this.value == "") {
+		        jo.show();
+		        return;
+		    }
+		    //hide all the rows
+		    jo.hide();
+
+		    //Recusively filter the jquery object to get results.
+		    jo.filter(function (i, v) {
+		        var $t = $(this);
+		        for (var d = 0; d < data.length; ++d) {
+		            if ($t.is(":contains('" + data[d] + "')")) {
+		                return true;
+		            }
+		        }
+		        return false;
+		    })
+		    //show the rows that match.
+		    .show();
+		}).focus(function () {
+		    this.value = "";
+		    $(this).css({
+		        "color": "black"
+		    });
+		    $(this).unbind('focus');
+		}).css({
+		    "color": "#C0C0C0"
+		});
+
+</script>
+
+
+{% endblock %}

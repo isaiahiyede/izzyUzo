@@ -1,0 +1,129 @@
+
+<div class="modal fade" role="dialog" tabindex="-1" id="edit_item_Modal">
+	<div class="modal-dialog modal-small" style="overflow-y: scroll;">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">EDIT ITEM</h4>
+			</div>
+				<form id="edit_the_itemForm" name="edit_the_itemForm" action="" mathod="POST">
+				 {% csrf_token %}
+					<div class="modal-body" >
+						<style>
+							.select{margin-left: 0px;}
+							.select-styled{display:none;} 
+							.select-hidden {
+							    visibility: visible;
+							    padding-right: 10px;
+							    float: left;
+							}
+							.myselect{
+								display:block;
+							}
+						</style>
+						<div class="body-inner two" style="overflow-y:scroll !important;">
+							{% if item.item_type == "fixed_weight" %}
+							<div class="col-md-12 FIXEDweight {% if not item.item_type == 'fixed_weight' %} hidden {% endif %}" style="padding:0; position:relative; bottom:150px; width:60%;">
+									<label>Routes:</label>
+									<select class ="myselect" id="shipping_direction_fixedWeight" name="shipping_direction_fixedWeight" required>
+			                            <option sh_chain_item="" value="">Select shipping route</option>
+			                            {% for route in marketer_routes %}
+			                                {% ifequal route.id item_chain.id %}
+			                                    <option sh_chain_item="{{route.id}}" selected="selected" value="{{route}}">{{route}}</option>
+			                                {% else %}
+			                                    <option sh_chain_item="{{route.id}}" value="{{route}}">{{route}}</option>
+			                                {% endifequal %}
+			                            {% endfor %}
+			                        </select> 
+							</div>
+							{% endif %}
+
+							{% if item.item_type == "fixed_weight" %}
+							<div class="col-md-12" style="padding:0; position:relative; bottom:155px; width:60%" id="FixedWeight">
+									<label>Categories:</label>
+									 <select class ="myselect" id="item_Cat" required>
+									  <option value="Select Category">Select Category</option>
+									    {% for category in fixed_weight_category %}
+									    	{% ifequal category.id cat_id.id %}
+										  		<option value="{{category.id}}" selected="selected">{{category.description}}</option>
+										  	{% else %}
+										  		<option value="{{category.id}}">{{category.description}}</option>
+									    	{% endifequal %}
+										{% endfor %}
+								    </select>
+							</div>
+							{% endif %}
+
+							{% if item.item_type == "fixed_weight" %}
+							<div class="col-md-12 {% if not item.item_type == 'fixed_weight' %} hidden {% endif %}" style="padding:0; position:relative; bottom:163px;">
+								<label>Rate:</label>
+								<input type="number" name="item_Rate" id="item_Rate" value="{{rate}}">
+							</div>
+							{% endif %}
+
+							{% if not item.item_type == "fixed_weight" %}
+							<div class="col-md-6 {% if not item.item_type == 'Regular' %} hidden {% endif %}" style="padding:0; position:relative; bottom:168px;">
+								<label>Courier Tracking Number:</label>
+								<input type="text" name="item_tracking_number_reg" id="item_tracking_number_reg" value={{item.courier_tracking_number}}>
+							</div>
+							{% endif %}
+
+							{% if item.item_type == "fixed_weight" %}
+							<div class="col-md-12" style="padding:0; position:relative; bottom:173px;">
+								<label>Quantity:</label>
+								<input type="number" name="item_Qty" id="item_Qty" value={{item.quantity}}>
+							</div>
+							{% else %}
+							<div class="col-md-12" style="padding:0; position:relative; bottom:173px;">
+								<label>Quantity:</label>
+								<input type="number" name="item_Qty_reg" id="item_Qty_reg" value={{item.quantity}}>
+							</div>
+							{% endif %}
+
+							<div class="col-md-12" style="padding:0; position:relative; bottom:178px;">
+								<label>Value($):</label>
+								<input type="number" name="item_val" id="item_val" value={{item.total_value}}>
+							</div>
+
+							<input type="hidden" id="fixed_weight_Item_id" name="fixed_weight_Item_id" value="{{item.pk}}">
+
+							<input type="hidden" id="item_owner_id" name="item_owner_id" value="">
+
+							{% if item.item_type == "fixed_weight" %}
+								<input type="hidden" id="fixed_weight_Item_type" name="fixed_weight_Item_type" 
+								value="fixed_weight">
+							{% else %}
+								<input type="hidden" id="fixed_weight_Item_type" name="fixed_weight_Item_type" 
+								value="Regular">
+							{% endif %}
+
+							{% if item.item_type == "fixed_weight" %}
+							<div class="col-md-12 {% if not item.item_type == 'fixed_weight' %} hidden {% endif %}" style="padding:0; position:relative; bottom:183px;">
+								<label>Extra Charges:</label>
+								<input type="number" name="item_ext_charge" id="item_ext_charge" value="">
+							</div>
+							{% endif %}
+
+							<div class="col-md-12" style="padding:0; position:relative; bottom:188px;">
+								<label>Description:</label>
+								<textarea rows="4" cols="50" id="fxd_item_desc" 
+									style=" position: relative;
+									    max-width: 50%;
+									    width: 92%;
+									    line-height: 20px;
+									    bottom: 0px;
+									    right: 5px;">{{item.description}}
+								</textarea>
+							</div>
+						</div>
+					</div>
+				</form>
+			<div class="modal-footer">
+<!-- 			    <button type="button" id="edit_item_finish" class="btn gray left" data-dismiss="modal">Close</button>
+ -->				<button type="button" id="edit_item_btn" class="btn green">Save<i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+			</div>
+
+		</div>
+	</div>
+</div>

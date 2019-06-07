@@ -1,0 +1,13 @@
+{% load humanize %}
+
+<div id="get_dimensions" style="position: relative; bottom: 30px;">
+  <p class="title" style="position:relative; top:10px;">Package Content:
+  {% if package.items_recieved_count == 1 %}
+      <span>{{package.items_recieved_count}} item</span></p>
+  {% else %}
+      <span>{{package.items_recieved_count}} items</span></p>
+  {% endif %}
+  </p>
+    <p class="title" style="position:relative;">Weight(Dimensional): <span>{{dms_weight|floatformat:2|intcomma}}lbs({{dms_weight_k|floatformat:2|intcomma}}kg)</span>
+    <p class="title" style="position:relative; bottom:10px;">Weight(Actual): <span>{{dms_actual|floatformat:2|intcomma}}lbs({{dms_actual_k|floatformat:2|intcomma}}kg)</span>
+</div>

@@ -1,0 +1,237 @@
+{% extends "adminBase/base_index.html" %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load humanize %}
+{% load activelink %}
+
+{% block title  %}{{ payment_type|title }} Dashboard {% endblock %}
+
+{% block custom-styles %}
+<style>
+
+    /*div.sidebar-link:hover{
+        background-color: #E3E3E3;
+    }*/
+
+</style>
+
+{% endblock %}
+
+{% block body %}<body>{% endblock %}
+
+
+  {% block searchbar %}
+      <div class="searchbar">
+          <div class="container">
+              <div class="col-md-12">
+                  <input type="text" />
+                  <i class="fa fa-search t" aria-hidden="true"></i>
+                  <span class="bar"></span>
+              </div>
+
+
+
+          </div>
+      </div>
+  {% endblock %}
+
+  {% block navbar %}
+  {% endblock %}
+
+    {% block sticky_warning %}
+        <div class="sticky_msg">
+            <div class="container">
+
+                <div class="col-md-12">
+
+
+                    <div class="alert" role="alert">
+                        <h3><strong>Dashboard</strong></h3>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {% for msg in messages %}
+                          <blockquote style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</blockquote>
+                        {% endfor %}
+
+                    </div>
+                    <!-- Alert Warning -->
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block inner_content %}
+        <div class="inner">
+            <!-- Scrollable Content -->
+            <div class="scrollable">
+
+                <div class="container">
+                    <div class="row-fluid">
+
+                        <!-- Main Category Product -->
+                            <div class="col-md-12 pageh two" id="analytics" style="position:relative;">
+
+
+                                    <h4 style="position: relative; left: 17px"></h4>
+
+                                    <div class="it_outera">
+                                    <!-- <div class="col-md-12 litem l">
+                                        <div class="col-md-12 hitem">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    <h4><p><strong>Total Number of Orders:</strong></p></h4>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                {% if subscribers.marketingmember %}
+                                  {% for chain in subscribers.marketingmember.get_shipping_chains %}
+                                    <h4><b>{{chain.origin}} <span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span> {{chain.destination}}</b><a href="{% url 'service_provider:dashboard_details' chain.id %}" class="pull-right">Details</a></h4>
+                                    <div class="col-md-3 litem">
+                                        <div class="col-md-12 hitem sidebar-link">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                  <h5>Total Packages</h5>
+                                                    <p><strong>{{chain.get_pkgs_in_chain.count}}</strong></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 litem">
+                                        <div class="col-md-12 hitem sidebar-link">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    <h5>Total Processed Packages</h5>
+                                                    <p><strong>{{chain.get_pkgs_in_chain_processed.count}}</strong></p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 litem">
+                                        <div class="col-md-12 hitem sidebar-link">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    <h5>Unprocessed Packages</h5>
+                                                    <p><strong>{{chain.get_pkgs_in_chain_unprocessed.count}}</strong></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 litem">
+                                        <div class="col-md-12 hitem sidebar-link">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    <h5>Packages Total Value</h5>
+                                                    <p><strong>${{chain.get_pkgs_in_chain_total_amount_payable|floatformat:2|intcomma}}</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 litem">
+                                        <div class="col-md-12 hitem sidebar-link">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    <h5>Total Amount Paid</h5>
+                                                    <p><strong>${{chain.get_pkgs_in_chain_total_amount_paid|floatformat:2|intcomma}}</strong></p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 litem">
+                                        <div class="col-md-12 hitem sidebar-link">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    <h5>Balance</h5>
+                                                    <p><strong>${{chain.get_pkgs_in_chain_total_balance|floatformat:2|intcomma}}</strong>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 litem">
+                                        <div class="col-md-12 hitem sidebar-link">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    <h5>Warehouse:</h5>
+                                                    <p><strong>{{chain.origin_warehouse}}</strong></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 litem">
+                                        <div class="col-md-12 hitem sidebar-link">
+                                            <div class="col-md-12">
+                                                <div class="col-md-12">
+                                                    <h5>Shipper:</h5>
+                                                    <p><strong>{{chain.shipper}}</strong></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                  {% endfor %}
+                                {% else %}
+
+                                    {% if subscribers.get_warehouses and subscribers.get_shippers %}
+                                        {% for subs in subscribers.get_warehouses %}
+                                          <h4>Warehouse: {{subs.name}}</h4>
+                                        {% endfor %}
+
+                                        {% for subs in subscribers.get_shippers %}
+                                          <h4>Shipper: {{subs.name}}</h4>
+                                        {% endfor %}
+
+                                    {% endif %}
+
+                                    {% if subscribers.get_warehouses and not subscribers.get_shippers %}
+                                      <h4>{{subscriber.get_warehouses}}</h4>
+                                    {% endif %}
+
+                                    {% if subscribers.get_shippers and not subscribers.get_warehouses %}
+                                      <h4>{{subscribers.get_shippers}}</h4>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                  <h4>Welcome to Sokohali!!</h4>
+                                  <a href="{% url 'service_provider:configure_setup' %}"><span></span>Your SETUP starts here</a>
+                                </div>
+                              {% endif %}
+
+
+                            </div>
+                        <!-- Main Category Product -->
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scrollable Content -->
+
+            <div class="loading">
+            </div>
+
+        </div>
+    {% endblock %}
+
+{% block modal %}
+<div class="modal fade" id="details" role="dialog">
+  
+</div>
+{% endblock %}
+
+{% block custom_select %}
+{% endblock %}
+
+{% block script %}
+{% endblock %}

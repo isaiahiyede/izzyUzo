@@ -1,0 +1,26 @@
+@import url(bootstrap-3.min.css);
+/* for django errors*/
+
+.item {
+  background: #fefef0;
+  max-height: 260px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+
+.item img {
+  max-width: 50%;
+}
+
+.desc {
+	background: #81D4FA;
+	margin-bottom: 10px;
+	min-height: 170px;
+	padding: 15px;
+}
+
+.answer {
+	background: #DCEDC8;
+	min-height: 170px;
+}

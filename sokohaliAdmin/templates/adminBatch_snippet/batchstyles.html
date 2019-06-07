@@ -1,0 +1,87 @@
+
+
+<style>
+
+    input[type='file']{
+        height: 36px;
+        display: block;
+    }
+
+    #purple .first-select .select-styled,
+    #purple .second-select .select-styled,
+    #purple .third-select .select-styled,
+    #purple .fourth-select .select-styled{
+        height: 48px;
+        width: 357px;
+        padding: 0;
+        margin-left: -15px;
+        margin-top: 1px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        line-height: 48px;
+        color: rgb(121, 121, 121);
+        border: none;
+        box-shadow: none;
+        border: 2px solid rgb(231, 231, 231);
+/*        background: rgb(245, 245, 245);
+*/        background: url(http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png) no-repeat right 15px bottom 10px rgb(245, 245, 245);
+
+        position: relative;
+    }
+
+    #purple .first-select .select-options,
+    #purple .second-select .select-options,
+    #purple .third-select .select-options,
+    #purple .fourth-select .select-options{
+        position: absolute;
+        top: 62px;
+        right: 120px;
+        margin: 0;
+        padding: -15px;
+        list-style: none;
+        background-color: #000;
+        color:#fffeee;
+        margin: 0;
+        min-width: 235px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+    }
+
+    
+    #purple .first-select .select-options li,
+    #purple .second-select .select-options li,
+    #purple .second-select .select-options li,
+    #purple .fourth-select .select-options li{
+        margin: 0px;
+        padding: 0px 15px;
+        height: 40px;
+        line-height: 40px;
+        border-top: 1px solid darken($select-background, 10);
+    }
+
+    input[type="number"]{
+        height: 48px;
+        padding: 0;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        line-height: 48px;
+        color: rgb(121, 121, 121);
+        border: none;
+        box-shadow: none;
+        padding-left: 15px;
+        border: 2px solid rgb(231, 231, 231);
+        background: rgb(245, 245, 245);
+        min-width: 357px;
+        float: left;
+        position: relative;
+    }
+
+    .required:after { 
+        content:" *"; 
+        color:red;
+    }
+
+</style>

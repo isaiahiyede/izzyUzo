@@ -1,0 +1,70 @@
+{% load staticfiles %}
+
+<div class="modal clean three" id="{{ modal_id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-big">
+	  <div class="modal-content two">
+		  <div class="modal-header">
+			  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+			  </button>
+		  </div>
+		  <div class="modal-body">
+			  <div class="row-fluid">
+
+				  <div class="tinner" style="overflow-y:visible;">
+					  <div class="tinner1">
+						  <div class="col-md-12 printout">
+							  <!-- Item -->
+							{% for package in packages %}
+
+									<div class="col-md-12 item">
+									<!--<img src="{% static 'export/img/barcode_logo.png' %}" />-->
+                    <div class="row-fluid">
+                        {% if request.marketing_member.ico %}
+                          <img src="{{ request.marketing_member.ico.url }}" style="width: 18%; top: 20px; left: 14px;" />
+                        {% endif %}
+						{% if package.barcode_src %}
+						  <img src="{{package.barcode_src}}" style="width: 30%; top: 25px; left: 142px;"/>
+						{% else %}
+						  <img src="{% static 'testBcd.png' %}" style="width: 30%; top: 25px; left: 142px;"/>
+						{% endif %}
+                    </div>
+									  <div class="col-md-12 tw">
+                      {% if package.local_pickup_address %}
+                        <p><strong>To: {{ package.user.get_full_name }}</strong></p>
+                        <p><strong>{{ package.local_pickup_address.full_address }}</strong></p>
+                      {% elif package.delivery_address %}
+                        <p><strong>To: {{ package.delivery_address.get_receiver_name }}</strong></p>
+                        <p><strong>{{ package.get_delivery_address }}</strong></p>
+                      {% elif package.destination_warehouse %}
+                        <p><strong>To: {{ package.user.get_full_name }}</strong></p>
+                        <p><strong>{{ package.get_default_destination_warehouse }}</strong></p>
+                      {% elif package.destination %}
+                        <p><strong>To: {{ package.user.get_full_name }}</strong></p>
+                        <p><strong>{{ package.destination.delivery_address }}</strong></p>                      
+                      {% endif %}
+										  <div class="bot">
+											  <p>{{ package.drop_off_location.drop_off_code }}</p>
+											  <p>{{ package.dimension }} / {{ package.box_weight_higher }}lbs ({{package.box_weight_higher_K}}kg) </p>
+										  </div>
+									  </div>
+									  <div class="col-md-12">
+										  <p>Package {{ forloop.counter }} / {{ package.export_sub_category }} - Cut out this part and stick it very flat to the your box with clear tape</p>
+									  </div>
+								  </div>
+							  <!-- Item -->
+							{% endfor %}
+							  <div class="col-md-12 bts" style="margin-bottom:0;">
+
+                  <!-- <a href="#" class="btn yellow">Print</a> -->
+                  <a href="javascript:window.print()" class="btn yellow">Print</a>
+							  </div>
+						  </div>
+
+					  </div>
+				  </div>
+
+			  </div>
+		  </div>
+	  </div>
+  </div>
+</div>

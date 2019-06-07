@@ -1,0 +1,9 @@
+<li rel="route1" data-chain="{{ chain_id }}" data-origin="{{ origin }}" data-destination="{{ destination }}" data-direction="{{ direction }}" route_id="{{ id }}" air="{{ air|lower }}" air_delivery_time="{{ air_delivery_time }}" sea="{{ sea|lower }}" sea_delivery_time="{{ sea_delivery_time }}"><!--if edit class="active"endif-->
+    {% include 'setup_snippet/route_inner.html' %}
+    <!--- round green for complete chain and gray for incomplete chain --->
+    <span class="btn round gray" rel="route1">
+        <i class="fa fa-check" aria-hidden="true"></i>
+    </span>
+
+
+</li>

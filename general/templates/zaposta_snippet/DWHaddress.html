@@ -1,0 +1,7 @@
+<div class="form-group hidden" id="dest_address">
+	<label for="address" class="control-label">Address:</label>
+	<select class="form-control" required style="height:48px;" name="pick_up_add" id ="id_pick_up_add">
+		<option value="{{WHaddress.id}}">{{WHaddress.full_address}}</option>
+	</select>
+	<input type="hidden" name="pickup_origin" value="{{first_warehouse}}">
+</div>

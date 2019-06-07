@@ -1,0 +1,206 @@
+{% extends 'base/zpn_modal_popup.html' %}
+{% load activelink %}
+
+{% block inner_content %}
+  <form id="upload_invoices" method="POST" enctype="multipart/form-data" >
+    {% csrf_token %}
+    <input type="hidden" name="suggesstedbox" value = "{{ suggestedWeight }}" />
+    <input type="hidden" id = "id_packaging_choice" name="" value= "" />
+
+    <div class="form two" style="padding-bottom:15px;">
+        <div style="padding:10px;">
+            <div class="col-md-12" style="padding-top:10px;">
+                <p style="margin:0;">
+                  <strong id="title_1">Upload invoices for the items in this package</strong>
+                  <strong id = "title_2" class="hidden">Select the item(s) to put in this box. You can create multiple boxes.</strong>
+                </p><br/>
+            </div>
+
+            <div id = "billmelater_info" class="hidden">
+                <div class="col-md-12">
+                    <strong>You want us to measure your packages, determine and bill for your shipping cost later?</strong>
+                </div>
+                <div class="col-md-12">
+                    <p>
+                        If yes, please upload your invoices below. You will be charged <strong>dynamic shipping unit cost</strong> depending on the volume of your order.
+                      </p>
+                      <p> &nbsp; </p>
+                </div>
+            </div>
+
+            <hr style="margin-top:5px;" />
+            <br/>
+              <table class="table table-stripped" id = "item_selection_table" >
+                <thead>
+                  <th class="item_selector_all hidden" >
+                    <input class="select-all" type="checkbox" name="selected_all_items" id ="select_all_items"/>
+                  </th>
+                  <th>S/N</th>
+                  <th>Description</th>
+                  <th>Tracking Num</th>
+                  <th>Qty</th>
+                  <th>Amount</th>
+                </thead>
+                <tbody>
+                    {% for item in item_list %}
+                      <tr class = "tr_item">
+                        <td class="item_selector hidden">
+                          <input class="selected-items" type="checkbox" name="selected_item" value = "{{ item.pk }}" checked />
+                        </td>
+                        <td> {{ forloop.counter }} </td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.courier_tracking_number }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>$ {{ item.total_value }}</td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+
+
+              <div id="package_dimension" class="hidden">
+                  <p> &nbsp; </p>
+                  <div style="padding:5px;">
+                    <strong id="error_message"></strong>
+                  </div>
+                  <input type="hidden" name="weight_factor" id ="id_weight_factor" value = "{{ costcalc.dim_weight_factor }}" />
+                  <input type="hidden" name="lb_kg_factor" id ="id_lb_kg_factor" value = "{{ costcalc.lb_kg_factor }}" />
+
+                  <!-- <div class="col-md-12">
+                    <strong> Enter Package Dimension</strong>
+                  </div> -->
+                  <div class="panel panel-success">
+                    <div class="panel-heading"><strong> Enter Package Dimension</strong></div>
+                    <div class="panel-body">
+
+                    <div class="col-md-6">
+                        <label class="inpl">Length:</label>
+                        {{form2.box_length}}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="inpl">Width:</label>
+                        {{form2.box_width}}
+                    </div>
+                    <div class="col-md-6" style="padding-top:30px;">
+                        <label class="inpl">Height:</label>
+                        {{form2.box_height}}
+                    </div>
+                    <div class="col-md-6" style="padding-top:30px;">
+                        <label class="inpl">Weight:</label>
+                        {{form2.box_weight_Actual}}
+                    </div>
+                    <!-- <div class="col-md-6"> &nbsp; </div> -->
+                    <div class="col-md-12" style="padding-top:30px;">
+                      {% for weight_unit in form2.weight_unit %}
+                        <span class="checkb three">
+                          {{ weight_unit.tag }}
+                          <label>{{ weight_unit.choice_label }} </label>
+                        </span>
+                      {% endfor %}
+                    </div>
+
+                      </div>
+                    </div>
+              </div> <!-- ends package dimension div -->
+
+            <div class="col-md-12 upload_div upload_invoice container" >
+                <div class="upld_outer">
+                    <div class="upld">
+                        <input type="file" name="pic" class="inpp">
+                    </div>
+                    <label class="inpl file_name">Attach Invoice</label>
+                </div>
+            </div>
+        </div>
+        <div id="image-thumbnail">
+        </div>
+
+        <hr style="margin-top:0;" />
+        <div class="col-md-12" style="padding:15px;">
+            <span class="checkb noinvoice">
+                <input type="hidden" name="i_accept_no_invoice" id="id_i_accept_no_invoice" val="no"/>
+                <input type="checkbox" name="no_invoice" id="id_no_invoice" style="width: auto !important;" onclick='return show_hide_warning()'/>
+            </span>
+            <p style="padding-left:27px; margin:0; float:left; margin-top:0px; z-index:1;" class="noinvoice">
+              <strong style="color:#000; text-transform:uppercase;">I don't have an invoice.</strong>
+                <span id="no_invoice_text">I don't have an invoice for the items listed above.</span>
+            </p>
+            <p> &nbsp; </p>
+            <p> &nbsp; </p>
+            <div class="row" style="padding:10px;">
+              <button class="pull-right btn btn-success" id="id_upload_invoices" onclick='return validateItemsCountAndInvoice()'>Proceed</button>
+            </div>
+            <!-- <p> &nbsp; </p>                   -->
+            <!-- <div class="alert alert-warning" role="alert" style="margin-top:15px; margin-bottom:0;"> -->
+                <div class="panel panel-danger bg-danger hidden" id ="no_invoice_warning" role="alert" style="margin-top:15px; padding:10px; margin-bottom:5px;">
+                  <div class="panel-body" style="background-color: #f1c40f;">
+                    <strong>You have selected that you do not have an invoice</strong>
+                    <br/> 1. Not attaching an invoice may delay the processing of your booking.
+                    <br/> 2. You hereby declare that you are the rightful owner of the items contained in this shipment.
+                    <br/>3. You hereby declare that no part of the items contained in this shipment has been procured by fraud, theft, deceit, or any other illegal means.
+                    <br/>4. You fully and knowingly agree that if your items or booking is suspected to be of fraudulent origins, you WILL be required to provide a valid proof of ownership before your items can be shipped out.
+                    <br/>5. You fully and knowingly agree to the additional scrutiny that may be placed on this booking which may cause delays to your shipment.
+                    <br/>6. You fully and knowingly agree that you have been informed that if your items are determined to be of fraudulent origins, we are obligated to report and submit details such as your registered names, email, phone number and banking data to the security agencies in {{ request.session.shipping_origin }} and {{ request.session.shipping_destination }}.
+                    <div style="padding-top:15px;">
+                      <a href="#" id="i_accept" class="btn pull-right btn-danger">I Accept</a>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+  </form>
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+
+      function round(value, decimals) {
+          return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+        }
+
+      function check_package_weight(){
+        var total_dim_weight_lb        =       0.0;
+        var total_actual_weight_lb     =       0.0;
+        var weight_unit_lb          =       document.getElementById('id_weight_unit_1');
+        var weight_unit_kg          =       document.getElementById('id_weight_unit_0');
+        var weight_actual           =       document.getElementById('id_box_weight_Actual').value;
+        var height                  =       document.getElementById('id_box_height').value;
+        var length                  =       document.getElementById('id_box_length').value;
+        var width                   =       document.getElementById('id_box_width').value;
+        var weight_factor           =       document.getElementById('id_weight_factor').value;
+        var kg_lb_factor            =       2.20462
+        if (weight_unit_lb.checked){
+          total_dim_weight_lb         =       parseFloat((height * length * width)/weight_factor);
+          total_actual_weight_lb      =       parseFloat(weight_actual);
+        }
+        else if (weight_unit_kg.checked ) {
+          total_dim_weight_lb        =       parseFloat((height * length * width * kg_lb_factor)/weight_factor); // convert to lb dimensional weight
+          total_actual_weight_lb     =       parseFloat(weight_actual * kg_lb_factor); // convert to lb actual weight
+        }
+        var max_weight = Math.max(total_dim_weight_lb, total_actual_weight_lb);
+        total_weight   = round(max_weight, 2);
+      if (total_weight > 70.0) {
+          var msg = "<div class='panel panel-danger'><div class='panel-heading'>Maximum Weight Exceeded</div><div class='panel-body'>";
+          msg += "<span class='text-info'>Your box has an Actual weight<span class='text-danger'>*</span> of " + total_weight.toString() + "lb. You can create multiple boxes of 70lb or less.</span><br/>";
+          msg += "<small>Dimensional Lb Weight Formula: </small><small class='text-danger'>  box_length x box_width x box_height/164 </small><br/>";
+          msg += "<small>Dimensional Kg to Lb Weight Formula: </small><small class='text-danger'>  box_length x box_width x box_height x 2.20462/164 </small><br/><br/><span class='text-danger'>*</span><small>Actual weight is the higher of the calculated dimensional weight and the weight entered.</small></div>";
+          document.getElementById('error_message').innerHTML = msg;
+          document.getElementById('error_message').style.visibility = "visible";
+          document.getElementById('id_upload_invoices').style.visibility = "hidden";
+        } else {
+          document.getElementById('error_message').innerHTML = "";
+          document.getElementById('error_message').style.visibility = "hidden";
+          document.getElementById('id_upload_invoices').disabled = false;
+          document.getElementById('id_upload_invoices').style.visibility = "visible";
+        }
+    }
+  </script>
+{% endblock %}

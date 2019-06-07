@@ -1,0 +1,687 @@
+{% extends "base/zaposta_base.html" %}
+{% load humanize %}
+{% load activelink %}
+
+
+{% load account_standing %}
+<!-- load operation_countries -->
+{% load currency %}
+
+{% block title %}Select Box, Freight and Delivery Method{% endblock %}
+
+
+{% block extra_script %}
+    <!-- Special Font for Icons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="{{STATIC_URL}}zaposta/js/select_box_and_freight.js"></script>
+
+  <style>
+    .alert.alert-info.three {
+        background: #DA7070;
+        border-color: #DA7070;
+        color: #fff;
+      }
+    .error{
+      color: red;
+    }
+  </style>
+
+  <script>
+      $(".custom-option").on("click", function(){
+          $('.divLoading').addClass('show');
+            //console.log($(this).data("value"));
+            var selected_id = $(this).data("value");
+
+            var select = $(this).parents(".custom-select-wrapper").find("select");
+            var select_id = select.attr('id');
+            var selected_val = $("#"+select_id + " option:selected").text()
+            //console.log(selected_val)
+            //console.log(select_type);
+            //console.log(selected_val);
+            if (select_id == "selecteaboxId") {
+                showSuggestedBoxWidget(selected_val);
+            }else{
+                try{
+                    console.log(selected_val)
+                    //updateLocalShippingCost(selected_val);
+                    $("#id_location_id").val(selected_id)
+                }catch(e){
+                    console.log(e);
+                }
+
+            }
+
+            $this = $(this);
+            $.ajax({
+                url: "{% url 'shipping:get_local_freight_cost'  %}",
+                method: 'GET',
+                data: {'location_id': selected_id},
+                success: function(data){
+                  $('.divLoading').removeClass('show');
+                  //console.log(data)
+                  //console.log($this.parent().parent().parent().parent().parent().parent().parent().find('.total'));
+                  $this.parent().parent().parent().parent().parent().parent().parent().find('.total').html('<span style="display: block"> + $'+data.local_freight_cost_D + ' / {% country_currency_code lb_country %}&nbsp;'+data.local_freight_cost_N + '</span>');
+                }
+            });
+
+
+    });
+
+  </script>
+
+  <script>
+    jQuery.validator.addMethod("numericCheck", function (value, element){
+    return this.optional(element) || /^[0-9\.]+$/.test(value) && (parseFloat(value) > 0);
+  }, "* Value must be a postive integer");
+
+    $('#upload_invoices').validate({
+      rules: {
+			  box_length: {numericCheck : true },
+			  box_width: {numericCheck : true },
+			  box_height: {numericCheck : true },
+				box_weight_Actual: {numericCheck: true},
+			}
+    })
+  </script>
+
+  <script>
+
+      $('body').on('click','#air-freight-charge',function(){
+        $('.air-freight').removeClass('hidden');
+        $('.sea-freight').addClass('hidden');
+        $('.express-freight').addClass('hidden');
+      });
+
+      $('body').on('click','#sea-freight-charge',function(){
+        $('.air-freight').addClass('hidden');
+        $('.sea-freight').removeClass('hidden');
+        $('.express-freight').addClass('hidden');
+      });
+
+      $('body').on('click','#express-freight-charge',function(){
+        $('.express-freight').removeClass('hidden');
+        $('.air-freight').addClass('hidden');
+        $('.sea-freight').addClass('hidden');
+      });
+
+  </script>
+{% endblock %}
+
+
+
+
+
+
+
+{% block extra_head_3 %}
+{% endblock %}
+
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+
+
+
+{% block st_content %}
+  {% with service_chain=active_service_chain %}
+<!-- this is the wrapper for the content -->
+<div class="st-content-inner">
+  <!-- extra div for emulating position:fixed of the menu -->
+  <!-- Steps Section -->
+  <section id="steps" {% ifactive 'shopping:select_box_and_freight' %}class="three tt" {% else %} class="tt" {% endifactive %}>
+      <div class="white"></div>
+      <!-- Page -->
+    <form id="proceed_form" action="" method="POST">
+      {% csrf_token %}
+
+        <div class="container page">
+      {% ifnotactive 'shipping:quick_estimate' %}
+            {% include 'zaposta_snippet/order_placement_stages.html' with active_page=4 %}
+      {% else %}
+      <div class="breadcrumbs">
+      </div>
+      {% endifnotactive %}
+          <div class="col-md-8 content_outer">
+              <div class="col-md-12 content four" style="padding-bottom:0;">
+                      <div class="header">Shipping - Shipping Box and Shipping Method </div>
+                  <div class="credit two">
+                      {% if messages %}
+                        <p> &nbsp; </p>
+                        <div class="col-md-12" style="padding-top:0; ">
+                          {% for msg in messages %}
+                          <div class="{% ifactive 'shopping:select_box_and_freight' %}alert alert-info{% else %}alert alert-info two{% endifactive %} {% if msg.level_tag == 'error' %}three{% endif %}" role="alert"> {{msg|safe}} </div>
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+
+
+                      {% if not added_suggested_box and not accept_do_later %}
+                        {% if suggestedWeight > 0 %}
+                          {% if not custom_box_created %}
+                              {% if handling_option == "send-from-shop" or handling_option != "send-from-shop" and suggestedWeight <= 70 %}
+                                <div class="col-md-12">
+                                    <h1>Suggested weight for your items</h1>
+                                    <p style="padding-top:20px;">This is only an approximation. You will only be charged for the actual weight of your package. </p>
+                                </div>
+                                <div class="col-md-12">
+                                  <div {% ifactive 'shopping:select_box_and_freight' %}class="panel blue dark"{% else %} class="panel green dark"{% endifactive %} style="min-height:168px;">
+                                      <div class="col-md-6">
+                                        <p>Use our suggested weight for
+                                          <br/> <strong>{{matchingKeywords_info}}</strong><br/>
+                                        </p>
+                                      </div>
+                                      <div class="col-md-5" style="float:right; min-height:167px;">
+                                          <h2>{{suggestedWeight|floatformat:"1"}} lbs  ({{suggestedWeight_K|floatformat:"1"}}kg)</h2>
+                                          <a href="" data-target="#id_upload_invoice" data-toggle="modal" class="btn" name="suggestedbox" value="{{suggestedWeight}}" onclick='return update_choice("suggestedbox", {{ suggestedWeight }})'>Accept</a>
+                                          <!-- <button class="btn" name="suggestedbox" value="{{suggestedWeight}}">Accept</button> -->
+                                      </div>
+                                  </div>
+                                </div>
+                                <p> &nbsp; </p>
+
+                                <div class="text-center"> <strong> <p>====== OR ====== </p></strong></div>
+
+                                <div style="padding:10px;">
+                                  <strong>Use the <span class="text-primary">Create Custom Boxes</span> link below to create boxes for your packages.
+                                    {% if handling_option == "send-from-shop" %} OR <span class="text-primary">Let Us Do It For You.</span>{% endif %}</strong>
+                                </div>
+                              {% else %}
+                                <p> &nbsp; </p>
+                                <div style="padding-left:10px;"> <strong>Use the <span class="text-primary">Create Custom Boxes</span> link below to create boxes for your packages. <br/><span class="text-success">You can create multiple boxes of <span class="text-danger">70 lbs maximum weight</span> per box for all your items.</span></strong> </div>
+                                <p> &nbsp; </p>
+                              {% endif %}
+                          {% endif %}
+
+
+                          {% if item_list.count > 0 %}
+                            <!-- <p> &nbsp; </p>
+                            <div style="padding-left:10px;"> <strong>Use the <span class="text-primary">Create Custom Boxes</span> link below to create customise boxes for your packages <br/><span class="text-success">You can create multiple boxes of <span class="text-danger">70 lbs maximum weight</span> per box for all your items.</span></strong> </div>
+                            <p> &nbsp; </p> -->
+
+                            <ul class="nav nav-tabs two" role="tablist">
+                              <li role="presentation">
+                                <a href="#t2" data-target="#id_upload_invoice" class="text-success" data-toggle="modal" onclick='return update_choice("enterdimension","enterdimension")' style="color: #222222 !important;">CREATE CUSTOM BOX(ES)</a>
+                              </li>
+
+                              {% if not custom_box_created %}
+                                {% if handling_option == "send-from-shop" %}
+                                  <li role="presentation">
+                                    <a href="#t3" data-target="#id_upload_invoice" data-toggle="modal" id = "do-it-later" onclick='return update_choice("accept_do_later","accept_do_later")' style="color: #222222 !important;">LET US DO IT FOR YOU</a>
+                                  </li>
+                                {% endif %}
+                              {% endif %}
+
+                              <li></li>
+                            </ul>
+                          {% endif %}
+
+                        {% endif %}
+                      {% endif %}
+
+
+
+                      <!-- Tab panes -->
+                      <div class="tab-content">
+                          <!-- Tab T1 -->
+                          <div role="tabpanel" class="tab-pane active" id="t1" {% if not added_suggested_box and not accept_do_later and not all_packages_created %} style="min-height: 10px;" {% endif %}>
+                          <div class="col-md-12" style="padding-top:0;">
+                            <h1>General Information  </h1>
+                          </div>
+
+                          <!-- <div class="col-md-12" style="padding-top:0;">
+                            <p></p>
+                          </div> -->
+
+
+
+
+
+                                    <!--{% if maxShippingWeight > 0 %}
+                                    <div {% ifactive 'shopping:select_box_and_freight' %}class="breadcr"{% else %} class="breadcr two"{% endifactive %}>
+                                        <ul>
+                                            <li style="z-index:5;" {% if maxShippingWeight > 0 and maxShippingWeight <= 4 %}class="active" {% endif %}>
+                                                <h3>0 - 4 lbs</h3>
+                                                <div class="col-md-6 o">
+                                                    <i class="fa fa-plane"></i> {% country_currency_v1 country %}{{unitAirFreight1Cost|floatformat:2}}/lb
+                                                </div>
+                                                <div class="col-md-6" style="padding-left:0; padding-right:10px;">
+                                                    {% country_currency_v1 country %}{{unitSeaFreight1Cost|floatformat:2}}/lb
+                                                    <i class="fa fa-ship"></i>
+                                                </div>
+                                                <span></span>
+                                            </li>
+                                            <li style="z-index:4;" {% if maxShippingWeight > 4 and maxShippingWeight <= 10 %}class="active" {% endif %}>
+                                                <h3>4 - 10 lbs</h3>
+                                                <div class="col-md-6 o">
+                                                    <i class="fa fa-plane"></i> {% country_currency_v1 country %}{{unitAirFreight2Cost|floatformat:2}}/lb
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {% country_currency_v1 country %}{{unitSeaFreight2Cost|floatformat:2}}/lb
+                                                    <i class="fa fa-ship"></i>
+                                                </div>
+                                              <span></span>
+                                            </li>
+                                            <li style="z-index:3;" {% if maxShippingWeight > 10 and maxShippingWeight <= 20 %}class="active" {% endif %}>
+                                                <h3>10 - 20 lbs</h3>
+                                                <div class="col-md-6 o">
+                                                    <i class="fa fa-plane"></i> {% country_currency_v1 country %}{{unitAirFreight3Cost|floatformat:2}}/lb
+                                                </div>
+                                                <div class="col-md-6">
+                                                {% country_currency_v1 country %}{{unitSeaFreight3Cost|floatformat:2}}/lb
+                                                    <i class="fa fa-ship"></i>
+                                                </div>
+                                              <span></span>
+                                            </li>
+                                            <li style="z-index:2;" {% if maxShippingWeight > 20 and maxShippingWeight <= 50 %}class="active" {% endif %}>
+                                                <h3>20 - 50 lbs</h3>
+                                                <div class="col-md-6 o">
+                                                    <i class="fa fa-plane"></i> {% country_currency_v1 country %}{{unitAirFreight4Cost|floatformat:2}}/lb
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {% country_currency_v1 country %}{{unitSeaFreight4Cost|floatformat:2}}/lb
+                                                    <i class="fa fa-ship"></i>
+                                                </div>
+                                              <span></span>
+                                            </li>
+                                            <li style="z-index:1;" {% if maxShippingWeight > 50 %}class="active" {% endif %}>
+                                                <h3>50+ lbs</h3>
+                                                <div class="col-md-6 o">
+                                                    <i class="fa fa-plane"></i> {% country_currency_v1 country %}{{unitAirFreight5Cost|floatformat:2}}/lb
+                                                </div>
+                                                <div class="col-md-6">
+                                                    {% country_currency_v1 country %}{{unitSeaFreight5Cost|floatformat:2}}/lb
+                                                    <i class="fa fa-ship"></i>
+                                                </div>
+                                              <span></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                              {% endif %}
+                            -->
+
+                                <div class="col-md-12">
+                                    <div class="alert alert-warning air-freight" role="alert">
+                                      <strong>Current Shipping Rate</strong>
+                                      You are shipping {{maxShippingWeight|floatformat:2}}lbs ({{maxShippingWeight_kg|floatformat:2}}kg). Your shipping rate is {% country_currency_v1 country %}{{costPerLbAir|floatformat:2}}/lbs.
+                                    </div>
+
+                                    <div class="alert alert-warning sea-freight hidden" role="alert">
+                                      <strong>Current Shipping Rate</strong>
+                                      You are shipping {{maxShippingWeight|floatformat:2}}lbs ({{maxShippingWeight_kg|floatformat:2}}kg). Your shipping rate is {% country_currency_v1 country %}{{costPerLbSea|floatformat:2}}/lbs.
+                                    </div>
+
+                                    <div class="alert alert-warning express-freight hidden" role="alert">
+                                      <strong>Current Shipping Rate</strong>
+                                      You are shipping {{maxShippingWeight|floatformat:2}}lbs ({{maxShippingWeight_kg|floatformat:2}}kg). Your shipping rate is {% country_currency_v1 country %}{{costPerLbExpress|floatformat:2}}/lbs.
+                                    </div>
+                                </div>
+
+            <!-- {% if not added_suggested_box and not accept_do_later %}
+              {% if suggestedWeight > 0 %}
+                <div class="col-md-12">
+                    <h1>Suggested weight for your items</h1>
+                </div>
+                <div class="col-md-12">
+                    <div {% ifactive 'shopping:select_box_and_freight' %}class="panel blue dark"{% else %} class="panel green dark"{% endifactive %}>
+                        <div class="col-md-6">
+                            <p>Use our suggested weight for
+                                <br/> <strong>{{matchingKeywords_info}}</strong>
+                            </p>
+                        </div>
+                        <div class="col-md-5" style="float:right;">
+                            <h2>{{suggestedWeight|floatformat:"1"}} lbs  ({{suggestedWeight_K|floatformat:"1"}}kg)</h2>
+                            <button class="btn" name="suggestedbox" value="{{suggestedWeight}}">Accept</button>
+                        </div>
+                    </div>
+                </div>
+              {% endif %}
+            {% endif %} -->
+                            <!-- <div class="" id="delivery_method_div"> -->
+                            {% if added_suggested_box or accept_do_later or all_packages_created %}
+                                <div class="col-md-12">
+                                    <h1>Select a delivery method</h1>
+                                </div>
+                                <div class="col-md-12" style="padding-bottom:0;">
+                              {% else %}
+                                  <div class="col-md-12 hidden" style="padding-bottom:0;">
+                              {% endif %}
+
+
+
+                              <!-- {% if package_created %}
+                                  <div class="col-md-12" style="padding-bottom:0;" >
+                              {% else %}
+                                  <div class="col-md-12 hidden" style="padding-bottom:0;">
+                              {% endif %} -->
+                                  <div class="devtab">
+                                      <!-- Nav tabs -->
+                                      <ul class="nav nav-tabs two" role="tablist">
+                                          <li role="presentation" {% if service_chain.air %}class="active"{% endif %}>
+                                            <a href="#dev1" aria-controls="dev1" role="tab" id="air-freight-charge" data-toggle="tab">Air Freight</a>
+                                          </li>
+
+                                          <li role="presentation" {% if service_chain.sea and not service_chain.express %}class="active"{% endif %}>
+                                            <a href="#dev2" aria-controls="dev2" role="tab" id="sea-freight-charge" data-toggle="tab">Sea Freight</a>
+                                          </li>
+
+                                        <li role="presentation" {% if service_chain.express and not service_chain.sea %}class="active"{% endif %}>
+                                            <a href="#dev3" aria-controls="dev3" role="tab" id="express-freight-charge" data-toggle="tab">Express Air</a>
+                                          </li>
+
+                                      </ul>
+                                      <!-- Tab panes -->
+
+                                      <div class="tab-content">
+                                          <div role="tabpanel" class="tab-pane {% if service_chain.air %}active{% endif %}" id="dev1">
+                                              <div {% ifactive 'shopping:select_box_and_freight' %}class="tabh"{% else %} class="tabh two"{% endifactive %}>
+                                                  {% if service_chain.air and airFreight != 0.0 %}
+                                                      <div class="header">
+                                                          <h2><span>Air Freight </span> <span>{{ service_chain.air_delivery_time }}</span></h2>
+                                                          <div class="total"><span>Cost:</span> {% country_currency_v1 country %}{{airFreight|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{airFreight_N|floatformat:2|intcomma}}</div>
+                                                      </div>
+
+                                                      <!-- row -->
+                                                      {% if office_pickup_locations %}
+                                                      <div class="col-md-12" style="z-index:4;">
+                                                          <span class="checkb">
+                                                              <input type="radio" name="delivery_method" value="AF - OP" class="delivery_method_radio"/>
+                                                          </span>
+                                                          <p>Office Pick-Up</p>
+
+                                                          <div class="search_outer" style="display: none;">
+                                                              <div class="col-md-6" style="float:left; padding-left:0; padding-top:15px;">
+
+                                                                  <div class="select_scroll">
+                                                                    <!-- Select -->
+                                                                    <select name="sources" id="dm_location" class="custom-select sources" placeholder="Choose PickUp Location">
+                                                                      {% for location in office_pickup_locations %}
+                                                                        <option value="{{ location.id }}" >{{ location.city }} - {{ location.state}}</option>
+                                                                      {% endfor %}
+                                                                    </select>
+                                                                    <!-- Select -->
+                                                                  </div>
+
+                                                              </div>
+                                                          </div>
+                                                          <div class="total"></div>
+                                                      </div>
+                                                      {% endif %}
+
+                                                      <div class="col-md-12">
+                                                          <span class="checkb">
+                                                               <input type="radio" name="delivery_method" value="AF - HD" class="delivery_method_radio"/>
+                                                          </span>
+                                                          <p>Home Delivery</p>
+
+                                                      </div>
+                                                  {% else %}
+                                                    <div class="header">
+                                                      <h2><span>Air Freight unavailable</span></h2>
+                                                    </div>
+                                                  {% endif %}
+                                                  <!-- row -->
+                                              </div>
+                                          </div>
+                                        <!--  else
+                                            <strong> &nbsp; No Air freight delivery option found</strong><br/>
+                                         endif  -->
+
+
+
+                                          <div role="tabpanel" class="tab-pane {% if service_chain.sea and not service_chain.express %}active{% endif %}" id="dev2">
+                                              <div {% ifactive 'shopping:select_box_and_freight' %}class="tabh"{% else %} class="tabh two"{% endifactive %}>
+                                                  {% if service_chain.sea and seaFreight != 0.0 %}
+                                                      <div class="header">
+                                                          <h2><span>Sea Freight</span> <span>
+                                                          {{ service_chain.sea_delivery_time }}</span></h2>
+                                                          <div class="total"><span>Cost:</span> {% country_currency_v1 country %}{{seaFreight|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{seaFreight_N|floatformat:2|intcomma}}</div>
+                                                      </div>
+
+                                                      <!-- row -->
+                                                      {% if office_pickup_locations %}
+                                                      <div class="col-md-12" style="z-index:4;">
+                                                          <span class="checkb">
+                                                            <input type="radio" name="delivery_method" value="SF - OP" class="delivery_method_radio"/>
+                                                          </span>
+                                                          <p>Office Pick-Up</p>
+
+
+                                                          <div class="search_outer">
+                                                              <div class="col-md-6" style="float:left; padding-left:0; padding-top:15px;">
+                                                                  <div class="select_scroll">
+                                                                    <!-- Select -->
+                                                                    <select name="sources" id="dm_location" class="custom-select sources" placeholder="pick up location">
+                                                                      <!-- <option value="no selection"> select location </option> -->
+                                                                      {% for location in office_pickup_locations %}
+                                                                        <option value="{{ location.id }}" >{{ location.city }} - {{ location.state}}</option>
+                                                                      {% endfor %}
+                                                                    </select>
+                                                                    <!-- Select -->
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+                                                          <div class="total"></div>
+                                                          <!--<div class="total"><span>Cost: </span> + {% country_currency_v1 country %}{{officePickupInLag|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{officePickupInLag_N|floatformat:2|intcomma}}</div>-->
+                                                      </div>
+                                                      {% endif %}
+
+                                                      <div class="col-md-12">
+                                                          <span class="checkb">
+                                                          <input type="radio" name="delivery_method" value="SF - HD" class="delivery_method_radio"/>
+                                                          </span>
+                                                          <p>Home Delivery </p>
+                                                          <!--<div class="total"><span>Cost:</span> + {% country_currency_v1 country %}{{homeDelivOutLag|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{homeDelivOutLag_N|floatformat:2|intcomma}}</div>-->
+                                                      </div>
+                                                  {% else %}
+                                                      <div class="header">
+                                                        <h2><span>Sea Freight unavailable</span></h2>
+                                                      </div>
+                                                  {% endif %}
+
+                                              </div>
+                                          </div>
+                                          <!--  else
+                                            <strong> &nbsp; No Sea Freight delivery option found</strong><br/>
+                                           endif -->
+
+                                          <div role="tabpanel" class="tab-pane {% if service_chain.express and not service_chain.sea %}active{% endif %}" id="dev3">
+                                              <div {% ifactive 'shopping:select_box_and_freight' %}class="tabh"{% else %} class="tabh two"{% endifactive %}>
+                                                  {% if service_chain.express and expressFreight != 0.0 %}
+                                                      <div class="header">
+                                                          <h2><span>Express Air </span> <span>{{ service_chain.express_delivery_time }}</span></h2>
+                                                          <div class="total"><span>Cost:</span> {% country_currency_v1 country %}{{expressFreight|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{expressFreight_N|floatformat:2|intcomma}}</div>
+                                                      </div>
+
+                                                      <!-- row -->
+                                                      {% if office_pickup_locations %}
+                                                      <div class="col-md-12" style="z-index:4;">
+                                                          <span class="checkb">
+                                                              <input type="radio" name="delivery_method" value="EX - OP" class="delivery_method_radio"/>
+                                                          </span>
+                                                          <p>Office Pick-Up</p>
+
+                                                          <div class="search_outer" style="display: none;">
+                                                              <div class="col-md-6" style="float:left; padding-left:0; padding-top:15px;">
+
+                                                                  <div class="select_scroll">
+                                                                    <!-- Select -->
+                                                                    <select name="sources" id="dm_location" class="custom-select sources" placeholder="Choose PickUp Location">
+                                                                      {% for location in office_pickup_locations %}
+                                                                        <option value="{{ location.id }}" >{{ location.city }} - {{ location.state}}</option>
+                                                                      {% endfor %}
+                                                                    </select>
+                                                                    <!-- Select -->
+                                                                  </div>
+
+                                                              </div>
+                                                          </div>
+                                                          <div class="total"></div>
+                                                      </div>
+                                                      {% endif %}
+
+                                                      <div class="col-md-12">
+                                                          <span class="checkb">
+                                                               <input type="radio" name="delivery_method" value="EX - HD" class="delivery_method_radio"/>
+                                                          </span>
+                                                          <p>Home Delivery</p>
+
+                                                      </div>
+                                                  {% else %}
+                                                    <div class="header">
+                                                      <h2><span>Express Air unavailable</span></h2>
+                                                    </div>
+                                                  {% endif %}
+                                                  <!-- row -->
+                                              </div>
+                                          </div>
+
+                                          <!--<input type="hidden" name="delivery_zone" id="id_delivery_zone"/>-->
+                                          <input type="hidden" name="location_id" id="id_location_id"/>
+
+
+                      <!--Addtional variables for delivery options--->
+                      <!--<input type="hidden" name="delivery_zone" id="id_delivery_zone"/>
+                      <input type="hidden" name="delivery_city" id="id_delivery_city"/>-->
+
+
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+            <!-- Tab T2 -->
+            <div role="tabpanel" class="tab-pane" id="t2" style="padding-top:45px;">
+                <!-- <div class="col-md-6">
+                    <label class="inpl">Length:</label>
+                    {{form2.box_length}}
+                </div>
+                <div class="col-md-6">
+                    <label class="inpl">Width:</label>
+                    {{form2.box_width}}
+                </div>
+                <div class="col-md-6" style="padding-top:30px;">
+                    <label class="inpl">Height:</label>
+                    {{form2.box_height}}
+                </div>
+                <div class="col-md-6" style="padding-top:30px;">
+                    <label class="inpl">Weight:</label>
+                    {{form2.box_weight_Actual}}
+                </div>
+                <div class="col-md-6" style="padding-top:30px;">
+                    <label class="inpl">Quantity:</label>
+                    {{form2.box_quantity}}
+                </div>
+                <div class="col-md-6" style="padding-top:30px;">
+                  {% for weight_unit in form2.weight_unit %}
+                  <span class="checkb three">
+                    {{ weight_unit.tag }}
+                    <label>{{ weight_unit.choice_label }} </label>
+                  </span>
+                {% endfor %}
+              </div> -->
+              <!-- {% if item_list %} -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <!-- <br/><br/>
+                    <strong> &nbsp; Select the item(s) you want to put in this box. You can create multiple boxes for different items</strong> -->
+                    <!-- <table width="100%">
+                      <thead>
+                        <th><input class="selected-items" type="checkbox" name="selected_all_items" /></th>
+                        <th>Description</th>
+                        <th>Tracking Num</th>
+                        <th>Qty</th>
+                        <th>Amount</th>
+                      </thead>
+                      <tbody>
+                        {% for item in item_list %}
+                          <tr>
+                            <td><input class="selected-items" type="checkbox" name="selected_item" value = "{{ item.pk }}" /></td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.courier_tracking_number }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>$ {{ item.total_value_N }}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table> -->
+                  </div>
+                </div>
+                <!-- <div class="col-md-6" style="padding-top:30px; float:right;">
+                    <button name="enterdimension" id="calc_shipping_estimate" class="btn yellow" style="width:76%; float:right;">Create Box</button>
+                </div> -->
+              <!-- {% endif %} -->
+            </div>
+
+                <!-- Tab T3 -->
+                <!-- <div role="tabpanel" class="tab-pane" id="t3">
+                    <div class="col-md-12">
+                        <p>You want us to measure your packages, determine and bill for your shipping cost later?</p>
+                    </div>
+                    <div class="col-md-12">
+                        <p>
+                            If yes, please click the "Accept" button below. You will be charged <strong>dynamic shipping unit cost</strong> depending on the volume of your order.</p>
+                    </div>
+                    {% ifnotactive 'shipping:quick_estimate' %}
+                    <div class="col-md-6" style="padding-top:30px; float:right;">
+                        <button name="accept_do_later" class="btn yellow" style="width:76%; float:right;">Accept</button>
+                        <button name="accept_do_later" class="btn yellow" style="width:76%; float:right;">Accept</button>
+                    </div>
+                    {% endifnotactive %}
+                </div> -->
+
+            </div>
+        </div>
+          </div>
+      </div>
+
+      <!-- Standing -->
+              <div class="standing col-md-4">
+              <!-- Package List  -->
+              {% include 'zaposta_snippet/packages_list.html' with proceed_type="import" %}
+              </div>
+              <!-- Bottom -->
+              <div class="bottom">
+                {% ifnotactive 'shipping:quick_estimate' %}
+                  {% ifactive 'shopping:select_box_and_freight' %}
+                    <a href="{% url 'shopping:shopping_cart' %}" class="btn prev"><img src="{{STATIC_URL}}zaposta/img/arrow_left.png">Previous Step</a>
+                    <button name="proceed" class="btn next blue" onclick="return validateDeliveryOption();">Next Step<img src="{{STATIC_URL}}zaposta/img/arrow_right.png"></button>
+                  {% else %}
+                    <a href="{% url 'shipping:add_item_page' %}" class="btn prev"><img src="{{STATIC_URL}}zaposta/img/arrow_left.png">Previous Step</a>
+                    <button name="proceed" class="btn next green" onclick="return validateDeliveryOption();">Next Step<img src="{{STATIC_URL}}zaposta/img/arrow_right.png"></button>
+                  {% endifactive %}
+                {% else %}
+                    <a href="{% url 'general:my_account' %}" class="btn next green">Finish</a>
+                {% endifnotactive %}
+              </div>
+                <!-- Bottom -->
+            </div>
+
+    </form>
+      <!-- Page -->
+  </section>
+  <!-- Steps Section -->
+
+  <!-- FOOTER  -->
+   {% include "zaposta_snippet/footer_v2.html" %}
+  <!-- FOOTER  -->
+
+  <!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endwith %}
+{% endblock st_content %}
+
+{% block popup %}
+  {{ block.super }}
+  {% include 'shipping_snippet/upload-package-invoice.html' with modal_id="id_upload_invoice" %}
+{% endblock popup %}
+
+<!-- block operation_countries
+     operatingcountries request.user.is_staff
+ endblock -->
+
+{% block scroll %}
+{% endblock %}

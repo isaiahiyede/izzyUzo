@@ -1,0 +1,157 @@
+{% extends 'setup/add-service.html' %}
+
+{% block searchbar %}{% endblock %}
+
+{% block body %}<body class="admin">{% endblock %}
+
+{% block inner_content %}
+<!-- Inner content -->
+<div class="inner">
+    <!-- Scrollable Content -->
+    <div class="scrollable">
+
+        <div class="container">
+            <div class="row-fluid">
+
+                <div class="col-md-12 main_title">
+                    <h1>Country Settings</h1>
+                    <a href="#" class="btn black" style="float: right; top: -67px; position: relative;">Add country</a>
+                </div>
+                
+                {% for country in available_countries %}
+                <!-- Dropdown Element -->
+                <div class="col-md-12 houter">
+                    <div class="panel hitem">
+                        <h1>{{ country.name }}</h1>
+
+                        <a href="#" class="trigger">
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <a href="#" class="trigger four">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                        <a href="#" class="trigger two">
+                            <i class="fa fa-ban"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-9 col-md-offset-3 subcontent">
+                        <div class="col-md-12 title">
+                            <h2>Local Distribution Companies:</h2>
+                            <a href="#" class="btn black">Add more companies</a>
+                        </div>
+                        <!-- Country - City Name -->
+                        <div class="col-md-12 it_outer" style="padding-bottom:0;">
+                            {% for localdistribution in country.localdistributionmember_set.all %}
+                            <div class="panel it">
+                                <h2>{{ localdistribution.courier_name }}</h2>
+                                <a href="#" class="trigger">
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                                <a href="#" class="trigger four">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                                <a href="#" class="trigger two">
+                                    <i class="fa fa-ban"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-9 col-md-offset-3 subcontent">
+                                
+                                <div class="col-md-12 title">
+                                    <h2>Regions:</h2>
+                                    <a href="#" class="btn black">Add more regions</a>
+                                </div>
+                                
+                                {% for region in localdistribution.localdistributorregion_set.all %}
+                                <div class="col-md-12 it_outer two" style="padding:30px; padding-bottom:0px;">
+                                    <div class="panel it">
+                                        <h2>{{ region.name }}</h2>
+                                        <a href="#" class="trigger">
+                                            <i class="fa fa-chevron-down"></i>
+                                        </a>
+                                        <a href="#" class="trigger three">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>
+                                        <a href="#" class="trigger two">
+                                            <i class="fa fa-ban"></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-9 col-md-offset-3 subcontent two">
+                                        <div class="col-md-12 title">
+                                            <h2>Locations:</h2>
+                                            <a href="#" class="trigger">
+                                                <i class="fa fa-chevron-down"></i>
+                                            </a>
+                                            <a href="#" class="trigger three">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                            <a href="#" class="trigger two">
+                                                <i class="fa fa-ban"></i>
+                                            </a>
+                                        </div>
+                                        {% for location in region.localdistributorlocation_set.all %}
+                                        <div class="col-md-12 it_outer" style="padding:30px; padding-bottom:0px;">
+                                            <div class="panel it">
+                                                <h2>{{ location.city }}</h2>
+                                                <a href="#" class="trigger three">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </a>
+                                                <a href="#" class="trigger two">
+                                                    <i class="fa fa-ban"></i>
+                                                </a>
+                                            </div>
+                                            
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-9 col-md-offset-3 subcontent two">
+                                        
+                                        <div class="col-md-12 title">
+                                            <h2>Cost Range:</h2>
+                                            <a href="#" class="trigger">
+                                                <i class="fa fa-chevron-down"></i>
+                                            </a>
+                                            <a href="#" class="trigger three">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                            <a href="#" class="trigger two">
+                                                <i class="fa fa-ban"></i>
+                                            </a>
+                                        </div>
+                                        
+                                        {% with currency=country.currency %}
+                                        {% for obj in region.localdistributorprice_set.all %}
+                                        <div class="col-md-12 it_outer" style="padding:30px; padding-bottom:0px;">
+                                            <div class="panel it">
+                                                <h2>{{ obj.weight_info }} - {{ obj.price }}{{currency}}</h2>
+                                                <a href="#" class="trigger three">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </a>
+                                                <a href="#" class="trigger two">
+                                                    <i class="fa fa-ban"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <!-- Country - City Name -->
+                        {% endfor %}
+                        
+                    </div>
+
+                </div>
+            </div>
+            <!-- Dropdown Element -->
+            </div>
+        </div>
+    </div>
+    <!-- Scrollable Content -->
+</div>
+<!-- Inner content -->
+{% endblock %}

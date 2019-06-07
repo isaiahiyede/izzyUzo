@@ -1,0 +1,71 @@
+{% extends "adminBase/base_index.html" %}
+{% load custom_filters %}
+
+{% block title  %}Batches{% endblock %}
+<!--batch custom styles -->
+{% block set_up %}
+<li>
+    <a href="{% url 'general:profile' user.username %}"><span><i class="fa fa-user" aria-hidden="true"></i></span>My Profile</a>
+</li>
+<li>
+	<a href="{% url 'sokohaliAdmin:help' %}"><span><i class="fa fa-user" aria-hidden="true"></i></span>Help</a>
+</li>
+{% endblock set_up %}
+
+{% block custom-styles %}
+{% include 'adminBatch_snippet/batchstyles.html' %}
+{% endblock %}
+
+
+{% block body %}<body id="purple">{% endblock %}
+
+
+{% block searchbar %}
+<!--batch Search Bar -->
+{% include 'adminBatch_snippet/batchsearchbar.html' %}
+
+{% endblock %}
+
+
+
+{% block sticky_warning %}
+<!--batch Warning content -->
+{% include 'adminBatch_snippet/batchwarningtop.html' %}
+
+{% endblock %}
+
+
+{% block inner_content %}
+<!--batch Inner content -->
+{% include 'adminBatch_snippet/batchcontents.html' %}
+
+{% endblock %}
+
+
+{% block modal %}
+ <!--batch modal content -->
+{% include 'adminBatch_snippet/createbatch.html' %}
+{% include 'adminBatch_snippet/updatebatch.html' %}
+
+{% include 'sokohaliadmin_snippet/CreateShippingDoc_modal.html' %}
+<!-- % include 'sokohaliadmin_snippet/createdockreceipt.html' %} -->
+
+<!-- <div class="modal fade" tabindex="-1" role="dialog" id="editDockModal{each_batch.batch}}">
+
+</div> -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="editAwbModal{{each_batch.batch}}">
+
+
+
+</div>
+{% endblock %}
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+{% block script %}
+ <!--batch scripts -->
+{% include 'adminBatch_snippet/batchcustomscripts.html' %}
+
+{% endblock %}

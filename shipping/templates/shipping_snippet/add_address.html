@@ -1,0 +1,49 @@
+<div class="modal clean three" id="addaddr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+				<form id="add_address">
+				{% csrf_token %}
+
+                <div class="modal-body">
+                    <div class="row-fluid">
+                        <div class="t two">
+                            <div class="tinner" style="height: 570px;">
+                                <div class="tinner1">
+                                    <div class="col-md-12">
+                                        <h1>Add/Edit Shipping Address</h1>
+										<h4 id='add_alert'></h4>
+                                    </div>
+
+									<input type="hidden" name="action" id="id_action" {% if action %}value="{{ action }}" {% endif %}>
+
+									{% for field in form %}
+										{% if forloop.first %} <div class="col-md-12"> {% endif %}
+											<div class="col-md-6">
+												<label class="inpl">{{ field.label }}:</label>
+												{{ field }}
+											</div>
+										{% if forloop.counter|divisibleby:'2' %}
+											</div>
+											<div class="col-md-12">
+										{% endif %}
+									{% endfor %}
+									</div>
+
+
+								</div>
+                            </div>
+                            <div class="btns two">
+                                <a href="#" class="btn hidden"><span class="glyphicon glyphicon-repeat"></span>Clear</a>
+                                <a href="#" id="add_shipping_address" class="btn yellow">Save</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				</form>
+            </div>
+        </div>
+    </div>

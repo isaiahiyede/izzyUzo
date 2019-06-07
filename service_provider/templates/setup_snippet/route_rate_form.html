@@ -1,0 +1,19 @@
+
+<!-- <div class="modal-body" id='route_rate_inner' style="overflow-y:scroll!important;"> -->
+      <p class="hidden"> {{form.instance.service_chain.direction }}</p>
+      {% for field in form %}
+          <div class="col-md-12" {% if forloop.last %}style="padding-bottom: 40px;"{% endif %}>
+            <div class="col-md-6">
+              <label>
+                {{ field.label }}
+              </label>
+              {{ field }}
+            </div>
+          </div>
+      {% endfor %}
+
+      {% if edit_route %}
+        <input type='hidden' name='edit_route' value='{{ edit_route }}' />
+      {% endif %}
+
+<!-- </div> -->

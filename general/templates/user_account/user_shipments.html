@@ -1,0 +1,238 @@
+{% extends 'base/base_user_account_new.html' %}
+{% load humanize %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load currency %}
+{% load account_standing %}
+
+{% block title %}My Shipments{% endblock %}
+
+{% block extra_head %}
+    {{ block.super }}
+    <style>
+        .history.custom{
+            background: url("{% static 'sokohali/img/tracking_bus.png' %}") center center no-repeat !important;
+        }
+        h1{
+            font-size: 26px !important;
+        }
+        h2{
+            line-height: 50px !important;
+        }
+
+        .in > p{
+            color: #fff !important;
+        }
+
+        .in .yellow > p{
+            color: #453801 !important;
+        }
+        .current {
+            color:#000000;
+            padding:5px;
+            background-color:#c0c0c0;
+            border:solid thin #000000;
+        }
+        .page_nav{
+            color:#000000;
+            padding:5px;
+            border:solid thin #000000;
+        }
+        .success{
+          color: green
+        }
+
+    </style>
+{% endblock %}
+
+
+{% block inner_content %}
+<!-- Content -->
+<div class="col-md-8 content_outer">
+    <div class="col-md-12 shipment_outer">
+        <div class="search_outer">
+            <!--<div class="col-md-6">
+                <input class="search" type="text" placeholder="Shipment Tracking Number" />
+            </div>-->
+            <form action="" method="GET">
+                <div class="col-md-9">
+                    <input class="search" name="tracking_number" type="text" placeholder="Tracking Number: 12345678905674USA-NGA" style="width: 75% !important;" required/>
+                    <button class="btn green" name="track" style="width: 70px !important;">Track</button><br/>
+                </div>
+                {% if no_record_found %}<strong><h4>No records found! </h4></strong>{% endif %}
+            </form>
+        </div>
+        <!--<div class="inner" style="padding-top: 50px;">-->
+        <div class="inner" style="min-height: 400px;">
+
+            {% if package %}
+                <div class="col-md-12">
+                    <div class="alert alert-info two show_package" role="alert">
+                        {% if package %}
+                            <strong> {{package.tracking_number}} </strong>
+                            1 Package {{ package.status }}
+                            {% shipment_objs_info package.pkg_items_statuses 'Item' 'p' %}
+                            <br/> {{pkg.created_at|date:'d-m-Y'}} / <span style="font-weight:600;">$ {{package.admin_total_payable_D|floatformat:"2"|intcomma}}</span>
+                            {% if package.strip_my_package %}/ Strip {% endif %} {% if package.consolidate %}/ Consolidated {% endif %} {% if package.insure %}/ Ins.{% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% for message in messages %}
+                <p style="padding-left: 20px;" class="{{ message.level_tag }}">{{ message }}</p>
+            {% endfor %}
+
+            {% for pkg in packages %}
+                {% with credit_bal_D=pkg.balance_D%}
+                    <!-- Shipment -->
+                    <div class="col-md-12 shipment_div" style="padding-right:0;" data-status="{{pkg.status}}" data-shipping-method="{{pkg.shipping_method_dict}}">
+                        <div class="shipment">
+                            <div class="first">
+                                <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        <h1><strong class="{{pkg.status}}" style="font-size:20px; float:none; background:none;">{{pkg.tracking_number}}</strong></h1>
+                                        <div class="status">
+                                            <p>
+                                                <strong>Status:</strong>
+                                                 Package {{ pkg.status }} <!--% shipment_objs_info pkg.pkg_items_statuses 'Item' 'p' %}-->
+                                            </p>
+                                        </div>
+                                        <p>{{ pkg.created_on|date:"d-m-y" }} / <strong>$ {{pkg.admin_total_payable_D|floatformat:"2"|intcomma}}</strong> <!--/ C / PH / JJ--> {% if pkg.strip_my_package %}/ Strip {% endif %} {% if pkg.consolidate %}/ Consolidated {% endif %} {% if pkg.insure %}/ Ins.{% endif %}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 two">
+                                    <div class="col-md-12">
+                                        {% if credit_bal_D > 0.1 %}
+                                            {% if not request.user.useraccount.marketer.storefront_name == "smatpost"%}
+                                                <a href="{% url 'soko_pay:select_payment_option' %}?tracking_number={{ pkg.tracking_number }}" class="btn yellow">Pay Balance
+                                            {% else %}
+                                                <a href="#" class="btn yellow">Balance
+                                            {% endif %}
+                                        <!--<a href="#" class="btn yellow">Pay Balance-->
+                                        
+                                        <!--<a href=" url 'soko_pay:select_payment_option' " class="btn yellow">Pay Balance-->
+                                            <span>$ {{ credit_bal_D|floatformat:"2"|intcomma }}</span>
+                                        </a>
+                                        {% else %}
+                                            {% if not pkg.new and not pkg.cancelled %}
+                                                <span class="btn green">Already Paid</span>
+                                            {% endif %}
+                                        {% endif %}
+                                        <span class="btn w" obj_id="{{pkg.pk}}" shipment_type="{{pkg.shipment_type}}" is_export="{{pkg.is_export}}">View Shipment </span>
+                                        <!-- <a href="#" class="more"></a> -->
+                                    </div>
+                                </div>
+                            </div>
+                                <!--Collapse Shipment div -->
+                            <div class="second" role ="shipment detail section">
+
+                            </div>
+                            <!--Collapse Shipment div -->
+                        </div>
+                    </div>
+                    <!-- Shipment -->
+                {% endwith %}
+            {% endfor %}
+
+            <!-- pagination here  -->
+            <div class ="pagination" style="padding-left:20px;">
+                <span >
+                    {% if packages.has_previous %}
+                          <a href="?page={{ packages.previous_page_number }}" >Previous</a>
+                      {% endif %}
+
+                     {% for page in packages.paginator.page_range %}
+                      {% ifequal page packages.number %}
+                        <span class="current"><b>{{ page }}</b></span>
+                      {% else %}
+                        <a href="?page={{ page }}" class="page_nav"> {{ page }}</a>
+                      {% endifequal %}
+                     {% endfor %}
+
+                     {% if packages.has_next %}
+                          <a href="?page={{ packages.next_page_number }}" class="">Next</a>
+                    {% endif %}
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="divLoading" style="display: none;">
+
+    </div>
+
+</div>
+
+<!-- <div class="row"> -->
+
+<!-- </div> -->
+
+
+
+<!-- Content -->
+{% endblock %}
+
+
+
+{% block popup %}
+    <div class="modal clean" id="delete_shipment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog two modal-lg">
+            <div class="modal-content">
+                <div class="col-md-12 alert">
+                    <h1 class="red">Cancel booking</h1>
+                    <p>Please note that booking cancellation is IRREVERSIBLE!</p>
+                    <p>Are you sure you want to cancel this package?</p>
+                    <a href="#" class="btn dark" data-dismiss="modal">No</a>
+                    <a href="" id="yes_btn" class="btn red">Yes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Package Label-->
+    <!-- <div class="modal clean" id="view_label_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
+    </div> -->
+         {% include 'zaposta_snippet/import-options-user-modal.html' %}
+         {% include 'zaposta_snippet/service-type-modal.html' with modal_id="select_service_type" %}
+         {% include 'zaposta_snippet/service-type-modal-user.html' with modal_id="select_service_type_user" %}
+
+
+    <!--  include 'zaposta_snippet/new_import_modal.html' with modal_id="id_import_options"  -->
+{% endblock %}
+
+
+{% block extra_script %}
+    <script>
+        $("body").on("click", ".btn.black.delete_shipment", function(){
+            var obj_id = $(this).attr('obj_id', 5);
+            $("#delete_shipment").modal('show');
+            $(".divLoading").removeClass('show');
+            //$("#yes_btn").attr('href', url "general:cancel_shipment" '+obj_id+'')
+        });
+
+
+        // $("body").on("click", ".btn.yellow.view_label", function(){
+
+        //     var pkg_id = $(this).attr('pkg_id');
+        //     $.ajax({
+        //         url: "url 'shipping:package_label' pkg_id %}",
+        //         type: 'GET',
+        //         data: {pkg_id:pkg_id},
+        //         success: function(data){
+
+        //         // window.open("/my-shipment/package-label/", "invoice","width=650,height=650,scrollbars=yes,menubar=yes,status=yes,top=10,location=false");
+
+        //             // $("#package_label_display").replaceWith(data.label)
+        //             $("#activate_label_display").click();
+        //             // $("#import-package-label").replaceWith(data);
+        //             $("#import-package-label").modal('show');
+
+        //         }
+        //     })
+
+        // });
+    </script>
+{% endblock %}

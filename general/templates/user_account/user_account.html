@@ -1,0 +1,155 @@
+{% extends 'base/base_user_account_new.html' %}
+{% load humanize %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load currency %}
+
+{% block title %}My Account{% endblock %}
+
+{% block inner_content %}
+    <!-- Content -->
+    {% with useraccount=request.user.useraccount %}
+    <div class="col-md-8 content_outer">
+        {% if messages %}
+            {% for msg in messages %}
+            <p style="color: green;">{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+        <div class="col-md-12 content">
+            <!-- User Top Section -->
+
+            <div class="col-md-12 user">
+                <div class="item" style="padding-right:0;">
+                    <div class="col-md-12">
+                        {% if useraccount.image %}
+                            {% if 'none' in useraccount.image.url %}
+                                <img src="{{STATIC_URL}}zaposta/img/dummy_image.jpeg">
+                            {% else %}
+                                <img src="{{useraccount.image.url}}">
+                            {% endif %}
+                        {% else %}
+                        <img src="{{STATIC_URL}}zaposta/img/dummy_image.jpeg">
+                        {% endif %}
+                        <!--<img src="{{STATIC_URL}}zaposta/img/userpic.jpg">-->
+                        <h1 style="font-weight: 200; font-size: xx-large;">{{request.user.get_full_name|title }}</h1>
+                        {% if useraccount.business_account %}
+                                <h2>VIP Silver Business Account</h2>
+                        {% else %}
+                                <h2>Regular Account</h2>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-12" style="position:absolute; bottom:0; left:0;">
+
+                        <a href="" class="btn green round">Take a Tour of {{ request.storefront_name|title }}</a>
+
+                    </div>
+                </div>
+                <div class="item">
+                    <ul>
+                        <li>
+                            Manage Account
+                        </li>
+                        <!--<li>
+                            <a href="#">
+                            View Profile
+                        </a>
+                        </li>-->
+                        {% if useraccount.address_activation %}
+                                <li>
+                                        <a href="{% url 'general:profile' user.username %}">View Profile</a>
+                                </li>
+                        {% else %}
+                                <li>
+                                        <a href="">View Profile</a>
+                                </li>
+                        {% endif %}
+                        <li>
+                            <a href="{% url 'password_reset'%}">
+                           Change Password
+                        </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'general:delivery-addresses' %}">
+                            Shipping Address
+                        </a>
+                        </li>
+                        <!--<li>
+                            <a href="#">
+                            Manage Shipments
+                        </a>
+                        </li>-->
+                        <li>
+                            <a href="{% url 'general:faq' %}">
+                            FAQ
+                        </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'general:legal' %}">
+                            Terms & Conditions
+                        </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="promo_payment" style="width:300px;">
+                <div class="row">
+                    <p>Shipping Addresses</p>
+                    {% with request.user.useraccount.suite_no as suite_no %}
+                        {% for warehouse in warehouses %}
+                            {% if forloop.first %}
+                            <div class="col-md-5" style="min-height:160px; border-radius:5px; background-color: #e8e8e8; padding:10px; margin:10px; color:#000000; width:300px;">
+                                <div>
+                                    <h5 style="font-size: 15px; font-weight: 100;">
+                                    {{ request.user.get_full_name }}<br/>
+                                    {{ warehouse.address1 }} {{ warehouse.address2 }}, {{ warehouse.city }}
+                                    <br/>
+                                    {{ warehouse.state }}, {{ warehouse.country }}<br/>{{ warehouse.zip_code }} <br/>
+                                    Suite {{ warehouse.suite_no_prefix }}-{{ suite_no }}<br/>
+                                    </h5>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                    <a href="{% url 'general:delivery-addresses' %}">Click to View all your Shipping addresses >>></a>
+                </div>
+            </div>
+            <!-- User Top Section -->
+            <!--<div class="col-md-12" style="padding:15px;">-->
+                <!--if useraccount.is_invited_to_zpn-->
+                <!--<div class="alert partner">
+                    <img src="{{STATIC_URL}}zaposta/img/logopartner.png" />
+                    <div class="col-md-7" style="float:right; padding-right:0;">
+                        <p>MAKE MONEY. NO LIMITS. NO HASSLE.</p>
+                        <p>BUILD A SHARE IN THE LARGEST E-COMMERCE LOGISTICS
+                        PLATFORM IN AFRICA BY INVITING FRIENDS AND CONTACTS.</p>
+                    </div>
+
+                        zpn_available_slots_left as zpn_slot_left
+
+                    <div class="col-md-5" style="padding-left:0;">
+                        <h2 style="width: 400px;">Partner Slots Left: {{ zpn_slot_left }}</h2>
+                    </div>
+
+                    <div class="col-md-7" style="padding-right:0;">
+                        include 'zaposta_snippet/join_zpn_reseller_btns.html' with btn_class="" zpn_slot_left=zpn_slot_left
+                    </div>
+                </div>-->
+                <!--endif -->
+                <!--<div class="alert alert-danger" role="alert">
+                    <strong>Important Fraud Alert</strong>
+                    <br/>IMPORTANT FRAUD ALERT: Any package received on your behalf bearing a name other than the one stated below will be referred to United States / United Kingdom Security agencies for investigation. IT WILL NOT BE SHIPPED. So far 30 culprits have been referred. Anyone using any of our addresses for fraudulent purposes will be caught.
+                </div>
+                <div class="alert alert-warning" role="alert"><strong>Shipping of hazardous items</strong> Shipping of hazardous items such as: radioactive materials, bio hazards and infectious substances, corrosive materials, flammable solids and liquids, oxidising materials, magnetic substances, etc. may attract additional charges.</div>
+                -->
+                <!--<div class="alert alert-success" role="alert">
+                    <p>Before you start shipping, make sure you have used your special US/UK address for all your shopping. We can only receive and ship on your behalf items delivered to the address below. The address issued to you can only be used as a delivery address for your purchased items. The phone number issued to you can only be used by your chosen vendors to contact Sokohali where they need address or delivery clarifications.
+                    This is not a customer service number. Both address and phone number MUST not be used for any other purpose outside what is stated here. Violating this provision will result in the termination of your Sokohali account and or any other legal remedies.</p>
+                </div>-->
+            <!--</div>-->
+
+        </div>
+    </div>
+    {% endwith %}
+    <!-- Content -->
+{% endblock %}

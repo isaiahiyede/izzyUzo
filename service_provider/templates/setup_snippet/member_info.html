@@ -1,0 +1,86 @@
+{% load humanize %}
+{% load custom_filters %}
+
+
+<html>
+   <head>
+        <style type="text/css">
+        table th,td{
+            /*border: 1px solid black;*/
+            padding: 8px 10px;
+            font-size: 15;
+            text-align: center;
+        }
+        table tr{
+            text-align: center;
+        }
+        table td{
+          border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;
+        }
+        </style>
+   </head>
+
+   <body>
+
+
+        <!-- <table class="table table-bordered" border="0">
+            <th style="position: relative;left: 240px;">
+              {{ member_type.title }} Information
+            </th>
+        </table> -->
+
+        <strong><p style="position: relative;"> {{ member_type.title }} Information </p></strong>
+
+
+        <!-- <table class="table table-bordered" style=" border-spacing: 0; border-collapse: separate; border-color: gray; border: solid 1px #ddd;width:600px; margin-left:39px;"> -->
+        <table width="80%">
+                <!-- <tr style="background-color: #F0FFF0;">
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Package Tracking Numbers</td>
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">No of Items</td>
+
+                </tr> -->
+
+                {% for key,val in member_info %}
+                  <tr>
+                     <td>{% remove_underscr key.title %}</td>
+                     <td>{% if key == 'process_charge_per_kg' or key == 'storage_charge_per_day' %}${% endif %}{{ val|capfirst }}</td>
+
+                  </tr>
+                {% endfor %}
+
+
+        </table>
+        {% if locations %}
+         {% if member_type == "WarehouseMember" %}
+        <div style="position: relative; left: 10px;">
+            <h4>Warehouse Address</h4>
+            {% for warehouse in locations %}
+             
+                  <p>{{forloop.counter}}) {{warehouse.full_address}}</p>
+            {% endfor %}
+         
+        </div>
+        
+        {% elif member_type == "ShippingMember" %}
+        <div style="position: relative; left: 10px;">
+            <h4>Shipping Routes</h4>
+            {% for shipment in locations %}
+             
+                  <p>{{forloop.counter}}) {{shipment}}</p>
+            {% endfor %}
+         
+        </div>
+        
+        {% else %}
+        <div style="position: relative; left: 10px;">
+            <h4>Clearing Agent Locations</h4>
+            {% for agent in locations %}
+             
+                  <p>{{forloop.counter}}) {{agent}}</p>
+            {% endfor %}
+         
+        </div>
+        {% endif %}
+         {% endif %}
+   </body>
+</html>

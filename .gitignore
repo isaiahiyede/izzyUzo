@@ -1,0 +1,13 @@
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+media/
+static/files
+
+#Mac DS_Store
+*.DS_Store
+*.pyc
+*.db

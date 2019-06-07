@@ -1,0 +1,75 @@
+{% extends 'setup/add-service.html' %}
+{% load staticfiles %}
+
+{% block progress_bar_width %}
+    style="width: 730px;"
+{% endblock %}
+
+
+{% block inner_page_content %}
+<!-- Page Inner Content/Changes -->
+    <div class="page-content active">
+        <!-- Header -->
+        <div class="header">
+            <div class="left">
+                <h1>Set up your rates</h1>
+                {% include 'setup_snippet/route_inner.html' %}
+            </div>
+            <!-- Right Status -->
+            <!-- <div class="right">
+                <h2 style="float:left;">Issues to fix:</h2>
+                <span class="label">4</span>
+                <span class="label yellow">1</span>
+            </div> -->
+            <!-- Right Status -->
+        </div>
+        <!-- Header -->
+        <!-- Page Content -->
+        <div class="pagect">
+          <div style="float: left;">
+            <a href="#" id='add_rate' route_id="{{ service_chain.pk }}">
+              <i class="fa fa-plus fa-lg" aria-hidden="true">Add Rate</i>
+            </a>
+
+          </div>
+            <div class="steps">
+
+              <!-- <p><h3>Setup process completed. Thank you.</h3></p> -->
+                  <!-- <div class="row-fluid">
+                    <h4>Route: {{ service_chain.origin }} <i class="fa fa-long-arrow-right" aria-hidden="true"></i> {{ route.destination }}</h4>
+                  </div> -->
+
+                  <!-- style="position: relative; top: -80px;"  -->
+
+                  {% include 'setup_snippet/rates_table.html' with route=service_chain adjust='True' %}
+                <!-- <div class="progress">
+                </div> -->
+                <!-- <div class="smcircle">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <span>Your Customers <br/>(Origin)</span>
+                </div> -->
+
+            </div>
+            <div class="overlay"></div>
+
+            <!-- Right Side Widget -->
+            <div class="widget">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+
+            </div>
+            <!-- Right Side Widget -->
+        </div>
+        <!-- Page Content -->
+
+    </div>
+    <!-- Page Inner Content/Changes -->
+{% endblock %}
+
+{% block modal %}
+    {% include 'setup_snippet/add-delivery-rate-modal.html' %}
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'soko-admin/js/rates_processing.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,400 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- ico -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <title>{% block title %}ZeAC - Step 1 Order Page{% endblock %}</title>
+
+    <link href="{% static 'oldzeroelectric/css/slick.css' %}" rel="stylesheet">
+    <link href="{% static 'oldzeroelectric/css/slick-theme.css' %}" rel="stylesheet">
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'oldzeroelectric/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'oldzeroelectric/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'oldzeroelectric/css/layout.css' %}" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript" src="{% static 'sokohali/js/country.js' %}"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+
+    <style>
+    select {
+        width: 100%;
+        line-height: 50px;
+        height: 50px;
+        border: 2px solid rgb(51, 51, 51);
+        background: #fff;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        padding: 0;
+        padding: 0 15px;
+        color: rgb(51, 51, 51);
+        font-weight: 500;
+    }
+
+    #div1 {
+    float: left; /* Commenting this out results in another weird result*/
+    width: 33%;
+    padding: 10px;
+    display: inline-block;
+    /*background: green;*/
+    box-sizing: border-box;
+}
+
+#div2 {
+    width:33%;
+    padding:10px;
+    float: left;
+    /*background: blue;*/
+    box-sizing: border-box;
+}
+
+#img1 {
+    float: left;
+}
+
+#img2 {
+    float: left;
+}
+
+#img3 {
+    float: left;
+}
+
+.btn.green.full {
+    background: #2dcc70;
+    color: #fff;
+    margin-bottom: 30px;
+    }
+
+
+    </style>
+
+</head>
+
+<body id="page">
+    <nav class="navbar two">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+                <a class="navbar-brand" href="/">
+                    <img src="{% static 'oldzeroelectric/img/logo3.png' %}" />
+                    <span>Zero Electric Air Conditioner</span>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <!-- Social Media -->
+               <!--  <ul class="nav navbar-nav navbar-right social">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul> -->
+                <div class="dropdown" >
+                    {% if request.user.is_authenticated %}
+                    <button class="btn full green dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                        <span>{{count}}</span>
+   
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="overflow-y: scroll; height: 400px;">
+
+                        <li class="header">
+                            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            <span class="badge">{{count}}</span>
+                            <p>Total: <span>${{payable}}</span></p>
+                        </li>
+
+                        {% for product in items %}
+                        <li>
+                            <a href="{% url 'general:cart_view' %}">
+                                <span class="one">{{product.item.title}}</span> <br/>
+                                <span class="two">$ {{product.item.price}}/piece</span> Quantity: {{product.quantity}}
+                            </a>
+                        </li>
+                        {% empty %}
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;No item in your cart</span>
+                        {% endfor %}
+
+                        {% if request.user.is_authenticated and not count == 0 %}
+                        <li class="btns">
+                            <a href="{% url 'general:cart_view' %}" class="btn full yellow">Checkout</a>
+                        </li>
+                        {% endif %}
+
+                    </ul>
+                    {% endif %}
+                </div>
+                <!-- Social Media -->
+                <ul class="nav navbar-nav navbar-right main-nav">
+                    <li>{% if request.user.is_authenticated %}<a href="{% url 'general:my_account' %}">Hi {{ request.user.username }}</a>{% endif %}</li>
+                    <li><a href="/#s2">How it Works</a></li>
+                    <li><a href="{% url 'general:product_view' %}">Store</a></li>
+                    <!--<li><a href="index.html#contact">Contact Us</a></li> -->
+                    <li style="display:none;">
+
+                        <a href="#order" class="btn full green dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span><i class="fa fa-shopping-bag" aria-hidden="true"></i></span> 3 Items
+                        </a>
+
+                    </li>
+                    <li>{% if request.user.is_authenticated %}
+                            <a href="{% url 'general:logout' %}">Logout</a>
+                        {% else %}
+                            <a href="{% url 'general:login' %}">Login / Sign Up</a>
+                        {% endif %}</li>
+                </ul>
+
+
+                <!-- Social Media -->
+                <ul class="nav navbar-nav navbar-right social show-mobile">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- Social Media -->
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+{% block body %}
+<body>
+{% endblock %}
+
+    <footer>
+        <div class="container-fluid">
+            <div class="col-md-3">
+                <ul>
+                    <li>
+                        <h1>Company</h1>
+                    </li>
+                    <li><a href="/#s2">How it Works</a></li>
+                    
+                    <li><a href="#/s3">The Impact</a></li>
+                    <li><a href="/#order">Order your own zeAC today</a></li>
+                    
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <ul>
+                    <li>
+                        <h1>Legal</h1>
+                    </li>
+                    <li><a href="#" data-toggle="modal" data-target="#disclaimer">Disclaimer</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#terms">Terms and Conditions</a></li>
+
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p><span>zeAC - zero electric Air Conditioner</span> is a project created by <span>Adisenergy</span> and <span>Sokohali.</span> All rights Reserved.
+                </p>
+                <hr/>
+                <ul class="social">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+                <a href="{% url 'general:product_view' %}" class="btn full green">Order Now</a>
+            </div>
+        </div>
+    </footer>
+    <!-- Page Content -->
+
+   
+    <!-- jQuery Version 1.11.1 -->
+    <script src="{% static 'oldzeroelectric/js/jquery.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'oldzeroelectric/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'oldzeroelectric/js/script.js' %}"></script>
+    <script src="{% static 'oldzeroelectric/js/slick.js' %}"></script>
+
+</body>
+<!-- slider script -->
+<script>
+    $(document).ready(function() {
+        $('.slider').slick({
+            dots: true,
+            infinite: true,
+            speed: 500,
+            fade: true,
+            cssEase: 'linear',
+            autoplay: true,
+            autoplaySpeed: 4000,
+            arrows: false
+        });
+        $('.prod_slider').slick({
+            dots: true,
+            infinite: true,
+            speed: 500,
+            fade: true,
+            cssEase: 'linear',
+            autoplay: true,
+            autoplaySpeed: 4000,
+            arrows: false
+        });
+    });
+
+    $('.modal').modal({
+        keyboard: false,
+        show: false
+    })
+
+    $(document).ready(function() {
+        $("select .select-options").change(function(){
+            if($(this).val() == "1")
+                {
+                    alert('value 1 (wich refers to Chef) got selected');
+                }
+            });
+    });
+
+
+    function checkCountry(){
+
+        
+        var country = $('#country').val();
+        
+        if((country != "United States") && (country != "Nigeria")){
+            alert('Please note that we are only shipping to the United States and Nigeria at the moment');
+            return false;
+        }
+    };
+    
+    $('body').on('click','#subbmit',function(e){
+        e.preventDefault();
+        if ($('.addy').is(":checked")){
+            var address_id = $('input[name=selection]:checked' ).val();
+            $('#saved_address_selected').val(address_id);
+            $('#selected_add').val('on');
+
+            $('#address_form').submit();
+        }
+        else{
+             //alert("Checkbox is unchecked.");
+             var form = document.querySelector('#address_form');
+             //alert(form);
+             //var fom = form.checkValidity();
+             //alert(fom);
+                if (form.checkValidity()) {
+                        //alert("i am if");
+                    form.submit();
+                        
+                      }
+                else {
+                        //alert("i am else");
+                   form.querySelector('input[type="submit"]').click();
+                      }
+                return false;
+        
+            }
+        
+    });
+
+
+    $(document).ready(function(){
+        $('#sources').on('change', function() {
+          if (this.value == '1')
+          {
+            $("#card").show();
+            $("#bank").hide();
+          }
+          else if (this.value == '2')
+          {
+            $("#bank").show();
+            $("#card").hide();
+          }
+          else 
+          {
+            $("#bank").hide();
+            $("#card").hide();
+          }
+        });
+    });
+
+
+    $('body').on('click','#submit_zeac',function(){
+        $('#zeac_form').submit();
+    });
+
+
+    $('body').on('click','#pay_now',function(){
+        $('#detail_form').submit();
+    });
+
+</script>
+
+<script src="{% static 'sokohali/js/card_payment.js' %}"></script>
+<!-- slider script -->
+
+</html>

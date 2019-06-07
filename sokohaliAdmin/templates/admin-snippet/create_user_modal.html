@@ -1,0 +1,52 @@
+{% load staticfiles %}
+{% load humanize %}
+<!-- Modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="CreateuserModal" style="overflow-y:scroll!important;">
+        <div class="modal-dialog modal-big">
+<form id="CreateuserForm" name="createuser" enctype="multipart/form-data" action="{% url 'sokohaliAdmin:admin_createuser' %}" method="post">
+			{% csrf_token %}
+            <div class="modal-content">
+				
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Create User</h4>
+                </div>
+                <div class="order">
+                    <div class="col-md-12">
+                        <h1>Create User Form <span class="label"></span><span class="label"></span></h1>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner long">
+						    <div class="col-md-12">
+								<div class="col-md-6 aform" style="padding-left:0; position:relative; bottom:10px;">
+								{{form.first_name}}		
+								</div>
+								<div class="col-md-6 aform" style="padding-left:0; position:relative; bottom:10px;">
+								{{form.last_name}}		
+								</div>
+								<div class="col-md-6 aform" style="padding-left:0; position:relative; bottom:0px;">
+								{{form.username}}
+								<p class="check hidden" style="color:red;" id="p_user">This username is already taken, please select another.</p>
+								</div>
+								<div class="col-md-6 aform" style="padding-left:0; position:relative; bottom:0px;">
+								{{form.email}}
+								<p class="check hidden" style="color:red;" id="p_email">This email is already taken, please select another.</p>
+								</div>
+								
+							</div> 
+                        </div>
+                        <!-- Body Inner Content -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn green validate" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+			</div>
+</form>
+		</div>
+</div>

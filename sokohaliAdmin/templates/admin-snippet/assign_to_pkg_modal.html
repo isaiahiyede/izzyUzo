@@ -1,0 +1,62 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="assign_to_batchModal" style="overflow-y:scroll!important;">
+		<div class="modal-dialog modal-big">
+<form id="assign_to_batch" enctype="multipart/form-data" action="{% url 'sokohaliAdmin:assign_to_batch' %}" method="post">
+			{% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Assign to Batch Window</h4>
+                </div>
+                <div class="order">
+                    <div class="col-md-12">
+                        <h1>List of active batches </h1>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner long">
+                            <table width="100%" borde="0" class="tablet">
+								{% if batches %}
+                                <tr>
+                                    <!--<th>Item Image</th>-->
+                                    <th>Batch Number</th>
+									<th>Shipping Method</th>
+									<th>Carrier</th>
+                                    
+                                </tr>
+								{% endif %}
+                                {% for batch in batches %}
+                                <tr>
+                                    <td>
+                                        <input type="radio" name="batchName" value= "{{batch.batch_number}}" style="margin-right:15px;" />{{batch.batch_number}}
+                                    </td>
+                                    <td>
+                                       {{batch.shipping_method}}
+                                    </td>
+                                    <td>
+                                        <strong>{{batch.carrier}}</strong>
+                                    </td>
+								     {% empty %}
+										<h3 style="color:red; text-align: center;"><b>There is no active batch</b></h3>
+                                </tr>
+                                {% endfor %}
+                            </table>
+							<input type="hidden" name="trackg_no" value="{{tracking_number}}"/>
+                            <!--<hr />
+                            <p class="nt">
+                                <input type="radio" style="margin-right:15px;" />All items in this package are complete</p>-->
+                        </div>
+                        <!-- Body Inner Content -->
+                    </div>
+					{% if batches %}
+                    <div class="modal-footer">
+                        <button type="submit" class="btn green" id="assign">Assign <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                    </div>
+					{% endif %}
+                </div>
+			</div>
+</form>
+		</div>
+</div>

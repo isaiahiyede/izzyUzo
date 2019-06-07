@@ -1,0 +1,11 @@
+
+
+        <div class="form-group" id="{{identifier}}">
+			<label style="margin-top: 10px;">Postal Locations</label>
+			<select class="form-control" {% if identifier == "pick-up" %} id ="loc_pickup" name="pickup_address" {% else %} id="loc_dropoff" name="dropoff_address"{% endif %} required >
+					<option value="">Select a location</option>
+                {% for location in locations %}
+                    <option value="{{ location.id }}" >{{ location.full_address }}</option>
+                {% endfor %}
+			</select>
+		</div>

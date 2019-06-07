@@ -1,0 +1,206 @@
+{% load staticfiles %}
+{% load humanize %}
+<!-- Modal -->
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="CreateTruckModal" style="overflow-y:scroll!important;">
+        <div class="modal-dialog modal-big">
+		<form method="POST" enctype="multipart/form-data" 
+		action="{% url 'sokohaliAdmin:trucking_service' %}" >
+			{% csrf_token %}
+            <div class="modal-content">
+				
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Create Trucking Job</h4>
+                </div>
+                
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner long" style="padding-top: 30px !important;">
+
+						    <div class="col-md-12">
+								<div class="col-md-6 form-group">
+									<label style="position: relative;top: 25px;">JOB NUMBER</label>
+									<input class="form-control" type="text" name="job_number" id="id_job_number" style="position:relative;margin-top: 25px";>
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>CARGO DESCRIPTION</LABEL>
+									<textarea class="form-control"  name="cargo_decsription" id="id_cargo_decsription"></textarea>		
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>ACTUAL WEIGHT (lbs)</LABEL>
+									<input class="form-control"  
+									step="0.01" min="0" max="10" style="height:48px;" name="actual_cargo_weight" id="id_actual_cargo_weight">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>TOTAL CARGO WEIGHT (lbs)</LABEL>
+									<input class="form-control"  style="height:48px;" step="0.01" min="0" max="10" name="total_cargo_weight" id="total_cargo_weight">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>BILL OF LADEN NUMBER</LABEL>
+									<input class="form-control"  type="text" name="bol_number" id="id_bol_number">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>CARGO ORIGIN</LABEL>
+									<input class="form-control"  type="text" name="origin" id="id_origin">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>CARGO DESTTINATION</LABEL>
+									<input class="form-control"  type="text" name="destination" id="id_destination">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>PICK UP DATE</label>
+									<input class="form-control"  type="date" style="height:48px;" name="pick_up_time" id="id_pick_up_time">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>DROP OFF DATE</label>
+									<input class="form-control"  style="height:48px;" type="date" name="drop_off_time" id="id_drop_off_time">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>PICK UP TIME</label>
+									<input class="form-control"  style="height:48px;" type="time" name="time_to_pick_up" id="id_time_to_pick_up">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>DROP OFF TIME</label>
+									<input class="form-control"  style="height:48px;" type="time" name="time_to_drop_off" id="id_time_to_drop_off">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>STATUS</label>
+									{{form.status}}
+								</div><br>
+								<div class="col-md-12 form-group">
+									<label>{{form.paid}}&nbsp;PAYMENT</label>	
+								</div><br>
+								<div class="col-md-12 form-group">
+									{{form.bol_image}}
+								</div>
+							</div> 
+                        </div>
+                        <!-- Body Inner Content -->
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn green pull-right" name="Submit" value="Submit">
+                    </div>
+                </div>
+			</div>
+		  </form>
+		</div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="EditTruckModal" style="overflow-y:scroll!important;">
+        
+</div>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="EditShopModal" style="overflow-y:scroll!important;">
+        
+</div>
+
+
+<div class="modal fade" id="myModalNorm2" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel2">
+                    Create a shipment
+                </h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <style>
+                    
+                    .modal-body .form-horizontal .col-sm-2,
+                    .modal-body .form-horizontal .col-sm-10 {
+                        width: 100%
+                    }
+
+                    .modal-body .form-horizontal .control-label {
+                        text-align: left;
+                    }
+                    .modal-body .form-horizontal .col-sm-offset-2 {
+                        margin-left: 15px;
+                    }
+
+                    .select-styled{
+                        display: none;
+                    }
+
+                    .ship_ctry{
+                        visibility: visible; 
+                    }
+
+                </style>
+                    <div class="container">
+                        <form name="create_shipment" id="create_shipment" 
+                        action="{% url 'sokohaliAdmin:create_package' %}" method="post" class="form-horizontal" role="form">
+                        {% csrf_token %}
+
+                            <div class="form-group" style="margin-bottom:-47px">
+                                <label style="left: 14px;position: relative;">Shipping Route:</label>
+                                  <select class="form-control ship_ctry" required 
+                                  style="left: -2px;position: relative;height:48px; 
+                                  width:112% !important;" name="shipping_direction2" id = "id_route">
+                                      <!-- <option disabled>Select Country</option> -->
+                                      <option value="">Select Shipping route</option>
+                                       {% for route in routes %}
+                                        <option sh_chain="{{route.id}}" 
+                                        value="{{route}}">{{route}}</option>
+                                       {% endfor %}
+
+                                  </select>
+                            </div>
+
+                            
+                            <div class="form-group">
+                               <label style="left: 14px;position: relative !important;">Shipping Method:</label>
+                                  <select class="form-control ship_ctry" required 
+                                  style="left: -2px;position: relative;height:48px; width:130% !important;" required name="pkg_ship_method" 
+                                    id="shipping_method">
+                                    
+                                      <option value="">Select Shipping Method</option>
+                                      <option value="Air Freight">Air Freight</option>
+                                      <option value="Sea Freight">Sea Freight</option>
+
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label style="left: 12px;position: relative !important;" for="total" class="control-label">Total Items Value ($)</label>
+                                <input type="number" min="1" required 
+                                style="left: 12px;position: relative;height:48px; width:20% !important;" class="form-control" id="total" name="total" value="" required >
+                                <span class="help-block"></span>
+                            </div>
+
+        
+                            <div class="form-group hidden" id="dest_address"></div>
+
+                            <input type="hidden" value="FixedWeight" name="shipment_type">
+
+                            <input type="hidden" value="user_obj" name="user_obj" id="user_obj">
+
+                            <input type="hidden" value="admin" name="admin">
+
+                            <input type="hidden" value="mail_bag_package" name="mail_bag_package">
+
+                            <input type="hidden" name="user_items_selected" id="selected_items" value="">
+
+                            <button style="position:relative; bottom:10px; background-color: green; border-radius: 4px;" class="btn btn-primary" type="submit">Submit</button> 
+
+                    </form>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>

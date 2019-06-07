@@ -1,0 +1,11 @@
+            <div class="col-md-4" id="WHM">
+				<label>Warehouse Address:</label>
+				<select class="form-control org_dest" style="height:48px;" name="WHaddress" id = "id_WHaddress">
+					<!-- <option disabled>Select Country</option> -->
+					<option value="">Select Warehouse to send Package to</option>
+					{% for loc in WHaddress %}
+						<option value="{{loc.id}}">{{loc.full_address}}</option>
+					{% endfor %}
+
+				</select>
+			</div>

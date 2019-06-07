@@ -1,0 +1,47 @@
+<div id="import-package-label" class="modal fade align-center" modal-backdrop="" role="dialog">
+  <div class="modal-dialog" >
+    <div class="modal-content" style="width:950px; overflow-y:scroll; max-height:700px;">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><strong>Print Label</strong></h4>
+      </div>
+      <div class="modal-body">
+        
+        {% for pkg in packages %}
+        <iframe src="{{ pkg.usps_label.label.url }}"></iframe>
+          <object data="{{ pkg.usps_label.label.url }}" type="application/pdf" width="600" height="600">
+            alt : <a href="{{ pkg.usps_label.label.url }}" >{{ pkg.usps_label.label }}</a>
+          </object>
+        {% endfor %}
+       
+      </div>
+      <div class="modal-footer">
+          <div class="col-md-12 bts" style="margin-bottom:0;">
+            <a href="javascript:window.print()" class="btn yellow">Print</a>
+          </div>
+       </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+							  
+
+						  

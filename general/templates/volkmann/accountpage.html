@@ -1,0 +1,172 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  Shipments
+              </h1>
+        <ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Shipments</a></li>
+          <li class="active">Data</li>
+        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+          
+              <div class="card horizontal cardIcon waves-effect waves-dark">
+              <div class="card-image red">
+              <i class="fa fa-plane fa-5x"></i>
+              </div>
+              <div class="card-stacked">
+              <div class="card-content">
+              <h3>{{shipments_t}}</h3> 
+              </div>
+              <div class="card-action">
+              <strong>All Shipments</strong>
+              </div>
+              </div>
+              </div>
+   
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+          
+              <div class="card horizontal cardIcon waves-effect waves-dark">
+              <div class="card-image orange">
+              <i class="fa fa-cog fa-5x"></i>
+              </div>
+              <div class="card-stacked">
+              <div class="card-content">
+              <h3>{{shipments_p}}</h3> 
+              </div>
+              <div class="card-action">
+              <strong>Total Processed</strong>
+              </div>
+              </div>
+              </div>
+
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+          
+              <div class="card horizontal cardIcon waves-effect waves-dark">
+              <div class="card-image blue">
+              <i class="fa fa-wrench fa-5x"></i>
+              </div>
+              <div class="card-stacked">
+              <div class="card-content">
+              <h3>{{shipments_un}}</h3> 
+              </div>
+              <div class="card-action">
+              <strong>Total Unprocessed</strong>
+              </div>
+              </div>
+              </div> 
+             
+            </div>
+        </div>
+
+        <div class="row shipTable">
+                  <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="card">
+                        <div class="card-action">
+                             Shipment Table
+                        </div>
+                        <div class="card-content">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="shipmentTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Tracking Number</th>
+                                            <th>created_on</th>
+                                            <th>weight (lbs)</th>
+                                            <th>Status</th>
+                                            <th>Actions</th> 
+                                        </tr>
+                                    </thead>
+                        
+                                    <tbody>
+
+                                        {% for item in shipments %}
+                                        <tr>
+                                            <td>{{item.user.username}}</td>
+                                            <td>{{item.tracking_number}}</td>
+                                            <td>{{item.created_on}}</td>
+                                            <td>{{item.box_weight_higher}}</td>
+                                            <td>{{item.status}}</td>
+                                            <td>
+                                              <i class="fa fa-eye shipment_deatil" item_id="{{item.pk}}" title="package details"></i>
+                                              <a onclick='window.open("{% url 'shipping:package_invoice' item.tracking_number %}", "invoice", "width=800,height=700,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")'  class="view-invoice" style="cursor:pointer;" ><i class="fa fa-file-text" title="View Invoice" aria-hidden="true"></i></a>
+                                            </td>
+                                        </tr>
+                                         {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                          
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                  </div>
+        </div>
+
+        <div class="row shipmentDetails hidden" style="overflow-x: hidden;">
+           <style>
+                                
+              label{
+                  font-size: 15px;
+              }
+            </style>   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+                   <h3>Shipment Details</h3>
+                   <hr>
+                   <div class="card-content shipment_details" id="shipment_details">
+                   </div>
+              </div>
+             </div>
+           </div>
+        </div>
+
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+
+  <script>
+    $('body').on('click','.shipment_deatil',function(){
+      var item_id = $(this).attr('item_id');
+
+      $.ajax({
+            data: {'item_id':item_id},
+            type: 'GET',
+            url: "{% url 'general:shipment_detail_volk' %}",
+
+            success: function(data){
+                $('#shipment_details').replaceWith(data); 
+                $('.shipTable').addClass('hidden');
+                $('.shipmentDetails').removeClass('hidden');
+            },
+            error:function(data){
+                console.log("Not working");
+            }
+        });
+
+    })  
+  </script>
+
+{% endblock script %}

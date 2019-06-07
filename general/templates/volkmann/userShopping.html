@@ -1,0 +1,647 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  Shopping 
+              </h1>
+        <ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Shopping Form</a></li>
+          <li class="active">Data</li>
+        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+
+        
+        <div class="row main_page" style="overflow-x: hidden;">   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+            	<div class="card-content shipment_details" id="shipment_details">
+            		<!-- this is the wrapper for the content -->
+				  <div class="st-content-inner">
+
+
+						<div class="wt two">
+						<div class="container" style="position:relative;">
+							<!--<img src="{{STATIC_URL}}zaposta/img/ism1.png" />
+							<p>21:04</p>
+							<img src="{{STATIC_URL}}zaposta/img/ism2.png" />
+							<p>London, UK</p>-->
+						</div>
+						</div>
+						<div class="hero two" id="payment_page">
+						<div class="container outer">
+							<div class="form">
+								<div class="inner">
+									<!-- Register Account -->
+									<strong style="margin-left: 30px;{% if request.user.useraccount.credit_amount_D > 0 %}color:green;{% else %}color:red;{% endif %}">Wallet balance: $ {{request.user.useraccount.credit_amount_D|floatformat:2|intcomma}}</strong>
+
+									<div class="container" id="register">
+
+
+										<!-- Regular Account -->
+										<form id="shopper_form" action="{% url 'general:vei_shopper' %}" method="post">
+										   <div class="col-md-6">
+											
+											<h1>Shopping Request Form</h1><br/>
+											{% for msg in messages %}
+												{% if msg.tags == "success" %}
+												<span style="color: green;">{{msg}}</span>
+												{% else %}
+												<span style="color: red;">{{msg}}</span>
+												{% endif %}
+											{% endfor %}
+											<p style="margin-top:0;">Fill out all blank fields with required details
+
+											{% if error_alert %}
+												<span style="color: red;">{{error_alert}}</span>
+											{% endif %}
+											</p><br/>
+
+											{% csrf_token %}
+
+											
+											<div class="col-md-12">
+												<input type="text" required style="color: #3AB54B;" placeholder="Link" value="" name="link"/>
+											</div>
+
+											<div class="col-md-12">
+												<input type="text" required style="color: #3AB54B;" value="" name="description"
+												placeholder="Brief Description"/>
+											</div>
+
+											<div class="col-md-12">
+												<input type="number" min="1" required style="color: #3AB54B;" name="quantity" value=""
+												placeholder="Quantity"/>
+											</div>
+
+											<div class="col-md-12">
+												<input type="number" min="1" step="0.1" required style="color: #3AB54B;" value="" name="amount"
+												placeholder="Total Amount($)"/>
+											</div>
+
+											<div class="col-md-12 buttons" style="margin-top:9px;">
+												<button type="submit" class="btn btn-primary">Submit</button>
+												<button class="btn btn-danger" type="reset">Reset</button>
+
+											</div>
+										</div>
+
+										</form>
+										<!-- Regular Account -->
+									</div>
+									<!-- Register Account -->
+								</div>
+							</div>
+						</div>
+						</div>
+
+			    </div>
+        		</div>
+        	  </div>
+             </div>
+          </div>
+        </div>
+
+        <div class="row shipTable">
+                  <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="card">
+                        <div class="card-action">
+                             Shopping Request Table
+                        </div>
+                        <div class="card-content">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="shipmentTables-example">
+                                	<style>
+                                		th,td{
+                                			font-size: 1.1rem;
+                                		}
+                                	</style>
+                                    <thead>
+                                        <tr>
+                                            <th>S/N</th>
+                                            <th>Tracking No</th>
+                                            <th>created_on</th>
+                                            <th>Link</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th>Stage</th>
+                                            <th>Item Value($)</th>
+                                            <th>Amount Paid ($)</th>
+                                            <th>Balance ($)</th>
+                                            <th>Action</th>  
+                                        </tr>
+                                    </thead>
+                        
+                                    <tbody>
+
+                                        {% for item in shipments %}
+                                        <tr>
+                                        	<td>{{forloop.counter}}</td>
+                                            <td>{{item.courier_tracking_number}}</td>
+                                            <td>{{item.created_on}}</td>
+                                            
+                                            <td>{{item.link}}</td>
+                                            <td>{{item.description}}</td>
+                                            <td>{{item.status_2}}</td>
+                                            <td>{{item.status}}</td>
+                                            <td>{{item.total_value}}</td>
+                                            <td>{{item.amount_paid}}</td>
+
+                                            {% if item.balance > 0.0 %}
+                                            	<td style="color:red;">{{item.balance}}</td>
+                                            {% else %}
+                                            	<td style="color:green;">{{item.balance}}</td> 
+                                            {% endif %}
+
+                                            <td>
+                                            	{% if item.status_2 == 'New' %}
+
+                                            	<a class="view_edit" item_id={{item.pk}}
+                                            	style="cursor: pointer !important;"><i class="fa fa-pencil"></i></a>&nbsp;
+
+                                            	<a href="{% url 'general:crud_pay_for_shop' 'delete' item.id 0.0 %}" onclick="return confirm('Are you sure you want to delete this order?')" 
+                                            	style="cursor: pointer !important;"><i class="fa fa-trash-o"></i></a>&nbsp;
+
+                                            	{% elif item.status_2 == 'paid' %}
+
+                                            	<a href="" style="cursor: pointer !important;"><i class="fa fa-eye"></i></a>&nbsp;
+
+                                            	{% elif item.status_2 == 'purchased' and item.status == 'Recieved' %}
+
+                                            	<a class="ship_item" item_id={{item.pk}} onclick="return confirm('Are you sure you want to ship this order?')" 
+                                            	style="cursor: pointer !important;">
+                                            	<i class="fa fa-plane"></i></a>&nbsp;
+
+                                            	{% endif %}
+
+                                            	{% if item.balance > 0.0 %}
+                                            	<a style="color:red;" 
+                                            	href="{% url 'general:crud_pay_for_shop' 'pay' item.id item.balance %}" onclick="return confirm('Are you sure you want to pay for this order?')"
+                                            	style="cursor: pointer !important;"><i class="fa fa-money"></i></a>
+                                            	{% endif %}&nbsp;
+
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <p>No data</p>
+                                        {% endfor %}
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                          
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                  </div>
+        </div>
+
+		<div class="row edit_item hidden" style="overflow-x: hidden;" id="shopping_item_details">   
+          <div class="col-md-12">
+             <div class="card">
+             	<div class="card-action">
+                     Edit Shopping Request
+                </div>
+              <div class="card-action">
+            	<div class="card-content shipment_details" id="shipment_details">
+            		<!-- this is the wrapper for the content -->
+				  <div class="st-content-inner">
+
+
+						<div class="wt two">
+						<div class="container" style="position:relative;">
+							<!--<img src="{{STATIC_URL}}zaposta/img/ism1.png" />
+							<p>21:04</p>
+							<img src="{{STATIC_URL}}zaposta/img/ism2.png" />
+							<p>London, UK</p>-->
+						</div>
+						</div>
+						<div class="hero two" id="payment_page">
+						<div class="container outer">
+							<div class="form">
+								<div class="inner">
+									<!-- Register Account -->
+									
+
+									<div class="container" id="register">
+
+
+										<!-- Regular Account -->
+										<form name="edit_shopping_order" id="edit_shopping_order" method="POST" 
+							                action="">
+											{% csrf_token %}
+										</form> 
+										<!-- Regular Account -->
+									</div>
+									<!-- Register Account -->
+								</div>
+							</div>
+						</div>
+						</div>
+
+			    </div>
+        		</div>
+        	  </div>
+             </div>
+          </div>
+        </div>
+
+        <div class="row hidden shipping_form" style="overflow-x: hidden;">
+				 <div class="col-lg-12">
+				 <div class="card">
+                    <div class="card-action">
+                        Shipping Form
+                    </div>
+                    <div class="card-content">
+					  
+						<form class="col s12" id="createPackageForm" method="POST" 
+                    action="{% url 'sokohaliAdmin:create_package' %}" >
+                    {% csrf_token %}
+
+                    <div class="col-md-12">
+                        
+                          <div class="col-xs-6">
+
+                          	<style>
+                          		
+                          		label{
+                          			font-size: 15px;
+                          		}
+                          	</style>
+
+                            <div class="form-group">
+                                <label>Shipping Route:</label>
+                                  <select class="form-control ship_ctry" style="height:48px;" required name="shipping_direction2" id = "id_route">
+                                      <!-- <option disabled>Select Country</option> -->
+                                      <option value="">Select Shipping route</option>
+                                       {% for route in marketer_routes %}
+                                        <option sh_chain="{{route.id}}" 
+                                        value="{{route}}">{{route}}</option>
+                                       {% endfor %}
+
+                                  </select>
+                            </div>
+
+                            
+                            <div class="form-group">
+                               <label>Shipping Method:</label>
+                                  <select class="form-control" style="height:48px;" required name="pkg_ship_method" 
+                                    id="shipping_method">
+                                    
+                                      <option value="">Select Shipping Method</option>
+                                      <option value="Air Freight">Air Freight</option>
+                                      <option value="Sea Freight">Sea Freight</option>
+
+                                  </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="total" class="control-label">Total Items Value ($)</label>
+                                <input type="number" min="1" style="height:48px;" class="form-control" id="total" name="total" value="" required >
+                                <span class="help-block"></span>
+                            </div>
+
+        
+                            <div class="form-group hidden" id="dest_address">
+                            </div>
+
+
+                            <div class="form-group">
+                            	<label for="Enter new Address" class="control-label">Enter new Address</label>
+                            	<input style="position: relative;top:0px;left:-152px; opacity:10;"
+                              	type="radio" class="delivery_add_method" name="google_add" value="google_add_address">
+                            </div>
+
+                            <div class="form-group">
+                            	<label for="Select from saved Addresses" class="control-label">Select from saved Addresses</label>
+                            	<input type="radio" class="delivery_add_method"
+                              	style="position: relative;top:0px;left: -220px; opacity:10;" name="google_add" value="delivery_add">
+                          	</div>
+                          
+                            
+
+                          </div>   
+                    </div>
+
+                    <div class="col-md-12 google_add_your_address hidden">
+
+                      <style>
+                        #locationField, #controls {
+                          position: relative;
+                          width: 480px;
+                        }
+
+                        #autocomplete {
+                          position: absolute;
+                          top: 20px;
+                          left: 0px;
+                          width: 99%;    
+                          z-index: 10000 !important;
+
+                        }
+                        .label {
+                          text-align: right;
+                          font-weight: bold;
+                          width: 100px;
+                          color: #303030;
+                        }
+                        #address {
+                          border: 1px solid #000090;
+                          background-color: #f0f0ff;
+                          width: 480px;
+                          padding-right: 2px;
+                          left: 25px;
+                          position: relative;
+                        }
+                        #address td {
+                          font-size: 10pt;
+                        }
+                        .field {
+                          width: 99%;
+                        }
+                        .slimField {
+                          width: 80px;
+                        }
+                        .wideField {
+                          width: 200px;
+                        }
+                        #locationField {
+                          height: 20px;
+                          margin-bottom: 50px;
+                          position: relative;
+                          width: 485px;
+                          left: 25px;
+                        }
+                        div.pac-container {
+                           z-index: 1050 !important;
+                        }
+                      </style>
+
+                      <div id="locationField">
+                        <input name="enterYourAddress" id="autocomplete" placeholder="Enter your address"
+                               onFocus="geolocate()" type="text"></input>
+                      </div>
+
+                      <table id="address">
+                        <tr>
+                          <td class="label">Street address</td>
+                          <td class="slimField">
+                          	<input name="street_number" class="field" id="street_number"
+                       				disabled="true"></input></td>
+                       	  <td class="label">Route</td>
+                          <td class="wideField" colspan="2"><input name="route" class="field" id="route"
+                                disabled="true"></input></td>
+                        </tr>
+                        <tr>
+                          <td class="label">City</td>
+                          <!-- Note: Selection of address components in this example is typical.
+                               You may need to adjust it for the locations relevant to your app. See
+                               https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
+                          -->
+                          <td class="wideField" colspan="3"><input name="locality" class="field" id="locality"
+                                disabled="true"></input></td>
+                        </tr>
+                        <tr>
+                          <td class="label">State</td>
+                          <td class="slimField"><input name="administrative_area_level_1" class="field"
+                                id="administrative_area_level_1" disabled="true"></input></td>
+                          <td class="label">Zip code</td>
+                          <td class="wideField"><input name="postal_code" class="field" id="postal_code"
+                                disabled="true"></input></td>
+                        </tr>
+                        <tr>
+                          <td class="label">Country</td>
+                          <td class="wideField" colspan="3"><input name="new_country" class="field"
+                                id="country" disabled="true"></input></td>
+                        </tr>
+                      </table>
+
+                      <script>
+                        // This example displays an address form, using the autocomplete feature
+                        // of the Google Places API to help users fill in the information.
+
+                        // This example requires the Places library. Include the libraries=places
+                        // parameter when you first load the API. For example:
+                        // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+                        var placeSearch, autocomplete;
+                        var componentForm = {
+                          street_number: 'short_name',
+                          route: 'long_name',
+                          locality: 'long_name',
+                          administrative_area_level_1: 'short_name',
+                          country: 'long_name',
+                          postal_code: 'short_name'
+                        };
+
+                        function initAutocomplete() {
+                          // Create the autocomplete object, restricting the search to geographical
+                          // location types.
+                          autocomplete = new google.maps.places.Autocomplete(
+                              /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+                              {types: ['geocode']});
+
+                          // When the user selects an address from the dropdown, populate the address
+                          // fields in the form.
+                          autocomplete.addListener('place_changed', fillInAddress);
+                        }
+
+                        function fillInAddress() {
+                          // Get the place details from the autocomplete object.
+                          var place = autocomplete.getPlace();
+
+                          for (var component in componentForm) {
+                            document.getElementById(component).value = '';
+                            document.getElementById(component).disabled = false;
+                          }
+
+                          // Get each component of the address from the place details
+                          // and fill the corresponding field on the form.
+                          for (var i = 0; i < place.address_components.length; i++) {
+                            var addressType = place.address_components[i].types[0];
+                            if (componentForm[addressType]) {
+                              var val = place.address_components[i][componentForm[addressType]];
+                              document.getElementById(addressType).value = val;
+                            }
+                          }
+                        }
+
+                        // Bias the autocomplete object to the user's geographical location,
+                        // as supplied by the browser's 'navigator.geolocation' object.
+                        function geolocate() {
+                          if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function(position) {
+                              var geolocation = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                              };
+                              var circle = new google.maps.Circle({
+                                center: geolocation,
+                                radius: position.coords.accuracy
+                              });
+                              autocomplete.setBounds(circle.getBounds());
+                            });
+                          }
+                        }
+                      </script>
+                      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtoF2ZaB-tBtdmgLmNF_YQla3RFNz9HMQ&libraries=places&callback=initAutocomplete"
+                          async defer></script>
+                    </div>
+
+                    <div class="col-md-12 delivery_add hidden">
+                        
+                          <div class="col-xs-6" style="margin-top: 20px;">
+
+                            <div class="form-group">
+                                <label>Select Delivery Address:</label>
+                                  <select class="form-control" style="height:48px;" name="pkg_ship_addresses" 
+                                      id="pkg_ship_addresses">
+                                        <option value="">Select Address</option>
+                                      {% for address in addresses %}
+                                        <option value="{{address.pk}}">{{address.full_address_2}}</option>
+                                      {% endfor %}
+                                  </select>
+                            </div>
+                          
+                          </div>   
+                    </div>
+
+                    <input type="hidden" value="FixedWeight" name="shipment_type">
+
+                    <input type="hidden" value="mail_bag_package" name="mail_bag_package">
+
+                    <input type="hidden" name="user_items_selected" id="selected_items" value="">
+
+                    <button type="submit" style="border-radius: 4px;" onclick="return validateAdressSelect()" class="btn btn-success pull-right">Proceed</button>
+						</form>
+						<div class="clearBoth"></div>
+					 </div>
+				 </div>
+			     </div>	
+	 	</div>
+
+        
+
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+
+<script>
+
+	$('body').on('click','.view_edit',function(){
+		var item_id = $(this).attr('item_id');
+
+		$.ajax({
+			url: "{% url 'general:view_edit_shopping_item_order' %}",
+			type: 'GET',
+			data: {'data':item_id},
+
+			success:function(data){
+               $('#edit_shopping_order').replaceWith(data);
+               $('.shipTable').addClass('hidden');
+               $('.main_page').addClass('hidden');
+               $('.edit_item').removeClass('hidden');
+               console.log('working');
+               
+            },
+
+            error:function(data){
+               console.log('not working');
+            }
+
+         })
+      });
+
+	$('body').on('click', '.delivery_add_method', function () {
+	        var delivery_mth = $(this).val();
+	        if(delivery_mth == "google_add_address"){
+	            $('.google_add_your_address').removeClass('hidden');
+	            $('.delivery_add').addClass('hidden');
+	        }else{
+	            $('.google_add_your_address').addClass('hidden');
+	            $('.delivery_add').removeClass('hidden');
+	        }
+	        
+	});
+
+	$('body').on('click','.ship_item',function(){
+		var item_id = $(this).attr('item_id');
+		$('#selected_items').val(item_id);
+		$('.shipTable').addClass('hidden');
+        $('.edit_item').addClass('hidden');
+        $('.shipping_form').removeClass('hidden');
+
+	})
+
+</script>
+
+<script>
+
+	    $('.ship_ctry').on('change', function () {
+	        var route = $('#id_route option:selected').val();
+	        get_destn_addresses(route);
+	        
+	    });
+
+
+	    function get_destn_addresses(route){
+	        $.ajax({
+	            data: {'route':route},
+	            type: 'GET',
+	            url: "{% url 'general:get_destination_addresses' %}",
+
+	            success: function(data){
+	                $('#dest_address').replaceWith(data);
+	                },
+	            error:function(data){
+	                console.log("Not working");
+	            }
+	        });
+	    };
+
+
+	    function validateAdressSelect () {
+	        if (!$("input[name='google_add']:checked").val()) {
+	           alert('Please select an option for your delivery address!');
+	            return false;
+	        }
+	        else {
+	          if ($("input[name='google_add']:checked").val() == "google_add_address"){
+	            var country = $('#country').val();
+	            var administrative_area_level_1 = $('#administrative_area_level_1').val();
+	            var locality = $('#locality').val();
+	            var route = $('#route').val();
+	            var street_number = $('#street_number').val();
+	            var autocomplte= $('#autocomplte').val();
+
+	            if(country == "" | administrative_area_level_1 == "" | locality == "" | route == "" | street_number == "" | autocomplte == ""){
+	                alert("Please complete all the fields the address form except for zip code which is optional");
+	                return false;
+	            }else{
+	                $('#createPackageForm').submit();
+	                return true;
+
+	            }
+	          }else{
+	            if($('#pkg_ship_addresses').val() == ""){
+	                alert('Please select a saved address');
+	                return false;
+	            }
+	          }
+	         }
+	        }
+	</script>
+
+{% endblock script %}

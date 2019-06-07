@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg viewBox="0 0 935 1210" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+<clipPath id="c0_1"><path d="M27.5,76.6l0,-1.8l863.9,0l0,1.8Z" /></clipPath>
+<clipPath id="c1_1"><path d="M27.5,186.6l0,-1.8l876.3,0l0,1.8Z" /></clipPath>
+<clipPath id="c2_1"><path d="M27.5,295.5l0,-1.8l862.8,0l0,1.8Z" /></clipPath>
+<clipPath id="c3_1"><path d="M27.5,405.5l0,-1.8l856.9,0l0,1.8Z" /></clipPath>
+<clipPath id="c4_1"><path d="M27.5,442.2l0,-1.8l861.7,0l0,1.8Z" /></clipPath>
+<clipPath id="c5_1"><path d="M27.5,482.2l0,-1.9l863.9,0l0,1.9Z" /></clipPath>
+<clipPath id="c6_1"><path d="M27.5,517.7l0,-1.8l863.9,0l0,1.8Z" /></clipPath>
+<clipPath id="c7_1"><path d="M27.5,564.7l0,-1.9l862.8,0l0,1.9Z" /></clipPath>
+<clipPath id="c8_1"><path d="M27.5,865l0,-1.9l852.5,0l0,1.9Z" /></clipPath>
+<style type="text/css"><![CDATA[
+.g4_1{
+fill: #FFFFFF;
+stroke: #000000;
+stroke-width: 1.0999999;
+stroke-linecap: round;
+stroke-linejoin: miter;
+}
+.g5_1{
+fill: none;
+stroke: #000000;
+stroke-width: 0.73333335;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+.g3_1{
+fill: none;
+stroke: #000000;
+stroke-width: 1.0999999;
+stroke-linecap: round;
+stroke-linejoin: miter;
+}
+.g2_1{
+fill: none;
+stroke: #000000;
+stroke-width: 1.0999999;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+.g6_1{
+fill: #FFFFFF;
+}
+.g1_1{
+fill: none;
+stroke: #000000;
+stroke-width: 0.36666667;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+]]></style>
+</defs>
+<g clip-path="url(#c0_1)">
+<path d="M26.4,75.5l863.9,0" class="g1_1" />
+</g>
+<path d="M465.3,74.4l0,441.1" class="g1_1" />
+<path d="M647.5,74.4l0,36.7" class="g1_1" />
+<path d="M465.3,112.2l419.1,0" class="g1_1" />
+<g clip-path="url(#c1_1)">
+<path d="M21.6,185.5l881.1,0" class="g1_1" />
+</g>
+<path d="M465.3,262.5l418,0" class="g1_1" />
+<g clip-path="url(#c2_1)">
+<path d="M21.6,294.4l867.6,0" class="g1_1" />
+</g>
+<g clip-path="url(#c3_1)">
+<path d="M16.1,404.4l867.2,0" class="g1_1" />
+</g>
+<path d="M271.7,402.2l0,112.2" class="g1_1" />
+<g clip-path="url(#c4_1)">
+<path d="M21.6,441.1l866.5,0" class="g1_1" />
+</g>
+<g clip-path="url(#c5_1)">
+<path d="M21.6,481.1l868.7,0" class="g1_1" />
+</g>
+<g clip-path="url(#c6_1)">
+<path d="M21.6,516.6l868.7,0" class="g1_1" />
+</g>
+<path d="M209.7,517.7l0,348.4" class="g1_1" />
+<path d="M278.3,517.7l0,348.4" class="g1_1" />
+<path d="M636.9,517.7l0,348.4" class="g1_1" />
+<path d="M759.7,517.7l0,349.8" class="g1_1" />
+<g clip-path="url(#c7_1)">
+<path d="M21.6,563.6l867.6,0" class="g1_1" />
+</g>
+<g clip-path="url(#c8_1)">
+<path d="M5.9,863.9l873,0" class="g1_1" />
+</g>
+<path d="M716.5,481.4l0,36.7" class="g2_1" />
+<path d="M331.5,866.4l0,293.4" class="g2_1" />
+<path d="M331.5,1031.4l165,0l0,128.4" class="g2_1" />
+<path d="M753.1,508.9l9.2,0l0,-9.1l-9.2,0l0,9.1Z" class="g3_1" />
+<path fill-rule="evenodd" d="M826.5,508.9l9.1,0l0,-9.1l-9.1,0l0,9.1Z" class="g4_1" />
+<path d="M349.8,178.9l0,-36.6l110,0" class="g5_1" />
+<path d="M469,417.3l438.5,0l0,-36.7l-438.5,0l0,36.7Z" class="g6_1" />
+</svg>

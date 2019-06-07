@@ -1,0 +1,21 @@
+<table width="100%" border="0">
+    <tr>
+        <th>S/N</th>
+        <th>Route</th>
+        <th>Description</th>
+        <th>Rate ($/lbs)</th>
+        <th>Action</th>
+        <!-- <th>Action</th> -->
+    </tr>
+    {% for fixed_wgt_item in fixed_wgt_items %}
+        <td>{{forloop.counter}}</td>
+        <td>{{ fixed_wgt_item.chain }}</td>
+        <td>{{ fixed_wgt_item.description }}</td>
+        <td>{{ fixed_wgt_item.unit_price_D }}</td>
+        <td>
+          <a href="#" class='edit_fixed_rate' edit_rate_id='{{ fixed_wgt_item.id }}' edit_rate_description='{{fixed_wgt_item.description}}' edit_rate_unit='{{fixed_wgt_item.unit_price_D}}' edit_chain='{{fixed_wgt_item.chain}}'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>

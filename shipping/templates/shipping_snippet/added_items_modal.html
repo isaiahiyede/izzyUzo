@@ -1,0 +1,27 @@
+{% extends 'base/zpn_modal_popup.html' %}
+
+{% block inner_content %}
+<form id="added_items_modal" action="" method="POST">
+	<inout type="text" name="name" />
+	<!-- {% csrf_token %}
+				
+    <div class="col-md-12 alert">
+		<div class="col-md-12">
+			<p><strong id="pkg_count" style="color: green;"></strong></p>
+		</div>
+        <div class="col-md-12 table" style="padding-top:15px; border-bottom:none; padding-bottom:0;">
+			<h2 style="height: auto;">Are these items in this package? If yes, proceed. Otherwise, un-check the ones that are not this package.</h2>
+		</div>
+
+		<div class="form two" id="items_table_div">
+			{% for item in item_list %}
+				{{ item }}
+			{% endfor %}
+			
+		</div>
+		<!-- <a href="#" class="btn dark" id="show_courier_speed_modal" style="background-color:black; color: white;">Previous</a> -->
+        <a href="#" class="btn dark" id="submit_import_package" style="background-color:#3C983C; border-color: #3C983C; color: white; float: right;">Save Package</a>
+        <!--<button name="cons_d" class="btn dark" style="float: right; background-color:#3C983C; border-color:#3C983C; color: white; width: 100px;">Proceed</button>-->
+    </div> -->
+</form>
+{% endblock %}

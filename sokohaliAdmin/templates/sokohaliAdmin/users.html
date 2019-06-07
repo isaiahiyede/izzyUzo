@@ -1,0 +1,467 @@
+{% extends "adminBase/base_index.html" %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load humanize %}
+{% load account_standing %}
+{% block title  %}Users{% endblock %}
+
+
+{% block set_up %}
+<li>
+    <a href="{% url 'general:profile' user.username %}"><span><i class="fa fa-user" aria-hidden="true"></i></span>My Profile</a>
+</li>
+<li>
+    <a href="{% url 'sokohaliAdmin:help' %}"><span><i class="fa fa-user" aria-hidden="true"></i></span>Help</a>
+</li>
+{% endblock set_up %}
+
+{% block custom-styles %}
+    <title>Sokohali - Users</title>
+    <style>
+    input[type="password"] {
+    height: 48px !important;
+    min-width: 200px;
+    padding: 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    line-height: 48px;
+    color: rgb(121, 121, 121);
+    border: none;
+    box-shadow: none;
+    padding-left: 15px;
+    border: 2px solid rgb(231, 231, 231);
+    background: rgb(245, 245, 245);
+    min-width: 100%;
+    float: left;
+    position: relative;
+}
+
+input[type="password"]:focus
+
+ {
+    border-color: #000;
+    background: #fff;
+    color: #000;
+}
+
+input[type="date"] {
+     -webkit-align-items: center;
+     display: -webkit-inline-flex;
+     font-family: monospace;
+     overflow: hidden;
+     padding: 0;
+     -webkit-padding-start: 1px;
+     &::-webkit-datetime-edit {
+      padding: 1em;
+  }
+
+  &::-webkit-inner-spin-button {
+   display: none;
+   }
+}
+
+
+
+#id_rate_per_lb_D {
+   min-width:35px!important;
+}
+
+.select-styled2{
+   height: 48px !important;
+    min-width: 35px;
+    padding: 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    line-height: 48px;
+    color: rgb(121, 121, 121);
+    border: none;
+    box-shadow: none;
+    padding-left: 15px;
+    border: 2px solid rgb(231, 231, 231);
+    background: rgb(245, 245, 245);
+    float: left;
+    position: relative;
+   }
+    </style>
+
+ {% include 'adminBatch_snippet/batchstyles.html' %}
+
+{% endblock %}
+
+{% block body %}<body>{% endblock %}
+
+    {% block searchbar %}
+       <div class="searchbar">
+        <form action="{% url 'sokohaliAdmin:search' %}" method="GET" id="usersearch">
+            <div class="container">
+                <div class="col-md-12">
+                    <input type="text" name="page" class="hidden" value="userpage" />
+                    <input type="text" placeholder="Search for orders or shipments, e.g. Order OR235533" name="input_value" />
+                    <i class="fa fa-search t" aria-hidden="true"></i>
+                    <span class="bar"></span>
+                </div>
+
+                <div class="search_filter">
+                    <!-- <p class="htitle">Filter by:</p>
+                    <select id="type" name = 'value'>
+                        <option value="hide">Type</option>
+                        <option value="2010">Package</option>
+                        <option value="2011">Order</option>
+                        <option value="2012">Shipment</option>
+                        <option value="2013">User</option>
+                    </select> -->
+
+                    <div class="datepickerdemoBasicUsage">
+                        <p style="position:relative; left:40px; bottom:25px;">From:</p>
+                           <input type="date"  name="from" style="position:relative; border-radius:8px; top: 3px; width: 35%; height:30px; background-color:#D76358; border: 1px solid #D76358;"/>
+                        <p style="position:relative; left:180px; bottom:25px;">To:</p>
+                           <input type="date" name="to" style="background-color:#D76358; position:relative; border-radius:8px; top:3px; width:35%; height:30px; left: 33px; border: 1px solid #D76358;"/>
+                    </div>
+                    <div class="longselect">
+                        <a id="search" class="btn btn-xs" onclick="document.getElementById('usersearch').submit()" style="margin:15px 0px 0px 15px; padding:0px 20px; font-size: 14px; min-width:100px; border-radius:12px; height:48px;">Search</a>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        </div>
+    {% endblock %}
+
+    {% block sticky_warning %}
+        <div class="sticky_msg">
+            <div class="container">
+
+                <div class="col-md-12">
+
+                    <!-- Alert Warning -->
+                    <div style="margin:15px 0px 5px 0px;">
+                    {% for msg in messages %}
+                        <script>
+                            function show_alert(){
+                            var alert = '<blockquote style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</blockquote>';
+                            document.write(alert);
+                            }
+                            display = window.setTimeout(show_alert(), 1000);
+                            window.clearTimeout(display);
+                        </script>
+                    {% endfor %}
+                    </div>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Warning! You have {% userCount request 'Unverified' %} Account(s) to VERIFY and ACTIVATE their Shipping Address!!!</strong>
+                        <a href="{% url 'sokohaliAdmin:sidebar' 'unverified' %}" class="fix">Verify User<i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                    <!-- Alert Warning -->
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block inner_content %}
+        <div class="inner">
+            <!-- Scrollable Content -->
+            <div class="scrollable">
+
+                <div class="container">
+                    <div class="row-fluid">
+                        <div class="col-md-3 sticky-wrapper" style="position:relative;">
+                            <div id="sticky_left">
+                                <div class="panel filters col-md-12" style="position:relative; height:380px; bottom:20px;">
+                                    <h2 style="position:relative; bottom:20px">Filter By:</h2>
+                                    <ul>
+                                        <li class="active" style="position:relative; bottom:55px;">
+                                            <a href="{% url 'sokohaliAdmin:user-manager' %}">All <span class="badge">{% userCount request 'All' %}</span></a>
+                                        </li>
+                                        <li style="position:relative; bottom:75px;">
+                                            <a href="{% url 'sokohaliAdmin:sidebar' 'new' %}">New <span class="badge">{% userCount request 'New' %}</span></a>
+                                        </li>
+                                        <li style="position:relative; bottom:95px;">
+                                            <a href="{% url 'sokohaliAdmin:sidebar' 'address_activation' %}">Address Activated <span class="badge">{% userCount request 'Address_activation' %}</span></a>
+                                        </li>
+                                        <li style="position:relative; bottom:115px;">
+                                            <a href="{% url 'sokohaliAdmin:sidebar' 'Admin' %}">Admin <span class="badge">{% userCount request 'Admin' %}</span></a>
+                                        </li>
+                                        <li style="position:relative; bottom:135px;">
+                                            <a href="{% url 'sokohaliAdmin:sidebar' 'Deactivated' %}">De-Activated <span class="badge">{% userCount request 'De-Activated' %}</span></a>
+                                        </li>
+                                        <li style="position:relative; bottom:155px;">
+                                            <a href="{% url 'sokohaliAdmin:sidebar' 'Flagged' %}">Flagged <span class="badge">{% userCount request 'Flagged' %}</span></a>
+                                        </li>
+                                        {% if request.user.useraccount.special_user == True or request.user.useraccount.sokohali_admin == True %}
+                                        <li style="position:relative; bottom:175px;">
+                                            <a href="{% url 'sokohaliAdmin:sidebar' 'staff_access' %}">Staff Access</a>
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                    <div class="col-md-12" style="position:relative; bottom:175px;">
+                                        <a href="#" data-toggle="modal" data-target="#CreateuserModal" id="create_user"class="btn black">Create User</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9 user_list" style="position:relative;">
+
+
+
+                            <div ng-controller="AppCtrl" class="datepickerdemoBasicUsage" ng-app="MyApp">
+                                <md-content>
+                                    <md-datepicker ng-model="myDate" md-placeholder="Fecha"></md-datepicker>
+
+                                </md-content>
+                            </div>
+
+
+                            <!--<div class="header">
+
+                                <!--<div class="dropdown options toggle">
+                                    <p>Select Multiple Users</p>
+                                    <i class="fa fa-circle-o hd" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+
+                                </div>
+                            </div>-->
+                            <!-- Item "open" when triggered -->
+                            {% for user in useraccount %}
+                            <div class="panel item">
+                                <div class="col-md-12 inf">
+                                    <div class="picbk"></div>
+                                    <div class="pic">
+                                        {% if user.image %}
+                                        <img src="{{user.image.url}}" />
+                                        {% else %}
+                                        <img src ="{{STATIC_URL}}soko-admin/img/user2.jpg">
+                                        {% endif %}
+                                    </div>
+                                    {% if user.user.is_staff %}
+                                    <h1 style="color:Blue;">{{ user.user.get_full_name }}</h1>
+                                    {% elif user.flagged %}
+                                    <h1 style="color:red;">{{ user.user.get_full_name }}</h1>
+                                    {% elif user.deactivated %}
+                                    <h1 style="color:gray;">{{ user.user.get_full_name }}</h1>
+                                    {% else %}
+                                    <h1>{{ user.user.get_full_name }}</h1>
+                                    {% endif %}
+                                    <p><span style="padding-left:0;">{{user.account_type}} /</span><span class="three">Balance: ${{user.credit_amount_D|floatformat:2|intcomma}}</span>
+                                    </p>
+                                </div>
+                                <!-- Overlay with Options -->
+                                <div class="overlay">
+                                    <a href="{% url 'general:profile' user.user.username %}" class="link"><span>Open</span> </a>
+                                    <div class="dropdown options"><i class="fa fa-ellipsis-h dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></i>
+                                        <div class="dropdown-menu two" aria-labelledby="dropdownMenu2">
+                                            <ul>
+                                                {% if request.user.useraccount.special_user %}
+                                                    {% if user.user.is_staff %}
+                                                    <li>
+                                                        <a href="{% url 'sokohaliAdmin:usertype' user.user.id 'undo_admin' %}"><i class="fa fa-user-times" aria-hidden="true"></i>Undo Admin</a>
+                                                    </li>
+                                                    {% else %}
+                                                    <li>
+                                                        <a href="{% url 'sokohaliAdmin:usertype' user.user.id 'make_admin' %}"><i class="fa fa-user-plus" aria-hidden="true"></i>Make Admin</a>
+                                                    </li>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <li>
+                                                    <a href="#" class="specialRate" id="specialRate" diata-toggle="modal" diata-target="#SpecialrateModal" user-attr ="{{user.user.id}}"><i class="fa fa-line-chart" aria-hidden="true"></i>Special Rate</a>
+                                                </li>
+                                                {% if user.flagged %}
+                                                <li>
+                                                    <a onclick="return confirm('Are you sure this User has been VERIFIED?')" href="{% url 'sokohaliAdmin:usertype' user.id 'verify' %}"><i class="fa fa-thumbs-up" aria-hidden="true"></i>Verified</a>
+                                                </li>
+                                                {% else %}
+                                                <li>
+                                                    <a onclick="return confirm('Are you sure you want to FLAG this User?')"  href="{% url 'sokohaliAdmin:usertype' user.id 'flag' %}"><i class="fa fa-flag" aria-hidden="true"></i>Flag</a>
+                                                </li>
+                                                {% endif %}
+                                                {% if user.deactivated %}
+                                                <li>
+                                                    <a onclick="return confirm('Are you sure you want to RE-ACTIVATE this User?')" href="{% url 'sokohaliAdmin:usertype' user.id 'reactivate' %}"><i class="fa fa-check" aria-hidden="true"></i>Reactivate</a>
+                                                </li>
+                                                {% else %}
+                                                <li>
+                                                    <a onclick="return confirm('Are you sure you want to DE-ACTIVATE this User?')" href="{% url 'sokohaliAdmin:usertype' user.id 'deactivate' %}"><i class="fa fa-user-times" aria-hidden="true"></i>Deactivate</a>
+                                                </li>
+                                                {% endif %}
+                                            {% if not user.address_activation %}
+                                                {% if user.address_activation_completed %}
+                                                <li>
+                                                   <a onclick="return confirm('Are you sure you want to ACTIVATE this address?')" href="{% url 'general:profile' user.user.username %}"><i class="fa fa-check-square" aria-hidden="true"></i>Activate Address</a>
+                                                </li>
+                                                {% endif %}
+                                            {% endif %}
+                                            <li>
+                                                <a onclick='window.open("{% url 'sokohaliAdmin:userhistory' user.user.id %}", "invoice", "width=800,height=700,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")' class="view-invoice" style="cursor:pointer;" ><i class="fa fa-history" aria-hidden="true"></i>History</a>
+                                            </li>
+                                         <!-- % if user.address_activation %
+                                            <li>
+                                                <a onclick="return confirm('Are you sure you want to ask this User to RE-VERIFY his account?')" href="{% url 'sokohaliAdmin:usertype' user.id 'reverify' %}"><i class="fa fa-question" aria-hidden="true"></i>Reverify</a>
+                                             </li>
+                                          % endif %-->
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- Overlay with Options -->
+                                {% if user.suite_no %}
+                                <div class="col-md-12 note">
+                                    <p> SUITE NO: <b>{{ user.suite_no}}</b> | NUMBER OF PACKAGES: <b>{% shipments_count user.user %}</b> | TOTAL PACKAGES VALUE: <b>{% user_totalvalue user.user %}</b></p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% empty %}
+                            <p><b>No user found</b></p>
+                            {% endfor %}
+
+
+                            <!-- Bottom Sticky with Options -->
+                            <div class="bottom_sticky three">
+                                <div class="container">
+
+                                    <div class="col-md-9 col-md-offset-3">
+                                        <div class="cancel">
+                                            <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <a href="#" class="long"><i class="fa fa-users" aria-hidden="true"></i>Build Customers</a>
+                                        <a href="#" class="long"><i class="fa fa-user-plus" aria-hidden="true"></i>Make Admin</a>
+                                        <a href="#" class="long"><i class="fa fa-line-chart" aria-hidden="true"></i>Apply Special Rate</a>
+                                        <a href="#"><i class="fa fa-flag" aria-hidden="true"></i>Flag</a>
+                                        <a href="#"><i class="fa fa-user-times" aria-hidden="true"></i>Deactivate</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bottom Sticky with Options -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Scrollable Content -->
+            </form>
+        </div>
+    {% endblock %}
+
+{% block modal %}
+    {% include 'admin-snippet/create_user_modal.html' %}
+
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="SpecialrateModal" style="overflow-y:scroll!important;">
+
+    </div>
+{% endblock %}
+
+{% block modal_script %}
+    <script>
+        $('#ProcessModal').modal('hide');
+    </script>
+{% endblock %}
+
+{% block script %}
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-route.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-messages.min.js'></script>
+    <!--<script src="{% static 'soko-admin/js/angular-material.js' %}"></script>-->
+    <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
+    <script src="{% static 'soko-admin/js/index.js' %}"></script>
+
+    <script>
+        $("#make_admin").click(function(){
+	       $user_typeform = $("#user_typeform");
+
+	       $user_list_form.append("<input type='hidden' name='"+user_action+"'/>");
+	       $user_list_form.submit();
+        });
+
+    </script>
+
+    <script>
+    $('body').on('click', ".validate", function(e) {
+         e.preventDefault()
+         $('.check').addClass('hidden');
+         var fields = $(".aform :input");
+         var emptyFields = fields.filter(function() {
+
+            // remove the $.trim if whitespace is counted as filled
+            return $.trim(this.value) === "";
+        });
+
+        if (emptyFields.length) {
+            alert("uh-oh, you forgot to fill something out");
+        } else {
+            var username = $('#id_username').val();
+            var email = $('#id_email').val();
+            //console.log(firstname)
+              $.ajax({
+                  url:"{% url 'sokohaliAdmin:admin_createuser' %}",
+                  type:"GET",
+                  data:{'username': username, 'email': email},
+                  success: function(data){
+                    console.log(data.result);
+                       if (data.result == "user") {
+                         $('#p_user').removeClass('hidden');
+                         console.log("User is back");
+                       }
+                       else if(data.result == "email"){
+                          $('#p_email').removeClass('hidden');
+                       }
+                       else if(data.result =="both"){
+                           $('#p_email').removeClass('hidden');
+                           $('#p_user').removeClass('hidden');
+                       }
+                       else {
+                          console.log("both is back");
+                          $('#CreateuserForm').submit();
+                       }
+                  }
+            })
+        }
+     });
+
+
+    </script>
+
+    <script type="text/javascript">
+
+   $('body').on('click','.specialRate', function (e) {
+       e.preventDefault();
+      var user_id = $(this).attr('user-attr');
+         $.ajax({
+                  url: "{% url 'sokohaliAdmin:specialrate' %}",
+                  type: 'GET',
+                  data: {'user_id': user_id},
+                  success: function(data){
+                      $('#SpecialrateModal').replaceWith(data);
+                      $('#user_value').val(user_id);
+                      $('#SpecialrateModal').modal('show');
+                  },
+
+               })
+   });
+
+$('body').on('click','#submit_spRate', function (e) {
+       e.preventDefault();
+         var origin = $('#origin').val();
+         var destination = $('#destination').val();
+         var freight_type = $('#id_freight_type').val();
+         var rate = $('#id_rate_per_lb_D').val();
+         if (origin && destination && freight_type && rate != "") {
+             if (origin == destination) {
+             alert("Origin and Destination cannot be the same Value please select a different option");
+             }
+             else{
+               $('#SpecialrateForm').submit();
+             }
+       } else{
+         alert("Please ensure all fields are filled");
+       }
+});
+
+   </script>
+
+
+{% endblock %}

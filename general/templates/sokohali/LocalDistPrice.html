@@ -1,0 +1,288 @@
+{% extends "adminBase/base_index.html" %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load humanize %}
+{% load activelink %}
+
+{% block title  %}{{ payment_type|title }} Local Distribution Price{% endblock %}
+
+{% block custom-styles %}
+<style>
+
+    /*div.sidebar-link:hover{
+        background-color: #E3E3E3;
+    }*/
+
+      table, th, td {
+          border: 1px solid black;
+        }
+
+        select {
+      height: 48px;
+      min-width: 200px;
+      padding: 0;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+      line-height: 48px;
+      color: rgb(121, 121, 121);
+      border: none;
+      box-shadow: none;
+      padding-left: 15px;
+      border: 2px solid rgb(231, 231, 231);
+      background: rgb(245, 245, 245);
+      min-width: 367px;
+      float: left;
+      position: relative;
+      margin-bottom: 15px;
+      }
+
+        input[type="number"] {
+      height: 48px;
+      min-width: 200px;
+      padding: 0;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+      line-height: 48px;
+      color: rgb(121, 121, 121);
+      border: none;
+      box-shadow: none;
+      padding-left: 15px;
+      border: 2px solid rgb(231, 231, 231);
+      background: rgb(245, 245, 245);
+      min-width: 367px;
+      float: left;
+      position: relative;
+      }
+</style>
+
+{% endblock %}
+
+{% block body %}<body>{% endblock %}
+
+
+  {% block searchbar %}
+      <div class="searchbar">
+          <div class="container">
+              <div class="col-md-12">
+                  <input type="text" />
+                  <i class="fa fa-search t" aria-hidden="true"></i>
+                  <span class="bar"></span>
+              </div>
+
+
+
+          </div>
+      </div>
+  {% endblock %}
+
+  {% block navbar %}
+  <ul class="nav navbar-nav">
+     <li>
+        <a href="{% url 'sokohaliAdmin:local_dist_member' %}">Local Distribution Member</a>
+     </li>
+     <li>
+        <a href="{% url 'sokohaliAdmin:local_dist_region' %}">Local Distribution Region</a>
+     </li>
+     <li>
+        <a href="{% url 'sokohaliAdmin:local_dist_location' %}">Local Distribution Location</a>
+     </li>
+     <li>
+        <a href="{% url 'sokohaliAdmin:local_dist_price' %}">Local Distribution Price</a>
+     </li>
+   </ul>
+  {% endblock %}
+
+  {% block set_up %}
+  {% endblock set_up %}
+
+    {% block sticky_warning %}
+        <div class="sticky_msg">
+            <div class="container">
+
+                <div class="col-md-12">
+
+
+                    <div class="alert" role="alert">
+                        <h3><strong>Welcome Administrator,</strong></h3>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {% for msg in messages %}
+                          <blockquote style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</blockquote>
+                        {% endfor %}
+
+                    </div>
+                    <!-- Alert Warning -->
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block inner_content %}
+        <div class="inner">
+            <!-- Scrollable Content -->
+            <div class="scrollable">
+
+                <div class="container">
+                    <div class="row-fluid">
+                        
+                        <div class="col-md-12 user_list" style="position:relative; bottom:0px;">
+
+                            <div ng-controller="AppCtrl" class="datepickerdemoBasicUsage" ng-app="MyApp">
+                                <md-content>
+                                    <md-datepicker ng-model="myDate" md-placeholder="Fecha"></md-datepicker>
+
+                                </md-content>
+                            </div>
+   
+                            <div class="tab-content" style="padding-bottom: 10px;">
+                                  <div>
+                                    <button  class="btn green" style="float:right;" data-toggle="modal" data-target="#myModal">Add Distributor Price</button>
+                                  </div>
+                                  <table border="1"  style="position: relative; bottom:20px" width="700px">
+                                      <tr>
+                                          <th align="center" style="position: relative;left: 25px;" width="100px">Region</th>
+                                          <th align="center" style="position: relative;left: 25px;" width="50px">Weight</th>
+                                          <th align="center" style="position: relative;left: 25px;" width="50px">Weight Unit</th>
+                                          <th align="center" style="position: relative;left: 25px;" width="50px">Price</th>
+                                          <th align="center" style="position: relative;left: 25px;" width="75px">Markup Value (%)</th>
+                                      </tr>
+
+                                      {% for dis_pri in price %}
+                                        <tr>
+                                            <td align="center" width="50px"><strong>{{dis_pri.region }}</strong></td>
+                                            <td align="center" width="50px">{{dis_pri.weight }}</td>
+                                            <td align="center" width="50px">{{dis_pri.weight_unit }}</td>
+                                            <td align="center" width="50px">{{dis_pri.price }}</td>
+                                            <td align="center" width="50px">{{dis_pri.mark_up_value }}</td>
+                                        </tr>
+                                      {% endfor %}
+
+                                  </table>
+
+                                  {% if price.has_other_pages %}
+                                    <ul class="pagination">
+                                      {% if price.has_previous %}
+                                        <li><a href="?page={{ price.previous_page_number }}">&laquo;</a></li>
+                                      {% else %}
+                                        <li class="disabled"><span>&laquo;</span></li>
+                                      {% endif %}
+                                      {% for i in price.paginator.page_range %}
+                                        {% if price.number == i %}
+                                          <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                                        {% else %}
+                                          <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                        {% endif %}
+                                      {% endfor %}
+                                      {% if price.has_next %}
+                                        <li><a href="?page={{ price.next_page_number }}">&raquo;</a></li>
+                                      {% else %}
+                                        <li class="disabled"><span>&raquo;</span></li>
+                                      {% endif %}
+                                    </ul>
+                                  {% endif %}
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Scrollable Content -->
+
+            <div class="loading">
+
+            </div>
+        </div>
+    {% endblock %}
+
+{% block modal %}
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Local Distributor Price</h4>
+      </div>
+      <div class="modal-body">
+        <div class="scrollbar">
+            <form action="{% url 'sokohaliAdmin:local_dist_price' %}" method="POST">
+                {% csrf_token %}
+                <div class="col-md-8" style="margin-top:15px;">
+                  <strong>Member</strong>
+                  <select name="member" class="members" id="LDM">
+                    <option>---------</option>
+                    {% for member in dist_member %}
+                    <option value="{{member}}">{{member}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-8">
+                  <strong>Region</strong>
+                  <select name="region" id="LDR">
+
+                  </select>
+                </div>
+                <div class="col-md-8">
+                  <strong> Weight</strong>{{loc_dist_pr.weight}}
+                </div>
+                <div class="col-md-8">
+                  <strong> Weight Unit</strong>{{loc_dist_pr.weight_unit}}
+                </div>
+                <div class="col-md-8">
+                  <strong> Price</strong>{{loc_dist_pr.price}}
+                </div>
+                <div class="col-md-8">
+                 <strong>Markup Value</strong>{{loc_dist_pr.markup_value}}
+                </div>
+                <div class="col-md-12" style="margin-top:15px;">
+                  <button type="submit" class="btn green pull-right" value="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="submit" class="btn green" data-dismiss="modal">Submit</button> -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block custom_select %}
+<script>
+$('body').on('click','.members',function(regions){
+        var e = document.getElementById("LDM");
+        var member = e.options[e.selectedIndex].text;
+        console.log("Members is : "+ member);
+        var csrf_token     = $('input[name="csrfmiddlewaretoken"]').val();
+        // console.log("csrf_token is : "+ csrf_token);
+          $.ajax({
+            url: "{% url 'sokohaliAdmin:local_dist_price' %}",
+            type: "GET",
+            data: {"member":member, "csrfmiddlewaretoken":csrf_token},
+
+
+            success: function(data){
+                console.log("GOT HERE");
+                // $('#LDR').replaceWith(data);
+                console.log("GOT HERE AGAIN");
+            },
+            error: function(data){
+                console.log("Not working");
+            }
+        });      
+    });
+</script>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'soko-admin/js/rates_processing.js' %}"></script>
+
+
+{% endblock %}

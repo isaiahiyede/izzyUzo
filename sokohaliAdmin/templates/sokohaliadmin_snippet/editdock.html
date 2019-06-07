@@ -1,0 +1,326 @@
+{% load staticfiles %}
+<style>
+.form-horizontal .form-group {
+		margin-right: -15px;
+		margin-left: 5px;
+}
+
+
+element.style {
+		margin-left: 3px;
+}
+
+div.modal-body {
+		overflow: scroll;
+}
+
+</style>
+
+<!-- /.modal -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="editDockModal{{each_batch.batch}}">
+				<div class="modal-dialog modal-big">
+
+						<div class="modal-content">
+								<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<h4 class="modal-title">Edit Dock Receipt Form</h4>
+								</div>
+								<!-- <div class="order">
+										<div class="col-md-12">
+
+										</div>
+								</div> -->
+								<!-- modal-c -->
+								<form method ="POST" action="{% url 'sokohaliAdmin:dock_edit' %}" enctype="multipart/form-data"class="form-horizontal scroll">
+									{% csrf_token %}
+								<div class="modal-c open" id="s0">
+										<div class="modal-body">
+													<div class="form-group" style="margin-bottom:5mm;">
+														<div class="col-sm-7">
+															<input type="hidden" class="form-control" name="batch_number" placeholder="Batch Number" value="{{dock_form.batch}}"readonly>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Exporter Name and Address</label>
+															<textarea class="form-control red" name="exporter_name_and_address" value="{{dock_form.exporter_name_and_address}}" placeholder="Exporter Name and Address" rows="4" cols="4" required>{{dock_form.exporter_name_and_address}}</textarea>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Zip Code</label>
+															<!-- {dock_form.zip_code}} -->
+															<input type="text" class="form-control red" name="zip_code" value="{{dock_form.zip_code}}" placeholder="Zip Code" required>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Consigned To</label>
+															<textarea class="form-control red" name="consigned_to" value="{{dock_form.consigned_to}}" placeholder="Consigned To" rows="4" cols="4" required>{{dock_form.consigned_to}}</textarea>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Notify Party(Complete Name and Address)</label>
+															<textarea class="form-control red" name="notify_party_name_and_address" value="{{dock_form.notify_party_name_and_address}}" placeholder="Notify Party Name and Address" rows="4" cols="4" required>{{dock_form.notify_party_name_and_address}}</textarea>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Document Number</label>
+															<!-- {dock_form.document_number}} -->
+															<input type="text" class="form-control red" name="document_number" value="{{dock_form.document_number}}" placeholder="Document Number" required>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>B/L OR AWB Number</label>
+															<!-- {dock_form.bl_or_awb_number}} -->
+															<input type="text" class="form-control red" name="bl_or_awb_number" value="{{dock_form.bl_or_awb_number}}" placeholder="B/L OR AWB Number" required>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Export References</label>
+															<!-- {dock_form.export_references}} -->
+															<textarea class="form-control red" name="export_references" value="{{dock_form.export_references}}" placeholder="Export References" rows="4" cols="4" required>{{dock_form.export_references}}</textarea>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Forwarding Agent / FMC Number</label>
+															<!-- {dock_form.forwarding_agent_fmc_no}} -->
+															<textarea class="form-control red" name="forwarding_agent_fmc_no" value="{{dock_form.forwarding_agent_fmc_no}}" placeholder="Forwarding Agent FMC Number" rows="4" cols="4" required>{{dock_form.forwarding_agent_fmc_no}}</textarea>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Point(State) and Country of Origin or FTZ Number</label>
+															<!-- {dock_form.state_and_country_of_origin_or_ftz_number}} -->
+															<input type="text" class="form-control red" name="state_and_country_of_origin_or_ftz_number" value="{{dock_form.state_and_country_of_origin_or_ftz_number}}" placeholder="Point(State) and Country of Origin or FTZ Number" required>
+														</div>
+													</div>
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn green trigger" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s1">
+										<div class="modal-body">
+												<!-- Body Inner Content -->
+												<!-- <div class="body-inner long"> -->
+												<div class="form-group" style="margin-top:5mm;">
+													<div class="col-sm-7">
+														<label>Domestic Routing / Export Instruction</label>
+														<!-- {dock_form.domestic_routing}} -->
+														<textarea class="form-control red" name="domestic_routing" value="{{dock_form.domestic_routing}}" placeholder="Domestic Routing / Export Instruction" rows="4" cols="4" required>{{dock_form.domestic_routing}}</textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Loading Pier / Terminal</label>
+														<!-- {dock_form.loading_pier}} -->
+														<input type="text" class="form-control red" name="loading_pier" value="{{dock_form.loading_pier}}" placeholder="Loading Pier / Terminal" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Type of Move</label>
+														<!-- {dock_form.type_of_move}} -->
+														<input type="text" class="form-control red" name="type_of_move" value="{{dock_form.type_of_move}}" placeholder="Type of Move" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Containerized (Vessel Only)</label>
+														<!-- {dock_form.containerized}} -->
+														<input type="checkbox" class="red" name="containerized" value="{{dock_form.containerized}}" checked="{{dock_form.containerized}}" placeholder="Containerized (Vessel Only)">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Pre-Carriage By</label>
+														<!-- {dock_form.precarriage_by}} -->
+														<input type="text" class="form-control red" name="precarriage_by" value="{{dock_form.precarriage_by}}" placeholder="Pre-Carriage By" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Place of Receipt by Pre-Carrier</label>
+														<!-- {dock_form.place_of_receipt_by_precarrier}} -->
+														<input type="text" class="form-control red" name="place_of_receipt_by_precarrier" value="{{dock_form.place_of_receipt_by_precarrier}}" placeholder="Place of Receipt by Pre-Carrier" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Exporting Carrier</label>
+														<!-- {dock_form.exporting_carrier}} -->
+														<input type="text" class="form-control red" name="exporting_carrier" value="{{dock_form.exporting_carrier}}" placeholder="Exporting Carrier" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Port of Loading / Export</label>
+														<!-- {dock_form.port_of_loading}} -->
+														<input type="text" class="form-control red" name="port_of_loading" value="{{dock_form.port_of_loading}}" placeholder="Part of Loading / Export" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Foreign Port of Unloading (Vessel/Air Only)</label>
+														<!-- {dock_form.foreign_port_of_unloading}} -->
+														<input type="text" class="form-control red" name="foreign_port_of_unloading" value="{{dock_form.foreign_port_of_unloading}}" placeholder="Foreign Port of Unloading (Vessel/Air Only)" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Place of DeliveryBy On-Carrier</label>
+														<!-- {dock_form.place_of_delivery_by_oncarrier}} -->
+														<input type="text" class="form-control red" name="place_of_delivery_by_oncarrier" value="{{dock_form.place_of_delivery_by_oncarrier}}" placeholder="Place of DeliveryBy On-Carrier" required>
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s0">Back</button>
+												<button type="button" class="btn green trigger" rel="s2">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s2">
+										<div class="modal-body">
+												<!-- Body Inner Content -->
+												<div class="form-group" style="margin-top:5mm;">
+													<div class="col-sm-7">
+														<label>MKS. & NOS./CONT. NOS</label>
+														<!-- {dock_form.mks_nos}} -->
+														<textarea class="form-control red" name="mks_nos" value="{{dock_form.mks_nos}}" placeholder="MKS. & NOS./CONT. NOS" rows="4" cols="4" required>{{dock_form.mks_nos}}</textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Number of Packages</label>
+														<!-- {dock_form.no_of_pkgs}} -->
+														<input type="number" class="form-control red" name="no_of_pkgs" value="{{dock_form.no_of_pkgs}}" placeholder="Number of Packages" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Description of Packages and Goods</label>
+														<!-- {dock_form.description_of_package_and_goods}} -->
+														<textarea class="form-control red" name="description_of_package_and_goods" value="{{dock_form.description_of_package_and_goods}}" placeholder="Description of Packages and Goods" rows="4" cols="4" required>{{dock_form.description_of_package_and_goods}}</textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Gross Weight</label>
+														<!-- {dock_form.gross_weight}} -->
+														<input type="number" class="form-control red" name="gross_weight" value="{{dock_form.gross_weight}}" placeholder="Gross Weight" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Measurement</label>
+														<!-- {dock_form.measurement}} -->
+														<input type="number" class="form-control red" name="measurement" value="{{dock_form.measurement}}" placeholder="Measurement" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Lighter Truck</label>
+														<!-- {dock_form.lighter_truck}} -->
+														<input type="text" class="form-control red" name="lighter_truck" value="{{dock_form.lighter_truck}}" placeholder="Lighter Truck" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Arrived Date</label>
+														<!-- {dock_form.arrived_date}} -->
+														<input type="date" class="red" value="{{dock_form.arrived_date}}" name="arrived_date" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" required/>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Arrived Time</label>
+														<!-- {dock_form.arrived_time}} -->
+														<input type="time" value="{{dock_form.arrived_time}}" placeholder="Arrived Time"  name="arrived_time" style='margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;'>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Unloaded Date</label>
+														<!-- {dock_form.unloaded_date}} -->
+														<input type="date" class="red" value="{{dock_form.unloaded_date}}" name="unloaded_date" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" required/>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Unloaded Time</label>
+														<!-- {dock_form.unloaded_time}} -->
+														<input type="time" placeholder="Unloaded Time" value="{{dock_form.unloaded_time}}" name="unloaded_time" style='margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;'>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Checked By</label>
+														<!-- {dock_form.checked_by}} -->
+														<input type="text" class="form-control red" name="checked_by" value="{{dock_form.checked_by}}" placeholder="Checked By" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Placed Location</label>
+														<!-- {dock_form.placed_location}} -->
+														<input type="text" class="form-control red" name="placed_location" value="{{dock_form.placed_location}}" placeholder="Placed Location" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Receiving Clerk Name</label>
+														<!-- {dock_form.receiving_clerk_name}} -->
+														<input type="text" class="form-control red" name="receiving_clerk_name" value="{{dock_form.receiving_clerk_name}}" placeholder="Receiving Clerk Name" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Date from Receiving Clerk</label>
+														<!-- {dock_form.date_from_receiving_clerk}} -->
+														<input type="date" class="red" value="{{dock_form.date_from_receiving_clerk}}" name="date_from_receiving_clerk" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" required/>
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s1">Back</button>
+												<button id="button" type="submit" class="btn green">Submit</button>
+										</div>
+								</div>
+							</form>
+							<!-- <div class="row" id="div2" style="display: none">Show Div 2</div> -->
+								<!-- modal-c -->
+						</div>
+						<!-- /.modal-content -->
+
+				</div>
+				<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+
+
+
+
+<script type="text/javascript">
+	function Reveal(it, box) {<!--from   ww  w. ja  v a 2  s .com-->
+	var vis = (box.checked) ? "block" : "none";
+	document.getElementById(it).style.display = vis;
+	}
+
+	function Hide(it, box) {
+	var vis = (box.checked) ? "none" : "none";
+	document.getElementById(it).style.display = vis;
+	}
+</script>

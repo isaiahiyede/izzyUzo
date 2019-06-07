@@ -1,0 +1,568 @@
+/* Theme CSS */
+
+.shop .navlinks .navbar-brand.two,
+.shop .navlinks .navbar.active .navbar-brand.two {
+    background: none;
+}
+
+
+/* Main BK */
+
+#intro .bk.blue {
+    background: #0b71b9;
+}
+
+#intro .bk {}
+
+
+/* Color Theme */
+
+.navlinks .btn.square,
+.navlinks .btn.dropdown-toggle,
+#newsletter .btn {}
+
+.navlinks .navbar.active {
+    background: #fff !Important;
+}
+
+.navlinks .navbar.active .txt-outer {
+    background: rgb(245, 245, 245) !important;
+}
+
+#newsletter {}
+
+#newsletter .inner .col-md-6:last-child {}
+
+.social a {}
+
+
+/* Green Theme */
+
+.shop_green #intro .bk,
+.shop_green .navlinks .navbar {
+    background: #3ab54a;
+}
+
+.shop_green #intro .bk {
+    background: url(../img/shop/green.jpg) right top no-repeat;
+    background-size: 100%;
+}
+
+.shop_green #newsletter,
+.shop_green .navlinks .navbar .txt-outer {
+    background: #329b3f;
+}
+
+.shop_green #newsletter .inner .col-md-6:last-child {
+    background: #3ab54a;
+}
+
+.shop_green .social a,
+.shop_green footer .info p a,
+.shop_green footer .info .links a:hover {
+    color: #3ab54a;
+}
+
+.shop_green .social a:hover,
+.shop_green footer .info p a:hover {
+    color: rgb(51, 51, 51);
+}
+
+
+/* Yellow Theme */
+
+.shop_yellow #intro .bk,
+.shop_yellow .navlinks .navbar,
+.shop_yellow #newsletter .inner .col-md-6:last-child {
+    background: #ffd014;
+}
+
+.shop_yellow #intro .bk {
+    background: url(../img/shop/yellow.jpg) right 50px no-repeat;
+    background-size: 100%;
+}
+
+.shop_yellow #newsletter,
+.shop_yellow .navlinks .navbar .txt-outer {
+    background: #f1c100;
+}
+
+.shop_yellow #newsletter h1,
+.shop_yellow #newsletter p {
+    color: #453801;
+}
+
+.shop_yellow #newsletter h1:after {
+    background: #453801;
+}
+
+.shop_yellow #newsletter .btn,
+.shop_yellow .navlinks .btn.square,
+.shop_yellow .navlinks .btn.dropdown-toggle {
+    background: rgb(21, 21, 21);
+    border-color: rgb(21, 21, 21);
+    color: #fff;
+}
+
+.shop_yellow #newsletter .btn:hover,
+.shop_yellow .navlinks .btn.square:hover,
+.shop_yellow .navlinks .btn.dropdown-toggle:hover {
+    background: rgb(51, 51, 51);
+    border-color: rgb(51, 51, 51);
+}
+
+.shop_yellow .navlinks .navbar .txt p,
+.shop_yellow .navlinks .navbar .txt h2,
+.shop_yellow .navlinks .navbar .txt .fa {
+    color: rgb(21, 21, 21);
+}
+
+.shop_yellow .hamburger div {
+    background: rgb(21, 21, 21);
+}
+
+.shop_yellow .widget.two ul .lastli {
+    background: rgb(21, 21, 21);
+    border-color: rgb(51, 51, 51);
+}
+
+.shop_yellow .widget.two ul .lastli p {
+    color: #fff;
+}
+
+.shop_yellow .widget.two ul .lastli .btn.white {
+    background: #fff;
+    border-color: #fff;
+    color: rgb(21, 21, 21);
+}
+
+.shop_yellow .widget.two ul .lastli .btn.white:hover {
+    background: rgb(241, 241, 241);
+}
+
+.shop_yellow .social a,
+.shop_yellow footer .info p a,
+.shop_yellow footer .info .links a:hover {
+    color: #ffd014;
+}
+
+.shop_yellow .social a:hover,
+.shop_yellow footer .info p a:hover {
+    color: rgb(51, 51, 51);
+}
+
+
+/* Yellow Additional Syling */
+
+.shop_yellow #intro .txt p,
+.shop_yellow #intro .txt h1 {
+    color: #000;
+}
+
+.shop_yellow #intro .txt h1:after {
+    background: #000;
+}
+
+
+/* Shop Menu Themed */
+
+.shop .st-menu {
+    background: rgb(31, 31, 31);
+}
+
+.shop .st-menu .col-md-12 {
+    background: rgb(21, 21, 21);
+    border-color: #000;
+}
+
+.shop .st-menu ul li.header {
+    background: rgb(21, 21, 21);
+}
+
+.shop .st-menu ul li,
+.shop .st-menu ul {
+    border-color: rgb(21, 21, 21);
+}
+
+.shop .st-menu ul li:hover {
+    background: rgb(21, 21, 21);
+}
+
+.shop .st-menu .social a .fa {
+    color: #fff;
+}
+
+
+/* Black Theme */
+
+.shop_black #intro .bk,
+.shop_black .navlinks .navbar,
+.shop_black #newsletter .inner .col-md-6:last-child {
+    background: rgb(21, 21, 21);
+}
+
+.shop_black #intro .bk {
+    background: url(../img/shop/black.jpg) right 50px no-repeat;
+    background-size: 100%;
+}
+
+.shop_black #newsletter,
+.shop_black .navlinks .navbar .txt-outer {
+    background: #000;
+}
+
+.shop_black .social a,
+.shop_black footer .info p a,
+.shop_black footer .info .links a:hover {
+    color: rgb(21, 21, 21);
+}
+
+
+/*Purple Theme */
+
+.shop_purple #intro .bk,
+.shop_purple .navlinks .navbar,
+.shop_purple #newsletter .inner .col-md-6:last-child {
+    background: #8e44ad;
+    background: #9b59b6;
+}
+
+.shop_purple #intro .bk {
+    background: url(../img/shop/purple.jpg) right 50px no-repeat;
+    background-size: 100%;
+}
+
+.shop_purple #newsletter,
+.shop_purple .navlinks .navbar .txt-outer {
+    background: #8e44ad;
+}
+
+.shop_purple #newsletter .btn,
+.shop_purple .navlinks .btn.square,
+.shop_purple .navlinks .btn.dropdown-toggle {
+    background: rgb(21, 21, 21);
+    border-color: rgb(21, 21, 21);
+    color: #fff;
+}
+
+.shop_purple #newsletter .btn:hover,
+.shop_purple .navlinks .btn.square:hover,
+.shop_purple .navlinks .btn.dropdown-toggle:hover {
+    background: rgb(51, 51, 51);
+    border-color: rgb(51, 51, 51);
+}
+
+.shop_purple .hamburger div {
+    background: rgb(21, 21, 21);
+}
+
+.shop_purple .social a,
+.shop_purple footer .info p a,
+.shop_purple footer .info .links a:hover {
+    color: #ffd014;
+}
+
+.shop_purple .social a:hover,
+.shop_purple footer .info p a:hover {
+    color: rgb(51, 51, 51);
+}
+
+.shop_purple .social a,
+.shop_purple footer .info p a,
+.shop_purple footer .info .links a:hover {
+    color: #9b59b6;
+}
+
+
+/* White Theme */
+
+.shop_white #intro .bk,
+.shop_white .navlinks .navbar,
+.shop_white #newsletter .inner .col-md-6:last-child {
+    background: rgb(245, 245, 245);
+}
+
+.shop_white #intro .bk {
+    background: url(../img/shop/white.jpg) right 50px no-repeat;
+    background-size: 100%;
+}
+
+.shop_white #newsletter,
+.shop_white .navlinks .navbar .txt-outer {
+    background: rgb(231, 231, 231);
+}
+
+.shop_white #intro .txt h1,
+.shop_white #intro .txt p {
+    color: rgb(21, 21, 21);
+}
+
+.shop_white #intro .txt h1:after {
+    background: rgb(21, 21, 21);
+}
+
+.shop_white .hamburger div {
+    background: rgb(21, 21, 21);
+}
+
+.shop_white .navlinks .navbar .txt p,
+.shop_white .navlinks .navbar .txt h2,
+.shop_white .navlinks .navbar .txt .fa {
+    color: rgb(21, 21, 21);
+}
+
+.shop_white #newsletter h1,
+.shop_white #newsletter p {
+    color: #000;
+}
+
+.shop_white .social a,
+.shop_white footer .info p a,
+.shop_white footer .info .links a:hover {
+    color: #000;
+}
+
+.shop_white .social a:hover,
+.shop_white footer .info p a:hover {
+    color: rgb(51, 51, 51);
+}
+
+
+/* Red Theme */
+
+.shop_red #intro .bk,
+.shop_red .navlinks .navbar,
+.shop_red #newsletter .inner .col-md-6:last-child {
+    background: #dc4c3c;
+}
+
+.shop_red #intro .bk {
+    background: url(../img/shop/red.jpg) right 50px no-repeat;
+    background-size: 100%;
+}
+
+.shop_red #newsletter,
+.shop_red .navlinks .navbar .txt-outer {
+    background: #d93f2e;
+}
+
+.shop_red #newsletter .btn,
+.shop_red .navlinks .btn.square,
+.shop_red .navlinks .btn.dropdown-toggle {
+    background: rgb(21, 21, 21);
+    border-color: rgb(21, 21, 21);
+    color: #fff;
+}
+
+.shop_red #newsletter .btn:hover,
+.shop_red .navlinks .btn.square:hover,
+.shop_red .navlinks .btn.dropdown-toggle:hover {
+    background: rgb(51, 51, 51);
+    border-color: rgb(51, 51, 51);
+}
+
+.shop_red .hamburger div {
+    background: rgb(21, 21, 21);
+}
+
+.shop_red .social a,
+.shop_red footer .info p a,
+.shop_red footer .info .links a:hover {
+    color: #dc4c3c;
+}
+
+.shop_red .social a:hover,
+.shop_red footer .info p a:hover {
+    color: rgb(51, 51, 51);
+}
+
+
+/* General Shop Settings */
+
+.widget.third ul li {
+    width: 22.21%;
+}
+
+#intro .txt.right {
+    float: right;
+    padding-left: 60px;
+}
+
+#intro .txt.left {
+    float: left;
+    padding-left: 15px;
+}
+
+#intro {
+    border-bottom: none;
+}
+
+.widget.two ul .lastli .img {
+    background: none;
+}
+
+
+/* Custom Shipping Section */
+
+.shop #shipping {
+    background: url(../img/shop/europe_bk.jpg) right top no-repeat #fff;
+    background-size: 100%;
+}
+
+
+/* Custom Shopping Section */
+
+#shopping .item_img,
+#shipping .item_img {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 340px;
+    overflow: hidden;
+}
+
+#shipping .item_img {
+    height: 640px;
+    bottom: 90px;
+}
+
+#shopping .item_img img,
+#shipping .item_img img {
+    max-width: 100%;
+    position: absolute;
+    bottom: 50px;
+    right: -57px;
+}
+
+.shop #shopping {
+    background: url(../img/shop/s4.jpg) right 120px no-repeat #fff;
+    background-size: 100%;
+}
+
+
+/* Fixes */
+
+#intro.li3 .bk {
+    background: url(../img/i3.png) right bottom no-repeat;
+    background-size: 100%;
+}
+
+#intro.li4 .bk {
+    background: url(../img/i4.png) right bottom no-repeat;
+    background-size: 100%;
+}
+
+#intro.li5 .bk {
+    background: url(../img/i5.png) right bottom no-repeat;
+    background-size: 100%;
+}
+
+#intro.li3 .txt h1,
+#intro.li3 .txt p,
+#intro.li4 .txt h1,
+#intro.li4 .txt p,
+#intro.li5 .txt h1,
+#intro.li5 .txt p {
+    color: #fff !important;
+}
+
+#intro.li3 .txt h1:after,
+#intro.li4 .txt h1:after,
+#intro.li5 .txt h1:after {
+    background: #fff;
+}
+
+
+/*** MOBILE RESPONSIVE STYLE ***/
+
+
+/*** MOBILE RESPONSIVE STYLE ***/
+
+
+/*** MOBILE RESPONSIVE STYLE ***/
+
+@media (max-width: 767px) {
+    .widget.third ul li,
+    .shop_yellow .widget.two ul .lastli {
+        width: 100%;
+        float: left;
+    }
+    .shop_yellow .widget.two ul .lastli {
+        padding-left: 0;
+        padding: 15px;
+        padding-top: 20px;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
+    }
+    .shop_yellow .widget.two ul .lastli .lp {
+        text-align: center;
+    }
+    .shop_yellow .widget.two ul {
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .shop_yellow .widget.two ul .lastli .btn {
+        margin-bottom: 15px;
+    }
+    .shop_yellow .widget.two ul .lastli p {
+        text-align: left;
+    }
+    .widget.two ul .lastli .img {
+        display: none;
+    }
+    .navbar-brand img {
+        max-width: 90%;
+        margin-top: 4px;
+    }
+    .shop .st-menu .btn-group .btn {
+        text-transform: uppercase;
+    }
+    .shop .st-menu .btn-group .dropdown-menu {
+        border: none;
+    }
+    .shop .st-menu .btn-group .dropdown-menu li a {
+        padding: 14px 25px;
+        background: #f1c40f;
+        color: #453801;
+    }
+    #shopping .item_img,
+    #shipping .item_img {
+        display: none;
+    }
+    .shop_yellow #intro .bk {
+        background: #ffd014;
+    }
+    .shop_green #intro .bk {
+        background: #3ab54a;
+    }
+    .shop_black #intro .bk {
+        background: rgb(21, 21, 21);
+    }
+    .shop_purple #intro .bk {
+        background: #9b59b6;
+    }
+    .shop_red #intro .bk {
+        background: #dc4c3c;
+    }
+    .shop_white #intro .bk {
+        background: rgb(245, 245, 245);
+    }
+    .shop #shipping,
+    .shop #shopping {
+        background-size: 150%;
+        background-position: right top;
+        padding-top: 300px;
+    }
+    .shop footer .social {
+        padding-left: 30px;
+    }
+    .shop footer .social a {
+        width: auto;
+        margin-right: 15px;
+        text-align: center;
+    }
+}

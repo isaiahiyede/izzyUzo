@@ -1,0 +1,457 @@
+{% extends 'setup/add-service.html' %}
+{% load staticfiles %}
+
+{% block progress_bar_width %}
+    style="width: 531px;"
+{% endblock %}
+
+{% block custom-styles %}
+    {{ block.super }}
+    <link href="{% static 'sokohali/css/bootstrap-select.css' %}" rel="stylesheet">
+    <style>
+      select{
+        width: 120%;
+        /*width: auto;*/
+      }
+    </style>
+{% endblock %}
+
+{% block inner_page_content %}
+
+{% with service_chain.origin as origin and service_chain.destination as destination %}
+<!-- Page Inner Content/Changes -->
+    <div class="page-content active">
+        <!-- Header -->
+        <div class="header">
+            <div class="left">
+                <h1>Select Services For This Route. </h1>
+                {% include 'setup_snippet/route_inner.html' %}
+                <p>This is where you select the services you have set up for use</p>
+            </div>
+            <!-- Right Status -->
+            <!-- <div class="right">
+                <h2 style="float:left;">Issues to fix:</h2>
+                <span class="label">4</span>
+                <span class="label yellow">1</span>
+            </div> -->
+            <!-- Right Status -->
+        </div>
+        <!-- Header -->
+        <!-- Page Content -->
+        <div class="pagect">
+            <div class="steps">
+                <div class="progress">
+                </div>
+                <div class="smcircle">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <span>Your Customers <br/>(Origin)</span>
+                </div>
+                <div class="item {% if marketingmember_form.storefront.value %}gray disabled{% endif %}">
+                    <div class="dcircle" rel="w1">
+                        <img src="{% static 'soko-admin/img/icon1.png' %}" />
+                    </div>
+                    <div class="tooltip bottom">Your <strong>Storefront is {% if marketingmember_form.storefront.value %}active{% else %}not active{% endif %}</strong></div>
+                </div>
+                <div class="item {% if marketing_member.payment_activated and marketingmember_form.storefront.value %}gray disabled{% endif %} two">
+                    <div class="dcircle" rel="w2">
+                        <img src="{% static 'soko-admin/img/icon2.png' %}" />
+                    </div>
+                    <div class="tooltip top"><strong>Integrated payment systems are {% if marketing_member.payment_activated and marketingmember_form.storefront.value %}active{% else %}not active{% endif %}</strong>
+                    </div>
+                </div>
+                <div class="item {% if active_origin_distributor %}green{% else %}red{% endif %}">
+                    <div class="circle" rel="w3">
+                        <img src="{% static 'soko-admin/img/icon3.png' %}" />
+                    </div>
+                    <div class="tooltip bottom">Select <strong>Local Distribution member to pickup in {{ origin }}</strong>
+                    </div>
+                </div>
+                <div class="item two {% if warehouses_active %}green{% else %}red{% endif %}">
+                    <div class="circle" rel="w4">
+                        <img src="{% static 'soko-admin/img/icon4.png' %}" />
+                    </div>
+                    <div class="tooltip top">Select <strong>warehouse that will process packages for your customers</strong>
+                    </div>
+                </div>
+                <div class="item {% if shippers_active %}green{% else %}red{% endif %}">
+                    <div class="circle" rel="w5">
+                        <img src="{% static 'soko-admin/img/icon5.png' %}" />
+                    </div>
+                    <div class="tooltip bottom">Select <strong>Shipping member that will book your
+shipments from {{ origin }} to {{ destination }}</strong>
+                    </div>
+                </div>
+                <div class="item two {% if customsagents_active %}green{% else %}red{% endif %}">
+                    <div class="circle" rel="w6">
+                        <img src="{% static 'soko-admin/img/icon6.png' %}" />
+                    </div>
+                    <div class="tooltip top">Select <strong>Customs Clearing Agent that will clear your
+customer’s goods in {{ destination }}</strong>
+                    </div>
+                </div>
+                <div class="item {% if active_dest_distributor %}green{% else %}red{% endif %}">
+                    <div class="circle" rel="w7">
+                        <img src="{% static 'soko-admin/img/icon3.png' %}" />
+                    </div>
+                    <div class="tooltip bottom">Select <strong>Local Distribution member to deliver in {{ destination }} </strong>
+                    </div>
+                </div>
+                <div class="smcircle two">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <span>Your Customers <br/>(Destination)</span>
+                </div>
+            </div>
+            <div class="overlay"></div>
+
+
+
+            <!-- Right Side Widget -->
+            <div class="widget">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <!-- Widget Content  -->
+                <form id="rent_facility_form" method="POST">
+                {% csrf_token %}
+                <!-- Widget Content  -->
+                <div class="widget_content" id="w3">
+                    <div class="header {% if active_origin_distributor %}green{% else %}red{% endif %}">
+                        <div class="circle">
+                            <img src="{% static 'soko-admin/img/icon3.png' %}" />
+                        </div>
+                        <h1>Local Distribution</h1>
+                        <p>{% if active_origin_distributor %}Active{% else %}Not Set Yet{% endif %}</p>
+                    </div>
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; height: auto; overflow: hidden;">
+                          <div class="widget_scroll_inner">
+                              <div class="col-md-12">
+                                  <h5 style="color: #000;">Select a local distribution member to receive your customers' packages in {{ origin|capfirst }}</h5>
+                              </div>
+
+                              <div class="col-md-12" style="position:relative; width:60%;">
+                                  <h4>{{ rent_service_form.origin_distributor.label|title }}</h4>
+                                  <h4>{{ rent_service_form.origin_distributor }}</h4>
+                              </div>
+
+                          </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <!--<input type="hidden" name="orgin_dist"/>-->
+                        <a href="#" class="btn green">Save</a>
+                    </div>
+                </div>
+                </form>
+                <!-- Widget Content  -->
+                <!-- Widget Content  -->
+                <form id="rent_facility_form" method="POST">
+                {% csrf_token %}
+                <div class="widget_content" id="w4">
+                    <div class="header {% if active_warehouse_status %}green{% else %}red{% endif %}">
+                        <div class="circle">
+                            <img src="{% static 'soko-admin/img/icon4.png' %}" />
+                        </div>
+                        <h1>Warehouse</h1>
+                        <p>{% if warehouses_active %}Active{% else %}Not Yet Set{% endif %}</p>
+                    </div>
+
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; height: auto; overflow: hidden;">
+                            <div class="widget_scroll_inner">
+                                <!-- for direction in services_in_directions -->
+                                <div class="col-md-12">
+<!--                                    <h4 class="bg-danger">NB: If you have offered a warehouse, it is pre-selected by default for you. Choosing another warehouse would automatically deactivate your offered warehouse on the network and notify every member that has rented it.</h4>
+-->                                </div>
+
+                                <div class="col-md-12">
+                                    <h5 style="color: #000;">Select a warehouse to process your customers' packages in {{ origin|capfirst }}</h5>
+                                    <h4>{{ rent_service_form.origin_warehouse.label|title }} in {{ origin }}</h4>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                      <h4>{{ rent_service_form.origin_warehouse }}</h4>
+                                    </div>
+                                    <div class="col-md-8 info hidden">
+                                        <label data-member-type="WarehouseMember">
+                                            <span class="ratings"></span>
+                                            <span><a href="#" class="view_profile">View profile</a></span>
+                                            <!-- <span class="reviews"><a href="Javascript:newPopup('/')">Reviews</a></span>
+                                            <span><a href="Javascript:newPopup('/')">Rates</a></span> -->
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-12">
+                                    <div class="col-md-4">
+                                      <span>Process_Charge_Per_Kg: $2.5</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                          Your Offer (in $)
+                                            <input type="number"/>
+                                    </div>
+                                </div> -->
+
+                                <div class="col-md-12">
+                                    <h5 style="color: #000;">Select a warehouse to receive your customers' packages in {{ destination|capfirst }}</h5>
+                                    <h4>{{ rent_service_form.destination_warehouse.label|title }} in {{ destination }}</h4>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="col-md-4">
+                                        <h4>{{ rent_service_form.destination_warehouse }}</h4>
+                                    </div>
+                                    <div class="col-md-8 info hidden">
+                                        <label data-member-type="WarehouseMember">
+                                            <span class="ratings"></span>
+                                            <span><a href="#" class="view_profile">View profile</a></span>
+                                            <!-- <span class="reviews"><a href="Javascript:newPopup('/')">Reviews</a></span>
+                                            <span><a href="Javascript:newPopup('/')">Rates</a></span> -->
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <a href="#" class="btn green">Save</a>
+                    </div>
+                </div>
+                </form>
+                <!-- Widget Content  -->
+                <!-- Widget Content  -->
+                <form id="rent_facility_form" method="POST">
+                {% csrf_token %}
+                <div class="widget_content" id="w5">
+                    <div class="header {% if active_shipper_status %}green{% else %}red{% endif %}">
+                        <div class="circle">
+                            <img src="{% static 'soko-admin/img/icon5.png' %}" />
+                        </div>
+                        <h1>Shipping</h1>
+                        <p>{% if shippers_active %}Active{% else %}Not Yet Set{% endif %}</p>
+                    </div>
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; height: auto; overflow: hidden;">
+                          <div class="widget_scroll_inner">
+                              <!-- for direction in services_in_directions -->
+                              <div class="col-md-12">
+<!--                                  <h4 class="bg-danger">NB: If you have offered a shipper, it is pre-selected by default for you. Choosing another shipper would automatically deactivate your offered shipper on the network and notify every member that has rented it.</h4>
+-->                              </div>
+
+                              <div class="col-md-12">
+                                  <h5 style="color: #000;">Select a shipper to transport your customers' packages from {{ origin|capfirst }}</h5>
+                                  <h4>{{ rent_service_form.shipper.label|title }} in {{ origin }}</h4>
+                              </div>
+
+                              <div class="col-md-12">
+                                  <div class="col-md-4">
+                                      <h4>{{ rent_service_form.shipper }}</h4>
+                                  </div>
+                                  <div class="col-md-8 info hidden">
+                                      <label data-member-type="ShippingMember">
+                                          <span class="ratings"></span>
+                                          <span><a href="#" class="view_profile">View profile</a></span>
+                                          <!-- <span class="reviews"><a href="Javascript:newPopup('/')">Reviews</a></span>
+                                          <span><a href="Javascript:newPopup('/')">Rates</a></span> -->
+                                      </label>
+                                  </div>
+                              </div>
+
+                              <!--<div class="col-md-12">-->
+                              <!--    <h5 style="color: #000;">Select a shipper to receive your customers' packages in {{ destination|capfirst }}</h5>-->
+                              <!--    <h4> rent_service_form.destination_shipper.label|title }} in  destination }}</h4>-->
+                              <!--</div>-->
+                              <!--<div class="col-md-12">-->
+                              <!--    <div class="col-md-4">-->
+                              <!--        <h4> rent_service_form.destination_shipper }}</h4>-->
+                              <!--    </div>-->
+                              <!--    <div class="col-md-8">-->
+                              <!--        <label data-member-type="ShippingMember">-->
+                              <!--            <span class="ratings"></span>-->
+                              <!--            <span><a href="" class="view_profile">View profile</a></span>-->
+                              <!--            <!-- <span class="reviews"><a href="Javascript:newPopup('/')">Reviews</a></span>-->
+                              <!--            <span><a href="Javascript:newPopup('/')">Rates</a></span> -->
+                              <!--        </label>-->
+                              <!--    </div>-->
+                              <!--</div>-->
+
+                          </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <a href="#" class="btn green">Save</a>
+                    </div>
+                </div>
+                </form>
+                <!-- Widget Content  -->
+                <!-- Widget Content  -->
+                <form id="rent_facility_form" method="POST">
+                {% csrf_token %}
+                <div class="widget_content" id="w6">
+                    <div class="header {% if active_clearing_agent_status %}green{% else %}red{% endif %}">
+                        <div class="circle">
+                            <img src="{% static 'soko-admin/img/icon6.png' %}" />
+                        </div>
+                        <h1>Customs Clearing</h1>
+                        <p>{% if customsagents_active %}Active{% else %}Not Yet Set{% endif %}</p>
+                    </div>
+
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; height: auto; overflow: hidden;">
+                          <div class="widget_scroll_inner">
+                              <!-- for direction in services_in_directions -->
+                              <div class="col-md-12">
+<!--                                  <h4 class="bg-danger">NB: If you have offered a custom clearing agent, it is pre-selected by default for you. Choosing another custom clearing agent would automatically deactivate your offered custom clearing agent on the network and notify every member that has rented it.</h4>
+-->                              </div>
+
+                              <!--<div class="col-md-12">-->
+                              <!--    <h5 style="color: #000;">Select a custom clearing agent to process your customers' packages in  origin|capfirst }}</h5>-->
+                              <!--</div>-->
+                              <!---->
+                              <!--<div class="col-md-12">-->
+                              <!--    <h4> rent_service_form.origin_clearing_agent.label|title }} in  origin }}</h4>-->
+                              <!--    <h4> rent_service_form.origin_clearing_agent }}</h4>-->
+                              <!--</div>-->
+
+                              <div class="col-md-12">
+                                  <h5 style="color: #000;">Select a custom clearing agent to Clear your customers' packages in {{ destination|capfirst }}</h5>
+                              </div>
+                              <div class="col-md-12">
+                                  <h4>{{ rent_service_form.clearing_agent.label|title }} in {{ destination }}</h4>
+                              </div>
+                              <div class="col-md-12">
+                                  <div class="col-md-4">
+                                      <h4>{{ rent_service_form.clearing_agent }}</h4>
+                                  </div>
+                                  <div class="col-md-8 info hidden">
+                                          <label data-member-type="CustomClearingAgent">
+                                              <span class="ratings"></span>
+                                              <span><a href="#" class="view_profile">View profile</a></span>
+                                              <!-- <span class="reviews"><a href="Javascript:newPopup('/')">Reviews</a></span>
+                                              <span><a href="Javascript:newPopup('/')">Rates</a></span> -->
+                                          </label>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <a href="#" class="btn green">Save</a>
+                    </div>
+                </div>
+                </form>
+                <!-- Widget Content  -->
+                <!-- Widget Content  -->
+                <form id="rent_facility_form" method="POST">
+                {% csrf_token %}
+                <div class="widget_content" id="w7">
+                    <div class="header {% if active_dest_distributor %}green{% else %}red{% endif %}">
+                        <div class="circle">
+                            <img src="{% static 'soko-admin/img/icon3.png' %}" />
+                        </div>
+                        <h1>Local Distribution</h1>
+                        <p>{% if active_dest_distributor %}Active{% else %}Not Set Yet{% endif %}</p>
+                    </div>
+
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; height: auto; overflow: hidden;">
+                          <div class="widget_scroll_inner">
+                              <!-- for direction in services_in_directions -->
+
+                              <div class="col-md-12">
+                                  <h5 style="color: #000;">Select a local distribution member to distribute your customers' packages in {{ destination|capfirst }}</h5>
+                              </div>
+
+                              <div class="col-md-12" style="position:relative; width:60%;" id="distributor_locs">
+                                    <h4>{{ rent_service_form.destination_distributor.label|title }}</h4>
+                                    <h4>{{ rent_service_form.destination_distributor }}</h4>
+                              </div>
+
+                          </div>
+
+                        </div>
+                    </div>
+
+                    <div class="footer">
+                        <input type="hidden" name="dest_dist"/>
+                        <a href="#" class="btn green">Save</a>
+                    </div>
+
+                </div>
+
+                <!-- Widget Content  -->
+                </form> 
+                  
+            </div>
+
+            <!-- Right Side Widget -->
+        </div>
+        <!-- Page Content -->
+    </div>
+
+    {% endwith %}
+    <!-- Page Inner Content/Changes -->
+{% endblock %}
+
+
+{% block script %}
+    {{ block.super }}
+    <script>
+        $('select').on('change', function(){
+          if ($(this).val() != ''){
+            $(this).parent().parent().parent().find('.col-md-8.info').removeClass('hidden');
+          }
+        })
+
+        $('.view_profile').click(function(e){
+              $this_p_p = $(this).parent().parent();
+              var member_type = $this_p_p.attr('data-member-type');
+              var member_id = $this_p_p.parent().parent().find('select').val();
+
+              $.get('{% url "service_provider:get_member_info" %}', {'member_type': member_type, 'member_id': member_id}, function(data){
+
+              })
+              newPopup('{% url "service_provider:get_member_info" %}'+'?member_type='+member_type+'&id='+member_id)
+        })
+
+      //   $(document).ready(function () {
+      //       var ckbox = $('#pick_up_at_my_warehouse');
+      //       var user = $('#pick_up_at_my_warehouse').val();
+      //       var serv_chn = $('#pick_up_serv_chn').val();
+      //       var serv_chn_origin = $('#pick_up_serv_chn_origin').val();
+      //       var serv_chn_dest = $('#pick_up_serv_chn_dest').val();
+
+      //       console.log(serv_chn + "," + serv_chn_origin + "," + serv_chn_dest);
+
+
+      //       $('input').on('click',function () {
+      //           if (ckbox.is(':checked')) {
+      //               alert('You have Checked it');
+      //               $.ajax({
+      //                 url: "{% url 'service_provider:create_local_dist' %}",
+      //                 type: "POST",
+      //                 data: {'user':user, 'service_chain':serv_chn, 'origin':serv_chn_origin, 'destination':serv_chn_dest},
+
+      //               success:function(data){
+      //                 $('#distributor_locs').replaceWith(data);
+      //                 console.log('working')
+
+      //               },
+
+      //               error:function(data){
+      //                 console.log('not working')
+      //               }
+      //            });   
+
+      //           } else {
+      //               alert('You Un-Checked it');
+      //           }
+      //       });
+
+      // });
+    </script>
+{% endblock %}

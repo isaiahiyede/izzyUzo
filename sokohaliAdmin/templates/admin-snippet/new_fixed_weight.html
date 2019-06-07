@@ -1,0 +1,9 @@
+<div class="col-md-6" id='new_fixed_weight_cat'>
+  <label>Category:</label>
+    <select id="fixed_weight_categories" style="height:34px; width:93% !important;">
+	  <option value="Select Category">Select Category</option>
+	    {% for category in fixed_weight_category %}
+		  <option cat_id="{{category.pk}}" value="{{category.description}}">{{category.description}}</option>
+		{% endfor %}
+    </select>
+</div>

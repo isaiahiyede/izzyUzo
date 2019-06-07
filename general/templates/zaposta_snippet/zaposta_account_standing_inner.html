@@ -1,0 +1,73 @@
+<!-- header top side -->
+{% load currency %}
+{% load account_standing %}
+{% load humanize %}
+{% load static from staticfiles %}
+
+<div class="inner {{acct_standing_border}}">
+	<div class="header">
+		Account Standing
+	</div>
+	<div class="col-md-12">
+		<h1>$ {{zap_credit_D|floatformat:"2"|intcomma}}</h1>
+		<hr/>
+		{% if zap_credit_N != 0 %}
+		<h2>{% country_currency_code country %}&nbsp; {{zap_credit_N|floatformat:"2"|intcomma}}</h2>
+		{% endif %}
+	</div>
+	<div class="col-md-12 btn_outer" style="position: relative!important;">
+		<div class="col-md-6">
+			<a href="{% url 'soko_pay:add_funds_landing_page' %}"
+			   {% if acct_standing_border == 'three' %} class="btn blue" {% else %}class="btn green" {% endif %}>
+				Buy Credit</a>
+		</div>
+		<div class="col-md-6">
+			<a href="{% url 'soko_pay:user_transactions' %}" class="btn blue">Wallet</a>
+		</div>
+		<!--<a href="#" class="btn yellow">Pay up Balance</a>-->
+	</div>
+</div>
+
+<!-- <div class="promo_payment">
+	<p>Automatic Checkout - Instant Payment</p>
+	<div class="img">
+		<img src="% static 'zaposta/img/cc/visa.png' %}" />
+	</div>
+	<div class="img">
+		<img src="% static 'zaposta/img/cc/interswitch.png' %}" />
+	</div>
+	<div class="img two">
+		<img src="% static 'zaposta/img/cc/verve.png' %}" />
+	</div>
+	<div class="img">
+		<img src="% static 'zaposta/img/cc/mastercard.png' %}" />
+	</div>
+	<hr/>
+	<p>Bank Deposit and wire transfer options</p>
+	<img src="% static 'zaposta/img/cc/1.png' %}" />
+</div> -->
+<div class="social_btns">
+	<hr/>
+	<p>Follow Us</p>
+
+	<a href="#">
+	<!--<a href="https://www.facebook.com/zaposta?_rdr" target="_blank">-->
+	<i class="fa fa-facebook-square"></i>
+	</a>
+
+	<a href="#">
+	<!--<a href="https://twitter.com/Sokohali" target="_blank">-->
+	<i class="fa fa-twitter-square"></i>
+	</a>
+
+	<a href="#">
+	<!--<a href="https://plus.google.com/111783881276181089256/about/p/pub?hl=en_GB" target="_blank">-->
+	<i class="fa fa-google-plus-square"></i>
+	</a>
+
+	<a href="#">
+	<!--<a href="https://ng.linkedin.com/pub/zaposta-admin/bb/220/518" target="_blank">-->
+	<i class="fa fa-linkedin-square"></i>
+	</a>
+
+</div>

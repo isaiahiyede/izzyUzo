@@ -1,0 +1,24 @@
+
+
+        <div class="col-md-12" id="price_table">
+			<div class="table-responsive">          
+			<table class="table">
+			  <thead>
+			    <tr>
+			      <th>#</th>
+			      <th>Courier</th>
+			      <th>Price</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+              {% for price in price_list %}
+			    <tr>
+			      <td><input type="radio" name="amount" class="" value="{{ price.id }}"></td>
+			      <td>{{ price.region.courier }}</td>
+			      <td>{{ price.price }}</td>
+			    </tr>
+               {% endfor %}
+			  </tbody>
+			</table>
+			</div>
+		</div>

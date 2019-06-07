@@ -1,0 +1,8 @@
+
+	{% for label in labels %}
+		<div>
+			<object data="{{ label.label.url }}" type="application/pdf" width="600" height="600">
+		        alt : <a href="{{ label.url }}" >{{ label }}</a>
+		    </object>
+		</div>
+	{% endfor %}

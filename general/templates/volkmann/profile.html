@@ -1,0 +1,69 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  Edit Profile Information
+              </h1>
+        <ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Edit Profile</a></li>
+          <li class="active">Data</li>
+        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+
+        
+
+        <div class="row" style="overflow-x: hidden;">
+           <style>
+                                
+              label{
+                  font-size: 15px;
+              }
+            </style>   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+                   <hr>
+                   <div class="card-content shipment_details" id="shipment_details">
+                    <div class="row">
+                    <form id="editform" enctype="multipart/form-data" action="{% url 'general:edit_profile' request.user.username %}" method="post">
+                      <div class="col-md-12">
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                        
+                        <div class="col-md-12">
+                          <div class="col-md-3">
+                            <label style="color: black;">{{ field.label }}:</label>
+                          </div>
+                          <div class="col-md-9">
+                            {{ field }}
+                          </div>
+                        </div>
+                        {% endfor %}
+                        <div class="col-md-3 pull-right buttons" style="margin-top:9px;">
+                          <input type="submit" class="btn blue" style="text-align: center; width: 69%; margin-right: 14px; border-radius: 4px;">
+                        </div>
+                      </div>
+                    </form>
+                    </div>
+                   </div>
+              </div>
+             </div>
+           </div>
+        </div>
+
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+{% endblock script %}

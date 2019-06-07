@@ -1,0 +1,204 @@
+{% extends 'base/base_user_account_new.html' %}
+{% load humanize %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load currency %}
+{% load account_standing %}
+
+
+{% block extra_head %}
+    {{ block.super }}
+    <style>
+        .history.custom{
+            background: url("{% static 'sokohali/img/tracking_bus.png' %}") center center no-repeat !important;
+        }
+        h1{
+            font-size: 26px !important;
+        }
+        h2{
+            line-height: 50px !important;
+        }
+        .in > p{
+            color: #fff !important;
+        }
+        .in .yellow > p{
+            color: #453801 !important;
+        }
+
+    </style>
+{% endblock %}
+
+
+
+
+
+{% block inner_content %}
+
+    <div class="col-md-8" style="padding-left: 20px;">
+        {% if items %}
+            <h4 style="color: black;">Your have {{count}} item(s) in your mail bag</h4>
+        {% else %}
+            <h4 style="color: black;">No item(s) in your mail bag</h4>
+        {% endif %}
+
+        <div class="row">
+
+            <div class="itemsList">
+                <table class="table table-bordered">
+                    <style>
+                        .table td input{
+                            height: 14px;
+                        }
+                    </style>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Tracking Number</th>
+                            <th>Description</th>              
+                            <th>created_on</th>
+                            <th>weight (lbs)</th>
+                            <th>Status</th> 
+                            <th>Package #</th>
+                        </tr>
+                    </thead>
+        
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            {% if not item.ordered %}
+                                <td><input type="checkbox" class="item_id_select" item_id="{{item.pk}}" name="item_id_select"></td>
+                            {% else %}
+                                <td></td>
+                            {% endif%}
+                            <td>{{item.user.username}}</td>
+                            <td>{{item.courier_tracking_number}}</td>
+                            <td>{{item.description|truncatechars:30}}</td>              
+                            <td>{{item.created_on}}</td>
+                            <td>{{item.weight}}</td>
+                            <td>{{item.status}}</td>
+                            {% if item.package.tracking_number %}
+                                <td>{{item.package.tracking_number}}</td>
+                            {% else %}
+                                <td> -- </td>
+                            {% endif %}
+                        </tr>
+                         {% endfor %}
+                    </tbody>
+                </table>
+                <input style="margin-top: 10px !important;" type="submit" class="btn btn-primary pull-right" value="SHIP" name="ship" id="items_package_up">
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock inner_content %}
+
+
+{% block include_acct_standing %}
+    {% zaposta_acct_standing request True 'two' %}
+{% endblock %}
+
+
+{% block extra_script %}
+
+    <script>
+        
+        $('body').on('click','#items_package_up',function(e){
+
+            var checked_items = [];
+            
+            $("input:checkbox[name=item_id_select]").each(function(){
+                var $this = $(this);
+
+                if($this.is(":checked")){
+                    checked_items.push($this.attr("item_id"));
+                }
+            });
+
+            if(checked_items == ""){
+                alert("Please select at least one item to ship");
+                return false;
+              }else{
+                $('#selected_items').val(checked_items);
+                
+                $('#eventPlayers').modal('show');
+            }
+        });
+
+
+         $('body').on('click', '.delivery_add_method', function () {
+            var delivery_mth = $(this).val();
+            if(delivery_mth == "google_add_address"){
+                $('.google_add_your_address').removeClass('hidden');
+                $('.delivery_add').addClass('hidden');
+            }else{
+                $('.google_add_your_address').addClass('hidden');
+                $('.delivery_add').removeClass('hidden');
+            }
+            
+        });
+
+    </script>
+
+
+    <script>
+
+        $('.ship_ctry').on('change', function () {
+            var route = $('#id_route option:selected').val();
+            get_destn_addresses(route);
+            
+        });
+
+
+        function get_destn_addresses(route){
+            $.ajax({
+                data: {'route':route},
+                type: 'GET',
+                url: "{% url 'general:get_destination_addresses' %}",
+
+                success: function(data){
+                    $('#dest_address').replaceWith(data);
+                    },
+                error:function(data){
+                    console.log("Not working");
+                }
+            });
+        };
+
+
+        function validateAdressSelect () {
+            if (!$("input[name='google_add']:checked").val()) {
+               alert('Please select an option for your delivery address!');
+                return false;
+            }
+            else {
+              if ($("input[name='google_add']:checked").val() == "google_add_address"){
+                var country = $('#country').val();
+                var administrative_area_level_1 = $('#administrative_area_level_1').val();
+                var locality = $('#locality').val();
+                var route = $('#route').val();
+                var street_number = $('#street_number').val();
+                var autocomplte= $('#autocomplte').val();
+
+                if(country == "" | administrative_area_level_1 == "" | locality == "" | route == "" | street_number == "" | autocomplte == ""){
+                    alert("Please complete all the fields the address form except for zip code which is optional");
+                    return false;
+                }else{
+                    $('#createPackageForm').submit();
+                    return true;
+
+                }
+              }else{
+                if($('#pkg_ship_addresses').val() == ""){
+                    alert('Please select a saved address');
+                    return false;
+                }
+              }
+             }
+            }
+
+    </script>
+
+{% endblock %}

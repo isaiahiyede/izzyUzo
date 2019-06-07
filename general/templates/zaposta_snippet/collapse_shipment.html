@@ -1,0 +1,307 @@
+{% load custom_filters %}
+{% load currency %}
+{% load humanize %}
+
+
+
+
+{% with credit_bal_D=pkg.balance_D %}
+
+<div class="second">
+    <div class="header">
+        <ul>
+            <li>
+                <span class="back">Back</span>
+            </li>
+            <li>
+              {% if pkg.handling_option == "drop-at-postoffice" or pkg.handling_option == "pick-up-package" %}
+                <a onclick='window.open("{% url 'shipping:package_invoice' pkg.tracking_number %}", "invoice", "width=700,height=700,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")'  class="view-invoice" style="cursor:pointer;" >View Invoice</a>
+              {% else %}
+                <!-- <a href="#" class="btn yellow" data-toggle="modal" data-target="#view_label_modal">Print Shipment Label</a> -->
+              {% endif %}
+            </li>
+
+            <li>
+                {% if pkg.status == 'new' %}
+                    <a href="#" class="delete_shipment_btn" obj_id="{{ pkg.pk }}">Cancel Booking</a>
+                {% endif %}
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="col-md-12 top">
+        <div class="col-md-6">
+            <h1 style="font-size:19px !important;"><strong style="font-size:19px;">{{pkg.tracking_number}}</strong></h1>
+            <p>{{pkg.created_on|date:"d/m/y"}} /
+                <strong>$ {{pkg.admin_total_payable_D|floatformat:"2"|intcomma}}</strong>
+                <!-- <strong> country_currency_v1 pkg.export.country  pkg.admin_total_payable_D|floatformat:"2"|intcomma </strong>  -->
+                {% if pkg.strip_my_package %}/ Strip {% endif %} {% if pkg.consolidate %}/ Consolidated {% endif %} {% if pkg.insure %}/ Ins.{% endif %}</p>
+            {% if pkg.balance_D > 0 %}
+                {% if not request.user.useraccount.marketer.storefront_name == "smatpost"%}
+                    <a href="{% url 'soko_pay:select_payment_option' %}?tracking_number={{ pkg.tracking_number }}" class="btn yellow">Pay balance
+                {% else %}
+                    <a href="#" class="btn yellow">Balance
+                {% endif %}
+                    <span>$ {{pkg.balance_D|floatformat:"2"|intcomma}} </span>
+                </a>
+            {% else %}
+                {% if not pkg.new and not pkg.cancelled %}<a href="#" class="btn paid">Already Paid</a>{% endif %}
+            {% endif %}
+
+            {% if pkg.status == 'Not Yet Received' %}
+                <a href="#" class="btn black delete_shipment" obj_id="{{ pkg.pk }}">Cancel Booking</a>
+            {% endif %}
+        </div>
+        <div class="col-md-6" style="padding:15px;">
+            <div class="address">
+                <h2>Receiving Address:</h2>
+                <p>
+                    {{ pkg.package_receiving_address }}
+                </p>
+                <hr>
+                <h2>Delivery Address:</h2>
+                {% if pkg.created_by_admin == True %}
+                    <p>{{pkg.get_default_destination_warehouse}}</p>
+                {% else %}
+                    <p>{{pkg.get_delivery_address}}</p>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+    {% if pkg.handling_option == "drop-at-postoffice" or pkg.handling_option == "pick-up-package" %}
+    <!-- Print Out Section -->
+        <div class="col-md-12 printout two">
+            <div class="col-md-12 bts">
+                <a onclick = 'window.open("{% url 'shipping:package_label' pkg.tracking_number %}", "invoice", "width=650,height=650,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")' class="btn yellow view_label" >Print Shipment Label</a>
+
+                <!-- <a pkg_id = {{ pkg.pk }} class="btn yellow view_label" >Print Shipment Label</a> -->
+            </div>
+        </div>
+    <!-- Print Out Section -->
+    {% elif pkg.shipment_type == "drop-at-location" %}
+        <div class="col-md-12 printout two">
+            <div class="col-md-12 bts">
+                <!-- <a href="#" class="btn yellow" data-toggle="modal" data-target="#view_label_modal">Print Shipment Label</a> -->
+                <a href="#" class="btn yellow tto" data-toggle="modal" data-target="#single-export-label">View Shipment Label</a>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="col-md-12 bot">
+
+        <!--<div class="col-md-12 charges">
+            <h2>Your charges</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Shipping Weight</p>
+                </div>
+                <div class="col-md-6">
+
+                    <p>{{pkg.box_weight_higher|floatformat:"2"}} lbs / {{pkg.box_weight_higher_K|floatformat:"2"}} kg
+                    <span data-toggle="tooltip" data-placement="left" title="Total billable weight."></span></p>
+                </div>
+            </div>
+            {% if pkg.handling_option == "drop-at-postoffice" or pkg.handling_option == "pick-up-package" %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Pickup/DropOff Charge</p>
+                </div>
+                <div class="col-md-6">
+
+                    <p>$ {{ pkg.pick_up_charge_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.pick_up_charge_N |floatformat:2|intcomma }}
+                        <span data-toggle="tooltip" data-placement="left" title="The cost of shipping packages to Nigeria usually calculated with the higher of Actual/Dimensional weight." ></span>
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Freight (Local &amp; International)</p>
+                </div>
+                <div class="col-md-6">
+
+                    <p>$ {{ pkg.total_freight_cost.dollar_value|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.total_freight_cost.naira_value |floatformat:2|intcomma }}
+                        <span data-toggle="tooltip" data-placement="left" title="The cost of shipping packages to Nigeria usually calculated with the higher of Actual/Dimensional weight." ></span>
+                    </p>
+                </div>
+            </div>
+
+
+            {% if pkg.consolidate %}
+            <div class="row hidden">label
+                <div class="col-md-6">
+                    <p>Consolidation</p>
+                </div>
+                <div class="col-md-6">
+                    <p>$ {{ pkg.consolidation_fee_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.consolidation_fee_N|floatformat:2|intcomma }}
+                    <span data-toggle="tooltip" data-placement="left" title="Fee for putting all items together to reduce cost."></span></p>
+                </div>
+            </div>
+            {% endif %}
+            {% if pkg.strip_my_package %}
+            <div class="row hidden">
+                <div class="col-md-6">
+                    <p>Strip</p>
+                </div>
+                <div class="col-md-6">
+                    <p>$ {{ pkg.strip_package_fee_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.strip_package_fee_N|floatformat:2|intcomma }}
+                    <span data-toggle="tooltip" data-placement="left" title="Fee for stripping items to its barest minimum to reduce weight."></span></p>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row hidden">
+                <div class="col-md-6">
+                    <p>Customs Clearing Fee</p>
+                </div>
+                <div class="col-md-6">
+                    <p>$ {{ pkg.customs_clearing_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.customs_clearing_N|floatformat:2|intcomma }}
+                    <span data-toggle="tooltip" data-placement="left" title="Custom Duties fee."></span></p>
+                </div>
+            </div>
+            {% if pkg.VAT_charge_D %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p>VAT</p>
+                </div>
+                <div class="col-md-6">
+                    <p>$ {{ pkg.VAT_charge_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.VAT_charge_N|floatformat:2|intcomma }}
+                    <span data-toggle="tooltip" data-placement="left" title="VAT"></span></p>
+                </div>
+            </div>
+            {% endif %}
+            {% if pkg.service_charge_D %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Service Charge</p>
+                </div>
+                <div class="col-md-6">
+                    <p>$ {{ pkg.service_charge_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.service_charge_N|floatformat:2|intcomma }}
+                    <span data-toggle="tooltip" data-placement="left" title="Service Charge"></span></p>
+                </div>
+            </div>
+            {% endif %}
+            {% if pkg.insure %}
+            <div class="row">
+                <div class="col-md-6">
+                    <p>PSDG</p>
+                </div>
+                <div class="col-md-6">
+                    <p>$ {{ pkg.insurance_fee_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.insurance_fee_N|floatformat:2|intcomma }}
+                    <span data-toggle="tooltip" data-placement="left" title="Product safety &amp; delivery guarantee option (Insurance)."></span></p>
+                </div>
+            </div>
+            {% endif %}
+            <div class="total">
+                <div class="col-md-6">
+                    <p>TOTAL</p>
+                </div>
+                <div class="col-md-6">
+                    <p>$ {{ pkg.admin_total_payable_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.admin_total_payable_N|floatformat:2|intcomma }} </p>
+                </div>
+            </div>
+
+            {% if pkg.balance_paid_D > 0 %}
+            <div class="balance_paid">
+                <div class="col-md-6">
+                    <p style="color:green;">Amount Paid</p>
+                </div>
+                <div class="col-md-6">
+                    <p style="color:green; position: relative;left: 178px;">$ {{ pkg.balance_paid_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.balance_paid_N|floatformat:2|intcomma }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if pkg.balance_D > 0 %}
+            <div class="balance">
+                <div class="col-md-6">
+                    <p>BALANCE</p>
+                </div>
+                <div class="col-md-6">
+                    <p>$ {{ pkg.balance_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pkg.balance_N|floatformat:2|intcomma }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>-->
+
+        <div class="col-md-12 packages">
+            <h2>Package</h2>
+             <!--if pkg.approved and not pkg.deleted -->
+            <!-- Package Item -->
+            <!--<div class="item">
+                <div class="in">-->
+            <div class="item">
+                <div {% if pkg.balance_D > 0 %} class="in yellow" style="padding-left: 67px; background: #ffd014;" {% else %}class="in" style="padding-left: 67px; background: #3ab54a;" {% endif %}>
+                    <p>
+                        <strong>Package</strong> - <!--ID: {{pkg.id}} /-->: {{pkg.dimension}} / {{pkg.box_weight}} lbs ({{pkg.box_weight_K}}kg) / Quantity: {{pkg.box_quantity}}
+                    </p>
+
+                    <span class="view"></span>
+                </div>
+                <div class="out two">
+                    <p>
+                    {% if pkg.status %}<strong>{{ pkg.status|capfirst }}</strong>{% endif %}
+                    </p>
+                    {% if credit_bal_D > 0.1 %}
+                        {% if not request.user.useraccount.marketer.storefront_name == "smatpost"%}
+                            <a href="{% url 'soko_pay:select_payment_option' %}?tracking_number={{ pkg.tracking_number }}" class="btn yellow">Pay balance
+                        {% else %}
+                            <a href="#" class="btn yellow">Balance
+                        {% endif %}
+                            <span style="font-size:12px !important;"> ${{pkg.balance_D|floatformat:2|intcomma}}/ {% country_currency_code lb_country %}&nbsp;{{pkg.balance_N|floatformat:2|intcomma}} </span>
+                        </a>
+                    {% else %}
+                        <span class="btn yellow two">Already Paid</span>
+                    {% endif %}
+                    <span class="history"></span>
+                </div>
+                <div class="out">
+
+                    {% pkg_statuses pkg.pk %}
+
+                    {% for history in pkg.distinct_tracking_history %}
+                        <div {% if forloop.counter == 1 %} class="col-md-12 selected" {% else %} class="col-md-12"{% endif %}>
+                            <p>{{history.created_on|date:"d-m-y"}}- {{history.created_on|time:"h:i"}} GMT - {{history.status|capfirst}}</p>
+                        </div>
+                    {% endfor %}
+
+                    <!-- for history in pkg_statuses
+                        <div {% if history == pkg.status %} class="col-md-12 selected" {% else %} class="col-md-12"{% endif %}>
+                            <p>{{history.created_on|date:"d-m-y"}}- {{history.created_on|time:"h:i"}} GMT - {{history|capfirst}}</p>
+                        </div>
+                     endfor -->
+
+                </div>
+                <div class="items">
+                    {% with items=pkg.shippingitem_set.all %}
+                        {% if items %}
+                            <h2>Items</h2>
+                            {% for item in items %}
+                            <div class="col-md-12">
+                            </p><strong>{{ item.description }}</strong> <strong class="green">{{item.status}}</strong></p>
+
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                                 <a {% if pkg.pkg_image %} href="Javascript:newPopup('{{pkg.pkg_image.url}}')"{% else %}href="#"{% endif %}>View Picture</a>
+
+                            </div>
+
+
+                </div>
+            </div>
+            <!-- Package Item -->
+             <!--endif -->
+        </div>
+
+    </div>
+</div>
+
+
+{%  include 'shipping_snippet/custom_label_modal.html' with package=pkg %}
+
+
+{% endwith %}

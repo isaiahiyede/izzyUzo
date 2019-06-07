@@ -1,0 +1,34 @@
+	                
+    <form name="edit_shopping_order" id="edit_shopping_order" method="POST" 
+        action="{% url 'general:edit_shop_request' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+
+			<div class="form-group">
+			<label class="label-controller">Link</label><br>
+			<input type="text" style="width:50% !important;" required style="color: #3AB54B;" placeholder="Link" 
+				value="{{shop_obj.link}}" name="link"/>
+			</div>
+
+			<div class="form-group">
+			<label class="label-controller">Brief Description</label><br>
+			<input type="text" style="width:50% !important;" required style="color: #3AB54B;" value="{{shop_obj.description}}" name="description" placeholder="Brief Description"/>		
+			</div>
+
+			<div class="form-group">
+			<label class="label-controller">Quantity</label><br>
+			<input type="number" style="width:50% !important;" min="1" required style="color: #3AB54B;" 
+				name="quantity" value="{{shop_obj.quantity}}" placeholder="Quantity"/>	
+			</div>
+
+			<div class="form-group">
+			<label class="label-controller">Total Amount($)</label><br>
+			<input type="number" style="width: 50% !important;" min="1" step="0.1" required style="color: #3AB54B;" value="{{shop_obj.total_value}}" name="amount" placeholder="Total Amount($)">	
+			</div>
+
+			<input type="hidden" name="item_id" value={{shop_obj.pk}}>
+			
+			<div class="form-group">								
+	    	<button type="submit" class="btn btn-success">Submit</button>
+	    	</div>
+	</form> 
+

@@ -1,0 +1,61 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  FUND VEI WALLET   
+              </h1>
+		        <ol class="breadcrumb">
+		          <li><a href="#">Home</a></li>
+		          <li><a href="#">VEI WALLET PAYPAL</a></li>
+		          <li class="active">Data</li>
+		        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+		<div class="row" style="overflow-x: hidden;">   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+            	<div class="card-content shipment_details" id="shipment_details">
+            		<!-- this is the wrapper for the content -->
+						<div class="st-content-inner">
+
+							<div class="wt two">
+
+								<div class="container paystackpay" style="position:relative;">
+						  												
+									<div class="col-md-6">
+										<h2 style="color:green;">Your transaction was successful
+										</h2><br/>
+	                            	</div>
+								</div>
+							
+							</div>
+
+						
+
+						</div>
+
+						<div class="hero two" id="payment_page">
+							<div class="container outer">
+							
+							</div>
+						</div>
+			    	</div>
+
+        		</div>
+        	  </div>
+             </div>
+          </div>
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+{% endblock script %}

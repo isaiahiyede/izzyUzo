@@ -1,0 +1,623 @@
+{% extends "adminBase/base_index.html" %}
+
+{% block title  %}Shopping{% endblock %}
+
+{% block set_up %}
+{% endblock set_up %}
+
+{% block body %}<body id="blue">{% endblock %}
+
+    {% block searchbar %}
+        <div class="searchbar">
+            <div class="container">
+                <div class="col-md-12">
+                    <input type="text" placeholder="Search for orders or shipments, e.g. Order OR235533" />
+                    <i class="fa fa-search t" aria-hidden="true"></i>
+                    <span class="bar"></span>
+                </div>
+
+                <div class="search_filter">
+                    <p class="htitle">Filter by:</p>
+                    <select id="type">
+                        <option value="hide">Type</option>
+                        <option value="2010">Package</option>
+                        <option value="2011">Order</option>
+                        <option value="2012">Shipment</option>
+                        <option value="2013">User</option>
+                    </select>
+                    <div class="longselect">
+                        <select id="Month">
+                            <option value="hide">Date to Date</option>
+                            <option value="2010">January</option>
+                            <option value="2010">February</option>
+                            <option value="2010">March</option>
+                            <option value="2010">May</option>
+                            <option value="2010">June</option>
+                            <option value="2010">July</option>
+                            <option value="2011">August</option>
+                            <option value="2012">Septmeber</option>
+                            <option value="2013">October</option>
+                            <option value="2013">November</option>
+                            <option value="2013">December</option>
+                        </select>
+                    </div>
+                    <div class="lastselect">
+                        <select id="year">
+                            <option value="hide">Additional Selector</option>
+                            <option value="2010">Option 1</option>
+                            <option value="2011">Option 2</option>
+                            <option value="2012">Option 3</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block sticky_warning %}
+        <div class="sticky_msg">
+            <div class="container">
+                <div class="col-md-12">
+                    <!-- Alert Warning -->
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Warning!</strong> Better check yourself, you're not looking too good.
+                        <a href="#" class="fix">Fix Issue<i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                    </div>
+                    <!-- Alert Warning -->
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block inner_content %}
+        <div class="inner">
+            <!-- Scrollable Content -->
+            <div class="scrollable">
+
+                <div class="container">
+                    <div class="row-fluid">
+                        <div class="col-md-3" style="position:relative;">
+                            <div id="sticky_left">
+                                <div class="panel filters col-md-12">
+                                    <h2>Filter By:</h2>
+                                    <ul>
+                                        <li class="active">
+                                            <a href="#">New <span class="badge">12</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Processing</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Paid</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Pending Consolidation <span class="badge">3</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Flagged</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Cancelled</a>
+                                        </li>
+                                    </ul>
+                                    <div class="col-md-12">
+                                        <a href="#" class="btn black">Create Order</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9" style="position:relative;">
+                            <div class="header">
+
+                                <div class="dropdown options" style="margin-right:0; display:none;">
+                                    <p>Actions</p>
+                                    <i class="fa fa-ellipsis-h dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></i>
+                                    <div class="dropdown-menu two" aria-labelledby="dropdownMenu2">
+                                        <ul>
+                                            <li>
+                                                <a href="#">Approve</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Flag</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Cancel</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                <div class="dropdown options toggle">
+                                    <p>Select Multiple Orders</p>
+                                    <i class="fa fa-circle-o hd" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+
+                                </div>
+                            </div>
+                            <!-- Item "open" when triggered -->
+                            <div class="panel item">
+                                <div class="col-md-12 inf">
+                                    <h1>#OR2350335</h1>
+                                    <p>Client: <span>John Doe /</span><span class="three">Balance: $0.00 (N0.00) / CREDIT CARD</span>
+                                        <br/>Package Content: <span>4 items</span>
+                                        <br/> Package Dimensions: <span>10 x 4 x 12 - 6lbs(3kg)</span>
+                                    </p>
+                                    <hr/>
+                                    <p>Delivery Options: <span>Air Freight - Office Pickup (postal center code)</span></p>
+                                    <p class="two">Handling Options: <span>Strip Package; Consolidate; Express; Urgent; Insurance</span></p>
+                                </div>
+                                <!-- Overlay with Options -->
+                                <div class="overlay">
+                                    <a href="#" class="link"><span>Open</span> </a>
+                                    <a href="" class="btn not">Processed</a>
+                                    <div class="dropdown options"><i class="fa fa-ellipsis-h dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></i>
+                                        <div class="dropdown-menu two" aria-labelledby="dropdownMenu2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Move</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Flag</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- Overlay with Options -->
+                                <div class="col-md-12 note">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dapibus, augue non bibendum aliquet, risus ipsum laoreet metus, at pulvinar sem nulla at erat. Aenean ac elit ac felis laoreet malesuada.</p>
+                                </div>
+                            </div>
+                            <!-- Item "open" when triggered -->
+                            <div class="panel item">
+                                <div class="col-md-12 inf">
+                                    <h1>#OR2350334</h1>
+                                    <p>Client: <span>John Doe /</span><span class="three">Balance: $0.00 (N0.00) / CREDIT CARD</span>
+                                        <br/>Package Content: <span>4 items</span>
+                                        <br/> Package Dimensions: <span>10 x 4 x 12 - 6lbs(3kg)</span>
+                                    </p>
+                                    <hr/>
+                                    <p>Delivery Options: <span>Air Freight - Office Pickup (postal center code)</span></p>
+                                    <p class="two">Handling Options: <span>Strip Package; Consolidate; Express; Urgent; Insurance</span></p>
+                                </div>
+                                <!-- Overlay with Options -->
+                                <div class="overlay">
+                                    <a href="item_details.html" class="link"><span>Open</span></a>
+                                    <a href="" class="btn green" data-toggle="modal" data-target="#ProcessModal">Process Package</a>
+                                    <div class="dropdown options"><i class="fa fa-ellipsis-h dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></i>
+                                        <div class="dropdown-menu two" aria-labelledby="dropdownMenu2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Move</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Flag</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- Item "open" when triggered -->
+                                <!-- Overlay with Options -->
+                            </div>
+                            <!-- Item "open" when triggered -->
+                            <!-- Item "open" when triggered -->
+                            <div class="panel item">
+                                <div class="col-md-12 inf">
+                                    <h1>#OR2350332</h1>
+                                    <p>Client: <span>John Doe /</span><span class="three">Balance: $0.00 (N0.00) / CREDIT CARD</span>
+                                        <br/>Package Content: <span>4 items</span>
+                                        <br/> Package Dimensions: <span>10 x 4 x 12 - 6lbs(3kg)</span>
+                                    </p>
+                                    <hr/>
+                                    <p>Delivery Options: <span>Air Freight - Office Pickup (postal center code)</span></p>
+                                    <p class="two">Handling Options: <span>Strip Package; Consolidate; Express; Urgent; Insurance</span></p>
+                                </div>
+                                <!-- Overlay with Options -->
+                                <div class="overlay">
+                                    <a href="item_details.html" class="link"><span>Open</span></a>
+                                    <a href="" class="btn green" data-toggle="modal" data-target="#ProcessModal">Process Package</a>
+                                    <div class="dropdown options"><i class="fa fa-ellipsis-h dropdown-toggle" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></i>
+                                        <div class="dropdown-menu two" aria-labelledby="dropdownMenu2">
+                                            <ul>
+                                                <li>
+                                                    <a href="#">Move</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Flag</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- Item "open" when triggered -->
+                                <!-- Overlay with Options -->
+                                <div class="col-md-12 note">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dapibus, augue non bibendum aliquet, risus ipsum laoreet metus, at pulvinar sem nulla at erat. Aenean ac elit ac felis laoreet malesuada.</p>
+                                </div>
+                            </div>
+                            <!-- Item "open" when triggered -->
+                            <div class="panel item"></div>
+                            <div class="panel item"></div>
+                            <div class="panel item"></div>
+                            <div class="panel item"></div>
+                            <div class="panel item"></div>
+
+
+                            <!-- Bottom Sticky with Options -->
+                            <div class="bottom_sticky">
+                                <div class="container">
+
+                                    <div class="col-md-9 col-md-offset-3">
+                                        <div class="cancel">
+                                            <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <a href="#"><i class="fa fa-share" aria-hidden="true"></i>Move</a>
+                                        <a href="#"><i class="fa fa-flag" aria-hidden="true"></i>Flag</a>
+                                        <a href="#"><i class="fa fa-trash" aria-hidden="true"></i>Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bottom Sticky with Options -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Scrollable Content -->
+        </div>
+
+    {% endblock %}
+
+{% block modal %}
+    <div class="modal fade" tabindex="-1" role="dialog" id="ProcessModal">
+        <div class="modal-dialog modal-big">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Process Package</h4>
+                </div>
+                <div class="order">
+                    <div class="col-md-12">
+                        <h1>#OR2350335 <span class="label">11 Items</span><span class="label">10 x 4 x 12 - 6lbs(3kg)</span></h1>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner long">
+                            <table width="100%" borde="0" class="tablet">
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Desc.</th>
+                                    <th>Quantity</th>
+                                    <th>Listed Price</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Puma Shoes
+                                    </td>
+                                    <td>
+                                        Aenean ac elit ac felis laoreet malesuada. Phasellus enim nunc, consectetur sed fringilla et.
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        <strong>$499 / =N=6,318.00</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        HP Split X2 Notebook
+                                    </td>
+                                    <td>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dapibus, augue non bibendum aliquet, risus ipsum laoreet metus, at pulvinar sem nulla at erat.
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        <strong>$59 / =N=1,256.00</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Xbox One
+                                    </td>
+                                    <td>
+                                        Black, Blue
+                                    </td>
+                                    <td>
+                                        2
+                                    </td>
+                                    <td>
+                                        <strong>$249 / =N=3,210.00</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Puma Shoes
+                                    </td>
+                                    <td>
+                                        Phasellus enim nunc, consectetur sed fringilla et, rutrum nec enim. Nullam bibendum metus eu diam mattis, eu facilisis lorem aliquet.
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        <strong>$499 / =N=6,318.00</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        HP Split X2 Notebook
+                                    </td>
+                                    <td>
+                                        -
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        <strong>$59 / =N=1,256.00</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Puma Shoes
+                                    </td>
+                                    <td>
+                                        Yellow
+                                    </td>
+                                    <td>
+                                        3
+                                    </td>
+                                    <td>
+                                        <strong>$499 / =N=6,318.00</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        HP Split X2 Notebook
+                                    </td>
+                                    <td>
+                                        Nullam bibendum metus eu diam mattis, eu facilisis lorem aliquet.
+                                    </td>
+                                    <td>
+                                        2
+                                    </td>
+                                    <td>
+                                        <strong>$59 / =N=1,256.00</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Puma Shoes
+                                    </td>
+                                    <td>
+                                        Phasellus enim nunc, consectetur sed fringilla et, rutrum nec enim.
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        <strong>$499 / =N=6,318.00</strong>
+                                    </td>
+                                </tr>
+                            </table>
+                            <hr />
+                            <p class="nt">
+                                <input type="radio" style="margin-right:15px;" /> Phasellus enim nunc, consectetur sed fringilla et, rutrum nec enim. Nullam bibendum metus eu diam mattis, eu facilisis lorem aliquet.</p>
+                        </div>
+                        <!-- Body Inner Content -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn green trigger" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <!-- modal-c -->
+                <div class="modal-c" id="s1">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner two">
+                            <div class="col-md-6" style="padding-top:15px;">
+                                <div class="pc"></div>
+                            </div>
+                            <div class="col-md-6" style="padding:0;">
+                                <!-- Uplpoad IMG Section -->
+                                <div class="col-ting">
+                                    <div class="control-group file-upload col-md-6" id="file-upload1">
+                                        <div class="image-box text-center">
+                                            <p>Upload Image</p><img src="" alt=""></div>
+                                        <div class="controls">
+                                            <input type="file" name="contact_image_1" />
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group file-upload col-md-6" id="file-upload2">
+                                        <div class="image-box text-center">
+                                            <p>Upload Image</p><img src="" alt=""></div>
+                                        <div class="controls">
+                                            <input type="file" name="contact_image_2" />
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group file-upload col-md-6" id="file-upload3">
+                                        <div class="image-box text-center">
+                                            <p>Upload Image</p><img src="" alt=""></div>
+                                        <div class="controls">
+                                            <input type="file" name="contact_image_3" />
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group file-upload col-md-6" id="file-upload4">
+                                        <div class="image-box text-center">
+                                            <p>Upload Image</p><img src="" alt=""></div>
+                                        <div class="controls">
+                                            <input type="file" name="contact_image_3" />
+                                        </div>
+                                    </div>
+
+                                    <div class="control-group reveal-file two">
+                                        <div class="controls btn">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>Add Another Image
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Uplpoad IMG Section -->
+                            </div>
+                        </div>
+                        <!-- Body Inner Content -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn gray trigger left" rel="s0">Back</button>
+                            <button type="button" class="btn green trigger" rel="s2">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <!-- modal-c -->
+                <div class="modal-c" id="s2">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner">
+                            <div class="col-md-6" style="padding-left:0;">
+                                <div class="col-md-12 prebox">
+                                    <div class="box active" id="pr1">
+                                        <h2>Small Envelope: 10 x 4 x 12 - 6lbs(3kg)</h2>
+                                    </div>
+                                    <div class="box" id="pr2">
+                                        <h2>Large Envelope: 2 x 1 x 2 - 1lbs(0.5kg)</h2>
+                                    </div>
+                                    <div class="box" id="pr3">
+                                        <h2>Vehicle Car: 3 x 2 x 6 - 7lbs(3kg)</h2>
+                                    </div>
+                                    <div class="box" id="pr4">
+                                        <h2>Hazmat: 6 x 2 x 12 - 10lbs(5kg)</h2>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 notgood" style="padding-left:0;">
+                                    <input type="text" placeholder="Length" />
+                                </div>
+                                <div class="col-md-12" style="padding-left:0;">
+                                    <input type="text" placeholder="Width" />
+                                </div>
+                                <div class="col-md-12 good" style="padding-left:0;">
+                                    <input type="text" placeholder="Height" />
+                                </div>
+                                <div class="col-md-12" style="padding-left:0;">
+                                    <input style="margin-bottom:0;" type="text" placeholder="Weight" />
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="padding-right:0; padding-left:0; padding-top:15px;">
+                                <div class="col-md-12">
+                                    <h2>Envelopes</h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="itt">
+                                        <span class="active" rel="pr1" data-toggle="tooltip" data-placement="bottom" title="Small Envelope">
+                                            <img src="img/env1.png"/>
+                                        </span>
+                                        <span rel="pr2" data-toggle="tooltip" data-placement="bottom" title="Large Envelope">
+                                         <img src="img/env2.png"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h2>Vehicles</h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="itt">
+                                        <span rel="pr3">
+                                        <img src="img/car1.png" style="margin-left:10px;"/>
+                                        </span>
+                                        <span>
+                                        <img src="img/car2.png" style="margin-left:10px;"/>
+                                        </span>
+                                        <span>
+                                          <img src="img/car3.png" style="margin-left:7px; margin-top:4px;"/>
+                                        </span>
+                                        <span> <img src="img/car4.png"  /></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h2>Containers</h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="itt">
+                                        <span>
+                                            <img src="img/cont1.png" style="margin-top:0;"  data-toggle="tooltip" data-placement="bottom" title="Small Container"/>
+                                        </span>
+                                        <span>
+                                            <img src="img/cont2.png" style="margin-top:0;"  data-toggle="tooltip" data-placement="bottom" title="Large Container"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h2>Hazmat</h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="itt" style="padding-bottom:0;">
+                                        <span rel="pr4"> <img src="img/nuc.png" style="margin-top:0;" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom"/></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Body Inner Content -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn gray trigger left" rel="s1">Back</button>
+                            <button type="button" class="btn green trigger" rel="s3">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <!-- modal-c -->
+                <div class="modal-c" id="s3">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner">
+                            <div class="col-md-12" style="padding-left:0;">
+                                <p>Client: <span>John Doe /</span><span class="three">Balance: $0.00 (N0.00) / CREDIT CARD</span>
+                                    <br/>Package Content: <span>11 items</span>
+                                    <br/> Package Dimensions: <span>10 x 4 x 12 - 6lbs(3kg)</span>
+                                </p>
+                                <hr/>
+                                <p style="margin-bottom:0;">Delivery Options:
+                                    <span>Air Freight - Office Pickup (postal center code)</span></p>
+                                <p class="two">Handling Options:
+                                    <span>Strip Package; Consolidate; Express; Urgent; Insurance</span></p>
+                            </div>
+                            <div class="col-md-12 msg" style="margin-top:15px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dapibus, augue non bibendum aliquet, risus ipsum laoreet metus, at pulvinar sem nulla at erat. Aenean ac elit ac felis laoreet malesuada.</div>
+                        </div>
+                        <!-- Body Inner Content -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn gray trigger left" rel="s2">Back</button>
+                            <button type="button" class="btn green" data-dismiss="modal">Process Package</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal-c -->
+            </div>
+            <!-- /.modal-content -->
+
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+{% endblock %}

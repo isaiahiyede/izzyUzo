@@ -1,0 +1,174 @@
+{% extends "base/zaposta_base.html" %}
+{% load humanize %}
+{% load activelink %}
+
+
+{% load account_standing %}
+<!--load operation_countries -->
+{% load currency %}
+
+{% block title %}Select Warehouse Location{% endblock %}
+
+{% block extra_script %}
+    <!-- Special Font for Icons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	{% if not view_warehouse_location %}
+	<script>
+		$('.credit.two .panel.addr').click(function () {
+			$('.divLoading').addClass('show');
+			$(this).parent().parent().find('.panel.addr').removeClass('active');
+			$(this).toggleClass('active');
+			$('.alert_green').html("Please wait...");
+
+			var warehouse_id = $(this).attr('warehouse_id');
+
+			$.post('', {'warehouse_id': warehouse_id}, function(data){
+				$('.alert_green').html(data.result);
+				$('.divLoading').removeClass('show');
+			});
+		});
+	</script>
+	{% endif %}
+{% endblock %}
+
+{% block extra_head_3 %}
+{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+{% block st_content %}
+<!-- this is the wrapper for the content -->
+<div class="st-content-inner">
+  <!-- extra div for emulating position:fixed of the menu -->
+  <!-- Steps Section -->
+  <section id="steps" {% ifstartswith 'shopping:shipping_address' %}class="three tt" {% else %} class="tt" {% endifstartswith %}>
+      <div class="white"></div>
+      <!-- Page -->
+	  <form action="" method="POST">
+	  {% csrf_token %}
+
+      <div class="container page">
+		{% if not view_warehouse_location %}
+          {% include 'zaposta_snippet/order_placement_stages.html' with active_page=4 %}
+		{% else %}
+		<div class="breadcrumbs">
+		</div>
+        {% endif %}
+			<div class="col-md-8 content_outer">
+				<div class="col-md-12 content" style="padding-bottom:0;">
+
+					<div class="header">Shipping - Shipping Address</div>
+
+					<div class="credit two">
+						<div class="col-md-12" style="padding-top:30px;">
+							<h1>Warehouse Location</h1>
+
+						</div>
+
+						<div class="col-md-12" style="padding-top:15px;">
+							{% if view_warehouse_location %}
+								<p>Please find below a list of your shipping addresses.</p>
+							{% else %}
+								<p>Please select where your item(s) will be delivered to from our <strong>warehouse locations below</strong>.</p>
+							{% endif %}
+							<p class="alert_green"></p>
+							{% if messages %}
+								{% for message in messages%}<p class="error_alert">{{message}}</p>{% endfor %}
+							{% endif %}
+						</div>
+
+
+						<div class="addresses_div">
+							<div class="col-md-12" style="padding-top:30px;">
+
+							{% for address in warehouses %}
+								<div class="panel addr" style="height: 178px;" warehouse_id="{{address.id}}">
+									<div style="float: right;">
+										{% if address.country == "us" %}
+											<img src="{{STATIC_URL}}zaposta/img/usa_flag.png" width="60"/>
+										{% elif address.country == "uk" %}
+											<img src="{{STATIC_URL}}zaposta/img/uk_flag.png" width="60"/>
+										{% endif %}
+									</div>
+									<!--<a href="#eaddr" id="{{address.pk}}" data-toggle="modal" data-target="#eaddr" class="edit address"></a>
+									<a href="#" id="{{address.pk}}" class="delete address"></a>-->
+									{% if view_warehouse_location %}
+										<h4>{{ address.address|capfirst }}, <br/>{{address.suite_no_prefix}} {{request.user.useraccount.suite_no}}<br />
+											{{ address.city|capfirst }}, {{address.state|capfirst}},<br />
+										   {{address.country_val|capfirst}}.<br />
+										</h4>
+									{% else %}
+										<h4>{{ address.state|capfirst }},<br />{{ address.country_val|capfirst }}.</h4>
+									{% endif %}
+								</div>
+
+
+							{% if forloop.counter|divisibleby:"2" %}
+
+							</div>
+							<div class="col-md-12" style="padding-top:15px;">
+							{% endif %}
+							{% endfor %}
+
+							</div>
+
+						</div>
+
+
+					</div>
+				</div>
+			</div>
+
+          <!-- Standing -->
+          <div class="standing col-md-4">
+
+				<!-- Package List  -->
+				 <!--block include_acct_standing
+					 ifstartswith 'shopping:shipping_address'
+					   zaposta_acct_standing_v1 request 'three'
+					 else
+						 zaposta_acct_standing_v1 request ''
+					 endifstartswith
+				 endblock -->
+          </div>
+          <!-- Standing -->
+          <!-- Bottom -->
+          <div class="bottom">
+			{% if view_warehouse_location %}
+				<a href="{% url 'general:my_account' %}" class="btn prev"><img src="{{STATIC_URL}}zaposta/img/arrow_left.png">Previous Step</a>
+			{% else %}
+				<a href="{% url 'shipping:add_item_page' %}" class="btn prev"><img src="{{STATIC_URL}}zaposta/img/arrow_left.png">Previous Step</a>
+			{% endif %}
+				<a href="{% url 'shipping:select_package' %}" class="btn next green" onclick="return validateDeliveryOption();">Next Step<img src="{{STATIC_URL}}zaposta/img/arrow_right.png"></a>
+
+		  </div>
+
+          <!-- Bottom -->
+      </div>
+
+	  </form>
+      <!-- Page -->
+  </section>
+  <!-- Steps Section -->
+
+  <!-- FOOTER  -->
+   {% include "zaposta_snippet/footer_v2.html" %}
+  <!-- FOOTER  -->
+
+  <!-- the content -->
+</div>
+<!-- /st-content-inner -->
+
+{% endblock %}
+
+
+
+{% block operation_countries %}
+{% endblock %}
+
+
+{% block edit_shipment_order %}
+
+{% endblock %}

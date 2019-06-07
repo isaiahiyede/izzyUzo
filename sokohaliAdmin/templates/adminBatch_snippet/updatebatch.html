@@ -1,0 +1,169 @@
+    
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="UpdateBatch" style="overflow-y:hidden !important;">
+        <div class="modal-dialog modal-big">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h2 class="modal-title">UPDATE BATCH</h2>
+                </div>
+                <!-- <div class="order">
+                    <div class="col-md-12">
+                        <h1>UPDATE BATCH</h1>
+                    </div>
+                </div> -->
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop" style="margin-bottom:0px; overflow-x:hidden !important;">
+                        
+                        <!-- Body Inner Content -->
+                        <form action="{% url 'sokohaliAdmin:update-batch' %}" method="post" enctype="multipart/form-data" id="updateForm" name="updateForm">
+                            {% csrf_token %}
+
+                                 <style>
+                                     div .select{
+                                        position: relative;
+                                            bottom: 20px
+                                     }
+
+                                 </style>
+
+                                  <div class="body-inner long" style="margin-top:-140px;">
+                                    <div class="col-md-12">
+                                        <p>Under the account page you can as an adimistrator check and update the batches that are currently in shipment.<br/>
+                                        </p>
+                                    </div>
+
+
+                                    <div class="col-md-6 form">
+                                        <div class="col-md-12 fourth-select" id="update_shipping_method" style="margin-bottom:-30px;">
+                                            <label class="required">Shipping Method:</label>
+                                            {{form.shipping_method}}
+                                        </div>
+
+
+                                        <div class="col-md-12 update_batch" style="position:relative; margin-top:-20px;" id="update_awb_doc">
+                                            <label class="" style="position:relative; top:15px;">AWB/DL:</label>
+                                            <h5 style="position:relative; top:7px;">File:&nbsp;<a href="" target="_blank" id="bch_doc"></a></h5>
+                                            <input style="position:relative; top:1px; cursor:pointer;" type="file" id="id_awb_doc" class="two" name="awb_doc"/>
+                                        </div>
+
+                                        <div class="col-md-12" style="margin-top:-23px;">
+                                            <label class="required"> Carrier:</label>
+                                            <input class="two" id="update_carrier" type="text" name="carrier" value="" required/>
+                                        </div>
+
+                                        <div class="col-md-12 hidden">
+                                            <input class="two" id="update_batch_number" type="text" name="update_batch_number" value=""/>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label>Clearing Cost ($):</label>
+                                            <input class="two" id="update_clearing_cost" type="number" name="update_clearing_cost" value=""/>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label>Departure Date/Time:</label>
+                                            <input class="two" id="update_departure_date" type="text" name="update_departure_date" value=""/>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label>Port Of Exit:</label>
+                                            <input class="two" id="update_port_of_exit" name="update_port_of_exit" type="text"/>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label>Hazmat Status:</label>
+                                            <input class="two" id="update_harzmat_status" type="text" name="update_harzmat_status" value=""/>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label>Package Count:</label>
+                                            <input class="two" id="update_pkg_count" name="update_pkg_count" type="number" value="" readonly/>
+                                        </div>
+                                
+                                        <div class="col-md-12 second-select hidden" id="update_batch_type">
+                                            <label class="required">Batch Type:</label>
+                                            {{form.batch_type}}
+                                        </div>
+
+                                        <div class="col-md-12 second-select" id="update_batch_type">
+                                            <label class="required">Batch Type:</label>
+                                            <input id="btch_type_here" class="two" type="text" value=""  readonly />
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6 form">
+                                        <div class="col-md-12 third-select" id="update_freight_type">
+                                            <label class="required">Freight Type:</label>
+                                            {{form.freight_type}}
+                                        </div>
+
+                                        <div class="col-md-12 update_batch_doc" style="position:relative; margin-top:-54px;" id="update_bol_doc">
+                                            <label class="" style="position:relative; bottom:-17px;">BOL/DL #:</label>
+                                            <h5 style="position:relative; top:7px;">File:&nbsp;<a href="" target="_blank" id="bch_bol_doc"></a></h5>
+                                            <input style="position:relative; top:1px; cursor:pointer" type="file" id="id_bol_doc" class="two" name="bol_doc"/>
+                                        </div>
+
+                                        <div class="col-md-12" style="position:relative; margin-top:-20px;">
+                                            <label>Total Pellets:</label>
+                                        <input class="two" id="update_total_pellets" type="number" name="update_total_pellets" value=""/>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label>Shipping Cost ($):</label>
+                                            <input class="two" id="update_shipping_cost_D" type="number" name="update_shipping_cost_D" value=""/>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label>Arrival Date/Time:</label>
+                                            <input class="two" id="update_arrival_date" type="text" name="update_arrival_date" value=""/>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label>Port Of Arrival:</label>
+                                            <input class="two" id="update_port_of_arrival" name="update_port_of_arrival" type="text"/>
+                                        </div>
+
+                                         <div class="col-md-12 first-select" id="update_batch_status">
+                                            <label>Batch Status:</label>
+                                            {{form.status}}
+                                        </div>
+
+
+                                        <div class="col-md-12">
+                                            <label style="position:relative; top:-30px;">Booking Ref #:</label>
+                                            <input style="position:relative; top:-31px;" class="two" id="update_booking_ref" type="text" name="update_booking_ref" value=""/>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <label style="position:relative; top:-30px;">Batch Number:</label>
+                                            <input style="position:relative; top:-31px;" class="two" id="update_btch_number" type="text" name="update_btch_number" value="" readonly/>
+                                        </div>
+
+                                        <input type="text" class="hidden" name="current_batch_status" id="current_batch_status" value="">
+
+                                    </div>
+
+                                    <div class="col-md-12" style="padding:0;">
+                                        <label>Notes:</label>
+                                        <textarea id="update_notes2" name="update_notes2" value=""></textarea>
+                                    </div>
+                                </div>
+                                <!-- Body Inner Content -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="submitUpdate" class="btn green">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                <!-- modal-c -->
+
+            </div>
+            <!-- /.modal-content -->
+
+        </div>
+        <!-- /.modal-dialog -->
+    </div>

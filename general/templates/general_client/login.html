@@ -1,0 +1,82 @@
+{% extends "base/zaposta_base.html" %}
+
+{% block title %} User Login{% endblock %}
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+{% block st_content %}
+<div class="st-content-inner">
+    <!-- extra div for emulating position:fixed of the menu -->
+    <!-- Main Section -->
+    <section id="main" class="form-outer">
+        <div class="hero">
+            <div class="container">
+                <div class="form show">
+                    <div class="inner">
+
+                        <!-- Login Account -->
+                        <div class="container" id="login">
+                            <div class="col-md-6 promo">
+                                <h1>Not a registered customer yet?</h1>
+                                <a href="{% url 'general:signup_regular' %}" class="btn full long">Register an Account</a>
+                            </div>
+                            <form id="login_form" action="" method="POST">
+                            {% csrf_token %}
+                            <div class="col-md-6 left">
+                                <h1>Login</h1>
+                                <p style="margin-bottom:0;">Login into your {{ request.storefront_name|title }} account. If you do not have an account please register one.</p>
+                                {% if messages %}
+                                    <p style="margin-top: 20px;margin-bottom:0;color: red;">
+                                    {% for message in messages %} {{message}} <br/>{% endfor %}
+                                    </p>
+                                {% endif %}
+                                <div class="col-md-12 {% if form.username_email.errors %}error{%endif%}">
+                                    {{form.username_email}}
+                                </div>
+                                <div class="col-md-12 {% if form.password.errors %}error{%endif%}">
+                                    {{form.password}}
+                                </div>
+                                <div class="col-md-12 buttons" style="margin-top:9px;">
+                                    <button class="btn green" value="Submit" onclick="submitForm('login_form');">Login</button>
+                                    <a href="/resetpassword/" class="rst"><span ><i class="fa fa-key" aria-hidden="true"></i></span>Recover Password</a>
+                                </div>
+                            </div>
+                            </form>
+                           <!-- <div class="col-md-6 left two">
+                                <h1>Reset Password</h1>
+                                <p style="margin-bottom:0;">Login into your Sokohali account. If you do not have an account please register one.</p>
+                                <div class="col-md-12">
+                                    <input type="text" placeholder="Email" />
+                                </div>
+                                <div class="col-md-12 buttons" style="margin-top:9px;">
+                                    <a href="/resetpassword/" class="btn green">Reset Password</a>
+                                    <a href="#" class="rst"><span class="glyphicon glyphicon-arrow-left"></span>Back to Login</a>
+                                </div>
+                            </div>-->
+                        </div>
+                        <!-- Login Account -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Main Section -->
+
+    <!-- Other Services -->
+
+    <!-- Other Services -->
+
+    <!-- FOOTER  -->
+    {% include "zaposta_snippet/footer_v1.html" %}
+    <!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endblock %}
+
+
+{% block script %}
+
+
+{% endblock %}

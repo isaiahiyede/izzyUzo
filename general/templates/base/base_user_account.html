@@ -1,0 +1,98 @@
+{% extends "base/zaposta_base.html" %}
+{% load humanize %}
+{% load activelink %}
+
+
+
+{% load account_standing %}
+<!--load operation_countries -->
+
+{% block script %}
+
+{% endblock %}
+
+{% block extra_head %}
+        
+{% endblock %}
+
+
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+{% block st_content %}
+<!-- this is the wrapper for the content -->
+    <div class="st-content-inner">
+        <!-- extra div for emulating position:fixed of the menu -->
+        <!-- Steps Section -->
+        {% block shop_or_ship_account_tab %}
+        <section id="steps" class="two">
+            
+        {% endblock %}
+            <div class="white">
+                <div class="container" style="padding-right:0;">
+                    <div class="col-md-4 est">
+                       <!-- <a href="url 'shipping:quick_estimate' "><i class="fa fa-question-circle"></i> Get a Quick Estimate</a>-->
+                    </div>
+                </div>
+            </div>-
+            <!--<div class="white two"></div>-->
+            <!-- Page -->
+            <div class="container page two">
+                
+                {% block shop_or_ship_account_tab_1 %}
+                  <div class="account_tab">
+                {% endblock %}
+                  
+                    {% include 'zaposta_snippet/user_account_nav.html' %}
+                    <!-- include 'zaposta_snippet/user_account_nav.html' user=request.user -->
+                  
+                    {% block shop_or_ship %}
+                    <div class="right_btns col-md-4">
+                        <div class="col-md-12">
+                            <!--<a href="step1.html" class="btn yellow">-->
+                            <!--<a href="#support" class="btn yellow" data-toggle="modal" data-target="#select_country">-->
+                            <a href="#support" class="btn yellow" data-toggle="modal" data-target="#no_service">
+                                <span><img src="{{STATIC_URL}}zaposta/img/add1.png"></span> Book a Shipment 
+                            </a>
+                        </div>
+                        <div class="col-md-12">
+                            <!--<a href="#" class="btn yellow">-->
+                            <!--<a href="#support" class="btn yellow" data-toggle="modal" data-target="#select_country.shp">-->
+                            <a href="#support" class="btn yellow" data-toggle="modal" data-target="#no_service">
+                                <span><img src="{{STATIC_URL}}zaposta/img/add2.png"></span> Place an Order
+                            </a>
+                        </div>
+                    </div>
+                    {% endblock %}
+
+                </div>
+                
+                {% block inner_content %}
+                
+                {% endblock %}
+                
+                
+                {% block include_acct_standing %}
+                    {% zaposta_acct_standing request False 'two' %}
+                {% endblock %}
+                
+            </div>
+            <!-- Page -->
+        </section>
+        <!-- Steps Section -->
+
+        <!-- FOOTER  -->
+        {% include "zaposta_snippet/footer.html" %}
+        
+        
+        <!-- the content -->
+    </div>
+    <!-- /st-content-inner -->
+{% endblock %}
+
+{% block operation_countries %}
+        <!--operatingcountries request.user.is_staff-->
+{% endblock %}
+

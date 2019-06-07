@@ -1,0 +1,742 @@
+
+{% extends "base/zaposta_base.html" %}
+{% load custom_filters %}
+
+
+{% block title %}
+		Address Activation
+{% endblock %}
+
+{% block navigation %}
+{% endblock %}
+
+{% block extra_head %}
+
+<style>
+	td.first {
+		padding: 20px !important;
+		width: 35%;
+	}
+	/*.form .left {
+		padding-right: 108px !important;
+	}*/
+</style>
+
+{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+{% block st_content %}
+<div class="st-content-inner">
+	<!-- extra div for emulating position:fixed of the menu -->
+	<!-- Main Section -->
+	<section id="main" class="form-outer">
+		<div class="hero">
+			<div class="container">
+				<div class="form">
+					<div class="inner">
+						<!-- Register Account -->
+						<div class="container" id="register">
+							
+							<form action="" method="POST" enctype="multipart/form-data" id="addressform" name="addressactivation">
+							{% csrf_token %}
+								<div class="col-md-6 left" style="display: block !important;">
+
+									{% if form.errors %}
+									<p style = 'color: red; padding-top: 6px;'>Please correct the highlighted field(s) below:</p>
+									{% endif %}
+
+									<table border='0' style="padding-top: 30px; margin-top: 45px;">
+										<tr>
+											<td class="first">
+												<p class for='title'{% if form.title.errors %}p style = 'color: red;' {% endif %}>Title: </class>
+											</td>
+											<td style="width:250px!important;">{{ form.title }}</td>
+											<td> {% if form.title.errors %}<label style= 'color: red;'>{{ form.title.errors }}</label>{%endif%}</td>
+										</tr>
+										<tr>
+											<td class="first">
+												<p class for='first_name'{% if form.first_name.errors %}p style = 'color: red;' {% endif %}>First Name: </class>
+											</td>
+											<td>{{form.first_name}}</td>
+											<td> {% if form.first_name.errors %}<label style= 'color: red;'>{{ form.first_name.errors }}</label>{%endif%}</td>
+										</tr>
+										<tr>
+											<td class="first">
+												<p class for='last_name'{% if form.last_name.errors %}p style = 'color: red;' {% endif %}>Last Name: </class>
+											</td>
+											<td>{{form.last_name}}</td>
+											<td> {% if form.last_name.errors %}<label style= 'color: red;'>{{ form.last_name.errors }}</label>{%endif%}</td>
+										</tr>
+										<tr>
+											<td class="first">
+												<p for='address'{% if form.address.errors %} p style = 'color: red;'{% endif %}>Address: </p>
+											</td>
+											<td>{{ form.address }}</td>
+											<td> {% if form.address.errors %}<label style= 'color: red;'>{{ form.address.errors }}</label>{%endif%}</td>
+										</tr>
+										<tr>
+											<td class="first">
+												<p for='city'{% if form.city.errors %} p style = 'color: red;'{% endif %}>City: </p>
+											</td>
+											<td>{{ form.city }}</td>
+											<td> {% if form.city.errors %}<label style= 'color: red;'>{{ form.city.errors }}</label>{%endif%}</td>
+										</tr>
+										<tr>
+											<td class="first">
+												<p for='country'{% if form.country.errors %} p style = 'color: red;'{% endif %}>Country: </p>
+											</td>
+											<td>
+												<select id="country" name="country" selected="selected"></select>
+												<!-- <select onchange="print_state('state',this.selectedIndex);" id="country"
+												 class="country" name ="country" selected="selected"></select> -->
+												<!-- <select id="id_country" name="country" onchange="populate(this.id, 'id_state')">
+													<option value=''>Please Select Country</option>
+													<option value='Nigeria'>Nigeria</option>
+													<option value='USA'>USA</option>
+													<option value='UK'>UK</option>
+												</select> -->
+											</td>
+											<!-- <td> % if form.country.errors %}<label style= 'color: red;'>{ form.country.errors }}</label>%endif%}</td> -->
+										</tr>
+										<tr>
+											<td class="first">
+												<p for='state'{% if form.state.errors %} p style = 'color: red;'{% endif %}>State: </p>
+											</td>
+											<td>
+												<select name="state" id="state"></select>
+													<script language="javascript">
+														populateCountries("country", "state");
+														// populateCountries("country2");
+													</script>
+												<!-- <select name ="state" id ="state"></select> -->
+												<!--<script language="javascript">print_country("country");</script>-->
+												<!-- <select id="id_state" name="state"> 
+												</select>-->
+											</td>
+											<td> {% if form.state.errors %}<label style= 'color: red;'>{{ form.state.errors }}</label>{%endif%}</td>
+										</tr>
+										<!--<tr class="nigeria">
+											<td class="first">
+												<p for='telephone' if form.telephone.errors p style = 'color: red;' endif >Telephone: </p>
+											</td>
+											<td> form.telephone </td>
+											<td> % if form.telephone.errors %<label style= 'color: red;'> form.telephone.errors </label>endif</td>
+										</tr>-->
+										<tr>
+											<td class="first">
+												<p for='image'{% if form.image.errors %} p style = 'color: red;'{% endif %}>Your Photo: </p>
+											</td>
+												<td>{{ form.image }}</td>
+											<td> {% if form.image.errors %}<label style= 'color: red;'>{{ form.image.errors }}</label>{%endif%}</td>
+										</tr>
+										<tr class="not_nigeria">
+											<td class="first">
+												<p for='photo_id'{% if form.photo_id.errors %} p style = 'color: red;'{% endif %}>Photo ID: </p>
+											</td>
+											<td>{{ form.photo_id }}</td>
+											<td> {% if form.photo_id.errors %}<label style= 'color: red;'>{{ form.photo_id.errors }}</label>{%endif%}</td>
+										</tr>
+										<tr class="not_nigeria">
+											<td> <p style="color: black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note:</p></td>
+											<td style="color: black;"><b>Acceptable IDs are International Passport/Driver's  License/National ID card (.png, .jpg)</b>
+											</td>
+										</tr>
+										<tr class="nigeria">
+											<td class="first">
+												<p for='bvn_no'{% if form.bvn_no.errors %} p style = 'color: red;'{% endif %}>BVN Number (<b>11 digits</b>): </p>
+											</td>
+											<td>{{ form.bvn_no }}</td>
+											<td> {% if form.bvn_no.errors %}<label style= 'color: red;'>{{ form.bvn_no.errors }}</label>{%endif%}</td>
+										</tr>
+										<tr class="nigeria">
+											<td> <p style="color: black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note:</p></td>
+											<td style="color: black;"><b>This information is only used for your identity verification.</b>
+											</td>
+										</tr>
+										<tr class="not_nigeria">
+											<td class="first">
+												<p for='utility_bill'{% if form.utility_bill.errors %} p style = 'color: red;'{% endif %}>Utility Bill: </p>
+											</td>
+											<td>{{ form.utility_bill }}</td>
+											<td> {% if form.utility_bill.errors %}<label style= 'color: red;'>{{ form.utility_bill.errors }}</label>{%endif%}</td>
+										</tr>
+									</table>
+									<div class="col-md-12 buttons" style="margin-top:9px; margin-left: 15px;">
+										<button class="btn btn-primary" id="activation">Submit</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+</div>
+
+
+{% endblock %}
+
+<div class="divLoading">
+</div>
+
+{% block modal %}
+
+<div id="verify_bvn" class="modal fade" tabindex="1" role="dialog" >
+
+</div>
+
+<div id="errorModal" class="modal fade" tabindex="2" role="dialog">
+	<div class="modal-dialog">
+
+	<!-- Modal content-->
+	<div class="modal-content">
+		<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4 class="modal-title">BVN Verification</h4>
+		</div>
+		<div class="modal-body">
+		<p><b>You are seeing this message because your BVN cannot be verified at this time, pls check that the number is correct and try again.</b></p>
+		</div>
+		<div class="modal-footer">
+		<button style="color: #000;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+	</div>
+
+	</div>
+</div>
+
+
+<div id="FailedModal" class="modal fade" tabindex="2" role="dialog">
+	<div class="modal-dialog">
+
+	<!-- Modal content-->
+	<div class="modal-content">
+		<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">&times;</button>
+		<h4 class="modal-title">BVN Verification</h4>
+		</div>
+		<div class="modal-body hidden" id="Used">
+		<p style="color:red;"><b>Access Denied!!! BVN Verification Failed.</b></p>
+		<p>This BVN is already in use.</p>
+		<p>Thank you.</p>
+		</div>
+		<div class="modal-body hidden" id = "Failed">
+		<p style="color:red;"><b>Access Denied!!! BVN Verification Failed.</b></p>
+		<p>Please contact the administrator for further actions.</p>
+		<p>Please ensure that your firstname and lastname(surname) you have inputed on this form matches what you have with the bank.</p>
+		</div>
+		<div class="modal-footer">
+		<button style="color: #000;" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+	</div>
+
+	</div>
+</div>
+
+{% endblock modal %}
+
+
+{% block script %}
+<!-- TRIGGER FIXED TOP NAVIGATION MENU SCRIPT -->
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.nigeria').hide();
+	$('.not_nigeria').hide();
+	$('.top').addClass('hidden');
+	$.waypoints.settings.scrollThrottle = 60;
+	$('.wrapper-content').waypoint(function(event, direction) {
+		$('.top').toggleClass('hidden', direction === "up");
+	}, {
+		offset: '-50%'
+	}).find('#main-nav-holder').waypoint(function(event, direction) {
+		$(this).parent().toggleClass('sticky', direction === "down");
+		$('#account.promo').toggleClass('two', direction === "down");
+		event.stopPropagation();
+	});
+});
+// $('.navigation').scrollspy()
+
+
+ // start: Block of code commented and reformatted by isaiah to remove bvn validation on 22nd/june/2017 //
+
+// $('#country').on('change',function(){
+// 	if( $(this).val()==="Nigeria"){
+// 		// alert("Nigeria");
+// 		$(".nigeria").show()
+// 		$(".not_nigeria").hide();
+// 	}
+// 	else{
+// 		// alert("Not Nigeria");
+// 		$(".not_nigeria").show();
+// 		$(".nigeria").hide()
+// 	}
+// });
+
+ // end: Block of code commented and reformatted by isaiah to remove bvn validation on 22nd/june/2017 //
+
+
+$('#country').on('change',function(){
+		$(".not_nigeria").show();
+		$(".nigeria").hide()
+	});
+
+function validateForm() {
+	$("form[name='addressactivation']").validate({
+		rules: {
+			first_name: "required",
+			last_name: "required",
+			title: "required",
+			address: "required",
+			city: "required",
+			country: "required",
+			state: "required",
+			image:	"required",
+			bvn_no: {
+				 required : $("#country").val() == "Nigeria"
+			},
+			utility_bill: {
+				required : $("#country").val() != "Nigeria"
+			},
+			photo_id:	{
+				required : $("#country").val() != "Nigeria"
+			}
+		},
+		messages: {
+			first_name: "Please enter your firstname",
+			last_name: "Please enter your lastname",
+			title:	"Please select a Title",
+			address: "Please enter an address",
+			city: "Please enter a city",
+			country: "Please select a country",
+			state: "please select a state",
+			image: "Please upload your image",
+			bvn_no: "Please enter your BVN",
+			utility_bill: "Please upload your Utility bill",
+			photo_id: "please upload your Photo ID"
+		},
+	});
+}
+</script> <!-- TRIGGER FIXED TOP NAVIGATION MENU SCRIPT -->
+
+
+
+
+<script>
+	$('body').on('click', '#activation', function(event) {
+	event.preventDefault();
+	validateForm();
+	//alert("i reach too");
+	if ($('#addressform').valid()) {
+		var country = $('#country').val();
+		//alert(country);
+
+
+    // start: Block of code commented by isaiah to remove bvn validation on 22nd/june/2017 //
+
+	// if (country == "Nigeria") {
+	// 	alert('You will receive a phone call shortly, please keep your phone close and enter the one time password given to you.');
+	// 	var bvn_no = $('#id_bvn_no').val();
+	// 	var firstname = $('#id_first_name').val();
+	// 	var lastname = $('#id_last_name').val();
+	// 	//alert(bvn_no);
+	// 	$('.loading').addClass('show');
+	// 	var csrf_token  = $('input[name="csrfmiddlewaretoken"]').val();
+	// 	$.ajax({
+	// 		url: "{% url 'general:verify_bvn' %}",
+	// 		type: 'POST',
+	// 		data: {'csrfmiddlewaretoken': csrf_token, 'bvn_no': bvn_no, 'firstname': firstname, 'lastname': lastname},
+	// 		success: function(data){
+	// 			if (data.result == "Used") {
+	// 				$('.loading').removeClass('show');
+	// 				$('#FailedModal').modal('show');
+	// 				$('.modal-backdrop').remove();
+	// 				$('#Failed').addClass('hidden');
+	// 				$('#Used').removeClass('hidden');
+	
+	// 			}
+	// 			else{
+	// 				$('.loading').removeClass('show');
+	// 				$('#verify_bvn').replaceWith(data);
+	// 				$('#verify_bvn').modal('show');
+	// 				$('.modal-backdrop').remove();
+	// 			}
+	// 		},
+	// 		error: function(data){
+	// 			$('.loading').removeClass('show');
+	// 			$('#errorModal').modal('show');
+	// 			$('.modal-backdrop').remove();
+	// 			}
+	// 		});
+	// 	 }
+	// else {
+		$("#addressform").submit();
+
+	// }
+
+	 // end: Block of code commented by isaiah to remove bvn validation on 22nd/june/2017 //
+
+	}
+	else{
+		alert("please ensure all fields are filled");
+	}
+ });
+
+
+	$('body').on('click', '#verify', function(event) {
+		event.preventDefault();
+		$('.loading').addClass('show');
+		var otp = $('#otp').val();
+		var csrf_token  = $('input[name="csrfmiddlewaretoken"]').val();
+		$.ajax({
+			url: "{% url 'general:validate_otp' %}",
+			type: 'POST',
+			data: {'csrfmiddlewaretoken': csrf_token, 'otp': otp},
+			success: function(data){
+				if (data.result == "Ok") {
+					$('.loading').removeClass('show');
+					 $("#addressform").submit();
+				}
+				else{
+					$('.loading').removeClass('show');
+					$('#verify_bvn').modal('hide');
+					$('#FailedModal').modal('show');
+					$('.modal-backdrop').remove();
+					$('#Used').addClass('hidden');
+					$('#Failed').removeClass('hidden');
+				}
+				},
+			error: function(data){
+				$('.loading').removeClass('show');
+				$('#errorModal').modal('show');
+				$('.modal-backdrop').remove();
+			}
+		});
+	});
+
+
+
+	$('body').on('click', '#resend_otp', function(event) {
+		event.preventDefault();
+		$('#verify_bvn').modal('hide');
+		alert('You will receive a phone call shortly, please keep your phone close and enter the one time password given to you.');
+		$.ajax({
+			url: "{% url 'general:resend_otp' %}",
+			type: 'GET',
+			data: {},
+			success: function(data){
+				if (data.status == "success") {
+					$('#verify_bvn').modal('show');
+					$('.modal-backdrop').remove();
+				}
+				else{
+					$('#errorModal').modal('show');
+					$('.modal-backdrop').remove();
+				}
+			},
+			error: function(data){
+				$('#errorModal').modal('show');
+				$('.modal-backdrop').remove();
+			}
+
+		});
+	});
+</script>
+
+<!-- DROPDOWN MOBILE MENU ADMIN PAGES SCRIPT -->
+<script>
+<!--
+function land(ref, target)
+{
+lowtarget=target.toLowerCase();
+if (lowtarget=="_self") {window.location=loc;}
+else {if (lowtarget=="_top") {top.location=loc;}
+else {if (lowtarget=="_blank") {window.open(loc);}
+else {if (lowtarget=="_parent") {parent.location=loc;}
+else {parent.frames[target].location=loc;};
+}}}
+}
+function jump(menu)
+{
+ref=menu.choice.options[menu.choice.selectedIndex].value;
+splitc=ref.lastIndexOf("*");
+target="";
+if (splitc!=-1)
+{loc=ref.substring(0,splitc);
+target=ref.substring(splitc+1,1000);}
+else {loc=ref; target="_self";};
+if (ref != "") {land(loc,target);}
+}
+//-->
+</script> <!-- DROPDOWN MOBILE MENU ADMIN PAGES SCRIPT -->
+
+<script type="text/javascript">
+
+		//function switchBankBvn(){
+		//		var value = $("#id_bank_account_bvn").val();
+		//		if (value == "bank_account") {
+		//				$(".bank_account").show()
+		//				$(".bvn_no").hide()
+		//
+		//				$("#id_bank_account_no").val("")
+		//		}else if (value == "bvn_no"){
+		//				$(".bank_account").hide()
+		//				$(".bvn_no").show()
+		//
+		//				$("#id_bvn_no").val("")
+		//		}else{
+		//				$(".bank_account").hide()
+		//				$(".bvn_no").hide()
+		//
+		//		}
+		//		$("#id_bvn_no").val("")
+		//		$("#id_bank_account_no").val("")
+		//
+		//}
+		//
+		////initialize id_bank_account_no to empty
+		//$("id_bank_account_no").val("");
+
+	//	function populate(s1, s2, s3){
+	//		var s1 = document.getElementById(s1);
+	//		var s2 = document.getElementById(s2);
+	//		var s3 = document.getElementById(s3);
+	//		s2.innerHTML ='';
+	//		if(s1.value == 'Nigeria'){
+	//
+	//			$(".nigeria").show();
+	//			$(".not_nigeria").hide();
+	//			var optionArray = ['|Please Select State',
+	//								'Abia|Abia',
+	//								'Abuja|Abuja',
+	//								'Adamawa|Adamawa',
+	//								'Akwa Ibom|Akwa Ibom',
+	//								'Anambra|Anambra',
+	//								'Bauchi|Bauchi',
+	//								'Bayelsa|Bayelsa',
+	//								'Benue|Benue',
+	//								'Borno|Borno',
+	//								'Cross River|Cross River',
+	//								'Delta|Delta',
+	//								'Ebonyi|Ebonyi',
+	//								'Edo|Edo',
+	//								'Ekiti|Ekiti',
+	//								'Enugu|Enugu',
+	//								'Gombe|Gombe',
+	//								'Imo|Imo',
+	//								'Jigawa|Jigawa',
+	//								'Kaduna|Kaduna',
+	//								'Kano|Kano',
+	//								'Katsina|Katsina',
+	//								'Kebbi|Kebbi',
+	//								'Kogi|Kogi',
+	//								'Kwara|Kwara',
+	//								'Lagos|Lagos',
+	//								'Nasarawa|Nasarawa',
+	//								'Niger|Niger',
+	//								'Ogun|Ogun',
+	//								'Ondo|Ondo',
+	//								'Osun|Osun',
+	//								'Oyo|Oyo',
+	//								'Plateau|Plateau',
+	//								'Rivers|Rivers',
+	//								'Sokoto|Sokoto',
+	//								'Taraba|Taraba',
+	//								'Yobe|Yobe',
+	//								'Zamfara|Zamfara', ];
+	//		} else if(s1.value == 'USA'){
+	//			$(".nigeria").hide();
+	//			$(".not_nigeria").show();
+	//			var optionArray = ['|Please Select State',
+	//								 "Alabama|Alabama",
+	//								"Alaska|Alaska",
+	//								"American Samoa|American Samoa",
+	//								"Arizona|Arizona",
+	//								"Arkanas|Arkansas",
+	//								"Armed Forces Americas|Armed Forces Americas",
+	//								"Armed Forces Europe|Armed Forces Europe",
+	//								"Armed Forces Pacific|Armed Forces Pacific",
+	//								"California|California",
+	//								"Colorado|Colorado",
+	//								"Connecticut|Connecticut",
+	//								"Delaware|Delaware",
+	//								"District of Columbia|District of Columbia",
+	//								"Florida|Florida",
+	//								"Georgia|Georgia",
+	//								"Georgia|Georgia",
+	//								"Hawaii|Hawaii",
+	//								"Idaho|Idaho",
+	//								"Illinois|Illinois",
+	//								"Indiana|Indiana",
+	//								"Iowa|Iowa",
+	//								"Kansa|Kansas",
+	//								"Kentucky|Kentucky",
+	//								"Louisiana|Louisiana",
+	//								"Maine|Maine",
+	//								"Maryland|Maryland",
+	//								"Massachusetts|Massachusetts",
+	//								"Michigan|Michigan",
+	//								"Minnesota|Minnesota",
+	//								"Mississippi|Mississippi",
+	//								"Missouri|Missouri",
+	//								"Montana|Montana",
+	//								"Nebraska|Nebraska",
+	//								"Nevada|Nevada",
+	//								"New Hampshire|New Hampshire",
+	//								"New Jersey|New Jersey",
+	//								"New Mexico|New Mexico",
+	//								"New York|New York",
+	//								"North Carolina|North Carolina",
+	//								"North Dakota|North Dakota",
+	//								"Northern Marina Islands|Northern Mariana Islands",
+	//								"Ohio|Ohio",
+	//								"Oklahoma|Oklahoma",
+	//								"Oregon|Oregon",
+	//								"Pennysylvania|Pennsylvania",
+	//								"Puerto Rico|Puerto Rico",
+	//								"Rhode Island|Rhode Island",
+	//								"South Carolina|South Carolina",
+	//								"South Dakota|South Dakota",
+	//								"Tennessee|Tennessee",
+	//								"Texas|Texas",
+	//								"Utah|Utah",
+	//								"Vermont|Vermont",
+	//								"Virgin Islands|Virgin Islands",
+	//								"Virginia|Virginia",
+	//								"Washington|Washington",
+	//								"West Virginia|West Virginia",
+	//								"Wisconsin|Wisconsin",
+	//								"Wyoming|Wyoming", ];
+	//		} else if(s1.value == 'UK') {
+	//			$(".nigeria").hide();
+	//			$(".not_nigeria").show();
+	//			var optionArray = [
+	//							'|Please Select State',
+	//							"Bedfordshire|Bedfordshire",
+	//							"Berkshire|Berkshire",
+	//							"Bristol|Bristol",
+	//							"Buckinghamshire|Buckinghamshire",
+	//							"Cambridgeshire|Cambridgeshire",
+	//							"Cheshire|Cheshire",
+	//							"City of London|City of London",
+	//							"Cornwall|Cornwall",
+	//							"Cumbria|Cumbria",
+	//							"Derbyshire|Derbyshire",
+	//							"Devon|Devon",
+	//							"Dorset|Dorset",
+	//							"Durham|Durham",
+	//							"East Riding of Yorkshire|East Riding of Yorkshire",
+	//							"East Sussex|East Sussex",
+	//							"Essex|Essex",
+	//							"Gloucestershire|Gloucestershire",
+	//							"Greater London|Greater London",
+	//							"Greater Manchester|Greater Manchester",
+	//							"Hampshire|Hampshire",
+	//							"Herefordshire|Herefordshire",
+	//							"Hertfordshire|Hertfordshire",
+	//							"Isle of Wight|Isle of Wight",
+	//							"Kent|Kent",
+	//							"Lancashire|Lancashire",
+	//							"Leicestershire|Leicestershire",
+	//							"Lincolnshire|Lincolnshire",
+	//							"Merseyside|Merseyside",
+	//							"Norfolk|Norfolk",
+	//							"North Yorkshire|North Yorkshire",
+	//							"Northamptonshire|Northamptonshire",
+	//							"Northumberland|Northumberland",
+	//							"Nottinghamshire|Nottinghamshire",
+	//							"Oxfordshire|Oxfordshire",
+	//							"Rutland|Rutland",
+	//							"Shropshire|Shropshire",
+	//							"Somerset|Somerset",
+	//							"South Yorkshire|South Yorkshire",
+	//							"Staffordshire|Staffordshire",
+	//							"Suffolk|Suffolk",
+	//							"Surrey|Surrey",
+	//							"Tyne and Wear|Tyne and Wear",
+	//							"Warwickshire|Warwickshire",
+	//							"West Midlands|West Midlands",
+	//							"West Sussex|West Sussex",
+	//							"West Yorkshire|West Yorkshire",
+	//							"Wiltshire|Wiltshire",
+	//							"Worcestershire|Worcestershire",
+	//
+	//							"Anglesey|Anglesey",
+	//							"Brecknockshire|Brecknockshire",
+	//							"Caernarfonshire|Caernarfonshire",
+	//							"Carmarthenshire|Carmarthenshire",
+	//							"Cardiganshire|Cardiganshire",
+	//							"Denbighshire|Denbighshire",
+	//							"Flintshire|Flintshire",
+	//							"Glamorgan|Glamorgan",
+	//							"Merioneth|Merioneth",
+	//							"Monmouthshire|Monmouthshire",
+	//							"Montgomeryshire|Montgomeryshire",
+	//							"Pembrokeshire|Pembrokeshire",
+	//							"Radnorshire|Radnorshire",
+	//
+	//							"Aberdeenshire|Aberdeenshire",
+	//							"Angus|Angus",
+	//							"Argyllshire|Argyllshire",
+	//							"Ayrshire|Ayrshire",
+	//							"Banffshire|Banffshire",
+	//							"Berwickshire|Berwickshire",
+	//							"Buteshire|Buteshire",
+	//							"Cromartyshire|Cromartyshire",
+	//							"Caithness|Caithness",
+	//							"Clackmannanshire|Clackmannanshire",
+	//							"Dumfriesshire|Dumfriesshire",
+	//							"Dunbartonshire|Dunbartonshire",
+	//							"East Lothian|Ear Lothian",
+	//							"Fife|Fife",
+	//							"Inverness-shire|Inverness-shire",
+	//							"Kincardineshire|Kincardineshire",
+	//							"Kinross|Kinross",
+	//							"Kirkcudbrightshire|Kirkcudbrightshire",
+	//							"Lanarkshire|Lanarkshire",
+	//							"Midlothian|Midlothian",
+	//							"Morayshire|Morayshire",
+	//							"Nairnshire|Nairnshire",
+	//							"Orkney|Orkney",
+	//							"Peeblesshire|Peeblesshire",
+	//							"Perthshire|Perthshire",
+	//							"Renfrewshire|Renfrewshire",
+	//							"Ross-shire|Ross-shire",
+	//							"Roxburghshire|Roxburghshire",
+	//							"Selkirkshire|Selkirkshire",
+	//							"Shetland|Shetland",
+	//							"Stirlingshire|Stirlingshire",
+	//							"Sutherland|Sutherland",
+	//							"West Lothian|West Lothian",
+	//							"Wigtownshire|Wigtownshire",
+	//
+	//							"Antrim|Antrim",
+	//							"Armagh|Armagh",
+	//							"Down|Down",
+	//							"Fermanagh|Fermanagh",
+	//							"Londonderry|Londonderry",
+	//							"Tyrone|Tyrone",];
+	//		}
+	//
+	//		else{
+	//			 $('.nigeria').hide();
+	//			 $('.not_nigeria').hide();
+	//		}
+	//		for(var option in optionArray){
+	//			var pair = optionArray[option].split('|');
+	//			var newOption = document.createElement('option');
+	//			newOption.value = pair[0];
+	//			newOption.innerHTML = pair[1];
+	//			s2.options.add(newOption);
+	//
+	//		}
+	//};
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% load staticfiles %}
+{% load humanize %}
+
+
+
+<div class="modal fade" id="editcostcalc" role= "dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header"> 
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Cost settings</h4>
+           </div>
+          <form id="editcost-settings-form" method="POST" action="{% url 'service_provider:edit_cost_settings' %}">
+          <div class="modal-body">
+            {% csrf_token %}
+                    <!--<input type="hidden" name="service_name" value="shipping_route"/>-->
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; bottom: 10px; position: relative; height: auto; overflow: hidden;">
+                            <div class="widget_scroll_inner">
+
+                                <div class="checkbox">
+                                  
+                                      <!--% for field in costform %}-->
+                                      <div class="hidden">
+                                        {{form.country}}
+                                      </div>
+                                      
+                                      <div class="col-md-12">
+                                        <span class="">Country</span><br/>
+                                                <b>{{ form.country.value }}</b>
+                                      </div>
+                                      <div class="col-md-12">
+                                        <span class="">{{ form.dollar_exchange_rate.label}}</span><br/>
+                                                {{ form.dollar_exchange_rate }}
+                                      </div>
+                                      <div class="col-md-12">
+                                        <span class="">{{ form.vat_rate.label}}</span><br/>
+                                                {{ form.vat_rate }}
+                                      </div>
+                                      <div class="col-md-12">
+                                        <span class="">{{ form.insurance_rate.label}}</span><br/>
+                                                {{ form.insurance_rate }}
+                                      </div>
+                                      <div class="col-md-12">
+                                        <span class="">{{ form.handling_charge_fee.label}}</span><br/>
+                                                {{ form.handling_charge_fee }}
+                                      </div>
+                                      
+                                      
+                                    <!--% endif %}-->
+                                  <!--% endfor %}-->
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                
+                        <input class="hidden" name="obj_id" type="text" value ="{{edit.pk}}" />
+                
+                
+            </div>
+                <div class="modal-footer">
+                    <button class="btn green save_info">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

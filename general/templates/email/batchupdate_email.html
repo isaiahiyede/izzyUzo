@@ -1,0 +1,19 @@
+{% load humanize %}
+{% load currency %}
+{% load staticfiles %}
+{% load custom_filters %}
+
+
+<html>
+<body>
+    <head>
+    </head>
+    <div style="font-size: larger;">
+        <div>
+            <p>Thank you for shipping with {{ request.storefront_name|capfirst }}.</p>
+            <p>The status of your package with tracking number <strong>{{pkg.tracking_number}}</strong> is
+            <strong>{% pkg.status %}</strong></p><br/>
+        </div><br/><br/>
+    </div>
+</body>
+</html>

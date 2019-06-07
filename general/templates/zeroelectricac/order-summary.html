@@ -1,0 +1,213 @@
+{% extends "base/base_index_zeac.html" %}
+{% load staticfiles %}
+{% block title %}ZeAC - zero electric Air Conditioner{% endblock %}
+
+{% block body %}
+
+    <section class="hero hidden">
+        <div class="container-fluid">
+            <div class="col-md-6">
+                <h1>zero electric <br/><span>Air Conditioner</span></h1>
+                <p>A simple climate control system made out of an Air-Con Cylinder that produces cooling when you add water, and potted plants that consume CO2 and release fresh oxygen in your home.</p>
+
+            </div>
+        </div>
+        <div class="arrow"><i class="fa fa-arrow-down" aria-hidden="true"></i></div>
+        <div class="video">
+            <div class="counter">
+                <div>
+                    <p>units sold <br/> so far</p>
+                </div>
+                <div>
+                    <h1>22</h1>
+                </div>
+
+            </div>
+            <div class="circle">
+
+
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/m9jSqGe8aVQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Search Products</h2>
+                        <form action="#">
+                            <input type="text" placeholder="Search products...">
+                            <input type="submit" value="Search">
+                        </form>
+                    </div>
+                    
+                    <div class="single-sidebar hidden">
+                        <h2 class="sidebar-title">Products</h2>
+                        <div class="thubmnail-recent">
+                            <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                    </div>
+                    
+                    <div class="single-sidebar hidden">
+                        <h2 class="sidebar-title">Recent Posts</h2>
+                        <ul>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+                            <form method="post" action="#">
+                                <table cellspacing="0" class="shop_table cart">
+                                    {% if my_order %}
+                                    <thead>
+                                        <tr>
+                                            <th class="product-remove">&nbsp;</th>
+                                            <th class="product-thumbnail">Order Number</th>
+                                            <th class="product-name">Client</th>
+                                            <th class="product-quantity">Payable</th>
+                                            <th class="product-price">Created On</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for product in my_order %}
+                                        <tr class="cart_item">
+                                            <td class="product-remove">
+                                                <a title="Remove this item" class="remove">×</a> 
+                                            </td>
+
+                                            <td class="product-name">
+                                                <span href="single-product.html">{{product.order_number}}</span> 
+                                            </td>
+
+                                            <td class="product-price">
+                                                <span class="amount">{{product.client}}</span> 
+                                            </td>
+
+                                            <td class="product-quantity">
+                                                <span class="quantity">{{product.payable}}</span> 
+                                            </td>
+
+                                            <td class="product-subtotal">
+                                                <span class="amount">{{product.created_on}}</span> 
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    {% else %}
+                                        <p>You have <strong>no Orders</strong> currently!
+                                        </p>
+                                    {% endif %}
+                                </table>
+                            </form>
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="order first hidden" id="order">
+        <div class="container-fluid">
+            <div class="col-md-12" style="padding:0;">
+                <!-- box -->
+                <!-- box -->
+
+                <!-- box -->
+                <div class="col-md-12">
+                    <div class="box">
+                        <!-- left side -->
+                        <div class="col-md-5">
+                            <div class="prod_slider">
+                                <div class="slider_inner">
+                                    <img src="{% static 'zeroelectric/img/prod1.png' %}" />
+                                </div>
+                                <div class="slider_inner">
+                                    <img src="{% static 'zeroelectric/img/prod2.png' %}" />
+                                </div>
+                                <div class="slider_inner">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <h1>$3499</h1>
+                                <a href="#" class="btn green">Order Now</a>
+                            </div>
+
+                        </div>
+                        <!-- left side -->
+                        <!-- right side -->
+                        <div class="col-md-7">
+                            <h3>14 Cylinders Power Package</h3>
+                            <p></p>
+                            <p class="green">Contains 14x each package:</p>
+                            <ul>
+                                <li>
+                                    <p>6x9" Air-Con Cylinder in a Pot</p>
+                                </li>
+                                <li>
+                                    <p>Basic Power Package</p>
+                                </li>
+                                <li>
+                                    <p>Recycled Plastic Pot</p>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <p>Tilt Ceramic Cylinder Base</p>
+                                </li>
+                                <li>
+                                    <p>Illuminated Water Tank</p>
+                                </li>
+                                <li>
+                                    <p>Automatic Hydration</p>
+                                </li>
+                            </ul>
+                            <div class="alert alert-warning" role="alert"><b>Note:</b> Shipping is estimated to start late <b>January 2018.</b>
+                                <a href="#">Read more about it.</a>
+                            </div>
+                        </div>
+                        <!-- right side -->
+                    </div>
+                </div>
+                <!-- box -->
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

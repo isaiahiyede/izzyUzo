@@ -1,0 +1,141 @@
+{% extends "base/base_index_zeac.html"%}
+{% load staticfiles %}
+{% block title %}ZeAC - Step 2 Order Page{% endblock %}
+
+{% block body %}
+
+    <section class="page">
+        <div class="brd">
+
+            <div class="container-fluid">
+
+                <ul>
+                    <div class="line"></div>
+                    <li class="active">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Review</p>
+                    </li>
+                    <li class="active lineg">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Billing Details</p>
+                    </li>
+                    <li class="active lineg">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Payment & Delivery</p>
+                    </li>
+                    <li>
+                        <div class="step">
+                            <p>4</p>
+                        </div>
+                        <p>Order Summary</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <form class="hidden" id="detail_form" action="" method="POST">
+
+            {% csrf_token %}
+            <div class="col-md-12">
+                <input type="text" name="amount" value="{{total_payable}}"/>
+            </div>
+
+            <div class="col-md-12">
+                <input type="hidden" name="txn_ref" value="{{txn_ref}}"/>
+            </div>
+
+        </form>
+
+        <div class="container-fluid" style="padding-bottom:80px;">
+            <div class="col-md-12" style="padding:0;">
+                <div class="col-md-12 mobile_no_padding">
+                    <div class="title two">
+                        <h3><span>3/4. Payment & Delivery</span></h3>
+                    </div>
+                    <div class="window">
+                        <div class="window_main">
+                            <div class="form">
+
+                                <div class="col-md-6">
+                                    <div class="col-md-12">
+                                        <h3 class="two"> Item Cost: ${{payable}}</h3>
+                                        <h3 class="two"> Shipping Cost: ${{shipping_cost}}</h3>
+                                        <h3 class="two"> Total: ${{total_payable}}</h3>
+                                        <h4>Please note that online payments attract convenience fee on the amount been paid</h4>
+                                        <h4>Delivery time: 15 working days</h4>
+                                        <!-- <select id="sources" required name="sources" selected="selected" placeholder="Payment Method">
+                                                 <option value="1">Cash on delivery</option>
+                                                <option value="0">No Selection</option>
+                                                <option value="1">Credit Card</option>
+                                                <option value="2">Bank Payment</option>
+                                  
+                                        </select> -->
+                                    </div>
+                                    <hr/>
+                                    <!-- Card Patment -->
+                                
+                                    <!-- Bank Payment -->
+                                    <div class="col-md-12" id='card'>
+
+                                        <!-- <div class="card">
+                                            <div class="col-md-12">
+                                                <label>Name of Bank:</label>
+                                                <input type="text" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label>Teller Number:</label>
+                                                <input type="text" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label>Depositors Name:</label>
+                                                <input type="text" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label>Amount Paid:</label>
+                                                <input type="text" />
+                                            </div>
+                                        </div> -->
+                                        <!-- <button type="submit" id="pay_now" class="my-super-cool-button" style="visibility: visible;">
+                                            <span style="display: block; min-height: 15px;">Pay with card</span>
+                                        </button> -->
+
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+                                   
+
+                                </div>
+
+                                <div class="col-md-4 last" style="display:none;">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="result">
+                            <div class="col-md-3 one">
+                                <a href="{% url 'general:checking_out' %}" class="btn gray full">Back</a>
+                            </div>
+                            <div class="col-md-3 two">
+                                <div class="col-md-12" style="border:none;">
+                                    <button type="submit" id="pay_now" class="btn green full">Pay Now</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

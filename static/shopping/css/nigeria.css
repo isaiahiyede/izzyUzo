@@ -1,0 +1,194 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/***** Desktop view CSS under here (767px+) *****/
+
+#section1.header_top_part.nigeria.two #botBody { background:url(../images/banner.png) left top no-repeat; height:500px; border-bottom:2px solid #3478a7; margin:0; }
+
+#section1.header_top_part.nigeria.two { height:auto; background:#fff; padding-bottom:0; border-bottom:0; margin-bottom:0px; min-height:580px; border-bottom:2px solid #3478a7;  }
+
+#section1.header_top_part.nigeria.two  #content_weather { display:none; }
+
+#section1.header_top_part.nigeria.two .textarea {  width:980px; background:#3881b4; margin-top:247px;  }
+
+#section1.header_top_part.nigeria.two .textarea h1 { padding:0; color:#fff; }
+
+#section1.nigeria.two .view-footer { background:url(../images/categoryfooter_y2.png) no-repeat scroll 0% 0% transparent; margin-bottom:-10px; }
+
+/* LIST SECTION */
+
+#list span { width:840px; float:left; clear:both; font-size:20px; text-transform:uppercase; color:rgb(71,71,71); padding:20px 0; background:url(../images/checksquare.png) 0px center no-repeat; padding-left:60px; 
+margin-left:30px; border-bottom:1px solid rgb(241,241,241); }
+
+#list span.last { border-bottom:none; }
+
+#list span.one { border-bottom:none; background:url(../images/nigeria.png) 1px center no-repeat; color:#008751; font-weight:bold; }
+
+#list span.one h1 { width:400px; margin-left:300px; background:#fff; padding:20px 0; color:#008751; }
+
+#list .body.nigeria { background:#fff; padding:10px 0; padding-bottom:0; border-bottom:none; }
+
+.body.nigeria.two#arrows { border-top:2px solid #F1F1F1; padding-bottom:50px; }
+
+.body.nigeria.two .textarea.arrows { text-align:center; background:url(../images/arrows1.png) center 110px no-repeat; padding-bottom:130px; }
+
+.body.nigeria.two .textarea.arrows p { }
+
+.body.nigeria.two .textarea.two.images { background:none; width:1000px; padding:20px 0; padding-top:0;}
+
+.body.nigeria.two .textarea.two.images #shop.button { padding:10px 70px; }
+
+.body.nigeria.two .textarea.two.images .row { width:298px; border:1px solid rgb(221,221,221); padding:0; overflow:hidden; background:#fff; height:360px; margin-bottom:20px; margin-right:25px; margin-bottom:10px;
+-webkit-box-shadow: 0 6px 6px -6px rgb(221,221,221);
+-moz-box-shadow: 0 6px 6px -6px rgb(221,221,221);
+box-shadow: 0 6px 6px -6px rgb(221,221,221);
+border-radius:5px; 
+-moz-border-radius:5px; 
+-webkit-boder-radius:5px; 
+-o-border-radius:5px;
+}
+
+.body.nigeria.two .textarea.two.images .row:first-child { margin-left:25px; }
+
+.body.nigeria.two .textarea.two.images .row h3 { text-transform:uppercase; font-size:1.4em; }
+
+.body.nigeria.two .textarea.two.images .row p { width:258px; padding:10px 20px; }
+
+.body.nigeria .images span { width:100%; height:170px; overflow:hidden; float:left; clear:both; margin-bottom:30px; border-bottom:3px solid #4892c6; background:#73bce8; padding:0; }
+
+.body.nigeria .images span img { float:left; }
+
+.navigation #menudown { display:none; }
+
+/***** iPhone portrait view CSS under here (<320px) *****/
+
+@media only screen and (max-width: 767px) {
+
+.wrapper, .outer-wrapper { width:100%; margin-bottom:0; }
+
+.wrapper-top { border-bottom:none; }
+
+.right_logo_part .navigation ul, .right_logo_part .inbox  { float:left; margin-left:-50px; }
+
+.right_logo_part .inbox { margin-left:-10px; position:relative; }
+
+.inbox input.searchinput { margin-top:10px; margin-left:-10px; float:left; }
+
+.right_logo_part .butns { margin-right:20px; margin-top:10px; }
+
+.right_logo_part { width:auto; }
+
+.right_logo_part .navigation ul li a { float:left; width:300px; text-align:left; padding:15px 20px; background:#408EC3; color:#fff; border-bottom:1px solid #367cab; border-right:none; }
+
+.right_logo_part .navigation ul { border-bottom:2px solid #367cab; }
+
+.right_logo_part .navigation ul li a:hover { background:rgb(51,51,51); color:#fff; }
+
+.right_logo_part .navigation ul li.login a, .right_logo_part .navigation ul li.login a:hover { background:url(../images/lock.gif) 10px center no-repeat #fff; padding-left:30px; color:#000; }
+
+.right_logo_part .navigation ul li a, .right_logo_part .navigation ul li { width:100%;  }
+
+.navigation #menudown { background:url(../images/32menu.png) 10px center no-repeat #367cab; float:left; width:100%; height:48px; margin-left:23px; cursor:pointer; display:block; }
+
+.navigation #menudown span { float:left; color:#fff; margin-left:60px; line-height:48px; font-weight:600; font-family:'Open Sans',sans-serif; font-size:12px; }
+
+.right_logo_part .navigation ul { height:48px; overflow:hidden; z-index:999; position:relative; }
+
+.right_logo_part .navigation ul.active { height:auto; }
+
+.outer-wrapper { margin-top:245px; border-radius:0; }
+
+#botBody { border-radius:0; }
+
+.nigeria { width:100% !important; }
+
+.indexpage { background:#fff; overflow-x:hidden; }
+
+#specialhomepage  { margin-left:-320px; float:left; z-index:9; }
+
+#specialList { margin-left:20px; float:left; z-index:9; }
+
+#section1.header_top_part.nigeria.two #botBody { background:url('../images/banner1.png') no-repeat scroll -50px bottom #73bce8; background-size:620px; height:650px; }
+
+.header_part .header_top_part #top_text_2, .header_part .header_top_part #top_text_1 { font-size:15px; padding-left:330px; }
+
+.sticky .top_part { height:209px; }
+
+#section1.header_top_part.nigeria.two .textarea { width:95%; margin-top:400px; }
+
+#section1.header_top_part.nigeria.two .textarea h1 { font-size:24px; margin-left:-18px; width:100%; text-align:center; }
+
+#list { margin-top:176px; }
+
+.body.nigeria .textarea, #list span  { width:95%; }
+
+.body.nigeria.two .textarea.two.images { width:100%; }
+
+#list span { font-size:1.2em; margin-left:-10px; padding-left:50px; }
+
+.body.nigeria.two .textarea.arrows { background:none; padding-bottom:0px; }
+
+.textarea h1 { margin-left:-30px; }
+
+.body.nigeria.two .textarea.arrows p { width:90%; margin-left:0%; }
+
+.body.nigeria.two .textarea.two.images .row { float:left; clear:both; margin-right:0 !important; margin-left:12px !important; margin-bottom:20px; }
+
+.body.nigeria.two { padding-top:20px; }
+
+.textarea h1 { width:100%; padding-left:20px !important; }
+
+.footer { width:100%; }
+
+.footer ul { margin-top:50px; margin-left:-20px; float:left; width:97%; }
+
+.footer ul li { display:none; }
+
+.footer ul li a  { padding-top:10px; padding-bottom:10px; float:left; }
+
+.body.nigeria #youtube-inner { left:13px; }
+
+#youtube { background-position:-80px top; }
+
+
+
+} /***** End *****/	
+
+
+/***** iPhone landscape view CSS under here (460+px) *****/
+
+@media only screen and (min-width: 460px) and (max-width: 767px) {
+
+.inbox input.searchinput { position:absolute; right:-10px; top:-90px; }
+
+.right_logo_part .butns { position:absolute; right:0px; top:-10px; }
+
+.sticky .top_part { height:173px; }
+
+#specialhomepage { margin-left:-180px; }
+
+#specialList { margin-left:160px; }
+
+#section1.header_top_part.nigeria.two #botBody { background:url('../images/banner1.png') no-repeat scroll -150px 120px #73bce8; background-size:700px; height:500px; }
+
+#section1.header_top_part.nigeria.two .textarea { margin-top:250px; }
+
+#section1.header_top_part.nigeria.two .textarea { width:98%; }
+
+#list { margin-top:0px; }
+
+#list span { font-size:1.4em; }
+
+.body.nigeria.two .textarea.two.images .row { margin-left:90px !Important; }
+
+.right_logo_part .inbox p  { width:100%; text-align:left; }
+
+.right_logo_part .inbox .butns { margin-right:0; }
+
+.logo { margin-left:10px; }
+
+.header_part .header_top_part #top_text_2, .header_part .header_top_part #top_text_1 { font-size:20px; padding-left:230px; }
+
+#section1.header_top_part.nigeria.two .textarea h1 { width:93%; padding-right:20px; }
+
+} /***** End *****/	

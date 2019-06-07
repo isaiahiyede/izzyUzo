@@ -1,0 +1,78 @@
+{% extends 'base/zpn_modal_popup.html' %}
+
+{% block inner_content %}
+          <form id="upload_invoices" method="POST" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <input type="text" name="suggesstedweight" value= {% if suggestedWeight %}"{{ suggestedWeight }}" {% else %} ""{% endif %} />
+            {% if suggestedWeight}
+            <table class="table table-stripped table-hover">
+              <thead>
+                <th><input class="selected-items" type="checkbox" name="selected_all_items" /></th>
+                <th>Description</th>
+                <th>Tracking Num</th>
+                <th>Qty</th>
+                <th>Amount</th>
+              </thead>
+              <tbody>
+                {% for item in item_list %}
+                  <tr class = "tr_item">
+                    <td><input class="selected-items" type="checkbox" name="selected_item" value = "{{ item.pk }}" /></td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.courier_tracking_number }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>$ {{ item.total_value_N }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            <div class="form two" style="padding-bottom:15px;">
+                <!-- <hr style="margin-top:0;" /> -->
+                
+                <div class="upload_invoice container">
+                    <div class="col-md-12" style="padding-top:15px;">
+                        <p style="margin:0;"><strong>Upload invoices for the selected items</strong></p>
+                        
+                        <p style="padding-top: 40px;">Please upload the invoice(s) for the items listed above.</p>
+                    </div>
+                    <div class="col-md-12 upload_div">
+    
+                        <div class="upld_outer">
+                            <div class="upld">
+                                <input type="file" name="pic" class="inpp">
+                            </div>
+                            <label class="inpl file_name">Attach Invoice</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="image-thumbnail">
+                </div>
+                
+                <!-- <hr style="margin-top:0;" /> -->
+                <div class="col-md-12 noinvoice" style="padding:15px;">
+                    <span class="checkb">
+                        <input type="hidden" name="i_accept_no_invoice" id="id_i_accept_no_invoice" val="no"/>
+                        <input type="checkbox" name="no_invoice" id="id_no_invoice" style="width: auto !important;"/>
+                    </span>
+                    <p style="padding-left:27px; margin:0; float:left; margin-top:0px; z-index:1;">  
+                      <strong style="color:#000; text-transform:uppercase;">I don't have an invoice.</strong>
+                        <span id="no_invoice_text">I don't have an invoice for the items listed above.</span>
+                    </p>
+                                          
+                    <div class="alert alert-warning" role="alert" style="margin-top:15px; margin-bottom:0;">
+                      <strong>You have selected that you do not have an invoice</strong>
+                      <br/> 1. Not attaching an invoice may delay the processing of your booking.
+                      <br/> 2. You hereby declare that you are the rightful owner of the items contained in this shipment.
+                      <br/>3. You hereby declare that no part of the items contained in this shipment has been procured by fraud, theft, deceit, or any other illegal means.
+                      <br/>4. You fully and knowingly agree that if your items or booking is suspected to be of fraudulent origins, you WILL be required to provide a valid proof of ownership before your items can ship out.
+                      <br/>5. You fully and knowingly agree to the additional scrutiny that may be placed on this booking which may cause delays to your shipment.
+                      <br/>6. You fully and knowingly agree that you have been informed that if your items are determined to be of fraudulent origins, we are obligated to report and submit details such as your registered names, email, phone number and banking data to the security agencies that include but not limited to, the NPF, EFCC, FBI, and relevant state security agencies in the US and Nigeria.
+                      
+                      <div style="padding-top: 10px;">
+                        <a href="#" id="i_accept" class="btn green">I Accept</a>
+                      </div>
+                    </div>
+                    
+                </div>
+            </div>
+          </form>
+{% endblock %}

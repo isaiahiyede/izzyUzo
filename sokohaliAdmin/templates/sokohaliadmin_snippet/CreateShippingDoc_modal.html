@@ -1,0 +1,388 @@
+{% load staticfiles %}
+<style>
+.form-horizontal .form-group {
+		margin-right: -15px;
+		margin-left: 5px;
+}
+
+element.style {
+		margin-left: 3px;
+}
+
+div.modal-body {
+		overflow: scroll;
+}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<!-- /.modal -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="edititemModal{{batch.batch_number}}">
+				<div class="modal-dialog modal-big">
+
+						<div class="modal-content">
+								<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<h4 class="modal-title">Create Airway Bill Form</h4>
+								</div>
+								<!-- <div class="order">
+										<div class="col-md-12">
+													<h1></h1> -->
+												<!-- <form>
+												
+												<p>
+													<strong>Airway Bill&nbsp;&nbsp;</strong><input type="radio" name="mype" value="ve1" onClick="Hide('div2', this); Reveal('didfv1', this)" />
+													<strong>Sea Bill&nbsp;&nbsp;</strong><input type="radio" name="mype" value="value2" onClick="Hide('didfv1', this); Reveal('div2', this)" />
+												</p>
+											</form> -->
+										<!-- </div>
+								</div> -->
+								<!-- modal-c -->
+								
+								<form method ="POST" action="{% url 'sokohaliAdmin:awb' %}" enctype="multipart/form-data"class="form-horizontal scroll">
+									{% csrf_token %}
+								<div class="modal-c open" id="s0">
+										<div class="modal-body">
+													<div class="form-group" style="margin-bottom:5mm;">
+														<div class="col-sm-7">
+															<input type="hidden" class="form-control" name="batch_number" id="btch_no" placeholder="Batch Number" value="{{batch_number}}"readonly>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Shippers Name and Address: </label>
+															{{awb_form.shippers_name_and_address}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Shippers Number</label>
+															{{awb_form.shippers_number}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Shippers Account Number</label>
+															{{awb_form.shippers_acct_no}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Consignees Name and Address</label>
+															{{awb_form.consignees_name_and_address}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Consignees Number</label>
+															{{awb_form.consignees_number}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Consignees Account Number</label>
+															{{awb_form.consignees_acct_no}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Carrier Agent Name and City</label>
+															{{awb_form.carrier_agent_name_and_city}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Carrier Agent IATA Code</label>
+															{{awb_form.carrier_agent_iata_code}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Carrier Agent Account Number</label>
+															{{awb_form.agent_acct_no}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Airport of Departure</label>
+															{{awb_form.airport_of_departure}}
+														</div>
+													</div>
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn green trigger" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s1">
+										<div class="modal-body">
+												<!-- Body Inner Content -->
+												<!-- <div class="body-inner long"> -->
+												<div class="form-group" style="margin-top:5mm;">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="origin_routing_code" placeholder="Origin Routing (Code e.g. IAD) " required> -->
+														<label>Origin Routing Code</label>
+														{{awb_form.origin_routing_code}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="origin_airline_carrier" placeholder="Origin Airline Carrier (Code e.g. AF)" required> -->
+														<label>Origin Airline Carrier</label>
+														{{awb_form.origin_airline_carrier}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="destination_and_departure_routing_code1" placeholder="Airport of Destination/Departure (Code e.g. CDG)" required> -->
+														<label>Destination / Departure Routing Code</label>
+														{{awb_form.destination_and_departure_routing_code1}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="second_airline_carrier" placeholder="Airline Carrier (Code e.g. AF)" required> -->
+														<label>Second Airline Carrier</label>
+														{{awb_form.second_airline_carrier}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="state_of_destination" placeholder="State of Destination (Code e.g. LOS)"> -->
+														<label>State of Destination</label>
+														{{awb_form.state_of_destination}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="third_airline_carrier" placeholder="Airport Carrier (Code e.g. AF)"> -->
+														<label>Third Airline Carrier</label>
+														{{awb_form.third_airline_carrier}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="airport_of_destination" placeholder="Airport of Destination"> -->
+														<label>Airport of Destination</label>
+														{{awb_form.airport_of_destination}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="requested_flight_and_date1" placeholder="First Requested Flight/Date"> -->
+														<label>Requested Flight and Date(First)</label>
+														{{awb_form.requested_flight_and_date1}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="requested_flight_and_date2" placeholder="Second Requested Flight/Date"> -->
+														<label>Requested Flight and Date(Second)</label>
+														{{awb_form.requested_flight_and_date2}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="handling_info" placeholder="Handling Information"> -->
+														<label>Handling Information</label>
+														{{awb_form.handling_info}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <textarea class="form-control" name="issued_airline_carrier_and_address" placeholder="Issued Airline Carrier and Address" rows="4" cols="4" required></textarea> -->
+														<label>Issued Airline Carrier and Address</label>
+														{{awb_form.issued_airline_carrier_and_address}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="accounting_info" placeholder="Accounting Information"  required> -->
+														<label>Accounting Information</label>
+														{{awb_form.accounting_info}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="ref_number" placeholder="Reference Number" required> -->
+														<label>Ref Number</label>
+														{{awb_form.ref_number}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="currency_code" placeholder="Currency Code e.g. USD" required> -->
+														<label>Currency Code</label>
+														{{awb_form.currency_code}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="value_for_carriage" placeholder="Declared Value for Carriage (Code e.g. NVD)" required> -->
+														<label>Value For Carriage</label>
+														{{awb_form.value_for_carriage}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="value_for_custom" placeholder="Declared Value for Customs (Code e.g. NCV)" required> -->
+														<label>Value For Custom</label>
+														{{awb_form.value_for_custom}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="number" step="0.01" style="height:50px;" class="form-control" name="amount_of_insurance" placeholder="Amount of Insurance" required> -->
+														<label>Amount on Insurance</label>
+														{{awb_form.amount_of_insurance}}
+													</div>
+												</div>
+												<!-- <div class="form-group">
+													<div class="col-sm-7"> 
+														<input type="text" class="form-control" name="handling_info" placeholder="Handling Information" required>
+													</div>
+												</div> -->
+												<!-- </div> -->
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s0">Back</button>
+												<button type="button" class="btn green trigger" rel="s2">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s2">
+										<div class="modal-body">
+												<!-- Body Inner Content -->
+												<div class="form-group" style="margin-top:5mm;">
+													<div class="col-sm-7"> 
+														<!-- <input type="number" style="height:50px;" class="form-control" name="number_of_pieces_to_ship" placeholder="Number of Pieces RCP" required> -->
+														<label>Number of Pieces to Ship</label>
+														{{awb_form.number_of_pieces_to_ship}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="number" step="0.01" style="height:50px;" class="form-control" name="gross_weight" placeholder="Gross Weight " required> -->
+														<label>Gross Weight</label>
+														{{awb_form.gross_weight}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="number" step="0.01" style="height:50px;" class="form-control" name="chargeable_rate" placeholder="Chargeable Rate " required> -->
+														<label>Chargeable Rate</label>
+														{{awb_form.chargeable_rate}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <textarea rows="4" cols="4" class="form-control" name="nature_and_quantity_of_goods" placeholder="Nature and Quantity of Goods" required></textarea> -->
+														<label>Nature and Quantity of Goods</label>
+														{{awb_form.nature_and_quantity_of_goods}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <textarea rows="4" cols="4" class="form-control" name="note_on_the_package" placeholder="Note concerning the PACKAGE been Shipped" required></textarea> -->
+														<label>Note on the Package</label>
+														{{awb_form.note_on_the_package}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <textarea rows="4" cols="4" class="form-control" name="regulation_of_goods" placeholder="Regulation on the type of  Goods"></textarea> -->
+														<label>Regulation of Goods</label>
+														{{awb_form.regulation_of_goods}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="number" step="0.01" style="height:50px" class="form-control" name="other_charges_due_carrier" placeholder="Total Other Charges Due Carrier" > -->
+														<label>Other Charges Due Carrier</label>
+														{{awb_form.other_charges_due_carrier}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="place_of_execution" placeholder="Place of Execution" required> -->
+														<label>Place of Execution</label>
+														{{awb_form.place_of_execution}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="number"  style="height:50px" max="1000" class="form-control" name="tracking_number_prefix" placeholder=" Airline Tracking Number Prefix" required> -->
+														<label>Tracking Number Prefix</label>
+														{{awb_form.tracking_number_prefix}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="number" style="height:50px" class="form-control" name="airline_tracking_number" placeholder="Airline Tracking Number" required> -->
+														<label>Airline Tracking Number</label>
+														{{awb_form.airline_tracking_number}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="shippers_name" placeholder="Shipper Name" required> -->
+														<label>Shippers Name</label>
+														{{awb_form.shippers_name}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<!-- <input type="text" class="form-control" name="carrier_name" placeholder="Carrier Name" required> -->
+														<label>Carrier Name</label>
+														{{awb_form.carrier_name}}
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s1">Back</button>
+												<button id="button" type="submit" class="btn green">Submit</button>
+										</div>
+								</div>
+							</form>
+							<!-- <div class="row" id="div2" style="display: none">Show Div 2</div> -->
+								<!-- modal-c -->
+						</div>
+						<!-- /.modal-content -->
+
+				</div>
+				<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+
+
+<script>
+$("#button").click(function() {
+	// $("input").each(function() {
+	$(".red").each(function() {
+			if($(this).val() == "")
+				{
+					$(this).css("border", "2px solid red");
+				}
+			else{
+					$(this).css("border", "2px solid green");
+			}
+		});
+});
+</script>
+
+<script type="text/javascript">
+	function Reveal(it, box) {<!--from   ww  w. ja  v a 2  s .com-->
+	var vis = (box.checked) ? "block" : "none";
+	document.getElementById(it).style.display = vis;
+	}
+
+	function Hide(it, box) {
+	var vis = (box.checked) ? "none" : "none";
+	document.getElementById(it).style.display = vis;
+	}
+</script>

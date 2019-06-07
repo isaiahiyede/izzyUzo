@@ -1,0 +1,4 @@
+<h3>Welcome to {{ request.storefront_name }}!!!</h3>
+<p>Your Account has been verified and your shipping address has become active, now you can ship to and from anywhere you are with {{ request.storefront_name }}.</p>
+
+<p><i style="color:#0B71B9;">{{ request.storefront_name }}, always posting at your service.</i></p>

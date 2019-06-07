@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+{% load custom_tags %}
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- ico -->
+    {% if request.marketing_member.ico %}
+    <link rel="shortcut icon" href="{{ request.marketing_member.ico.url }}">
+    {% endif %}
+
+    {% block title %}<title>{{ request.storefront_name }} - Online Shipping and Shopping from Nigeria to the rest of the world.</title>{% endblock %}
+
+    <meta name="description" content="Send documents and parcels from Nigeria to North America, Europe and more. {{ request.storefront_name }} brings convenience and affordability to sending goods and documents globally from Africa. {{ request.storefront_name }} opens Africa to the rest of the world through innovative technologies that empowers emerging markets in Africa.Deliver to any address in USA, Canada, Mexico in few clicks.Earn in dollars. Sell and deliver to North America. Affordable shipping.Send parcels and mail worldwide. As low as $7.Send equipment for maintenance overseas. Returns included. " />
+
+    <meta name="keywords" content="{{ request.storefront_name }} WorldWide. Export Marketplace.Earn in dollars.Sell and deliver to North America." />
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'sokohali/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'sokohali/css/homepage.css' %}" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'sokohali/js/country.js' %}"></script>
+    <!-- Special Font for Icons -->
+    <link rel="stylesheet" href="{% static 'sokohali/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'sokohali/css/font-awesome.css' %}">
+
+    <!-- Font -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="{% static 'sokohali/js/country.js' %}"></script>
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        
+    <![endif]-->
+    <style>
+
+    .navlinks .navbar-brand {
+        /*background: none;
+        width: 263px;
+        height: 100px;*/
+        /*background: url(../img/logo4.png) left center no-repeat;*/
+        background: url("{{ request.storefront_logo_url }}") left center no-repeat !important;
+        background-size: 350px 60px !important;
+    }
+
+    .navlinks .navbar-brand.two {
+        /*background: url(../img/logo4.png) left center no-repeat;*/
+        /*background: url(../img/logo4.png) left center no-repeat;*/
+        background: url("{{ request.storefront_logo_url }}") left center no-repeat !important;
+         background-size: 350px 60px !important;
+    }
+    .btn .blue:hover{
+        background-color: none!important;
+    }
+    </style>
+
+</head>
+
+<!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
+
+{% if request.marketing_member.storefront_color == '#0b71b9' %} <!--blue-->
+<body id="page-top" class="smatpost-page blue">
+{% elif request.marketing_member.storefront_color == '#ffd014' %}<!--yellow-->
+<body id="page-top" class="smatpost-page">
+{% else %}
+<body id="page-top">
+{% endif %}
+
+    <!-- Pusher -->
+    <div class="st-container">
+        <!-- Right Side Menu -->
+        <div class="st-menu">
+            <div class="st-menu-outer">
+                <div class="st-menu-inner">
+                    <div class="col-md-12">
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'general:logout' %}" class="btn yellow">Logout</a>
+                        {% else %}
+                            <a href="{% url 'general:login' %}" class="btn yellow">Login / Sign Up</a>
+                        {% endif %}
+                    </div>
+                    {% include 'zaposta_snippet/nav-menu-inside.html' %}
+                    <!-- <ul>
+                        <li class="header">
+                        </li>
+                        <li>
+                            <a href="{% url 'general:my_account' %}">
+                                My Account
+                            </a>
+                        </li>
+                        <li class="header">
+                            services
+                        </li>
+                        <li>
+                            <a href="">Worldwide</a>
+                        </li>
+                        <li>
+                            <a href="">Export Marketplace</a>
+                        </li>
+                        <li style="display:none;">
+                            <a href="#">Shipping</a>
+                        </li>
+                        <li style="display:none;">
+                            <a href="#">Shopping</a>
+                        </li>
+                        <li>
+                            <a href="#">Payment</a>
+                        </li>
+                        <li>
+                            <a href="#">Partner Network</a>
+                        </li>
+                        <li class="mobile_show">
+                            <a href="#">Contact</a>
+                        </li>
+                        <li class="header">
+                        </li>
+                        <li>
+                            <a href="#">Quick Estimate</a>
+                        </li>
+                        <li>
+                            <a href="#">FAQ</a>
+                        </li>
+                        <li>
+                            <a href="#">Blog</a>
+                        </li>
+                        <li>
+                            <a href="#">Support</a>
+                        </li>
+                    </ul> -->
+                    <!-- <div class="col-md-12 mobile_show"> -->
+                        <!-- Mobile App Button -->
+                        <!-- <div class="btn-group">
+                            <button type="button" class="btn yellow dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-mobile"></i>Get the App <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fa fa-apple"></i>Apple Store</a></li>
+                                <li><a href="#"><i class="fa fa-android"></i>Google Play</a></li>
+                                <li><a href="#"><i class="fa fa-chrome"></i>Chrome Web Store</a></li>
+                            </ul>
+                        </div>
+                    </div> -->
+                    <!-- <div class="bottom">
+                        <div class="social">
+                            <a href="#">
+                                <i class="fa fa-facebook-square"></i>
+                            </a>
+                            <a href="#">
+                                <i class="fa fa-twitter-square"></i>
+                            </a>
+                            <a href="#">
+                                <i class="fa fa-google-plus-square"></i>
+                            </a>
+                            <a href="#">
+                                <i class="fa fa-linkedin-square"></i>
+                            </a>
+                        </div>
+
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="overlay">
+            <div class="menu">
+                <p>Close</p>
+                <div class="hamburger open">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Content  -->
+        <div class="st-content" data-spy="scroll" data-target=".navbar-fixed-top">
+
+            <!-- Nav Links -->
+            <div class="navlinks">
+                <!-- Navigation -->
+                <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header page-scroll">
+                            <a class="navbar-brand two page-scroll" href="/">
+                                <img src="{{ request.subscriber_logo_url }}" />
+                            </a>
+                        </div>
+
+
+                        <div class="menu">
+                            <div class="hamburger">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                        <!-- Mobile App Button -->
+                        <!-- <div class="btn-group mobile_hide">
+                            <button type="button" class="btn yellow dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-mobile"></i>Get the App <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fa fa-apple"></i>Apple Store</a></li>
+                                <li><a href="#"><i class="fa fa-android"></i>Google Play</a></li>
+                                <li><a href="#"><i class="fa fa-chrome"></i>Chrome Web Store</a></li>
+                            </ul>
+                        </div> -->
+                        <!-- Mobile App Button -->
+
+                        <!-- Contact Button -->
+                        <!-- <a href="#" class="btn square yellow mobile_hide" style="float:right;">
+                            <i class="fa fa-envelope-o"></i>
+                        </a> -->
+                        <!-- Contact Button -->
+
+                        <!-- Contact/Dlivery text -->
+                        <div class="txt-outer mobile_hide">
+                            <div class="txt">
+                                <p>Call us</p>
+                                <p><strong>{{ request.marketing_member.phone_number }}</strong></p>
+                            </div>
+                            <!-- <div class="txt">
+                                <p>Delivery</p>
+                                <p>Period</p>
+                            </div>
+
+                            <div class="txt two" style="padding-left:68px;">
+                                <i class="fa fa-plane"></i>
+                                <h2>5 - 12</h2>
+                                <p>Biz Days</p>
+                            </div>
+
+                            <div class="txt two">
+                                <i class="fa fa-ship"></i>
+                                <h2>8-10</h2>
+                                <p>Weeks</p>
+                            </div> -->
+                        </div>
+                        <!-- Contact/Dlivery text -->
+                        <!-- /.navbar-collapse -->
+                    </div>
+                    <!-- /.container -->
+                </nav>
+            </div>
+            <!-- Nav Links -->
+
+            {% block content %}
+
+            {% endblock %}
+
+            <!-- <section id="newsletter">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="inner col-md-12">
+                                <div class="col-md-6">
+                                    <h1>Subscribe to our newsletter</h1>
+                                    <p>Subscribe to our Newsletter to get the best deals daily!</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" placeholder="Email Address" />
+                                    <button class="btn yellow">Subscribe</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> -->
+            <!-- Footer -->
+            <footer>
+                <div class="container info">
+                    <div class="col-md-3 links">
+                        <h1>Services</h1>
+                        <!-- <a href="#">Worldwide</a>
+                        <a href="#">Export Marketplace</a> -->
+                        <!-- <a href="#" style="display:none;">Shipping</a>
+                        <a href="#" style="display:none;">Shopping</a> -->
+                        <a href="#">Payment</a>
+                        <!-- <a href="#">Partner Network</a> -->
+                    </div>
+                    <div class="col-md-3 links">
+                        <h1>Services</h1>
+                        <a href="#">Quick Estimate</a>
+                        <a href="#">FAQ</a>
+                        <!-- <a href="#">Blog</a>
+                        <a href="#">Support</a> -->
+                    </div>
+                    <div class="col-md-6">
+                        <h1>Address:</h1>
+                        <p>{{ request.marketing_member.complete_address }}</p>
+                        <p>Phone: {{ request.marketing_member.phone_number }}
+                        <p>Email: <a href="#">{{ request.storefront_email }}</a></p>
+                    </div>
+                </div>
+                <!-- Footer Bottom -->
+                <div class="footer-bottom">
+                    <div class="container">
+                        <p style="line-height:35px;">© {{ request.storefront_name }} {% current_year %}. <!-- All rights Reserved<br>Powered by <a href="https://www.sokohali.com" target="_blank">Sokohali</a></p>
+ -->
+                        <div class="social">
+
+
+                             {% if request.marketing_member.facebook_link %}
+                                <a href="{{ request.marketing_member.facebook_link }}" target="_blank">
+                                    <img src="{{STATIC_URL}}zaposta/img/s1.png " />
+                                </a>
+                            {% endif %}
+
+                            {% if request.marketing_member.twitter_link %}
+                                <a href="{{ request.marketing_member.twitter_link }}" target="_blank">
+                                    <img src="{{STATIC_URL}}zaposta/img/s2.png " />
+                                </a>
+                            {% endif %}
+
+                            {% if request.marketing_member.googleplus_link %}
+                                <a href="{{ request.marketing_member.googleplus_link }}" target="_blank">
+                                    <img src="{{STATIC_URL}}zaposta/img/s3.png " />
+                                </a>
+                            {% endif %}
+
+                            {% if request.marketing_member.linkedin_link %}
+                                <a href="{{ request.marketing_member.linkedin_link }}" target="_blank">
+                                    <img src="{{STATIC_URL}}zaposta/img/s4.png " />
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Footer Bottom -->
+            </footer>
+            <!-- Footer -->
+
+        </div>
+        <!-- Page Content  -->
+        {% block modals %}
+        <style>
+            
+            #track_container {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                visibility:hidden;
+                display:none;
+                background-color: rgba(22,22,22,0.5);
+            }
+
+            #track_container:target {
+                visibility: visible;
+                display: block;
+            }
+            .reveal-modal {
+                background:#e1e1e1; 
+                margin: 0 auto;
+                width:160px; 
+                position:relative; 
+                z-index:41;
+                top: 25%;
+                padding:30px; 
+                -webkit-box-shadow:0 0 10px rgba(0,0,0,0.4);
+                -moz-box-shadow:0 0 10px rgba(0,0,0,0.4); 
+                box-shadow:0 0 10px rgba(0,0,0,0.4);
+            }
+        </style>
+            <div id="track_container">
+                <div id="exampleModal" class="reveal-modal">
+                     <h2>POP UP</h2>
+                     <p>
+                     <font size="4">window window window.window window window. window.
+                         </font>
+                    </p>
+                    <a href="#" class="close-reveal-modal">×</a>
+                </div>
+            </div>
+        {% endblock modals %}
+
+    </div>
+    <!-- Pusher -->
+
+
+    <!-- jQuery -->
+    <script src="{% static 'sokohali/js/jquery.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'sokohali/js/bootstrap.min.js' %}"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="{% static 'sokohali/js/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'sokohali/js/scrolling-nav.js' %}"></script>
+
+    <!-- Custom Script for Page  -->
+    <script src="{% static 'sokohali/js/new_script.js' %}"></script>
+    <script src="{% static 'sokohali/js/general.js' %}"></script>
+
+    {% include 'session_security/all.html' %}
+
+    {% block extra_scripts %}
+    {% endblock extra_scripts %}
+
+    {% if request.subdomain_name == 'volkmannexpress' %}
+    <script src="{% static 'sokohali/js/volkmann_livechat.js' %}"></script>
+    {% endif %}
+
+
+</body>
+
+</html>

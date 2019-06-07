@@ -1,0 +1,322 @@
+{% load custom_filters %}
+{% load humanize %}
+
+<div class="inner">
+    <!-- Scrollable Content -->
+    <div class="scrollable">
+
+        <div class="container">
+            <div class="row-fluid">
+                <div class="col-md-3 sticky-wrapper" style="position:relative;">
+                    <div id="sticky_left">
+                        <div class="panel filters col-md-12" style="position:relative; height:360px;
+                         bottom:20px;">
+                            <h2 style="position:relative; bottom:20px">Filter By:</h2>
+                            <ul class="batch_statuses" style="position:relative; height:200px;">
+                                <li style="position:relative; bottom:55px;">
+                                    <a href="{% url 'sokohaliAdmin:bmgr-actions' 'New' %}"
+                                    >New<span class="badge">{% getBatchCount request 'New' %}</span></a>
+                                </li>
+                                <li style="position:relative; bottom:75px;">
+                                    <a href="{% url 'sokohaliAdmin:bmgr-actions' 'Processing' %}"
+                                    >Processing<span class="badge">
+                                    {% getBatchCount request 'Processing' %}</span></a>
+                                </li>
+                                <li style="position:relative; bottom:95px;">
+                                    <a href="{% url 'sokohaliAdmin:bmgr-actions' 'Delivered to carrier' %}"
+                                    >Delivered To Carrier <span class="badge">
+                                    {% getBatchCount request 'Delivered to carrier' %}</span></a>
+                                </li>
+                                <li style="position:relative; bottom:115px;">
+                                    <a href="{% url 'sokohaliAdmin:bmgr-actions' 'Departed' %}"
+                                    >Departed<span class="badge">{% getBatchCount request 'Departed' %}</span></a>
+                                </li>
+                                <li style="position:relative; bottom:135px;">
+                                    <a href="{% url 'sokohaliAdmin:bmgr-actions' 'Clearing customs' %}"
+                                    >Clearing Customs <span class="badge">
+                                    {% getBatchCount request 'Clearing customs' %}</span></a>
+                                </li>
+                                <li style="position:relative; bottom:155px;">
+                                    <a href="{% url 'sokohaliAdmin:bmgr-actions' 'Processing for delivery' %}"
+                                    >Processing For Delivery <span class="badge">
+                                    {% getBatchCount request 'Processing for delivery' %}</span></a>
+                                </li>
+                                <li style="position:relative; bottom:175px;">
+                                    <a href="{% url 'sokohaliAdmin:bmgr-actions' 'Archive' %}"
+                                    >Archived <span class="badge">{% getBatchCount request 'Archive' %}</span></a>
+                                </li>
+                                <li style="position:relative; bottom:195px;">
+                                    <a href="{% url 'sokohaliAdmin:bmgr-actions' 'Cancel' %}"
+                                    >Cancelled <span class="badge">{% getBatchCount request 'Cancel' %}</span></a>
+                                </li>
+                            </ul>
+                            <div class="col-md-12" style="position:relative; bottom:210px;">
+                                <a href="#CreateBatch" class="btn black" data-toggle="modal" data-target="#CreateBatch">Create Batch</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 batches" style="position:relative;">
+                    <div class="header">
+
+                        <div class="dropdown options toggle" id="checkboxes" style="float:left">
+                            <p>Select Multiple Batches</p>
+                            <i class="fa fa-circle-o hd" aria-hidden="true"></i>
+                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                        </div>
+
+                        <div class="dropdown pull-right">
+                          <div class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="margin-top:-15px; color:#333; border-radius:12px; font-size:16px;">
+                            <strong>Additional Selectors</strong>
+                          </div>
+                          <ul class="dropdown-menu two select_action" aria-labelledby="dropdownMenu1">
+                            <li class="specials"><a href="#" style="color:green;">Processing</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="specials"><a href="#" style="color:green;">Delivered to carrier</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="specials"><a href="#" style="color:green;">Departed</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="specials"><a href="#" style="color:green;">Clearing customs</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="specials"><a href="#" style="color:green;">Processing for delivery</a></li>
+                            <!-- <li role="separator" class="divider"></li>
+                            <li class="specials"><a href="#" style="color:white;">Archive</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="specials"><a href="#" style="color:white;">Cancel</a></li> -->
+                          </ul>
+                        </div>
+
+                        <div class="hidden">
+                            <form action="{% url 'sokohaliAdmin:process-batches' %}"
+                            id="batchUpdateForm" name="batchUpdate" method="POST">
+                                {% csrf_token %}
+
+                                <input id="update_type" type="text" value="" name="update_type">
+                                <input id="batch_ids" type="text" value="" name="batch_ids">
+                                <input id="old_status" type="text" value="" name="old_status">
+                                <input type="submit" class='btn' id="update_batches" value="Update"/>
+
+                             </form>
+                        </div>
+
+                        <div class="hidden">
+                            <form action="{% url 'sokohaliAdmin:search-batch' %}"
+                            id="searchForm" name="batchSearch" method="POST">
+                                {% csrf_token %}
+
+                                <input id="batchNo" type="text" value="" name="batchNo">
+                                <input id="batchType" type="text" value="" name="batchType">
+                                <input id="batchStartDate" type="text" value="" name="batchStartDate">
+                                <input id="batchEndDate" type="text" value="" name="batchEndDate">
+                                <input type="submit" class='btn' id="searchBatch" value="search"/>
+
+                             </form>
+                        </div>
+
+
+                        <div class="hidden">
+                            <form name="getbachvalues" id="getbatchvaluesform">
+                                {% csrf_token %}
+                                <input id="btch_num" type="text" value="" name="btch_num">
+                                <input type="submit" class='btn' id="searchBatch" value="search"/>
+                             </form>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Item "open" when triggered -->
+                    {% for batch in batches %}
+                    <div class="panel item">
+                        <div class="col-md-12 inf">
+                            <h1><input type="checkbox" value="{{batch.status}}" id="{{batch.pk}}" name="ch">&nbsp;&nbsp;&nbsp;{{batch.batch_number}}</h1>
+                            <p>Carrier: <span>{{batch.carrier}}</span> <span class="three">/ Balance: ${{batch.new_total_value_payable_D|floatformat:2|intcomma}}
+                                (&#8358;{{batch.new_total_value_payable_N|floatformat:2|intcomma}})</span>
+                                <br/>No. of packages: <span>{{batch.shippingpackage_set.count}}<br/>
+                                 Status:<span>{% add_space batch.status %}</span><br/>
+                                 Total Weight:<span>{{batch.total_weight_P_custom|floatformat:2|intcomma}}lbs
+                                 ({{batch.total_weight_P_custom_K|floatformat:2|intcomma}}kg)</span>
+
+                            </p>
+                            <hr/>
+                            {% if batch.batch_number in awb %}
+                                <p style="position: relative; bottom: 9px;">Shipping Method: <span>{{batch.shipping_method}}</span><br>
+                                Print Airway Bill document <a href="{% url 'sokohaliAdmin:awb_template' batch.batch_number %}" target="_blank"><i class="fa fa-print fa-md" aria-hidden="true"></i></a></p>
+                            <!-- % elif batch.batch_number in dockreceipt %}
+                                <p style="position: relative; bottom: 9px;">Shipping Method: <span>{batch.shipping_method}}</span><br>
+                                Print Dock Receipt document <a href="% url 'sokohaliAdmin:dock_template' batch.batch_number %}" target="_blank"><i class="fa fa-print fa-md" aria-hidden="true"></i></a></p> -->
+                            {% elif batch.status != "New" %}
+                                <p style="position: relative; bottom: 9px;">Shipping Method: <span>{{batch.shipping_method}}</span><br>
+                                Print Airway Bill document {% if batch.batch_number %}<a href="{% url 'sokohaliAdmin:awb_template' batch.batch_number %}" target="_blank"><i class="fa fa-print fa-md" aria-hidden="true"></i></a>{% endif %}</p>
+                            {% else %}
+                                <p style="position: relative; bottom: 9px;">Shipping Method: <span>{{batch.shipping_method}}</span></p>
+                            {% endif %}
+
+
+                        </div>
+
+                        <div>
+                            {% if batch.awb_doc %}
+                                <a href="{{batch.awb_doc.url}}" class="hidden"
+                                target='_blank' id="batch_doc">{{batch.awb_doc|truncatechars:20}}</a>
+                            {% endif %}
+                        </div>
+
+                        <input class="hidden" id="batch_num" type="text" value="{{batch.batch_number}}" name="batchNo">
+
+                        <div class="hidden">
+                            <input type="text" id="user_pk" name="user_pk" value="{{batch.user.email}}">
+                        </div>
+                        <!-- Overlay with Options -->
+                        <div class="overlay">
+                            <a href="#" class="link"><span>Open</span><span>Close</span></a>
+                           <div class="dropdown options"><i class="fa fa-ellipsis-h dropdown-toggle" id="dropdownMenu2"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"></i>
+                                <div class="dropdown-menu two" aria-labelledby="dropdownMenu2">
+                                    <ul>
+                                        {% if batch.batch_number not in awb and batch.shipping_method == "Air Cargo" %}
+                                         <li>
+                                            <a href="#{{batch.batch_number}}" item_id="{{batch.batch_number}}" class="manipulate" title="Shipment Doc"><i class="fa fa-plus" aria-hidden="true"></i>Create Airway Bill</a>
+                                        </li>
+                                        <!-- % elif batch.batch_number not in dockreceipt and batch.shipping_method == "Sea Cargo" %}
+                                        <li>
+                                            <a href="#{batch.batch_number}}" item_id="{batch.batch_number}}" class="operate" title="Shipment Doc"><i class="fa fa-plus" aria-hidden="true"></i>Create Dock Receipt</a>
+                                        </li> -->
+                                        <!-- {% else % -->
+                                        {% elif batch.batch_number in awb and batch.shipping_method == "Air Cargo" %}
+                                        <li>
+                                            <a href="#{{batch.batch_number}}" item_id="{{batch.batch_number}}" class="manipulate_awb" title="Edit Shipment Doc"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit Airway Bill</a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'sokohaliAdmin:awb_template' batch.batch_number %}" target="_blank"><i class="fa fa-print" aria-hidden="true"></i>Print Airway Bill</a>
+                                        </li>
+                                        <!-- % elif batch.batch_number in dockreceipt and batch.shipping_method == "Sea Cargo" %}
+                                        <li>
+                                            <a href="#{batch.batch_number}}" item_id="{batch.batch_number}}" class="operate_dock" title="Edit Shipment Doc"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit Dock Receipt</a>
+                                        </li>
+                                        <li>
+                                            <a href="% url 'sokohaliAdmin:awb_template' batch.batch_number %}" target="_blank"><i class="fa fa-print" aria-hidden="true"></i>Print Dock Receipt</a>
+                                        </li> -->
+                                        {% endif %}
+                                        <li>
+                                            {% if not batch.status == "archive" %}
+                                            <div id="archive">
+                                                <a href="{% url 'sokohaliAdmin:batch-actions' 'archive' batch.pk %}"><i class="fa fa-archive" aria-hidden="true"></i>Archive</a>
+                                            </div>
+                                            {% elif batch.status == "archive" %}
+                                            <div id="unarchive">
+                                                <a href="{% url 'sokohaliAdmin:batch-actions' 'unarchive' batch.pk %}"><i class="fa fa-archive" aria-hidden="true"></i>Unarchive</a>
+                                            </div>
+                                            {% endif %}
+                                        </li>
+
+                                        <li>
+                                          <a onclick='window.open("{% url 'sokohaliAdmin:print-manifest' batch.pk %}", "width=800,height=700,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")' style="cursor:pointer;" ><i class="fa fa-print" aria-hidden="true"></i>Batch Manifest</a>
+                                        </li>
+                                        <li>
+                                            <a href="#UpdateBatch" class="updatebatch"><i class="fa fa-refresh" aria-hidden="true"></i>Update Batch</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Item inner content -->
+
+                        <!-- Item inner content -->
+                        <!-- Item "open" when triggered -->
+                        <!-- Overlay with Options -->
+                    <!-- Item "open" when triggered -->
+                    <div class="item_inner two">
+                            <div class="col-md-12 table">
+                                <div class="tinfo">
+                                    <p>Created on: {{batch.created_on}}<span style="color:blue!important;">By: {{request.user.username}}</span></p>
+                                </div>
+                                <div class="addinfo two purple">
+                                    <div class="col-md-12 user_info">
+                                        <div style="float:left;">
+                                            <div class="circle">
+                                                {% if batch.shipping_method == "Sea Cargo" %}
+                                                    <i class="fa fa-ship" aria-hidden="true"></i>
+                                                {% elif batch.shipping_method == "Sea" %}
+                                                    <i class="fa fa-ship" aria-hidden="true"></i>
+                                                {% elif batch.shipping_method == "sea" %}
+                                                    <i class="fa fa-ship" aria-hidden="true"></i>
+                                                {% else %}
+                                                    <i class="fa fa-plane" aria-hidden="true"></i>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div style="float:left;">
+                                            <p class="title">Shipping Method: {{batch.shipping_method}}</p>
+                                            <h1>{{batch.shipping_method}}</h1>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <p class="title">Port of Exit: {{batch.port_of_exit}}</p>
+                                        <p class="title">Port of Arrival: {{batch.port_of_arrival}}</p>
+                                        <p class="title">Departure Date: {{batch.departure_date}}</p>
+                                        <p class="title">Arrival Date: {{batch.arrival_date}}</p>
+<!--                                         <p class="title">Notes: {{batch.notes2}}</p>
+ -->                                    </div>
+                                </div>
+                                <div class="col-md-12 txt" style="padding-top:0;">
+                                    <div class="col-md-12 user_info">
+                                        <div style="float:left;">
+                                            <p class="title" style="color:green!important;">Shipment Status:
+                                                {% add_space batch.status %}</p>
+                                            <h1>{{batch.shipping_method}}</h1>
+                                        </div>
+                                    </div>
+
+                                    <p class="title">AWB/DL#:&nbsp; {% if batch.awb_doc %}<a href="{{batch.awb_doc.url}}"
+                                        target='_blank' id="batch_doc">{{batch.awb_doc|truncatechars:20}}</a>{% endif %}
+                                    </p>
+                                    <p class="title">BOL/DL#:&nbsp; {% if batch.bol_doc %}<a href="{{batch.bol_doc.url}}"
+                                        target='_blank' id="batch_bol_doc">{{batch.bol_doc|truncatechars:20}}</a>{% endif %}
+                                    </p>
+
+                                    <p class="title">Total Weight:
+                                     {{batch.total_weight_P_custom|floatformat:2|intcomma}}lbs
+                                     ({{batch.total_weight_P_custom_K|floatformat:2|intcomma}}kg)</p>
+                                    <p class="title">Total Pellets:{{batch.total_pellets}}</p>
+                                    <p class="title">Shipping Cost:${{batch.shipping_cost_D}}</p>
+                                    <p class="title">Clearing Cost:${{batch.clearing_cost}}</p>
+                                    <p class="title">Hazmat Status: {{batch.harzmat_status}}</p>
+                                </div>
+                                <br/>
+                                <hr>
+                                <div class="col-md-12 tinf">
+                                    {% for history in batch.batchedithistory_set.all %}
+                                    <div class="col-md-4">
+                                        <p>{{history.user.get_full_name}}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p>{{history.updated_on}}</p>
+                                    </div>
+                                    <div class="col-md-4 pull-right">
+                                        <p>{% add_space history.batch_status %}</p>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+                    </div>
+
+                    <div class="col-md-12 note hidden more_info">
+                    </div>
+
+                    </div>
+                    {% empty %}
+                        <h2>No batch in this Category</h2>
+                    {% endfor %}
+
+                    <!-- Bottom Sticky with Options -->
+                    <!-- Bottom Sticky with Options -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scrollable Content -->
+</div>

@@ -1,0 +1,85 @@
+{% load custom_tags %}
+<footer class="green two">
+	<div class="sfooter" style="padding-top:80px;">
+		<!--<div class="container">
+			<div class="inner two newsletter">
+				<div class="col-md-7">
+					<h1>Subscribe to our Newsletter to get the best deals daily!</h1>
+				</div>
+				<div class="col-md-5">
+					<input type="text" placeholder="Enter your email address" />
+					<a href="#" class="btn" data-toggle="modal" data-target="#myModal">Subscribe</a>
+				</div>
+			</div>
+		</div>-->
+		<div class="container">
+			<div class="inner">
+				<div class="col-md-4">
+					<div class="block">
+						<h1>Start shipping your package now, easy and fast!</h1>
+						<a href="{% url 'marketer_homepage' %}#shipwd" class="btn">Start Shipping</a>
+					</div>
+				</div>
+				<div class="col-md-8">
+					<div class="col-md-6">
+
+					</div>
+					<div class="col-md-6">
+
+							<div class="col-md-12">
+								<h2>Address:</h2>
+								<p>{{ request.marketing_member.complete_address }}
+									<br/>Phone: {{ request.marketing_member.phone_number }}
+									<br/> Email: <a href="#">{{ request.storefront_email }}</a>
+								</p>
+							</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="bottom">
+		<div class="container">
+			<p style="line-height:35px;">&copy; {{ request.storefront_name }} {% current_year %}. All rights Reserved<br>Powered by <a href="https://www.sokohali.com" target="_blank" style='color: #fff'>Sokohali</a></p>
+			<div class="social">
+				{% if request.marketing_member.facebook_link %}
+					<a href="{{ request.marketing_member.facebook_link }}" target="_blank">
+						<img src="{{STATIC_URL}}zaposta/img/s1w.png " />
+					</a>
+				{% endif %}
+
+				{% if request.marketing_member.twitter_link %}
+					<a href="{{ request.marketing_member.twitter_link }}" target="_blank">
+						<img src="{{STATIC_URL}}zaposta/img/s2w.png " />
+					</a>
+				{% endif %}
+
+				{% if request.marketing_member.googleplus_link %}
+					<a href="{{ request.marketing_member.googleplus_link }}" target="_blank">
+						<img src="{{STATIC_URL}}zaposta/img/s3w.png " />
+					</a>
+				{% endif %}
+
+				{% if request.marketing_member.linkedin_link %}
+					<a href="{{ request.marketing_member.linkedin_link }}" target="_blank">
+						<img src="{{STATIC_URL}}zaposta/img/s4w.png " />
+					</a>
+				{% endif %}
+			</div>
+			<nav class="links">
+				<li>
+					<a href="#">Terms and Conditions</a>
+				</li>
+				<li>
+					<a href="#">FAQ</a>
+				</li>
+				<li>
+					<a href="#">Support</a>
+				</li>
+				<li>
+					<a href="#">Blog</a>
+				</li>
+			</nav>
+		</div>
+	</div>
+</footer>

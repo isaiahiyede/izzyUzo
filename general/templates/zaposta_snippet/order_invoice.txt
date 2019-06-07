@@ -1,0 +1,355 @@
+{% with marketer=request.user.useraccount.marketer|title %}
+<div style="font-size: larger;">
+    <strong>
+        {{ marketer }} Shipping Invoice: SHIPMENT {{ pkg.tracking_number }} 
+    </strong>
+    </div>
+    </p>
+    <div>
+        Thank you for shipping with {{ marketer }}.<br/>
+        Your shipment booking {{pkg.tracking_number}} was received on {{pkg.created_on|date:'M/d/Y'}} at {{pkg.created_on|time:'h:i:s'}} GMT. <br/>
+    </div>
+    </p>
+    
+    <!-- for discounted order  -->
+    {% if pkg.coupon and percentage_discount != '' %}
+    <div>
+        <strong>* International Freight Discount</strong>: You have successfully used a Discount Coupon Code on this booking.
+        Therefore, the International Freight Cost in the final invoice for this booking will be discounted by {{ percentage_discount|floatformat:2 }}%.
+    </div>
+    </p>
+    {% endif %}
+    
+    <div>
+        To complete your order, print and keep this document. When your bill is updated in your account, use the banking details below to pay at any of our listed banks by wire or direct deposit.<br/>
+    </div>
+    </p>
+    <table style="min-width: 600px;max-width: 600px;border-collapse: collapse;border: 2px solid black;padding:5px;">
+        <tbody>
+            <tr style="border: 1px solid black; padding: 5px 10px;">
+                <th >
+                        Services
+                </th>
+                <th>
+                        
+                </th>
+                <th>
+                        
+                </th>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            <tr >
+            {% if pkg.coupon and percentage_discount != '' %}
+                <td>Freight (International) <span style="color: green; font-weight: bold;">({{ percentage_discount|floatformat:2 }}% Discount)</span></td>
+                {% else %}
+                <td>Freight (International)</td>
+                {% endif %}
+                <td>$ {{ pkg.intl_freight_D|floatformat:2|intcomma }}</td>
+                <td>&#8358; {{ pkg.intl_freight_N|floatformat:2|intcomma }}</td>
+            </tr>
+            <tr >
+                <td>Freight (Local)</td>
+                <td>$ {{ pkg.local_freight_D|floatformat:2|intcomma }}</td>
+                <td>&#8358; {{ pkg.local_freight_N|floatformat:2|intcomma }}</td>
+            </tr>
+            <tr style="background-color: #CCCCCC;">
+                <td>Total Actual Weight</td>
+                <td>{% if pkg.box_weight_Actual <= 0 %}Pending Approval{% else %}{{ pkg.box_weight_Actual|floatformat:2 }} lbs {% endif %}</td>
+                <td>{% if pkg.box_weight_Actual_K <= 0 %}Pending Approval {% else %} {{ pkg.box_weight_Actual_K|floatformat:2 }} kg {% endif %}</td>
+            </tr>
+            <tr style="background-color: #CCCCCC;">
+                <td>Total Dimensional Weight</td>
+                <td>{% if pkg.box_weight_Dim <= 0 %}Pending Approval{% else %}{{ pkg.box_weight_Dim|floatformat:2 }} lbs {% endif %}</td>
+                <td>{% if pkg.box_weight_Dim_K <= 0 %}Pending Approval{% else %}{{ pkg.box_weight_Dim_K|floatformat:2 }} kg {% endif %}</td>
+            </tr>
+            <!--<tr style="background-color: #CCCCCC;">
+                <td>International Freight rate</td>
+                <td>$ {{ pkg.intl_freight_D|floatformat:2 }}/lb</td>
+                <td>&#8358; {{ pkg.intl_freight_N|floatformat:2 }}/lb</td>
+            </tr>
+            <tr></tr>
+            <tr></tr>-->
+            <tr>
+                <td>VAT</td>
+                <td>$ {{ pkg.VAT_charge_D|floatformat:2|intcomma }}</td>
+                <td>&#8358; {{ pkg.VAT_charge_N|floatformat:2|intcomma }}</td>
+            </tr>
+            <tr>
+                <td>Service Charge </td>
+                <td>$ {{pkg.service_charge_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.service_charge_N|floatformat:2|intcomma}}</td>
+            </tr>
+            {% if pkg.insure %}
+            <tr>
+                <td>PS&DG</td>
+                <td>$ {{pkg.insurance_fee_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.insurance_fee_N|floatformat:2|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if pkg.handling_option == "pick-up-package" %}
+            <tr>
+                <td>Pick-up Charge</td>
+                <td>$ {{ pkg.pick_up_charge_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.pick_up_charge_N|floatformat:2|intcomma}}</td>
+            </tr>
+            {% endif %}
+            
+            {% if pkg.consolidate %}
+            <tr>
+                <td>Consolidation Fee</td>
+                <td>$ {{pkg.consolidation_fee_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.consolidation_fee_N|floatformat:2|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if pkg.strip_my_package %}
+            <tr style="text-align: justify;">
+                    <td>Strip-My-Package Fee</td>
+                    <td>$ {{pkg.strip_package_fee_D|floatformat:2|intcomma}}</td>
+                    <td>&#8358; {{pkg.strip_package_fee_N|floatformat:2|intcomma}}</td>
+            </tr>
+            {% endif %}
+            <!-- <tr style="text-align: justify;">
+                    <td>Customs Clearing Fee</td>
+                    <td>$ {{pkg.customs_clearing_D|floatformat:2|intcomma}}</td>
+                    <td>&#8358; {{pkg.customs_clearing_N|floatformat:2|intcomma}}</td>
+            </tr> -->
+             <!--if s.extra_charge_desc--> 
+            {% if pkg.extra_charge_D > 0 %}
+            <tr>
+                <td>{% if pkg.extra_charge_desc == "" %} Extra Charges {% else %} {{ pkg.extra_charge_desc }}{% endif %}</td>
+                <td>$ {{ pkg.extra_charge_D|floatformat:2|intcomma }}</td>
+                <td>&#8358; {{ pkg.extra_charge_N|floatformat:2|intcomma }}</td>
+            </tr>
+            {% endif %}
+            {% if pkg.total_demurrage_fee_D > 0 %}
+            <tr>
+                <td>Total Demurrage Incurred</td>
+                <td>$ {{pkg.total_demurrage_fee_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.total_demurrage_fee_N|floatformat:2|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if pkg.apply_discount and pkg.discount_rate > 0 %}
+            <tr>
+                <td>Discount Offered</td>
+                <td>{{pkg.discount_rate|floatformat:2}} %</td>
+                <td>{{pkg.discount_rate|floatformat:2}} %</td>
+            </tr>
+            {% endif %}
+            <tr style="font-weight: bold; background-color: #CCCCCC;">
+                <td>TOTAL</td>
+                <td>$ {{pkg.admin_total_payable_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.admin_total_payable_N|floatformat:2|intcomma}}</td>
+            </tr>
+            <tr></tr>
+            <tr></tr>
+            {% if pkg.apply_shipping_credit %}
+            <tr>
+                <td>Shipping Credit Applied</td>
+                <td>{% country_currency_v1 country %} {{pkg.shipping_credit_applied_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.shipping_credit_applied_N|floatformat:2|intcomma}}</td>
+            </tr>
+            {% endif %}
+            {% if pkg.credit_balance_paid_D > 0 %}
+            <tr>
+                <td>Amount Paid</td>
+                <td>{% country_currency_v1 country %} {{s.credit_balance_paid_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.credit_balance_paid_N|floatformat:2|intcomma}}</td>
+            </tr>
+            {% endif %}
+            
+            <tr style="color: #00CC00; font-weight: bold;">
+                <td>Amount Paid</td>
+                <td>$ {{pkg.balance_paid_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.balance_paid_N|floatformat:2|intcomma}}</td>
+            </tr>
+            
+            <tr {% if pkg.balance_D > 0 %} style="color: #FF0000; font-weight: bold;" {% else %}style="color: #00CC00; font-weight: bold; border: 1px solid black; padding: 5px 10px;"{% endif %}>
+                <td>Balance</td>
+                <td>$ {{pkg.balance_D|floatformat:2|intcomma}}</td>
+                <td>&#8358; {{pkg.balance_N|floatformat:2|intcomma}}</td>
+            </tr>
+            
+        </tbody>
+    </table>
+    </p>
+    <div>
+        <strong>
+            Shipping Cost Calculation
+        </strong>
+        <ol>
+            <li>
+                All shipping costs prior to receiving your items at our warehouse facility are <strong>ESTIMATES</strong>. It is only when we physically verify the dimensions and weight of what you are shipping that your actual costs can be populated. It may be lower or higher.
+            </li>
+            <li>
+                We use the higher of two weight values to calculate your shipping cost. These are the actual or gravitational weight (what you see on a scale) or dimensional weight (a derivative of the dimensions of your package). For more info on actual and dimensional weights, please see our <a href="Javascript:newPopup('/faq/')">FAQ</a>.
+            </li>
+            {% if pkg.apply_discount and pkg.discount_rate > 0 %}
+            <li>
+                When a discount is offered on a shipment, the total shipping cost shown in the invoice is the discounted shipping cost. 
+            </li>
+            {% endif %}
+        </ol>
+    </div>
+    <div>
+        <strong>Payment Methods</strong>
+        <p>
+            You can click on the "PAY THIS BALANCE" button beside the displayed balance in your user account to pay by credit card or bank deposit / wire transfer. You can also click on the "PAY THIS BALANCE" button on your account standing widget. However, the value in your account standing is the sum of all balances you owe.  It is better to pay when all the packages in your booking have been updated as received or when the status of your shipment has changed to departed . You must pay before we deliver. To prevent delayed delivery, please pay before your packages reach Nigeria.
+        </p>
+        <p>
+            Wire or direct deposit payments can be made into any of these accounts below. You must enter the payment details against your order by clicking on the "PAY THIS BALANCE" button. When your payment is approved, your balances would return to zero, freeing up your packages for delivery.
+        </p>
+    </div>
+    </p>
+    
+    <table style="min-width: 600px;max-width: 600px;border-collapse: collapse;border: 2px solid black;padding:5px;">
+        <tr text-align: justify;>
+            <td colspan = 2 style="border: 1px solid black; padding: 5px 10px;">Payments in Nigerian Naira (&#8358;)</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 5px 10px;">Account Name</td>
+            <td style="border: 1px solid black; padding: 5px 10px;">{{ marketer }}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 5px 10px;">Account at Guaranty Trust Bank, Nigeria</td>
+            <td style="border: 1px solid black; padding: 5px 10px;">0171988384</td>
+        </tr>
+        <!--<tr>
+            <td>Account at UBA Bank, Nigeria</td>
+            <td>1019192708</td>
+        </tr>-->
+        <!--<tr>
+            <td>Account at Zenith Bank Plc, Nigeria</td>
+            <td>1013700567</td>
+        </tr>-->
+    </table>
+    </p>
+    {% if pkg.user.useraccount.country == 'Nigeria' %}
+        <!--<table style="min-width: 600px;max-width: 600px;border-collapse: collapse;border: 2px solid black;padding:5px;">
+            <tr>
+                <td colspan = 2 style="border: 1px solid black; padding: 5px 10px;">Payments in US Dollars (USD)</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 5px 10px;">Account Name</td>
+                <td style="border: 1px solid black; padding: 5px 10px;">{{ marketer }}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 5px 10px;">DOM Account at Guaranty Trust Bank</td>
+                <td style="border: 1px solid black; padding: 5px 10px;">0140428107</td>
+            </tr>
+        </table>-->
+    {% else %}
+        <table>
+            <tr>
+                <td colspan = 2 style="border: 1px solid black; padding: 5px 10px;">Payments in US Dollars (USD)</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Bank</td>
+                <td>Wells Fargo</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Routing Number</td>
+                <td>530006215</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Account Number</td>
+                <td>9348159394</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Company</td>
+                <td>{{ marketer }} Shipping.com LLC</td>
+            </tr>
+            <tr>
+                <td style="font-weight: bold;">Address</td>
+                <td>269 Sheffield Street, Mountainside, NJ 07092</td>
+            </tr>
+        </table>
+    {% endif %}
+    </p>
+    <table style="min-width: 600px;max-width: 600px;border-collapse: collapse;border: 2px solid black;padding:5px;">
+        <tr>
+            <td style="font-weight: bold;">What you shipped</td>
+            <td style="font-weight: bold;">Qty.</td>
+            <td style="font-weight: bold;">Price ($)</td>
+            <td style="font-weight: bold;">Price (&#8358;)</td>
+        </tr>
+        {% for item in pkg.importitem_set.all %}
+        {% if not item.deleted %}
+        <tr>
+            <td style="border: 1px solid black; padding: 5px 10px;">{{item.description}}</td>
+            <td style="border: 1px solid black; padding: 5px 10px;">{{item.quantity}}</td>
+            <td style="border: 1px solid black; padding: 5px 10px;">{{item.total_value|floatformat:2|intcomma}}</td>
+            <td style="border: 1px solid black; padding: 5px 10px;">{{item.total_value_N|floatformat:2|intcomma}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+    </p>
+    <table style="min-width: 600px;max-width: 600px;border-collapse: collapse;border: 2px solid black;padding:5px;">
+        <tr>
+            <th>YOUR DETAILS</th>
+            <th>DELIVERY ADDRESS</th>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 5px 10px;"> {{ pkg.user.get_full_name }}</td>
+            <td style="border: 1px solid black; padding: 5px 10px;"> {{ pkg.user.get_full_name }}</td>
+        </tr>
+        {% with user=pkg.user.useraccount %}
+            {% if pkg.destination == none %}
+                {% with loc=pkg.local_pickup_address %}
+                    <tr>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ user.address|title }}, </td>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ loc.address1 }}, {{ loc.address2 }},</td>
+
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ user.city|title }}, {{ user.state|title }},</td>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ loc.city|title }},  {{ loc.state|title }},</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ user.country|title }}.</td>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ loc.country|title }}.</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ user.telephone }}.</td>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ loc.phone_number }}.</td>
+                    </tr>
+                {% endwith %}
+            {% else %}
+                {% with loc=pkg.destination %}
+                    <tr>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ user.address|title }}, </td>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ loc.address|title }},</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ user.city|title }}, {{ user.state|title }},</td>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ loc.city|title }}, {{ loc.state|title }},</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ user.country|title }}.</td>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ loc.country|title }}.</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ user.telephone }}.</td>
+                        <td style="border: 1px solid black; padding: 5px 10px;">{{ loc.phone_number }}.</td>
+                    </tr>
+                {% endwith %}
+            {% endif %}
+        {% endwith %}
+    </table>
+    {% if pkg.importpackageinvoice_set.all.count == 0 %}
+    <div>
+        <p><strong>Conditions for non-attachment of item invoices that you agreed to:</strong></p>
+        <p>
+            <ul>
+                <li>Not attaching an invoice may delay the processing of your booking.</li>
+                <li>You hereby declare that you are the rightful owner of the items contained in this shipment.</li>
+                <li>You hereby declare that no part of the items contained in this shipment has been procured by fraud, theft, deceit, or any other illegal means.</li>
+                <li>You fully and knowingly agree that if your items or booking is suspected to be of fraudulent origins, you WILL be required to provide a valid proof of ownership before your items can ship out.</li>
+                <li>You fully and knowingly agree to the additional scrutiny that may be placed on this booking which may cause delays to your shipment.</li>
+                <li>You fully and knowingly agree that you have been informed that if your items are determined to be of fraudulent origins, we are obligated to report and submit details such as your registered names, email, phone number and banking data to the security agencies that include but not limited to, the NPF, EFCC, FBI, and relevant state security agencies in the US and Nigeria.
+            </ul>
+        </p>
+    </div>
+    {% endif %}
+{% endwith %}

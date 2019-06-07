@@ -1,0 +1,76 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  FUND VEI WALLET   
+              </h1>
+		        <ol class="breadcrumb">
+		          <li><a href="#">Home</a></li>
+		          <li><a href="#">VEI WALLET PAYPAL</a></li>
+		          <li class="active">Data</li>
+		        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+		
+        <div class="row" style="overflow-x: hidden;">   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+            	<div class="card-content shipment_details" id="shipment_details">
+            		<!-- this is the wrapper for the content -->
+						<div class="st-content-inner">
+
+							<div class="wt two">
+
+								<div class="container paystackpay" style="position:relative;">
+						  												
+									<div class="col-md-6">
+										<h2>Fund your VEI WALLET with PayPal</h2><br/>
+											<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+											    <input id="id_business" name="business" type="hidden" value="info@volkmannexpress.com">
+											    <input id="id_return_url" name="return" type="hidden">
+											    <input type="hidden" name="item_name" value="Fund Vei Wallet">
+											    <input id="id_cmd" name="cmd" type="hidden" value="_xclick">    
+											    <input type="hidden" min="1" step="0.01" required name="amount" placeholder="Enter Amount in USD($)" value="{{amount}}">
+											    <input id="id_charset" name="charset" type="hidden" value="utf-8">
+											    <input type="hidden" name="notify_url" value="https://www.volkmannexpress.com">
+											    <input type="hidden" name="return" value="https://www.volkmannexpress.com/confirm_paypal_payment">
+											    <input type="hidden" name="rm" value="2">
+											    <input type="hidden" name="cbt" value="Return to Site">
+											    <input id="id_currency_code" name="currency_code" type="hidden" value="USD">
+											    <input id="id_no_shipping" name="no_shipping" type="hidden" value="1">
+											    <input type="image" src="{% static 'vei2018Static/images/paypalbutton.jpeg' %}" border="0" name="submit" alt="Pay Now">
+											</form>
+	                            	</div>
+								</div>
+							
+							</div>
+
+						
+
+						</div>
+
+						<div class="hero two" id="payment_page">
+							<div class="container outer">
+							
+							</div>
+						</div>
+			    	</div>
+
+        		</div>
+        	  </div>
+             </div>
+          </div>
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+{% endblock script %}

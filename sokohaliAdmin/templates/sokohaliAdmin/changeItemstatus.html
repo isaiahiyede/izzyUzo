@@ -1,0 +1,56 @@
+<div class="modal-c open" id="s0">
+    <div class="modal-body fixtop">
+        <!-- Body Inner Content -->
+        <div class="body-inner long">
+            <table width="80%" border="0" class="table bordered" id="get_selected_items">
+                <tr>
+                    <th></th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Listed Price</th>
+                    <th>Status</th>
+                </tr>
+                {% for item in package.shippingitem_set.all %}
+                <tr>
+
+                  <td>
+                     {% if item.status == "Not yet received" %}
+                      <input class="admin_selected_items" type="checkbox" value="{{item.id}}" name="admin_selected_items" pkg_id="{{package.id}}">
+                     {% else %}
+                      <input class="admin_selected_items" type="checkbox" checked value="{{item.id}}" name="admin_selected_items" pkg_id="{{package.id}}">
+                     {% endif %}
+                  </td>
+
+                    <td>
+                        {{item.description}}
+                    </td>
+                    <td>
+                       {{item.quantity}}
+                    </td>
+                    <td>
+                        ${{item.amount}}
+                    </td>
+                    <td>
+                      {% if item.status == "Not yet received" %}
+                         Not yet Received
+                      {% else %}
+                         Received
+                      {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <hr />
+            <!-- <p class="nt">
+               <label>
+                    <input type="checkbox" name="checked_items" style="position:relative; margin-right:15px; top:7px;" />
+                    All items in this package are complete
+               </label>
+            </p> -->
+        </div>
+        <!-- Body Inner Content -->
+    </div>
+    <div class="modal-footer">
+    <button type="button" class="btn green" id="check_items_in_package" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+    </div>
+</div>

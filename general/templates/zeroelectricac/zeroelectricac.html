@@ -1,0 +1,827 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- ico -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <title>ZeAC - zero electric Air Conditioner</title>
+
+    <link href="{% static 'zeroelectric/css/slick.css' %}" rel="stylesheet">
+    <link href="{% static 'zeroelectric/css/slick-theme.css' %}" rel="stylesheet">
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'zeroelectric/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'zeroelectric/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'zeroelectric/css/animate.css' %}" rel="stylesheet">
+
+    <link href="{% static 'zeroelectric/css/layout.css' %}" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500,600" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>
+input[type="email"] {
+    width: 100%;
+    line-height: 50px;
+    height: 50px;
+    border: 2px solid rgb(51, 51, 51);
+    background: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 0;
+    padding: 0 15px;
+    color: rgb(51, 51, 51);
+    font-weight: 500;
+}
+</style>
+
+</head>
+
+<body>
+    <div class="menu animated">
+        <div class="menu-inner">
+            
+            <div class="close">
+                <img src="{% static 'zeroelectric/img/closeb.png' %}" />
+                <p>CLOSE</p>
+                <span>
+                 <a href="{% url 'general:product_view' %}" class="btn full green">Order Now</a>
+                </span>
+            </div>
+            
+            <div class="row-fluid">
+                <h3 class="mobile-show">Navigation</h3>
+                <!-- Social Media -->
+                <ul class="nav navbar-nav navbar-right social hide-mobile">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+
+            <!-- Social Media -->
+
+            <ul class="menulinks">
+                {% if request.user.is_authenticated %}
+                <li>
+                    <a href="{% url 'general:logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'general:login' %}">Login</a>
+                </li>
+                {% endif %}
+                <li>
+                    <a href="#s4">zeAC gallery</a>
+                </li>
+                <li>
+                    <a href="{% url 'general:product_view' %}">How it works</a>
+                </li>
+                <li>
+                    <a href="#s3">Get estimate for your cooling needs</a>
+                </li>
+                <li>
+                    <a href="#s1">A better way of cooling your home</a>
+                </li>
+               <!-- <li class="subm">
+                    <a href="#s4">Find an experience centre</a>
+                </li>-->
+                <li class="subm">
+                    <a href="#s5">Configure your business energy needs</a>
+                </li>
+                <li>
+                    <a href="#s6">Contact us</a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right social mobile-show">
+                <li>
+                    <a href="#">
+                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="body-inner">
+        <!-- Navigation -->
+        <div class="navouter">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+
+                        <a class="navbar-brand" href="#s1">
+                            <img src="{% static 'zeroelectric/img/logo3.png' %}" />
+                        </a>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+
+                    <!-- Social Media -->
+                    <ul class="nav navbar-nav navbar-right social two">
+                        <li>
+                            <a href="#">
+                                <p>MENU</p>
+                                <i class="fa fa-bars" aria-hidden="true" style="display:none;"></i>
+                                <img src="{% static 'zeroelectric/img/menu.png' %}" />
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Social Media -->
+                    
+                    <ul class="nav navbar-nav navbar-right main-nav hide-mobile">
+                        {% if request.user.is_authenticated %}
+                        <li class="link hide-mobile">
+                            <a href="{% url 'general:my_account' %}" style="cursor: pointer;">
+                                {{request.user}}                                 
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="link hide-mobile">
+                            <a href="#s2">
+                                How it works                                 
+                             <i class="fa fa-question-circle-o" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li><a href="{% url 'general:product_view' %}" class="btn full green toorder">
+                            Order Now
+                            </a>
+                        </li>
+                        <li>
+                            <div class="dropdown" style="left:25px; top:25px;">
+                                {% include 'zeroelectricac/new_styles.html' %}                        
+                                <button class="btn full green dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                  <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                    <span>{{count}}</span>
+               
+                                </button>
+                                
+                                {% include 'zeroelectricac/more_styles.html' %}
+                                           
+                                </style>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="overflow-y: scroll; height: 400px;">
+                                    
+                                    <li class="header">
+                                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                        <span class="badge">{{count}}</span>
+                                        <p>Total: <span>$ {{payable}}</span></p>
+                                    </li>
+            
+                                    {% for product in item %}
+                                    <li>
+                                        <a href="{% url 'general:cart_view' %}">
+                                            <span class="one">{{product.item.title}}</span> <br/>
+                                            <span class="two">$ {{product.item.price}}/piece</span> Quantity: {{product.quantity}}
+                                        </a>
+                                    </li>
+                                    {% empty %}
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;No item in your cart</span>
+                                    {% endfor %}
+                                
+            
+                                    {% if request.user.is_authenticated and not count == 0 %}
+                                    <li class="btns">
+                                        <a href="{% url 'general:cart_view' %}" class="btn full yellow">Checkout</a>
+                                    </li>
+                                    {% endif %}
+            
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+
+
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-fluid -->
+            </nav>
+        </div>
+        <div class="fixed">
+            <div class="navigation">
+                <img class="bounce" src="{% static 'zeroelectric/img/arrowd1.png' %}" />
+
+                <ul id="nav">
+                </ul>
+            </div>
+        </div>
+        <!-- main -->
+        <div id="main">
+
+            <div class="main_inner">
+
+                <div class="slide" id="s1">
+                    <div class="content middle" id="hero">
+                        <div class="content-inner">
+                            <div class="col-md-5">
+                                <h1>Break away from standard climate control</h1>
+                                <p>Delivering climate control for your home or office with <span>no emissions, no limitations, no running cost and zero electric usage.</span></p>
+                                <a href="#" class="link" data-toggle="modal" data-target="#terms">
+                                    <i class="fa fa-exchange" aria-hidden="true"></i> See how it compares vs standard cooling units</a>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- slide -->
+                <div class="slide" id="s5">
+                    <div class="content middle business" id="business">
+                        <div class="content-inner">
+                            <div class="col-md-6 col-md-offset-6">
+                                <h1 class="two">power your business with zeAC</h1>
+                                <h4>More than 70% of your energy need is climate control, <br/> we bring you climate control without electricity plus the rest of the electricity energy you need with solar</h4>
+                                <br/>
+                                </p>
+                                <a href="#" class="btn full green" style="margin-top:20px; display:none;">Order Now</a>
+                                <a href="#" class="link" data-toggle="modal" data-target="#order">
+                                    <i class="fa fa-building-o" aria-hidden="true"></i> Configure your own business energy need</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- slide -->
+
+                <!-- slide -->
+                <div class="slide" id="s2">
+                    <div class="content" id="video">
+                        <div class="content-inner">
+                            <div class="col-md-6">
+                                <h1 class="two">How zeAC works</h1>
+                                <h2>Simply refill tank with water every morning.</h2>
+                                <p>The evaporation of water from the micro porous surfaces of the cylinder material cools the room and the low vapor pressure of the cylinder dehumidifies the room.
+                                    <br/><br/> More cooling happens with the absorption of heat into the cold cylinder body. Plants, nourished by the constant draw of vapour and nutrients, digest CO2 and other gases, while supplying fresh oxygen. You end up with a micro-climate of stable humidity and cool comfort, all day.
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                            </div>
+
+                            <div class="videoWrapperout">
+                                <div class="bk"></div>
+                                <div class="bk1"></div>
+                                <div class="bk2"></div>
+                                <div class="videoWrapper">
+                                    <iframe width="560" height="349" src="https://www.youtube.com/embed/m9jSqGe8aVQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                            <div class="p1">
+                                <div class="col-md-6 padding">
+                                    <h2>Micro porous ceramic cylinder is used for the evaporation cooling effect.</h2>
+                                    <p>Using basic thermodynamic principles zeAC is able to cool or heat a room via latent vaporization or condensation heat. The unit functions in two different ways depending on seasons and ambient temperature.
+                                        <br/> <br/> zeAC draws vapour from the room to the cylinder at any temperature.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p2">
+                                <div class="col-md-6 col-md-offset-6 padding">
+                                    <h2>Powerful, natural air purification is done with living green plants.</h2>
+                                    <p>These plants are recommended because, compared other plants, they absorb more CO2 and other gases that are not good for you, and supply more oxygen to refresh the air in your room.
+                                        <br/> <br/> Mother-in-Law’s Tongue (Sansevieria trifasciata); Peace Lily (Spathiphyllum), Money Plant (Epipremnum aureum), Bamboo Palm (Chrysalidocarpus lutescens);
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- slide -->
+                <div class="slide" id="s3">
+                    <div class="content middle estimate">
+                        <div class="content-inner">
+                            <div class="col-md-6">
+                                <h1 class="two">Order your <br/>own zeAC today</h1>
+                                <h2>zeACs cool as much space as possible within its radius.</h2>
+                                <p>zeAC does not work like conventional AC. zeACs cool as much space as possible within its radius. Having one in a house with multiple rooms will result in less cooling overall in the room where it is located and the other rooms will have a slightly lower temperature and humidity.
+                                </p>
+                                <a href="#" class="link" data-toggle="modal" data-target="#order">
+                                    <i class="fa fa-calculator" aria-hidden="true"></i> Estimate your needs for cooling</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- slide -->
+                
+                <!-- slide -->
+                <div class="slide" id="s4">
+                    <div class="content middle map" id="map">
+                        <div class="content-inner">
+                            
+                        <section class="box_outer modal-body order mo">
+                        <div class="col-md-12" style="padding:0;">
+                            <div class="title">
+                                <h1 class="two">zeAC<br/>Gallery</h1>
+                                <h2>zeAC adds beauty to your environment.</h2>
+                                <p>Find an experience centre see the beauty zeAC <br/>adds and feel how our cooling units work!</p>
+                            </div>
+                            <!-- box -->
+                            <div class="col-md-12" style="padding:0;">
+                                <div class="box">
+                                    <!-- left side -->
+                                    <div class="col-md-5">
+                                        <div class="prod_slider">
+                                            
+                                            <div class="slider_inner">
+                                                <img src="{% static 'zeroelectric/img/zeacimages/IMG3.jpg' %}" />
+
+                                            </div>
+                                            
+                                            <div class="slider_inner">
+                                                <img src="{% static 'zeroelectric/img/zeacimages/IMG4.jpg' %}" />
+
+                                            </div>
+
+                                           
+
+                                            <div class="slider_inner">
+                                                <img src="{% static 'zeroelectric/img/zeacimages/IMG5.jpg' %}" />
+
+                                            </div>
+
+                                            
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <h1>$265</h1>
+                                            <a href="#" class="btn green">Order Now</a>
+                                        </div>
+                                    </div>
+                                    <!-- left side -->
+                                    <!-- right side -->
+                                    <div class="col-md-7">
+                                        <h2>zeAC classic</h2>
+                                        <p class="green">One package contains:</p>
+                                        <ul>
+                                            <li>
+                                                <p>Power output for cooling application: 26-27C/350sqrft</p>
+                                            </li>
+                                            <li>
+                                                <p>Manual Hydration</p>
+                                            </li>
+                                            
+                                        </ul>
+                                       
+                                        <!--<div class="alert alert-warning" role="alert"><b>Note:</b> Shipping is estimated to start early <b>October 2017.</b> <br/>
+                                            <a href="#">Read more about it.</a>
+                                        </div>-->
+                                    </div>
+                                    <!-- right side -->
+                                </div>
+                            </div>
+                            <!-- box -->
+
+                            
+                        </div>
+                    </section>
+                        
+                        </div>
+                    </div>
+                </div>
+                <!-- slide -->
+                <!-- slide -->
+                <div class="slide" id="s6">
+                    <div class="content contact" id="contact">
+                        <div class="content-inner">
+                            <div class="col-md-6">
+                                <h1 class="green">Contact Us</h1>
+                            </div>
+                            <div class="form">
+                                <form action="{% url 'general:zeac_contct_us' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <label>Name:</label>
+                                            <input type="text" name="name" required/>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Email:</label>
+                                            <input type="email" name="email" required/>
+                                        </div>
+                                        <div class="col-md-12 btns hide-mobile"><!-- <a href="#" class="btn full green">Send your Message</a> --><button type="submit" class="btn full green" value="submit">Send your Message</button>
+                                            <!-- <a href="#" class="reset btn gray">Reset</a> --><button type="reset" class="reset btn gray"value="Reset">Reset</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <label>Subject:</label>
+                                            <select name="subject" id="sources" class="custom-select sources" placeholder="Subject" required>
+                                                <option value="Press Inquiry">Press Inquiry</option>
+                                                <option value="About a purchase/order">About a purchase/order</option>
+                                                <option value="Information">Information</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>Message:</label>
+                                            <textarea rows="5" name="message" required></textarea>
+                                        </div>
+                                        <div class="col-md-12 btns mobile-show"><!-- <a href="#" class="btn full green">Send your Message</a> --><button type="submit" class="btn full green" value="submit">Send your Message</button>
+                                            <!-- <a href="#" class="reset btn gray">Reset</a> --><button type="reset" class="reset btn gray"value="Reset">Reset</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- slide -->
+
+                <!-- footer -->
+               <footer>
+                    <div class="col-md-6">
+                        <ul>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <p><b>zeAC - zero electric Air Conditioner</b> is a project created by <b>Adisenergy</b> and <b>Sokohali.</b> All rights Reserved.
+                        </p>
+                    </div>
+                </footer>
+
+            </div>
+        </div>
+
+        <!-- Page Content -->
+
+        <!-- /.container -->
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="terms" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><p>CLOSE</p> <img src="{% static 'zeroelectric/img/closeb.png' %}" />
+                                                                                                     </button>
+                    <a href="{% url 'general:product_view' %}" class="btn full green">Order Now
+                  </a>
+
+                </div>
+                <div class="modal-body comparison">
+                    <section>
+                        <style>
+                            .modal .item .text p{
+                                line-height: 15px !important;
+                            }
+                        </style>
+                        <h1><span>zeAC</span> <br/> vs Regular Air Conditioners</h1>
+                        <h2 class="two">Air Conditioners</h2>
+                        <div class="col-md-7">
+                        </div>
+                        <div class="col-md-5">
+                            
+                        </div>
+
+                        <div class="item">
+                            <img src="{% static 'zeroelectric/img/ac.jpg' %}">
+                            <div class="text">
+                                <p>Starting Power: <span>4000 Watts</span></p>
+                                <p>Emissions/Polluants: <span>CO2, CFC</span></p>
+                                
+                                <p>Air Quality: <span>Recycled Air</span></p>
+                                <p>Limitations: <span>Requires duct-work and breaking walls</span></p>
+                                
+                                <p>Running cost: <span>$5,788 per year, working 24/7</span></p>
+                            </div>
+                        </div>
+                        <div class="item two">
+                            <img src="{% static 'zeroelectric/img/zeac1.jpg' %}" />
+                            <div class="text">
+                                <p>Starting Power: <span>0 Watts</span></p>
+                                <p>Emissions/Polluants: <span>None</span></p>
+                                
+                                <p>Air Quality: <span>Naturally Purified Air</span></p>
+                                <p>Limitations: <span>Will not get chilly cold</span></p>
+                                
+                                <p>Running cost: <span>$0 per year, working 24/7</span></p>
+                            </div>
+                        </div>
+                    </section>
+                    <section style="display:none;">
+                        <h1><span>zero electric Air Conditioner (zeAC)</span></h1>
+                        <h2 class="two">zero electric Air Conditioner (zeAC)</h2>
+
+                        <div class="col-md-12" style="padding:0;">
+                        </div>
+                        <div class="col-md-4 center">
+                            <div class="circle">
+                                <img src="{% static 'zeroelectric/img/icon1.jpg' %}" />
+                            </div>
+                            <p> Refill the cylinder tank with clean water every morning.</p>
+                        </div>
+                        <div class="col-md-4 center">
+                            <div class="circle">
+                                <img src="{% static 'zeroelectric/img/icon2.jpg' %}" />
+                            </div>
+                            <p>The evaporation of water from the micro porous surfaces of the cylinder material cools the room.</p>
+                        </div>
+                        <div class="col-md-4 center">
+                            <div class="circle">
+                                <img src="{% static 'zeroelectric/img/icon3.jpg' %}" />
+                            </div>
+                            <p> Plants, nourished by the constant draw of vapour and nutrients, digest CO2 and other gases, while supplying fresh oxygen.</p>
+                        </div>
+                    </section>
+                    <section>
+                        <h1><span>zeAC</span> <br/> vs "Coolerado" Evaporative Air Cooler</h1>
+                        <h2 class="two">"Coolerado" Evaporative Air Cooler</h2>
+                        <div class="col-md-7">
+                            
+                        </div>
+                        <div class="col-md-5">
+                            
+                        </div>
+                        <div class="item three">
+                            <img src="{% static 'zeroelectric/img/coolerado.jpg' %}" />
+                            <div class="text">
+                                <p>Starting Power: <span>400 Watts</span></p>
+                                <p>Emissions/Polluants: <span>Variable</span></p>
+                                <p>Water Usage: <span>2 gallons / ton / hour</span></p>
+                                <p>Air Quality: <span>Outside Air</span></p>
+                                <p>Limitations: <span>Works only in desert conditions, requires duct-work</span></p>
+                                <p>Purchase and installation cost: <span>Coolerado 5 tons - $9,816.00</span></p>
+                                <p>Running cost: <span>$578 per year, working 24/7</span></p>
+                            </div>
+                        </div>
+                        <div class="item two">
+                            <img src="{% static 'zeroelectric/img/zeac1.jpg' %}" />
+                            <div class="text">
+                                <p>Starting Power: <span>0 Watts</span></p>
+                                <p>Emissions/Polluants: <span>None</span></p>
+                                <p>Water Usage: <span>1 litre a day</span></p>
+                                <p>Air Quality: <span>Naturally Purified Air</span></p>
+                                <p>Limitations: <span>Will not get chilly cold</span></p>
+                                <p>Purchase and installation cost: <span>zeAC 9" 4 units - $3500</span></p>
+                                <p>Running cost: <span>$0 per year, working 24/7</span></p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="order" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <button type="button" class="close two" data-dismiss="modal" aria-label="Close"><p>CLOSE</p> <img src="img/closeb.png" />
+                                                                                                     </button>
+
+
+                </div>
+                <div class="modal-body order mo">
+                    <section>
+                        <!-- Top Estimate Widget -->
+                        <div class="bselect">
+                            <div class="col-md-6">
+                                <h2><input type="radio" name="rooms" id="rooms" value="rooms">&nbsp;&nbsp;Number of Rooms</h2>
+                                <div class="col-md-8 hidden rooms">
+                                    <select name="sources" id="sources2" class="custom-select sources" placeholder="No. of Rooms">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" hidden rooms
+                                     style="padding-top:14px;">
+                                    <p>Room(s)</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h2><input type="radio" id="surface" name="rooms" value="surface">&nbsp;&nbsp;Floor Area</h2>
+                                
+                                <div class="col-md-8 hidden surface">
+                                    <input type="text" id="size" placeholder="Input Surface Area" />
+                                </div>
+                                
+                                <div class="col-md-4 hidden surface">
+                                    <select name="units" id="units" class="custom-select sources" placeholder="Unit">
+                                        <option value="sqft">sqft</option>
+                                        <option value="sqm">sqm</option>
+                                    
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <style>
+                                .order.mo .bselect .btn_outer {
+                                    min-height: 85px;
+                                    background: #ffefbc;
+                                    float: left;
+                                    width: 100%;
+                                    border-top: 4px solid rgb(245, 245, 245);
+                                    padding: 0px 30px;                     
+                                }
+                                
+                                
+                            </style>
+                            
+                            <div id="estimatediv" class="btn_outer">
+
+                                <div class="col-md-8">
+                                    <h2><span>Estimate is </span> one 9/12 inch zeAC classic <span> per 350 square feet </span></h2>
+                                </div>
+                                <div class="col-md-4">
+                                    <style>
+                                        
+                                        #estimate{
+                                            padding-top: 0px !important;
+                                            background: none;
+                                        }
+                                        
+                                    </style>
+                                    <button id="estimate"  style="background: #f1c40f; border-color: #f1c40f; color: #fff;" class="btn yellow full">Estimate Now</button>
+                                </div>
+                            </div>
+                            
+                            <div id="result" class="result">
+                                <div class="col-md-8">
+                                    <h3>12x <span>"9/12 inch zeAC classic"</span> <span class="price">$2265</span></h3>
+                                    <h3>2x <span>"9/12 inch zeAC classic"</span> <span class="price">$1399</span></h3>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="{% url 'general:product_view' %}"><button class="btn green full">Purchase Now</button></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Top Estimate Widget -->
+                    </section>
+                    
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="{% static 'zeroelectric/js/jquery.js' %}"></script>
+
+    <script src="{% static 'zeroelectric/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'zeroelectric/js/index.js' %}"></script>
+    <script src="{% static 'zeroelectric/js/slick.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                fade: true,
+                cssEase: 'linear',
+                autoplay: true,
+                autoplaySpeed: 4000,
+                arrows: false
+            });
+            $('.prod_slider').slick({
+                dots: true,
+                infinite: true,
+                speed: 500,
+                fade: true,
+                cssEase: 'linear',
+                autoplay: true,
+                autoplaySpeed: 4000,
+                arrows: false
+            });
+        });
+
+
+
+        $('.modal').modal({
+            keyboard: false,
+            show: false
+        })
+
+    </script>
+    
+    
+    <script>
+            
+        $('body').on('click','#rooms',function(){
+            $('.surface').addClass('hidden');
+            $('.rooms').removeClass('hidden');
+            $('#result').addClass('hidden');
+            $('#result2').addClass('hidden');
+            $('.bselect').removeClass('active');
+            });
+       
+        $('body').on('click','#surface',function(){
+            $('.rooms').addClass('hidden');
+            $('.surface').removeClass('hidden');
+            $('#result').addClass('hidden');
+            $('#result2').addClass('hidden');
+            $('.bselect').removeClass('active');
+            });
+        
+        $('body').on('click','#estimate',function(e){
+            var radiovalue = $("input[name='rooms']:checked").val();
+            if(radiovalue == 'rooms'){
+                var select = $('#sources2 option:selected').val();
+                // alert(select);
+                var unit  = "None";
+            } else {
+               var select = $('#size').val();
+               var unit = $('#units').val();
+            }
+                if(select && unit != '') {
+                   $.ajax({
+                          url:"{% url 'general:get_estimate' %}",
+                          type:"GET",
+                          data:{'radiovalue':radiovalue, 'select':select, 'unit':unit},
+                          success: function(data){
+                            $('#result').replaceWith(data);
+                            $('#result').removeClass('hidden');
+                            $('#result2').removeClass('hidden');
+                        
+                          },
+                   })
+                } else {
+                    alert('Please ensure all fields are filled');
+                    $('#result').addClass('hidden');
+                    $('#result2').addClass('hidden');
+                    $('.bselect').removeClass('active');
+                }
+             //alert(radiovalue);   
+            
+            
+        })
+    </script>
+
+
+</body>
+
+</html>

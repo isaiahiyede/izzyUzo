@@ -1,0 +1,652 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% block header %}
+<head>
+	<title>Volkmann Express Inc, shopping and shipping platform</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<meta name="keywords" content="VolkmannExpressInc, Shipping fron USA, UK, Shopping from Amazon, Ebay, Air Freight, Sea Freight
+	Express Shipping, pay in dollars and Naira, Ship containers, shop from online stores, ship cargo" />
+	<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<!-- bootstrap-css -->
+	<link href="{% static 'vei2018Static/css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+	<!--// bootstrap-css -->
+	<!-- css -->
+	<link rel="stylesheet" href="{% static 'vei2018Static/css/style.css' %}" type="text/css" media="all" />
+	<!--// css -->
+	<!-- font-awesome icons -->
+	<link href="{% static 'vei2018Static/css/font-awesome.css' %}" rel="stylesheet">
+	<!-- //font-awesome icons -->
+	<!-- font -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+	<!-- //font -->
+	<script src="{% static 'vei2018Static/js/jquery-2.2.3.min.js' %}"></script>
+	<script src="{% static 'vei2018Static/js/bootstrap.js' %}"></script>
+	</head>
+{% endblock header %}
+
+<body>
+
+{% block top_div %}
+	<!-- w3-banner -->
+	<div class="w3-banner jarallax">
+		<div class="wthree-different-dot">
+			<div class="w3layouts-header-top fixed-top">
+				<div class="container">
+					<div class="w3-header-top-grids">
+						{% if request.user.is_authenticated %}
+          					{% if request.user.is_staff %}
+          						<a style="color:black; font-size: 1.5rem;" href="{% url 'sokohaliAdmin:user-manager' %}">
+          						Hi, {{request.user.username}}</a>
+							{% else %}
+								<a style="color:black; font-size: 1.5rem;" href="{% url 'general:my_mail_bag_volk' %}">
+								Hi, {{request.user.username}}</a>
+							{% endif %}
+						{% endif %}
+						<div class="w3-header-top-left">
+							<p><i class="fa fa-volume-control-phone" aria-hidden="true"></i> +1-855-684-1767<br>+234-906-560-4847</p>
+
+							
+						</div>
+						<div class="w3-header-top-right">
+							<div class="agileinfo-social-grids">
+
+								<ul>
+									<li><a href="https://www.facebook.com/volkmannexpressinc/?ref=bookmarks" target="_blank"><i class="fa fa-facebook"></i></a></li>&nbsp;
+									<li><a href="https://plus.google.com/u/1/b/111022267687423027163/+Volkmannexpress" target="_blank"><i class="fa fa-google"></i></a></li>&nbsp;
+									<li><a href="https://www.instagram.com/labinskiversace target="_blank"><i class="fa fa-instagram"></i></a></li>
+								</ul>
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+						<div class="clearfix"> </div>
+					</div>
+				</div>
+			</div>
+			<div class="head">
+				<div class="container">
+					<div class="navbar-top">
+							<!-- Brand and toggle get grouped for better mobile display -->
+							<div class="navbar-header">
+							  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							  </button>
+								 <div class="navbar-brand logo">
+									 <img src="{% static 'vei2018Static/images/volkmann.jpg' %}" style="border-radius: 50%;height: 40px; margin-top: 20px;">
+								</div>
+
+							</div>
+
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							 <ul class="nav navbar-nav link-effect-4">
+								<li class="active first-list"><a style="color:black;" href="/">Home</a></li>
+
+								<li ><a style="color:black;" class="about-volk">About</a></li>
+								<li ><a style="color:black;" class="about-services">Services</a></li>
+								<li ><a style="color:black;" class="about-trucking">Trucking</a></li>
+								<li ><a style="color:black;" href="{% url 'general:iaai' %}"  class="about-cars">Auto Deals</a>
+								</li>
+								<li ><a style="color:brown;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span data-letters="Pages">More</span><span class="caret"></span></a>
+									<ul class="dropdown-menu">
+										{% if request.user.is_staff %}
+											<li><a href="{% url 'sokohaliAdmin:user-manager' %}">Mail Bag</a></li>
+											<li><a href="{% url 'sokohaliAdmin:user-manager' %}">Addresses</a></li>
+											<li><a href="{% url 'sokohaliAdmin:user-manager' %}">Payment</a></li>
+											<li><a href="{% url 'sokohaliAdmin:user-manager' %}">VEI Wallet</a></li>
+											<li><a href="{% url 'sokohaliAdmin:user-manager' %}">Shopping</a></li>
+											<li><a href="{% url 'general:my_shipments_volk' %}">Shipping</a></li>
+										{% else %}
+											<li><a href="{% url 'general:my_mail_bag_volk' %}">Mail Bag</a></li>
+											<li><a href="{% url 'general:delivery_addresses_volk' %}">Addresses</a></li>
+											<li><a href="{% url 'general:my_payments_volk' %}">Payment</a></li>
+											<li><a href="{% url 'soko_pay:add_funds_volk' %}">VEI Wallet</a></li>
+											<li><a href="{% url 'general:vei_shopper' %}">Shopping</a></li>
+											<li><a href="{% url 'general:my_shipments_volk' %}">Shipping</a></li>
+										{% endif %}
+									</ul>
+								</li>
+								<li ><a style="color:black;" class="about-pricing">Pricing</a></li>   
+								
+
+								 {% if request.user.is_authenticated %}
+								 	<li ><a style="color:black;" href="{% url 'general:logout' %}" >
+								 	Logout</a></li>
+								 {% else %}
+								 	<li ><a style="color:black;" href="{% url 'general:volkLogin' %}">Login</a></li>
+								 {% endif %}
+
+							  </ul>
+							</div><!-- /.navbar-collapse -->
+						</div>
+				</div>
+			</div>
+			<!-- banner -->
+			<div class="banner">
+				<div class="container">
+					<div class="slider">
+						
+						<script src="{% static 'vei2018Static/js/responsiveslides.min.js' %}"></script>
+						<script>
+								// You can also use "$(window).load(function() {"
+								$(function () {
+								// Slideshow 4
+									$("#slider3").responsiveSlides({
+										auto: true,
+										pager: true,
+										nav: true,
+										speed: 500,
+										namespace: "callbacks",
+										before: function () {
+											$('.events').append("<li>before event fired.</li>");
+										},
+										after: function () {
+											$('.events').append("<li>after event fired.</li>");
+										}
+									 });				
+								});
+						</script>
+						<div  id="top" class="callbacks_container-wrap">
+							<ul class="rslides" id="slider3">
+								<li>
+									<div class="slider-info">
+										<h3 style="color:brown; font-size:3em; font-weight:500;">VOLKMANN EXPRESS INC</h3>
+										<span style="color:black;">Shipping made easy and hassle free</span>
+
+									</div>
+								</li>
+								<li>
+									<div class="slider-info">
+										<h3 style="color:brown; font-size:3em; font-weight:500;">Air Freight</h3>
+										<span style="color:black;">We are air freight forwarders with a personal touch</span>
+
+									</div>
+								</li>
+								<li>
+									<div class="slider-info">
+										<h3 style="color:brown; font-size:3em; font-weight:500;">Sea Freight</h3>
+										<span style="color:black;">Total control; from arranging pickup from the shipper’s door to delivering your cargo</span>
+
+									</div>
+								</li>
+								<li>
+									<div class="slider-info">
+										<h3 style="color:brown; font-size:3em; font-weight:500;">Express Air</h3>
+										<span style="color:black;"> When you need your items double time...</span>
+
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- //banner -->
+		</div>
+	</div>
+	<!-- //w3-banner -->
+{% endblock top_div %}
+
+{% block inner_content %}
+	<!-- welcome -->
+	<div id="volk-about" class="welcome">
+		<div class="container">
+			<h3 class="agileits-title">About Us</h3>
+			<div class="welcomerow-agileinfo">
+				<h5>Shipping made easy and hassle free</h5>
+				<p> 
+					We are a logistics chain service providers. 
+					We provide air freight with a personal touch,
+					handling air charters and sea cargo with professionalism and ease.
+					<!-- Get rate quotes on air and sea freight using our easy and interactive quote forms and save time. When timing is essential, VolkmannExpress Shipping makes it easy for you to ship all of your products by air. -->
+					<!-- With our knowledgeable and quick service we make all your air shipments a breeze!
+					Total control; from arranging pickup from the shipper’s door to delivering your cargo to the ultimate consignee. -->
+					We also provide co-ordinated shipments to/from sea port areas. Documentation, customs clearance, warehousing, trucking and inland freight services, as well as shipside deliveries.
+					<!-- Our prices are competitive starting from $3/lb for air freight, $1.3/lb for sea freight and $5/lb for express air. -->
+					<!-- Our documentation and receipts for shipping and shopping are automatically generated and delivered via means convenient for our clients.
+					Our clients are important to us that is why our customer service comprises of trained personnel to assist our clients 24/7. -->
+					When speed is what you need our express delivery service will make this possible. All these we offer at competive prices and rates
+					<!-- Our integrated payment system is industry standard. We provide an all around seamless user experience which makes our clients always come back -->
+
+				</p>
+			</div>
+			<div class="w3-welcome-grids">
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //welcome -->
+    <!-- Stats -->
+    <div class="stats services news-w3layouts jarallax">
+        <div class="container">
+            <div class="stats-agileinfo agileits-w3layouts">
+                <div class="col-sm-12 col-xs-12 stats-grid">
+                    <div style="font-size:2em;" class='numscroller numscroller-big-bottom' >Satisfying our clients is our top priority....</div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <!-- Progressive-Effects-Animation-JavaScript -->
+            <script type="text/javascript" src="js/numscroller-1.0.js"></script>
+            <!-- //Progressive-Effects-Animation-JavaScript -->
+        </div>
+    </div>
+    <!-- //Stats -->
+	<!-- services -->
+	<div id="volk-services" class="services" id="volk-services">
+		<div class="container">   
+			<h2 class="agileits-title">Services</h2>
+			<div class="w3-services-grids">
+				<div class="col-md-3 col-xs-6 w3l-services-grid">
+					<div class="w3l-services-text">
+						<div class="w3ls-services-img">
+							<i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+						</div>
+						<div class="agileits-services-info">
+							<h4>Shopping</h4>
+							<p>We help you purchase your items for any online site/store of your choosing.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-xs-6 w3l-services-grid">
+					<div class="w3l-services-text">
+						<div class="w3ls-services-img">
+							<i class="fa fa-plane" aria-hidden="true"></i>
+						</div>
+						<div class="agileits-services-info">
+							<h4>Shipping</h4>
+							<p>Fast, safe and secure shipping services is what we are known for. </p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-xs-6 w3l-services-grid">
+					<div class="w3l-services-text">
+						<div class="w3ls-services-img">
+							<i class="fa fa-envelope-o" aria-hidden="true"></i>
+						</div>
+						<div class="agileits-services-info">
+							<h4>Notification</h4>
+							<p>Get notified instantly when your package is received, processed, shipped and so on.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 col-xs-6 w3l-services-grid">
+					<div class="w3l-services-text">
+						<div class="w3ls-services-img">
+							<i class="fa fa-search" aria-hidden="true"></i>
+						</div>
+						<div class="agileits-services-info">
+							<h4>Tracking</h4>
+							<p>Easily track your package to determine its status at any point in time.</p>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div> 
+		</div>
+	</div>
+	<!-- //services -->
+	<!-- subscribe -->
+	<div class="subscribe jarallax">
+		<div class="container">
+			<div class="agileits-title title2">
+				<h3 class="agileits-title sub">Subscribe</h3>
+			</div>   
+			<p>Enter your email address and get updates om promos, new features and many others</p>
+			<form action="#" method="post">
+				<input type="email" name="email" placeholder="Email Address" class="user" required="">
+				<input type="submit" value="Subscribe">
+			</form>
+		</div>
+	</div>
+	<!-- //subscribe -->
+
+	<!-- services -->
+	<div id="volk-pricing" class="services" style="background-color: #fffff9;">
+		<div class="container">   
+			<h2 class="agileits-title">Pricing</h2>
+			<div class="w3-services-grids">
+				<div class="col-md-4 col-xs-6 w3l-services-grid">
+					<div class="w3l-services-text">
+						<div class="w3ls-services-img">
+							<i class="fa fa-plane" aria-hidden="true"></i>
+						</div>
+						<div class="agileits-services-info">
+							<h4>Air Freight</h4>
+							<p>We offer package invoicing, tracking of your package form origin to destination, notifications as the status of your package changes and flexible payment module.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 col-xs-6 w3l-services-grid">
+					<div class="w3l-services-text">
+						<div class="w3ls-services-img">
+							<i class="fa fa-ship" aria-hidden="true"></i>
+						</div>
+						<div class="agileits-services-info">
+							<h4>Sea Freight</h4>
+							<p>We offer package invoicing, tracking of your package form origin to destination, notifications as the status of your package changes and flexible payment module.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4 col-xs-6 w3l-services-grid">
+					<div class="w3l-services-text">
+						<div class="w3ls-services-img">
+							<i class="fa fa-bolt" aria-hidden="true"></i>
+						</div>
+						<div class="agileits-services-info">
+							<h4>Express Air</h4>
+							<p>We offer package invoicing, tracking of your package form origin to destination, notifications as the status of your package changes and flexible payment module.</p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="clearfix"> </div>
+			</div> 
+		</div>
+	</div>
+	<!-- //services -->	
+	
+	<!-- //car deals -->
+	<a href="{% url 'general:iaai' %}" style="text-decoration: none !important;"><div id="volk-car" class="autodeals jarallax">
+		<div class="container">
+			<div class="agileits-title title2">
+				<h3 class="agileits-title sub">Best Auto Deals</h3>
+			</div>   
+			<p style="color: white;">We will help you inspect, buy and ship you cars</p>
+			
+		</div>
+	</div></a>
+	<!-- //car deals -->
+
+	<!-- trucking -->
+	<div id="volk-contact" class="contact agileits">
+		<div class="container">
+			<h2 class="agileits-title">Trucking</h2>
+			<p class="agileits-title">Please fill out the fields in the form below for your trucking Jobs and you will be contacted shortly</p>
+			<div class="contact-agileinfo">
+				<div class="col-md-12 contact-form wthree">
+					<form action="{% url 'general:contact_us_volk' %}" method="post">
+						{% csrf_token %}
+						<input type="text" name="first_name" placeholder="First name" required="">
+						<input style="float: right !important;" type="text" name="last_name" placeholder="Last name" required="">
+						<input class="email" type="email" name="email" placeholder="Email" required="">
+						<input class="phone" type="text" name="phone_number" placeholder="Telephone" required="">
+						<textarea placeholder="Job Description" name="description" required=""></textarea>
+						<input type="submit" value="SUBMIT">
+					</form>
+				</div>
+
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //trucking -->
+
+	<!-- testimonial -->
+	<div id="volk-testimonial" class="testimonial agileits-w3layouts"  style="background-color:#D3D3D3;">
+		<div class="container"> 
+			<h3 class="agileits-title">Testimonials</h3> 
+			<div class="sap_tabs">	
+				<div id="horizontalTab" style="display: block; width: 100%; margin: 0px;">  
+					<ul class="resp-tabs-list">
+						<li class="resp-tab-item"><img src="{% static 'vei2018Static/images/userDefault.jpg' %}" style="border-radius: 50%;height: 60px;" alt=""/></li>
+						<li class="resp-tab-item"><img src="{% static 'vei2018Static/images/userDefault.jpg' %}" style="border-radius: 50%;height: 60px;" alt=""/></li>
+						<li class="resp-tab-item"><img src="{% static 'vei2018Static/images/userDefault.jpg' %}" style="border-radius: 50%;height: 60px;" alt=""/></li>
+						<li class="resp-tab-item"><img src="{% static 'vei2018Static/images/userDefault.jpg' %}" style="border-radius: 50%;height: 60px;" alt=""/></li>
+			
+					</ul>
+					<div class="resp-tabs-container">
+						<div class="tab-1 resp-tab-content">				
+							<div class="view view-first"> 
+								<p>I have been using volkmannexpress inc for my air and sea cargo shipping." </p>
+								<h5>John Peterson</h5>
+							</div>
+						</div>
+						<div class="tab-1 resp-tab-content">
+							<div class="view view-first"> 
+								<p>There's no way I can leave it now or never. Their customer service is great.</p>
+								<h5>Mark Ratter</h5>
+							</div>
+						</div>
+						<div class="tab-1 resp-tab-content">
+							<div class="view view-first"> 
+								<p>Their services are great. They always keep their word</p>
+								<h5>Angela yudi</h5>
+							</div>
+						</div>
+						<div class="tab-1 resp-tab-content">
+							<div class="view view-first"> 
+								<p>I seriously do not understand who isn't shipping with volkmann express. They are really efficient</p>
+								<h5>Metus James</h5>
+							</div>
+						</div>
+						
+					</div> 
+					<div class="clearfix"></div>
+				</div>	 
+			</div>	 
+		</div>
+	</div>
+	<!-- testimonial -->
+
+	
+
+{% endblock inner_content %}
+
+{% block footer %}
+	<!-- footer -->
+    <div class="agileits-w3layouts-footer">
+			<div class="container">
+				<div class="col-md-3 w3-agile-grid">
+					<h5>Site Map</h5>
+
+					<div class="">
+						<ul style="position: relative; right: 40px;">
+							<li><a style="color:white;" href="/">Home</a></li>
+							<li><a style="color:white;" class="about-volk">About</a></li>
+							<li><a style="color:white;" class="about-services">Services</a></li>
+							<li><a style="color:white;" class="about-pricing">Pricing</a></li>
+							<li><a style="color:white;" class="about-trucking">Trucking</a></li>
+							<li><a href="{% url 'general:iaai' %}" style="color:white;">Auto Deals</a></li>
+							<li><a style="color:white;" class="about-testimonials">Testimonials</a></li>
+
+							{% if request.user.is_authenticated %}
+								<li ><a style="color:white;" href="{% url 'general:logout' %}" >
+									Logout</a></li>
+							{% else %}
+								<li><a style="color:white;" href="{% url 'general:volkLogin' %}">
+									Login</a></li>
+							{% endif %}
+
+							<li><a style="color:white;" class="about-testimonials">FAQ</a></li>
+						</ul>
+					</div>
+				</div>
+
+
+				<div class="col-md-3 w3-agile-grid">
+					<h5>More</h5>
+
+					<div class="">
+						<ul style="position: relative; right: 40px;">
+							{% if request.user.is_staff %}
+								<li><a style="color:white;" href="{% url 'sokohaliAdmin:user-manager' %}">Mail Bag</a></li>
+								<li><a style="color:white;" href="{% url 'sokohaliAdmin:user-manager' %}">Addresses</a></li>
+								<li><a style="color:white;" href="{% url 'sokohaliAdmin:user-manager' %}">Payment</a></li>
+								<li><a style="color:white;" href="{% url 'sokohaliAdmin:user-manager' %}">VEI Wallet</a></li>
+								<li><a style="color:white;" href="{% url 'sokohaliAdmin:user-manager' %}">Shopping</a></li>
+								<li><a style="color:white;" href="{% url 'sokohaliAdmin:user-manager' %}">Shipping</a></li>
+							{% else %}
+								<li><a style="color:white;" href="{% url 'general:my_mail_bag_volk' %}">Mail Bag</a></li>
+								<li><a style="color:white;" href="{% url 'general:delivery_addresses_volk' %}">Addresses</a></li>
+								<li><a style="color:white;" href="{% url 'general:my_payments_volk' %}">Payment</a></li>
+								<li><a style="color:white;" href="{% url 'soko_pay:add_funds_volk' %}">VEI Wallet</a></li>
+								<li><a style="color:white;" href="/">Shopping</a></li>
+								<li><a style="color:white;" href="{% url 'general:my_shipments_volk' %}">Shipping</a></li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+
+
+                <div class="col-md-3 w3-agile-grid">
+                    <h5>Social</h5>
+
+                    <div class="footer-agileinfo-social">
+                        <ul>
+                            <li><a href="https://www.facebook.com/volkmannexpressinc/?ref=bookmarks" target="_blank"><i class="fa fa-facebook"></i></a></li>&nbsp;
+                            <li><a href="https://plus.google.com/u/1/b/111022267687423027163/+Volkmannexpress" target="_blank"><i class="fa fa-google"></i></a></li>&nbsp;
+                            <li><a href="https://www.instagram.com/labinskiversace target="_blank"><i class="fa fa-instagram"></i></a></li>
+
+                        </ul>
+                    </div>
+                </div>
+
+				<div class="col-md-3 w3-agile-grid">
+					<h5>Address</h5>
+					<div class="w3-address">
+						<div class="w3-address-grid">
+							<div class="w3-address-left">
+								<i class="fa fa-phone" aria-hidden="true"></i>
+							</div>
+							<div class="w3-address-right">
+								<h6>Phone Number</h6>
+								<p>+1-855-684-1767</p>
+								<p>+234-906-560-4847</p>
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+						<div class="w3-address-grid">
+							<div class="w3-address-left">
+								<i class="fa fa-envelope" aria-hidden="true"></i>
+							</div>
+							<div class="w3-address-right">
+								<h6>Email Address</h6>
+								<p>Email :<a href="mailto:info@volkmannexpress.com"> info@volkmannexpress.com</a></p>
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+						<div class="w3-address-grid">
+							<div class="w3-address-left">
+								<i class="fa fa-map-marker" aria-hidden="true"></i>
+							</div>
+							<div class="w3-address-right">
+								<h6>Location</h6>
+								<p>10104 Senate Drive, Suite 214, Lanham,MaryLand, United States
+								</p>
+							</div>
+							<div class="clearfix"> </div>
+						</div>
+					</div>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+        <div class="copyright">
+            <div class="container">
+                <p>© 2017 Stock Industry. All rights reserved | Design by <a href="http://w3layouts.com">W3layouts</a></p>
+            </div>
+    </div>
+	<!-- //footer -->
+{% endblock footer %}
+
+
+	<!-- ResponsiveTabs -->
+	<script src="{% static 'vei2018Static/js/easyResponsiveTabs.js' %}" type="text/javascript"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#horizontalTab').easyResponsiveTabs({
+				type: 'default', //Types: default, vertical, accordion           
+				width: 'auto', //auto or any width like 600px
+				fit: true   // 100% fit in a container
+			});
+		});
+	</script>
+	<!-- //ResponsiveTabs --> 
+
+	<script src="{% static 'vei2018Static/js/jarallax.js' %}"></script>
+	<script src="{% static 'vei2018Static/js/SmoothScroll.min.js' %}"></script>
+	<script type="text/javascript">
+
+		/* init Jarallax */
+		$('.jarallax').jarallax({
+			speed: 0.5,
+			imgWidth: 1366,
+			imgHeight: 768
+		})
+
+		$(".about-volk").click(function() {
+            $('html, body').animate({
+                scrollTop: $("#volk-about").offset().top
+            }, 1000);
+        });
+
+        $(".about-services").click(function() {
+            $('html, body').animate({
+                scrollTop: $("#volk-services").offset().top
+            }, 1000);
+        });
+
+        $(".about-trucking").click(function() {
+            $('html, body').animate({
+                scrollTop: $("#volk-contact").offset().top
+            }, 1000);
+        });
+
+        $(".about-cars").click(function() {
+            $('html, body').animate({
+                scrollTop: $("#volk-car").offset().top
+            }, 1000);
+        });
+
+        $(".about-testimonials").click(function() {
+            $('html, body').animate({
+                scrollTop: $("#volk-testimonial").offset().top
+            }, 1000);
+        });
+
+        $(".about-pricing").click(function() {
+            $('html, body').animate({
+                scrollTop: $("#volk-pricing").offset().top
+            }, 1000);
+        });
+
+
+	</script>
+
+	<!--Start of Tawk.to Script-->
+	<script type="text/javascript">
+		var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+		(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5a89a97dd7591465c707c5c5/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+		})();
+	</script>
+
+
+	<!--End of Tawk.to Script-->
+
+	{% block iaaiScript %}
+	{% endblock iaaiScript %}
+
+	{% block script %}
+	{% endblock script %}
+
+</body>
+</html>

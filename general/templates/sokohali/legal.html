@@ -1,0 +1,47 @@
+{% extends 'sokohali/sokohali_homepage.html' %}
+{% load staticfiles %}
+
+{% block title %}<title>Sokohali - Contact Page</title>{% endblock %}
+{% block meta_desc_key %}
+<meta name="description” content=“Sokohali.com - Contact sokohali." />
+<meta name="keywords" content="Sokohali.com - Contact sokohali" />
+{% endblock %}
+
+
+
+{% block bodytag %}<body>{% endblock %}
+
+{% block actions %}
+<ul class="dropdown-menu">
+    <li> <a href="/#overview1">Offer Facilities</a> </li>
+    <li><a href="/#overview2">Rent Facilities</a></li>
+    <li><a href="/#overview3">Offer Different Services</a></li>
+    <li><a href="/#overview4">More Features</a></li>
+</ul>
+{% endblock %}
+
+{% block contents %}
+<section>
+    <div class="container">
+        <div class="row-fluid">
+            <div class="col-md-12" style="padding-top:250px;">
+             <h1><span></span>Terms and Conditions</h1>
+             <ul>
+                 <li>
+                    <strong>Mobile App:</strong> Sokohali mobile application for customer notification only manages details of registered users who have in turn read and accepted the terms of conditions during registration process. These details are <b>NOT</b> transmitted over social media as this is not a social media application.
+                 </li>
+             </ul>
+             
+                <!-- <form action="{% url 'general:joinwaitinglist' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="email" style="height:36px; width:400px; position:relative; top:-8px;"placeholder="Enter your email" name="email" required/>
+                    <input class="hidden" type="text" name="apply" value="apply">
+                    <button type="submit" class="btn round black" style="margin-bottom:20px;">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div> -->
+        </div>
+    </div>
+</section>
+{% endblock %}

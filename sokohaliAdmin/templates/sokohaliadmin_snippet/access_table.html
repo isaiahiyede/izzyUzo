@@ -1,0 +1,80 @@
+ {% load custom_filters %}
+
+
+ <div id="users_access" class="col-md-9" style="position:relative; top:100px;">
+
+    <div class="col-md-12" style="position: :relative; bottom:20px;">
+        <div class="col-md-4">ALL-P(All Pages)</div>
+        <div class="col-md-4">PAY-P(Payment page)</div>
+        <div class="col-md-4">SHP-P(Shipment Manager Page)</div>
+        <div class="col-md-4">BCM-P(Batch Manager Page)</div>
+        <div class="col-md-4">MSG-P(Messages Page)</div>
+    </div><br/><br/>
+
+    <table width="100%" border="0" class="table table-striped table-responsive">
+
+    <tr>
+        <th>S/N</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>PAY-P</th>
+        <th>SHP-P</th>
+        <th>BCM-P</th>
+        <th>MSG-P</th>
+        <th>ALL-P</th>
+
+    </tr>
+
+    {% for user in useraccount %}
+       <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{user.user.username}}</td>
+            <td>{{user.user.email}}</td>
+
+
+            {% if user.special_user or user.sokohali.admin or user.user|has_group:"can view payment" %}
+                <td class="grant_or_remove_access" add_or_remove_access="remove" user_url="{% url 'general:admin_access' user.user.id %}" user_id="{{user.user.id}}" user_action="can_view_payment">
+                <i class="fa fa-check fa-2x" style="cursor:pointer; color:green;"></i></td>
+            {% else %}
+                <td class="grant_or_remove_access " add_or_remove_access="add" user_url="{% url 'general:admin_access' user.user.id %}" user_id="{{user.user.id}}" user_action="can_view_payment">
+                <i class="fa fa-times fa-2x" style="cursor:pointer; color:red;"></i></td>
+            {% endif %}
+
+            {% if user.special_user or user.sokohali.admin or user.user|has_group:"can view shipment manager" %}
+                <td class="grant_or_remove_access" add_or_remove_access="remove" user_url="{% url 'general:admin_access' user.user.id %}" user_id="{{user.user.id}}" user_action="can_view_shipment_manager"><i class="fa fa-check fa-2x" style="cursor:pointer; color:green;"></i></td>
+            {% else %}
+                <td class="grant_or_remove_access " add_or_remove_access="add" user_url="{% url 'general:admin_access' user.user.id %}" user_id="{{user.user.id}}" user_action="can_view_shipment_manager"><i class="fa fa-times fa-2x" style="cursor:pointer; color:red;"></i></td>
+            {% endif %}
+
+            {% if user.special_user or user.sokohali.admin or user.user|has_group:"can view batch manager" %}
+                <td class="grant_or_remove_access" add_or_remove_access="remove" user_url="{% url 'general:admin_access' user.user.id %}" user_id="{{user.user.id}}" user_action="can_view_batch_manager">
+                <i class="fa fa-check fa-2x" style="cursor:pointer; color:green;"></i></td>
+            {% else %}
+                <td class="grant_or_remove_access " add_or_remove_access="add" user_url="{% url 'general:admin_access' user.user.id %}" user_id="{{user.user.id}}" user_action="can_view_batch_manager">
+                <i class="fa fa-times fa-2x" style="cursor:pointer; color:red;"></i></td>
+            {% endif %}
+
+            {% if user.special_user or user.sokohali.admin or user.user|has_group:"can view message center" %}
+                <td class="grant_or_remove_access" add_or_remove_access="remove" user_url="{% url 'general:admin_access' user.user.id %}" user_id="{{user.user.id}}" user_action="can_view_message_center">
+                <i class="fa fa-check fa-2x" style="cursor:pointer; color:green;"></i></td>
+            {% else %}
+                <td class="grant_or_remove_access " add_or_remove_access="add" user_url="{% url 'general:admin_access' user.user.id %}" user_id="{{user.user.id}}" user_action="can_view_message_center">
+                <i class="fa fa-times fa-2x" style="cursor:pointer; color:red;"></i></td>
+            {% endif %}
+
+            {% if user.special_user or user.sokohali.admin or user.user|has_group:"can view all pages" %}
+                <td class="grant_or_remove_access" add_or_remove_access="remove" 
+                user_url="{% url 'general:admin_access' user.user.id %}" user_id="{{user.user.id}}" user_action="can_view_all_pages">
+                <i class="fa fa-check fa-2x" style="cursor:pointer; color:green;"></i></td>
+            {% else %}
+                <td class="grant_or_remove_access " add_or_remove_access="add" 
+                user_url="{% url 'general:admin_access' user.user.id %}"  user_id="{{user.user.id}}" user_action="can_view_all_pages">
+                <i class="fa fa-times fa-2x" style="cursor:pointer; color:red;"></i></td>
+            {% endif %}
+
+        </tr>
+    {% endfor %}
+
+ </table>
+    </div>
+</div>

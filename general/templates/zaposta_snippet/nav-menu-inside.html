@@ -1,0 +1,105 @@
+        <ul>
+                {% if request.user.is_staff %}
+                    <li>
+                        <a href="{% url 'sokohaliAdmin:user-manager' %}">Home</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                {% endif %}
+
+                {% if request.user.is_staff %}
+                <li>
+                    <a href="{% url 'sokohaliAdmin:user-manager' %}">My Account</a>
+                </li>
+                {% else %}
+                <li>
+                    <a href="{% url 'general:my_account' %}">My Account</a>
+                </li>
+                {% endif %}
+
+
+                <!-- {% if not request.user.is_staff %}
+                <li>
+                    <a href="{% url 'general:my_shipments' %}">Shipping</a>
+                </li>
+                {% endif %} -->
+
+                <!-- <li>
+                    <a href="#" data-toggle="modal" data-target="#select_country.shp">Shopping</a>
+                </li> -->
+
+                <li>
+                </li>
+
+                <!--  if not request.user.useraccount.marketer.storefront_name == "smatpost" 
+                        {% if not request.user.is_staff 
+                            <li>
+                                <a href="{url 'soko_pay:add_funds_landing_page' ">SokoPay</a>
+                            </li>
+                        {% endif 
+                {% else  -->
+
+                {% if not request.user.is_staff %}
+                    <li>
+                        <a href="{% url 'general:my_mail_bag' %}">Mail Bag&nbsp;&nbsp;<span class="badge">  {{count_items}}</span></a>
+                    </li>
+                {% endif %}
+
+               <!--  <li>
+                    <a href="{% url 'general:quick-estimate' %}">Quick Estimate</a>
+                </li> -->
+
+                <li>
+                    <a href="{% url 'general:faq' %}">FAQ</a>
+                </li>
+
+                <li>
+                    <a href="#">Blog</a>
+                </li>
+
+                <li>
+                    <a href="#">Support</a>
+                </li>
+
+            </ul>
+            <div class="bottom">
+                <div class="row-fluid">
+                    {% if user.is_authenticated %}
+                    <div class="col-md-12">
+                        <a class="btn" href="{% url 'general:logout' %}">Logout</a>
+                    </div>
+                    {% else %}
+                    <div class="col-md-12">
+                        <a class="btn" href="{% url 'general:login' %}">Login / Sign Up</a>
+                    </div>
+                    {% endif %}
+                    <div class="col-md-12 social">
+                        {% if request.marketing_member.facebook_link %}
+                        <a href="{{ request.marketing_member.facebook_link }}" target="_blank">
+                            <img src="{{STATIC_URL}}zaposta/imG/s1w.png " />
+                        </a>
+                    {% endif %}
+
+                    {% if request.marketing_member.twitter_link %}
+                        <a href="{{ request.marketing_member.twitter_link }}" target="_blank">
+                            <img src="{{STATIC_URL}}zaposta/imG/s1w.png " />
+                        </a>
+                    {% endif %}
+
+                    {% if request.marketing_member.googleplus_link %}
+                        <a href="{{ request.marketing_member.googleplus_link }}" target="_blank">
+                            <img src="{{STATIC_URL}}zaposta/imG/s1w.png " />
+                        </a>
+                    {% endif %}
+
+                    {% if request.marketing_member.linkedin_link %}
+                        <a href="{{ request.marketing_member.linkedin_link }}" target="_blank">
+                            <img src="{{STATIC_URL}}zaposta/imG/s1w.png " />
+                        </a>
+                    {% endif %}
+                    </div>
+                </div>
+
+            </div>

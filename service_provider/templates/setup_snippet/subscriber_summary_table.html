@@ -1,0 +1,65 @@
+{% load custom_filters %}
+
+ <style>
+      table, th, td {
+          border: 1px solid black;
+        }
+
+  </style>
+
+<table border="0"  style="position: relative; bottom:20px">
+    <tr>
+        <th align="center" style="position: relative;left: 25px;">Route/Country</th>
+        <th align="center">Total number of processed packages in route</th>
+        <th align="center">Total Number of packages processed by Air/Exp</th>
+        <th align="center">Total Number of packages processed by Sea</th>
+        <th align="center">Total Number of packages revoked</th>
+        <th align="center">Total Number of packages processed for </th>
+        <th align="center">Total value of packages processed by Air/Exp <br/></th>
+        <th align="center">Total value of packages processed by Sea <br/></th>
+        <th align="center">Total value of packages processed for <br/></th>
+        <th align="center">Total local delivery payments <br/> in route </th>
+        <th align="center" style="position: relative;left: 15px;">Action</th>
+    </tr>
+
+
+    {% for obj in subscriber.get_all_shipping_chains %}
+	    </tr>
+	        <td align="center" width="100px">{{ obj.get_route_code_from_country_names }}
+	        <td align="center" width="50px">{{ obj.get_pkgs_processed }}</td>
+            <td align="center" width="50px">{{ obj.get_pkg_processed_by_sub_air_exp }}</td>
+            <td align="center" width="50px">{{ obj.get_pkg_processed_by_sub_sea }}</td>
+            <td align="center" width="50px">{{ obj.get_pkg_processed_by_sub_revoked }}</td>
+            <td align="center" width="50px">{{ obj.get_pkg_processed_for_sub }}</td>
+
+            {% if obj.get_pkg_total_val_processed_by_sub_air_exp == None %}
+	           <td align="center" width="50px">0</td>
+            {% else %}
+                <td align="center" width="50px">${{ obj.get_pkg_total_val_processed_by_sub_air_exp }}</td>
+            {% endif %}
+
+            {% if obj.get_pkg_total_val_processed_by_sub_sea == None %}
+               <td align="center" width="50px">0</td>
+            {% else %}
+                <td align="center" width="50px">${{ obj.get_pkg_total_val_processed_by_sub_sea }}</td>
+            {% endif %}
+
+            {% if obj.get_pkg_total_val_processed_for_sub == None %}
+               <td align="center" width="50px">0</td>
+            {% else %}
+                <td align="center" width="50px">${{ obj.get_pkg_total_val_processed_for_sub }}</td>
+            {% endif %}
+
+            {% if obj.get_total_val_of_local_delivery_in_route == None %}
+               <td align="center" width="50px">0</td>
+            {% else %}
+                <td align="center" width="50px">${{ obj.get_total_val_of_local_delivery_in_route }}</td>
+            {% endif %}
+
+	        <td align="center" width="50px">
+	          <a href="#" class='edit_fixed_rate' edit_rate_id='{{ fixed_wgt_item.id }}' edit_rate_description='{{fixed_wgt_item.description}}' edit_rate_unit='{{fixed_wgt_item.unit_price_D}}' edit_chain='{{fixed_wgt_item.chain}}'><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+	        </td>
+	    </tr>
+    {% endfor %}
+
+</table>

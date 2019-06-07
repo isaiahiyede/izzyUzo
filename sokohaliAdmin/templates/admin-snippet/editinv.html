@@ -1,0 +1,132 @@
+{% load staticfiles %}
+{% load humanize %}
+
+<style>
+select {
+            height: 48px;
+            min-width: 200px;
+            padding: 0;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            line-height: 48px;
+            color: rgb(121, 121, 121);
+            border: none;
+            box-shadow: none;
+            padding-left: 15px;
+            border: 2px solid rgb(231, 231, 231);
+            background: rgb(245, 245, 245);
+            min-width: 355px;
+            float: left;
+            position: relative;
+            width: -webkit-fill-available;
+            }
+
+.select-hidden {
+     visibility: visible; 
+    padding-right: 10px;
+    float: left;
+}
+
+.select-styled {
+     visibility: hidden; 
+    padding-right: 10px;
+    float: left;
+}
+</style>
+<!-- Modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="EditInvModal" style="overflow-y:scroll!important;">
+        <div class="modal-dialog modal-big">
+<form id="EditInvForm" name="" enctype="multipart/form-data" action="{% url 'general:inv_edited' %}" method="post">
+			{% csrf_token %}
+            <div class="modal-content">
+				
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="myFunction()"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit Package</h4>
+                </div>
+                <!-- <div class="order">
+                    <div class="col-md-12">
+                        <h1>Edit Package Form <span class="label"></span><span class="label"></span></h1>
+                    </div>
+                </div> -->
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner long">
+                                <div class="col-md-12" style="margin-top:-135px; position: relative;">
+				<div class="col-md-12">
+                                    <input type='hidden' name='id' value='{{itmdetail.id}}'>
+                                    <label>Upload Product Image</label>
+                                    <input type="file" name="fileupload" value="{{itmdetail.item_image.url}}" id="fileupload"><img src="{{itmdetail.item_image.url}}" width="50" height="50">
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Title</label>
+                                    <input type="text" name="title" value="{{itmdetail.title}}">
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Description</label>
+                                    <input type="text" name="description" value="{{itmdetail.description}}">
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Price($)</label>
+                                    <input type="number" name="price" value="{{itmdetail.price}}" placeholder="$1000">
+                                </div>
+                                 <div class="col-md-8">
+                                    <label>Colour</label>
+                                    <input type="text" name="colour" value="{{itmdetail.colour}}">
+                                </div>
+                                 <div class="col-md-8">
+                                    <label>Brand</label>
+                                    <input type="text" name="brand" value="{{itmdetail.brand}}">
+                                </div>
+                                 <div class="col-md-8">
+                                    <label>Size</label>
+                                    <input type="number" name="size" value="{{itmdetail.size}}">
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Weight(KG)</label>
+                                    <input type="number" name="weight" value="{{itmdetail.weight}}">
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Category</label>
+                                    <select name="category">
+                                    {% for cat_list in cat_list %}
+                                        <option value="{{cat_list}}">{{cat_list}}</option>
+                                    {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <label>SubCategory</label>
+                                    <select name="sub_sub_cat">
+                                        {% for sub_cat in dist_itm %}
+                                            <option value="{{sub_cat}}">{{sub_cat}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Quantity</label>
+                                    <input type="number" name="quantity" value="{{itmdetail.quantity}}">
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Item Remaining</label>
+                                    <input type="number" name="item_remaining" value="{{itmdetail.item_remaining}}" readonly>
+                                </div>
+                                <div class="col-md-8">
+                                    <label>Sold</label>
+                                    <input type="text" name="sold" value="{{itmdetail.sold}}" readonly>
+                                </div>
+			</div> 
+                        </div>
+                        <!-- Body Inner Content -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn green pull-right" value="submit">Submit</button>
+                    </div>
+                </div>
+			</div>
+</form>
+		</div>
+</div>

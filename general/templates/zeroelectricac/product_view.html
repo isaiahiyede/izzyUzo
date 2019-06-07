@@ -1,0 +1,458 @@
+{% load staticfiles %}
+{% load zeAC_custom_filters %}
+
+{% block header %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- ico -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    {% block title %}
+        <title>zeAC - Product View Page</title>
+    {% endblock title %}
+
+    <link href="{% static 'oldzeroelectric/css/slick.css' %}" rel="stylesheet">
+    <link href="{% static 'oldzeroelectric/css/slick-theme.css' %}" rel="stylesheet">
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'oldzeroelectric/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'oldzeroelectric/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <link href="{% static 'oldzeroelectric/css/layout.css' %}" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
+
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+{% endblock header %}
+
+
+<body id="page">
+    <nav class="navbar two">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+                <a class="navbar-brand" href="/">
+                    <img src="{% static 'oldzeroelectric/img/logo3.png' %}" />
+                    <span>Zero Electric Air Conditioner</span>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <!-- Social Media -->
+                <!-- <ul class="nav navbar-nav navbar-right social">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul> -->
+                <div class="dropdown">
+                    {% if request.user.is_authenticated %}
+                    <button class="btn full green dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                        <span>{{count}}</span>
+   
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="overflow-y: scroll; height: 400px;">
+
+                        <li class="header">
+                            <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            <span class="badge">{{count}}</span>
+                            <p>Total: <span>$ {{payable}}</span></p>
+                        </li>
+
+                        {% for product in item %}
+                        <li>
+                            <a href="{% url 'general:cart_view' %}">
+                                <span class="one">{{product.item.title}}</span> <br/>
+                                <span class="two">$ {{product.item.price}}/piece</span> Quantity: {{product.quantity}}
+                            </a>
+                        </li>
+                        {% empty %}
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;No item in your cart</span>
+                        {% endfor %}
+                    
+
+                        {% if request.user.is_authenticated and not count == 0 %}
+                        <li class="btns">
+                            <a href="{% url 'general:cart_view' %}" class="btn full yellow">Checkout</a>
+                        </li>
+                        {% endif %}
+
+                    </ul>
+                    {% endif %}
+                </div>
+
+                <!-- Social Media -->
+                <ul class="nav navbar-nav navbar-right main-nav">
+                    <li>{% if request.user.is_authenticated %}<a href="{% url 'general:my_account' %}">Hi {{ request.user.username }}</a>{% endif %}</li>
+                    <li><a href="/#s2">How it Works</a></li>
+                    <li><a href="{% url 'general:product_view' %}">Store</a></li>
+                    <!--<li><a href="/#contact">Contact Us</a></li> -->
+                    <li style="display:none;">
+
+                        <a href="/#order" class="btn full green dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <span><i class="fa fa-shopping-bag" aria-hidden="true"></i></span>
+                        </a>
+
+                    </li>
+                    <li>{% if request.user.is_authenticated %}
+                            <a href="{% url 'general:logout' %}">Logout</a>
+                        {% else %}
+                            <a href="{% url 'general:login' %}">Login / Sign Up</a>
+                        {% endif %}</li>
+                </ul>
+
+
+                <!-- Social Media -->
+                <ul class="nav navbar-nav navbar-right social show-mobile">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- Social Media -->
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+{% block contents %}
+    <section class="products product_view">
+        <div class="container-fluid">
+
+        <style>
+            .slider_inner slick-slide slick-current slick-active{
+                width: 783px;
+            }
+            
+            .testButton{
+
+                    width: 80px;
+                    height: 20px;
+                    border: 0 none transparent;
+                    padding: 0px;
+                    margin: 0;
+                    border-radius: 4px;
+                    background-color: #2dcc70;
+                }
+        </style>
+
+            <!-- box -->
+            <div class="col-md-12">
+                <div class="box">
+                    <!-- left side -->
+                    <div class="col-md-5">
+                        
+                        <div class="prod_slider">
+                            <div class="slider_inner">
+
+                                {% if itemDetail.item_image %}
+                                <img src="{{itemDetail.item_image.url}}" style="width:100%; margin-top: 0px;" id="item_images"/>{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-12 btns">
+                            <h3>${{itemDetail.price}}</h3>
+                        </div>
+                    </div>
+                    <div class="hidden">
+                       <form id="cartForm" action="{% url 'general:add_to_cart' %}" method="POST">
+                          {% csrf_token %}
+                          <!-- <img src="itemDetail.item_image.url}}" name="item_image" id="item_image"/> -->
+                          <input type="text" name="item_image" id="item_image" value="">
+                          <input type="text" name="item_qty" id="item_qty" value="">
+                          <input type="text" name="item_id" id="item_id" value="">
+                          <input type="submit" value="submit"> 
+                       </form> 
+
+                    </div>
+                    <!-- left side -->
+                    <!-- right side -->
+                    <div class="col-md-7">
+
+                        <style>
+                            .qty{
+
+                                position: relative;
+                                left: 55px;
+                            }
+                        </style>
+
+                        <h3>{{itemDetail.title}}</h3>
+                        <p>{{itemDetail.specifications}}</p><br>
+
+                        
+                        <p class="green" style="position: relative; margin-top: -30px;">Contains one package:</p>
+                        <ul>
+                            {% for item_desc in brief_desc %}
+                            <li>
+                                <p>{{item_desc}}</p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        
+
+                        <label class="qty">Quantity</label><br/>
+                        <input class="qty" type="number" name="quantity" id="qty" min="1" value="">
+
+                        <a item_id="{{itemDetail.pk}}" class="full green addToCart pull-right" style="cursor: pointer;">Add to Cart</a>
+                        <!-- <input type="submit" value="Add to Cart" class="full green addToCart pull-right" style="cursor: pointer;">  -->
+                        <div class="bot">
+                            <div class="circle">
+                                <i class="fa fa-truck" aria-hidden="true"></i>
+                            </div>
+                            <div class="circle">
+                                <i class="fa fa-recycle" aria-hidden="true"></i>
+                            </div>
+                            <div class="circle">
+                                <i class="fa fa-thermometer-three-quarters" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- right side -->
+                </div>
+            </div>
+            <!-- box -->
+
+            <div class="col-md-12">
+                <div class="title">
+                    <h3>Recommended Products:</h3>
+                </div>
+            </div> 
+
+            <div class="col-md-12 recommended">
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-4">
+                        <!-- box -->
+                        <div class="box">
+                            <a href="{% url 'general:detail_view' product.pk %}" class="prodv">
+                                <div class="img">
+
+                                        {% if itemDetail.item_image %}
+                                <img src="{{product.item_image.url}}" style="max-width:100%;"/> {% endif %}
+                                </div>
+                                <div class="text">
+                                    <h5>
+                                        {{ product.title }}
+                                    </h5>
+                                    
+                                </div>
+                            </a>
+                            <!-- <button class="testButton" style="margin-left: 150px;margin-bottom: 15px;">Add to cart</button> -->
+                        </div>
+                        
+                    </div>
+                    {% empty %}
+                    <p>No product added</p>
+                    {% endfor %}
+                </div>
+
+                <div class="pagination" style="position:relative; font-size:20px; margin:0px; ">
+                    <span class="step-links">
+                        {% if products.has_previous %}
+                            <a style="font-size:20px;" href="?page={{ products.previous_page_number }}">&laquo;</a>
+                        {% else %}
+                            <a style="font-size:20px;" class="hidden" >&laquo;</a>
+
+                        {% endif %}
+
+                        <span style="font-size:20px;" class="current">
+                            Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                        </span>
+
+                        {% if products.has_next %}
+                            <a style="font-size:20px;" href="?page={{ products.next_page_number }}">&raquo;</a>
+                        {% else %}
+                            <a style="font-size:20px;" class="hidden">&raquo;</a>
+
+                        {% endif %}
+                    </span>
+                </div> 
+
+                <!-- <div class="row">
+                    <div class="col-md-12 more" style="text-align:center; padding-top:20px;">
+                        <a href="#" class="btn full yellow">View More Products</a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+{% endblock contents %}
+
+    <footer>
+        <div class="container-fluid">
+            <div class="col-md-3">
+                <ul>
+                    <li>
+                        <h1>Company</h1>
+                    </li>
+                    <li><a href="/#how">How it Works</a></li>
+                    <!-- <li class="submenu"><a href="index.html#hw1"><span>→</span> Micro porous ceramic cylinder</a></li>
+                    <li class="submenu"><a href="index.html#how2"><span>→</span> Living green plants</a></li> -->
+<!--                     <li><a href="index.html#dev">The Impact</a></li>
+ -->                    <li><a href="/#order">Order your own zeAC today</a></li>
+<!--                     <li class="submenu"><a href="index.html#map"><span>→</span> Find an experience centre</a></li>
+                     <li class="submenu"><a href="index.html#business"><span>→</span> Try our business plan</a></li>
+                     <li><a href="index.html#contact">Contact Us</a></li>-->
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <ul>
+                    <li>
+                        <h1>Legal</h1>
+                    </li>
+                    <li><a href="#" data-toggle="modal" data-target="#disclaimer">Disclaimer</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#terms">Terms and Conditions</a></li>
+
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <p><span>zeAC - zero electric Air Conditioner</span> is a project created by <span>Adisenergy</span> and <span>Sokohali.</span> All rights Reserved.
+                </p>
+                <hr/>
+                <ul class="social">
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-facebook" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-twitter" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fa fa-linkedin" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <!-- Page Content -->
+
+    
+
+
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="{% static 'oldzeroelectric/js/jquery.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'oldzeroelectric/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'oldzeroelectric/js/script.js' %}"></script>
+    <script src="{% static 'oldzeroelectric/js/slick.js' %}"></script>
+
+</body>
+<!-- slider script -->
+<script>
+    $(document).ready(function() {
+        $('.slider').slick({
+            dots: true,
+            infinite: true,
+            speed: 500,
+            fade: true,
+            cssEase: 'linear',
+            autoplay: true,
+            autoplaySpeed: 4000,
+            arrows: false
+        });
+        $('.prod_slider').slick({
+            dots: true,
+            infinite: true,
+            speed: 500,
+            fade: true,
+            cssEase: 'linear',
+            autoplay: true,
+            autoplaySpeed: 4000,
+            arrows: false
+        });
+    });
+
+    $('.modal').modal({
+        keyboard: false,
+        show: false
+    });
+
+    $('body').on('click','.addToCart',function(e){
+
+        var quantity = $('#qty').val();
+        //alert("desired quantity is :"+ quantity);
+        var item_id  = $(this).attr('item_id');
+
+        var myImage = document.getElementById('item_images');
+        var item_image = myImage.src;
+        debris = item_image.split('/media').slice(1)
+        var img_path = '/media';
+
+        var item_image =img_path + debris;
+        // alert("Image : "+ item_image);
+
+        if (quantity == ""){
+            alert("Please enter desired quantity");
+        }
+
+        else{
+            $('#item_image').val(item_image);
+            $('#item_qty').val(quantity);
+            $('#item_id').val(item_id);
+            $('#cartForm').submit();
+        }
+    });
+
+</script>
+<!-- slider script -->
+
+</html>

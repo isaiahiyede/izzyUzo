@@ -1,0 +1,97 @@
+{% extends 'base/base_user_account_new.html' %}
+{% load humanize %}
+{% load currency %}
+{% block title %}My SokoPay{% endblock %}
+
+{% block inner_content %}
+<div class="col-md-8 content_outer">
+    <div class="col-md-12 content credit">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            {% if not request.user.useraccount.marketer.storefront_name == "smatpost" %}
+            <li role="presentation"><a href="#card_pay" aria-controls="card_pay" role="tab" data-toggle="tab">Card Payments</a></li>
+            <li role="presentation"><a href="#soko_pay" aria-controls="soko_pay" role="tab" data-toggle="tab">Soko-Pay</a></li>
+            {% endif %}
+            <li role="presentation"  class="active"><a href="#bank_depo" aria-controls="bank_depo" role="tab" data-toggle="tab">Bank Deposits</a></li>
+            
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane" id="card_pay">
+                <table width="100%" border="0">
+                    <tr>
+                        <th>S/N</th>
+                        <th>Reference #</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for obj in card_payments %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{obj.ref_no}}</td>
+                        <td>{{obj.status}}</td>
+                        <td>{% country_currency_code country %}&nbsp;{{obj.amount|floatformat:2|intcomma}}</td>
+                        <td>{{obj.created_at|date:'d/M/Y'}}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                </table>
+
+
+            </div>
+            <div role="tabpanel" class="tab-pane active" id="bank_depo">
+                <table width="100%" border="0">
+                    <tr>
+                        <th>S/N</th>
+                        <th>Reference #</th>
+                        <th>Booking #</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for obj in bank_deposits %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{obj.ref_no}}</td>
+                        <td>{{obj.package.tracking_number}}</td>
+                        <td>{{obj.status}}</td>
+                        <td>${{obj.amount|floatformat:2|intcomma}}</td>
+                        <td>{{obj.created_at|date:'d/M/Y'}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+
+             <div role="tabpanel" class="tab-pane" id="soko_pay">
+                <table width="100%" border="0">
+                    <tr>
+                        <th>S/N</th>
+                        <th>Reference #</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for obj in soko_pay_log %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{obj.package.tracking_number}}</td>
+                        <td>{{obj.status}}</td>
+                        <td>{% country_currency_code country %}&nbsp;{{obj.amount|floatformat:2|intcomma}}</td>
+                        <td>{{obj.created_at|date:'d/M/Y'}}</td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}

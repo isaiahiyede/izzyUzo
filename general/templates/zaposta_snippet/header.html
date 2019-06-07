@@ -1,0 +1,61 @@
+<div class="container-fluid">
+                <a href="/" class="logo">
+                    <!--<img src="{{STATIC_URL}}zaposta/img/logo.png" class="notshow" />
+                    <img src="{{STATIC_URL}}zaposta/img/logo4.png" />-->
+                   <!-- <img src="{{STATIC_URL}}sokohali/img/partner_logos/marketing_member.png" class="notshow"/>
+                    <img src="{{STATIC_URL}}sokohali/img/partner_logos/marketing_member.png" />-->
+                    <img src="{{ request.storefront_logo_url }}" class="notshow"/>
+                    <img src="{{ request.storefront_logo_url }}" />
+                </a>
+
+                <div class="text">
+                    <span>CALL US </span>
+                    <span style="color: #fff;">{{ request.marketing_member.phone_number }}</span>
+                </div>
+                <!-- <div class="delivery">
+                    <span>Delivery <br/>Period</span>
+                    <div class="left">
+                        <img src="{{STATIC_URL}}zaposta/img/a1.png" />
+                        <span style="color:#fff;">5 - 12</span>
+                        <p>BIZ DAYS</p>
+                    </div>
+                    <div class="left">
+                        <img src="{{STATIC_URL}}zaposta/img/a2.png" style="height:31px;" />
+                        <span style="color:#fff;">8 - 10</span>
+                        <p>WEEKS</p>
+                    </div>
+                </div> -->
+                {% if not invitee %}
+                <nav>
+                    <ul>
+                        <li class="login" style="margin-right: 40px;">
+                          {% if request.user.is_authenticated %}
+                                {% if request.user.is_staff %}
+                                    <a href="{% url 'sokohaliAdmin:user-manager' %}">Hi, {{user.username}}</a>
+                                {% else %}
+                                    <a href="{% url 'general:my_account' %}">Hi, {{user.username}}</a>
+                                {% endif %}
+                          {% else %}
+                            <a href="{% url 'general:login' %}">Login / Sign Up</a>
+                          {% endif %}
+                        </li>
+                        {% if request.user.is_authenticated %}
+                        <li class="logout" >
+                            <a href="{% url 'general:logout' %}">Logout</a><!--<span><i class="fa fa-sign-out" aria-hidden="true"></i></span>-->
+                        </li>
+                        {% endif %}
+                        <!-- menu trigger -->
+                        <li class="triggerouter">
+                            <p>MENU</p>
+                            <div class="triggernav">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </li>
+                        <!-- menu trigger -->
+                    </ul>
+
+                </nav>
+                {% endif %}
+</div>

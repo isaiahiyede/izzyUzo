@@ -1,0 +1,390 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+
+{% block header %}
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <script src="{% static 'sokohali/js/jquery.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'newhomepage/css/volkmannexpress.css' %}" type="text/css">
+  <script type="text/javascript" src="{% static 'sokohali/js/country.js' %}"></script>
+  <script type="text/javascript" src="{% static 'sokohali/validate.js' %}"></script>
+
+
+ 
+</head>
+
+{% endblock header %}
+
+<style>
+  
+  .navbar{
+
+    margin-bottom: 0px;
+    border-radius: 0px;
+  }
+
+  body{
+
+    font-size: 1.4rem;
+   }
+
+</style>
+
+<body class="h-75">
+
+  {% block nav_top %}
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="{% static 'newhomepage/images/volkmann.jpg' %}" style="border-radius: 50%;height: 40px;"></a>
+        <span style="color: white;">VEI</span>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent" aria-controls="navbar2SupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+      <div class="collapse navbar-collapse text-center justify-content-end" id="navbar2SupportedContent">
+        <ul class="navbar-nav">
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mail Bag</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" style="font-size: 1.3rem !important;" href="{% url 'general:my_mail_bag_volk' %}">Mail Bag</a>
+              {% if request.user.is_authenticated %}
+              <a href="{% url 'general:edit_profile' request.user.username %}"  style="font-size: 1.3rem !important;" class="dropdown-item">Manage profile</a>
+              {% endif %}
+              <a class="dropdown-item" style="font-size: 1.3rem !important;" href="{% url 'general:my_shipments_volk' %}">Shipments</a>
+              <a class="dropdown-item" style="font-size: 1.3rem !important;" href="{% url 'general:delivery_addresses_volk' %}">Addresses</a>
+              <a class="dropdown-item" style="font-size: 1.3rem !important;" href="{% url 'general:my_payments_volk' %}">Payments</a>
+              <a class="dropdown-item" style="font-size: 1.3rem !important;" href="{% url 'soko_pay:add_funds_volk' %}">VEI Wallet</a>
+              {% if request.user.is_authenticated %}
+                <a href="{% url 'general:logout' %}"  style="font-size: 1.3rem !important;"
+                  class="dropdown-item" href="#">Logout</a>
+              {% else %}
+                <a href="{% url 'general:volkLogin' %}" style="font-size: 1.3rem !important;" class="dropdown-item" href="#">Login</a>
+              {% endif %}
+
+            </div>
+          </li>
+        </ul>
+
+        {% if request.user.is_authenticated %}
+          {% if request.user.is_staff %}
+            <a href="{% url 'sokohaliAdmin:user-manager' %}" class="btn navbar-btn ml-2 text-white btn-secondary">
+              {% if request.user.useraccount.image %}
+                <img src="{{request.user.useraccount.image.url}}" height="30" width="30"/>
+                <i class="">Hi, {{request.user.username}}</i></a>
+              {% else %}
+                <i class="fa d-inline fa-lg fa-user-circle-o">Hi, {{request.user.username}}</i></a>
+              {% endif %}
+          {% else %}
+            <a href="{% url 'general:my_mail_bag_volk' %}" class="btn navbar-btn ml-2 text-white btn-secondary">
+              {% if request.user.useraccount.image %}
+                <img src="{{request.user.useraccount.image.url}}" height="30" width="30"/>
+                <i class="">Hi, {{request.user.username}}</i></a>
+              {% else %}
+                <i class="fa d-inline fa-lg fa-user-circle-o">Hi, {{request.user.username}}</i></a>
+              {% endif %}
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+  {% endblock nav_top %}
+
+
+  {% block inner_content %}
+  <div class="py-5 text-center opaque-overlay" style="height: 800px; background-image: url(&quot;{% static 'newhomepage/images/bg-header.jpg' %}&quot;);">
+    <div class="container py-5">
+      <div class="row" style="margin-top: 85px;">
+        <div class="col-md-12 text-white">
+          <h1 class="mb-4 display-4" style="margin-bottom: 2.5rem !important; font-size: 50px;">VOLKMANN EXPRESS INC</h1>
+          <p class="lead mb-5" style="font-size: 20px;">Shipping made easy and hassle free</p>
+          <br>
+          {% if request.user.is_authenticated %}
+            {% if request.user.is_staff %}
+              <p style="cursor:pointer; font-size: 15px;" class="lead mb-5 btn btn-secondary"><a href=href="{% url 'sokohaliAdmin:user-manager' %}">Get started</a>
+              </p>
+            {% else %}
+              <p style="cursor:pointer; font-size: 15px;" class="lead mb-5 btn btn-secondary"><a href="{% url 'general:my_mail_bag_volk' %}">Get started</a>
+              </p>
+            {% endif %}
+          {% else %}
+              <p style="cursor:pointer; font-size: 15px;" class="lead mb-5 btn btn-secondary"><a href="{% url 'general:volkLogin' %}">Get started</a>
+              </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="text-center text-dark display-4 p-1" style="font-size: 1.5rem;"><i><b>Booking arrangements, marine cargo insurance, crating and packing, tracking, and forwarding.</b></i>
+            <br>
+            <br><b class="" style="font-size: 1rem;">To ensure your ocean cargo moves smooth and trouble-free</b></h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <img class="img-fluid d-block w-100 mb-3 rounded" src="{% static 'newhomepage/images/pexels2.jpeg' %}">
+              <p class=""></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-5 text-center bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Shipping Experiences</h1>
+          <p class="lead"></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 p-4">
+          <img class="img-fluid d-block rounded-circle mx-auto" src="{% static 'newhomepage/images/package-tracking.jpg' %}" 
+          style="height: 300px;">
+          <br>
+          <p><b>Tracking</b>
+            <br>Package Details</p>
+          <p class="my-4"><i>Easily track your package to determine its status at any point in time</i></p>
+        </div>
+        <div class="col-md-4 p-4">
+          <img class="img-fluid d-block rounded-circle mx-auto" src="{% static 'newhomepage/images/fast-shipping2.png' %}" 
+          style="height: 300px;">
+          <br>
+          <p><b>Fast</b>
+            <br>Express shipping</p>
+          <p class="my-4"><i>Try our express shipping today for fast and safe delivery</i></p>
+        </div>
+        <div class="col-md-4 p-4">
+          <img class="img-fluid d-block rounded-circle mx-auto" src="{% static 'newhomepage/images/mail.png' %}" style="height: 300px;">
+          <br>
+          <p><b>Notifications</b>
+            <br>Alerts</p>
+          <p class="my-4"><i>Get notified instantly when your package is received, processed, shipped and so on</i></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-center bg-secondary gradient-overlay p-5" style="background-color: darkgrey !important;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card p-5 m-1" style="padding: 2rem !important;">
+            <div class="card-block">
+              <p class="lead"><i>Air</i></p>
+            </div>
+            <div class="card-block my-3">
+              <h1><b>From</b></h1>
+              <p>$3</p>
+              <hr>
+              <p>Package Invoicing</p>
+              <hr>
+              <p>Package Tracking</p>
+              <hr>
+              <p>Notifications</p>
+              <hr>
+              <p>Flexible Payment</p>
+            </div>
+            <div class="card-block">
+              {% if request.user.is_authenticated %}
+                {% if request.user.is_staff %}
+                  <a class="btn btn-secondary" href="{% url 'sokohaliAdmin:user-manager' %}" >Get started</a>
+                {% else %}
+                  <a class="btn btn-secondary" href="{% url 'general:my_mail_bag_volk' %}">Get started</a>
+                {% endif %}
+              {% else %}
+                  <a class="btn btn-secondary" href="{% url 'general:volkLogin' %}">Get started</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-5 m-1" style="padding: 2rem !important;">
+            <div class="card-block">
+              <p class="lead"><i>Sea</i></p>
+            </div>
+            <div class="card-block my-3">
+              <h1><b>From</b></h1>
+              <p>$1.3</p>
+              <hr>
+              <p>Package Invoicing</p>
+              <hr>
+              <p>Package Tracking</p>
+              <hr>
+              <p>Notifications</p>
+              <hr>
+              <p>Flexible Payment</p>
+            </div>
+            <div class="card-block">
+              {% if request.user.is_authenticated %}
+                {% if request.user.is_staff %}
+                  <a class="btn btn-secondary" href="{% url 'sokohaliAdmin:user-manager' %}" >Get started</a>
+                {% else %}
+                  <a class="btn btn-secondary" href="{% url 'general:my_mail_bag_volk' %}">Get started</a>
+                {% endif %}
+              {% else %}
+                  <a class="btn btn-secondary" href="{% url 'general:volkLogin' %}">Get started</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-5 m-1" style="padding: 2rem !important;">
+            <div class="card-block">
+              <p class="lead"><i>Express</i></p>
+            </div>
+            <div class="card-block my-3">
+              <h1><b>From</b></h1>
+              <p>$5</p>
+              <hr>
+              <p>Package Invoicing</p>
+              <hr>
+              <p>Package Tracking</p>
+              <hr>
+              <p>Notifications</p>
+              <hr>
+              <p>Flexible Payment</p>
+            </div>
+            <div class="card-block">
+              {% if request.user.is_authenticated %}
+                {% if request.user.is_staff %}
+                  <a class="btn btn-secondary" href="{% url 'sokohaliAdmin:user-manager' %}" >Get started</a>
+                {% else %}
+                  <a class="btn btn-secondary" href="{% url 'general:my_mail_bag_volk' %}">Get started</a>
+                {% endif %}
+              {% else %}
+                  <a class="btn btn-secondary" href="{% url 'general:volkLogin' %}">Get started</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-4" style="padding-bottom: -2rem !important;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <p style="font-size: 35px;" class="text-center lead">We have made our mark on the industry</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-5">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-md-7">
+          <h2 class="text-primary">Air freight shipping</h2>
+          <p class="">We are air freight forwarders with a personal touch, handling air charters and sea cargo with professionalism and ease. Get rate quotes on air and sea freight using our easy and interactive quote forms and save time. When timing is essential,
+          VolkmannExpress Shipping makes it easy for you to ship all of your products by air. With our knowledgeable and quick service we make all your air shipments a breeze! </p>
+        </div>
+        <div class="col-md-5 align-self-center">
+          <img class="img-fluid d-block w-100 img-thumbnail" src="{% static 'newhomepage/images/airshipping.png' %}"> </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <img class="img-fluid d-block mb-4 w-100 img-thumbnail" src="{% static 'newhomepage/images/video-poster.jpg' %}"> </div>
+        <div class="col-md-7">
+          <h2 class="text-primary pt-3">Sea freight shipping</h2>
+          <p class="">Total control; from arranging pickup from the shipper’s door to delivering your cargo to the ultimate consignee. Coordinated shipments to/from all port areas. Documentation, customs clearance, warehousing, trucking and inland freight services,
+          as well as shipside deliveries </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="py-5 text-white" style="background-image: url(&quot;{% static 'newhomepage/images/testimonial.jpg' %}&quot;);">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <p class="lead"><i>"I have been using volkmannexpress inc for my air and sea cargo shipping. There's no way I can leave it now or never. And many people are doing the same, and I seriously do not understand who isn't." Their services are great.</i>
+            <br> </p>
+          <p class="lead m-0"><b>John Peterson -- Business Man</b></p>
+        </div>
+
+        <div class="col-md-9" style="position: relative; left:150px;">
+           <iframe width="560" height="315" src="https://www.youtube.com/embed/mhDFwu_c1fA" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  
+  {% endblock inner_content %}
+  
+
+  {% block footer %}
+  <div class="bg-dark text-white">
+    <div class="container">
+      <div class="row">
+        <div class="p-4 col-md-4">
+          <h2 class="mb-4">Site Map</h2>
+          <ul class="list-unstyled">
+            <a href="/" class="text-white">Home</a>
+            <br>
+            <a href="#" class="text-white">About us</a>
+            <br>
+            <a href="#" class="text-white">Our services</a>
+          </ul>
+        </div>
+        <div class="p-4 col-md-4">
+          <h2 class="mb-4">Contact</h2>
+          <p>
+            <a href="tel:+1-855-684-1767" class="text-white"><i class="fa d-inline mr-3 text-secondary fa-phone"></i>+1-855-684-1767</a>
+          </p>
+          <p>
+            <a href="mailto:info@volkmannexpress.com" class="text-white"><i class="fa d-inline mr-3 text-secondary fa-envelope-o"></i>info@volkmannexpress.com</a>
+          </p>
+          <p>
+            <a href="https://goo.gl/maps/AUq7b9W7yYJ2" class="text-white" target="_blank"><i class="fa d-inline mr-3 fa-map-marker text-secondary"></i>10104 Senate Drive, Suite 214, Lanham, MaryLand, United States</a>
+          </p>
+        </div>
+        <div class="p-4 col-md-4">
+          <h2 class="mb-4">Social Media</h2>
+          <div class="col-4 col-md-1 align-self-center">
+            <a href="https://www.facebook.com/volkmannexpressinc/?ref=bookmarks" target="_blank"><i class="fa fa-fw fa-facebook fa-3x text-white"></i></a>
+          </div>
+          <div class="col-4 col-md-1 align-self-center">
+          </div>
+          <div class="col-4 col-md-1 align-self-center">
+            <a href="https://plus.google.com/u/1/b/111022267687423027163/+Volkmannexpress" target="_blank"><i class="fa fa-fw fa-google fa-3x text-white"></i></a>
+          </div>
+          <div class="col-4 col-md-1 align-self-center">
+          </div>
+          <div class="col-4 col-md-1 align-self-center">
+            <a href="https://www.instagram.com/labinskiversace target="_blank"><i class="fa fa-fw fa-instagram fa-3x text-white"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 mt-3">
+          <p class="text-white">© Volkmann Express Inc - All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock footer %}
+
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

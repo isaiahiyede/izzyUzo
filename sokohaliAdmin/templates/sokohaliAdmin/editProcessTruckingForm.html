@@ -1,0 +1,89 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="EditTruckModal" style="overflow-y:scroll!important;">
+        <div class="modal-dialog modal-big">
+		<form method="POST" enctype="multipart/form-data" 
+		action="{% url 'sokohaliAdmin:trucking_edit' %}" >
+			{% csrf_token %}
+            <div class="modal-content">
+				
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Process Trucking Job</h4>
+                </div>
+                
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner long" style="padding-top: 30px !important;">
+
+						    <div class="col-md-12">
+								<div class="col-md-6 form-group">
+									<label style="position: relative;top: 25px;">JOB NUMBER</label>
+									<input class="form-control" type="text" name="job_number" id="id_job_number" value="{{form.job_number.value}}" style="position:relative;margin-top: 25px";>
+								</div><br>
+								<input type="hidden" name="item_id" value="{{item_id}}">
+								<div class="col-md-6 form-group">
+									<LABEL>CARGO DESCRIPTION</LABEL>
+									<textarea class="form-control"  name="cargo_decsription" id="id_cargo_decsription"> {{form.cargo_decsription.value}}</textarea>		
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>ACTUAL WEIGHT (lbs)</LABEL>
+									<input class="form-control"  
+									step="0.01" min="0" max="10" style="height:48px;" name="actual_cargo_weight" id="id_actual_cargo_weight" 
+									value="{{form.actual_cargo_weight.value}}">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>TOTAL CARGO WEIGHT (lbs)</LABEL>
+									<input class="form-control"  style="height:48px;" step="0.01" min="0" max="10" name="total_cargo_weight" id="total_cargo_weight" 
+									value="{{form.total_cargo_weight.value}}">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>BILL OF LADEN NUMBER</LABEL>
+									<input class="form-control"  type="text" name="bol_number" id="id_bol_number" value="{{form.bol_number.value}}">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>CARGO ORIGIN</LABEL>
+									<input class="form-control"  type="text" name="origin" id="id_origin" value="{{form.origin.value}}">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<LABEL>CARGO DESTINATION</LABEL>
+									{{form.destination}}
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>PICK UP DATE</label>
+									{{form.pick_up_time}}
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>DROP OFF DATE</label>
+									{{form.drop_off_time}}
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>PICK UP TIME</label>
+									<input class="form-control"  style="height:48px;" type="time" name="time_to_pick_up" id="id_time_to_pick_up" value="{{form.time_to_pick_up.value}}">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>DROP OFF TIME</label>
+									<input class="form-control"  style="height:48px;" type="time" name="time_to_drop_off" id="id_time_to_drop_off" value="{{form.time_to_drop_off.value}}">
+								</div><br>
+								<div class="col-md-6 form-group">
+									<label>STATUS</label>
+									{{form.status}}
+								</div><br>
+								<div class="col-md-12 form-group">
+									<label>{{form.paid}}&nbsp;PAYMENT</label>	
+								</div><br>
+								<div class="col-md-12 form-group">
+									{{form.bol_image}}
+								</div>
+							</div> 
+                        </div>
+                        <!-- Body Inner Content -->
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn green pull-right" name="Submit" value="Submit">
+                    </div>
+                </div>
+			</div>
+		  </form>
+		</div>
+</div>

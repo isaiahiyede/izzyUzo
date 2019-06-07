@@ -1,0 +1,210 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  VEI WALLET CARD   
+              </h1>
+        <ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">VEI WALLET CARD</a></li>
+          <li class="active">Data</li>
+        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+
+		<div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6" id="paystackpay">
+          
+              <div class="card horizontal cardIcon waves-effect waves-dark">
+              <div class="card-image red">
+              <i class="fa fa-credit-card fa-5x"></i>
+              </div>
+              <div class="card-stacked">
+              <div class="card-content">
+              
+              </div>
+              <div class="card-action">
+              <strong>Fund Vei Wallet with PayStack</strong>
+              </div>
+              </div>
+              </div>
+   
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-6" id="paypalpay">
+          
+              <div class="card horizontal cardIcon waves-effect waves-dark">
+              <div class="card-image orange">
+              <i class="fa fa-credit-card fa-5x"></i>
+              </div>
+              <div class="card-stacked">
+              <div class="card-content">
+               
+              </div>
+              <div class="card-action">
+              <strong>Fund Vei Wallet with PayPal</strong>
+              </div>
+              </div>
+              </div>
+
+            </div>
+
+            
+        </div>
+
+        <div class="row" style="overflow-x: hidden;">   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+            	<div class="card-content shipment_details" id="shipment_details">
+            		<!-- this is the wrapper for the content -->
+				<div class="st-content-inner">
+
+						<div class="wt two">
+
+						<div class="container paystackpay" style="position:relative;">
+						  					
+						    
+
+							<form method="post" action="{% url 'wallet:mainPay' %}">
+								<div class="col-md-6">
+									<h2>Fund your VEI WALLET with PayStack</h2><br/>
+									{% csrf_token %}
+
+									<div class="col-md-12">
+										<input type="number" name="amount" 
+										id="id_amount" required />
+									</div>
+
+									<input type="hidden" name="payment-method" value="card"/>
+
+                                    <input type="hidden" name="bot_catcher" value="botty"/>
+									
+									<div class="col-md-4">
+	                                <button type="submit" class="btn btn-block btn-info">Pay</button>
+	                            </div>
+								</div>
+							</form>
+						</div>
+
+						<div class="container paypalpay hidden" style="position:relative;">
+						  					
+	
+							<form method="post" action="{% url 'wallet:mainPay' %}">
+								<div class="col-md-6">
+									<h2>Fund your VEI WALLET with PayPal</h2><br/>
+									{% csrf_token %}
+			
+									<div class="col-md-12">
+										<input type="number" name="amount_2" id="amount_2" required />
+									</div>
+
+									<input type="hidden" name="user_2" id="id_amount_2" value="{{ user.id }}"/>
+
+									<input type="hidden" name="payment-method" value="paypal"/>
+
+                                    <input type="hidden" name="bot_catcher" value="botty"/>
+									
+									<div class="col-md-4">
+	                                <button type="submit" id="banksubmit2" class="btn btn-block btn-info">Pay</button>
+	                            </div>
+								</div>
+							</form>
+						</div>
+
+						</div>
+
+						<div class="hero two" id="payment_page">
+						<div class="container outer">
+							
+						</div>
+						</div>
+
+			    </div>
+        		</div>
+        	  </div>
+             </div>
+          </div>
+        </div>
+
+
+
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+
+
+	<script>
+
+		$('body').on('click','#paypalpay',function(){
+			$('.paystackpay').addClass('hidden');
+			$('.paypalpay').removeClass('hidden');
+		});
+
+		$('body').on('click','#paystackpay',function(){
+			$('.paypalpay').addClass('hidden');
+			$('.paystackpay').removeClass('hidden');
+		});
+
+	</script>
+
+	<script>
+        
+	    $('body').on('click','.vei_wallet',function(e){
+	        // alert('was clicked')                
+	    });
+
+	    //function submitForm(clicked_btn, form_id){
+        function submitForm(form_id){
+            document.getElementById(form_id).submit();
+            return false;
+        }
+
+        function formReset(form_id){
+                $(".input_form").each(function(){
+                    $(this).css('border-color',  "rgb(161, 161, 161)");
+                });
+        document.getElementById(form_id).reset();
+        return false;
+        }
+
+	</script>
+
+	<script>
+		$('body').on('click','#banksubmit',function(){
+		    //alert("I am here");
+		    var amount = $('#amount').val();
+		    var payment_method = $('#paymet').val();
+		    var bot_catcher = $('#bot_catcher').val();
+		    var csrf_token  = $('input[name="csrfmiddlewaretoken"]').val();
+		    $.ajax({
+		        data: {'amount':amount, 'payment-method':payment_method, 'bot_catcher':bot_catcher, 'csrfmiddlewaretoken': csrf_token},
+		        url: "{% url 'wallet:main' %}",
+		        type: 'POST',
+		        success:function(data){
+		            //location.reload();
+		            //alert('page is loaded');
+		            //$("#tbody").html($(data).find("#tbody"));
+		                //$('#banking').replaceWith(data);
+		                //$('#bankinfo').modal('show');
+		                //console.log('working');
+		                location.reload();
+		                
+		        },
+		        error:function(data){
+		            console.log('not working');
+		        },
+		    });
+		  });
+	</script>
+
+{% endblock script %}

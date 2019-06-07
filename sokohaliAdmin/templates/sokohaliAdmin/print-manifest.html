@@ -1,0 +1,58 @@
+{% load humanize %}
+{% load custom_filters %}
+
+
+<html>
+   <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+        <style type="text/css">
+                table_header{
+                        background-color: #82CAFA;
+                        }
+                table_header.th{
+                        font-weight: 100
+                        }
+        </style>
+   </head>
+        
+   <body>
+
+                
+        <table class="table table-bordered" border="0">
+            <th style="position: relative;left: 120px;">Batch No:{{batch.batch_number}} - ( Carrier: {{ batch.carrier }} ) -  Manifest ({{batch.created_on|date:'d/m/Y'}})<br/>
+            Created By: {{batch.user.email}}&nbsp; - No of Packages: 
+                {{batch.shippingpackage_set.count}}
+            </th>
+        </table>
+        
+
+        <table class="table table-bordered" style=" border-spacing: 0; border-collapse: separate; border-color: gray; border: solid 1px #ddd;width:600px; margin-left:39px;">
+                
+                <tr style="background-color: #F0FFF0;">
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Package Tracking Numbers</td>
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">No of Items</td>
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Items Description</td>
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Weight(lbs/kgs)</td>
+                   <td style="border-bottom:1px solid #ddd; width: 60px;">Value (USD)</td>
+
+                </tr>
+
+                {% for pkg in packages_assigned_to_batch %}
+                  <tr>
+                     <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ pkg.pkg_tracking_number}}</td>
+                     <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ pkg.pkg_items_count }}</td>
+                     <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ pkg.pkg_items_description }}</td>
+                     <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ pkg.pkg_box_weight_higher }}lbs/{{ pkg.pkg_box_weight_higher_K }}kgs</td>
+                     <td style="border-bottom:1px solid #ddd; border-right: 1px solid #ddd; width: 60px;">{{ pkg.pkg_items_total_value|floatformat:2|intcomma}}</td>
+
+                  </tr>
+                {% endfor %}
+                
+                
+        </table>
+
+   </body>
+</html>
+
+

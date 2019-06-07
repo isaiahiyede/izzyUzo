@@ -1,0 +1,109 @@
+{% extends "base/zaposta_base.html" %}
+
+
+{% block title %}Soko Pay{% endblock %}
+{% block extra_head %}
+<style>
+    div.modal-backdrop.fade.in{
+        z-index: 0 !important;
+    }
+</style>
+
+{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+{% block st_content %}
+<!-- this is the wrapper for the content -->
+                <div class="st-content-inner">
+                    <!-- extra div for emulating position:fixed of the menu -->
+                    <!-- Main Section -->
+                    <section id="main" class="payment_main">
+                        <!-- place widget -->
+                        <div class="wt two">
+                            <div class="container" style="position:relative;">
+                                <!--<img src="img/ism1.png" />
+                                <p>21:04</p>
+                                <img src="img/ism2.png" />
+                                <p>London, UK</p>-->
+                            </div>
+                        </div>
+                        <!-- place widget -->
+                        <div class="hero t" id="payment_page">
+                            <div class="container outer">
+
+                                <!-- <div class="landing_inner" style="height: auto!important;"> -->
+                                <div class="landing_inner">
+
+                                    <!--<div class="shipping two">
+                                        <div class="col-md-12">
+                                                <!--<div style="padding-top: 50px; text-align: center;">
+                                                     <img src="STATIC_URL}}export/img/cc/paypal.png" style="margin-left: 10px; height: 70px;"/>
+                                                </div>-->
+
+                                                <!--<h4>Account Name: Sokohali</h4>
+                                                <h4>GTB Number: 0171988384</h4>-->
+
+                                                <!--<img src="STATIC_URL}}shopping/images/uba_copy.png" style="margin-left: 10px; margin-top: 10px;"/>
+                                                <h4>Account Name: Sokohali</h4>
+                                                <h4>UBA Account: 1019192708</h4>
+
+                                            <div>
+                                                <a href="% url 'soko_pay:add_funds' %}" class="btn">Bank Deposit</a>
+                                                <!--<a href="#" class="btn">Bank Deposit</a>-->
+                                            <!--</div>
+                                        </div>
+                                    </div>-->
+
+                                    <div class="shipping two">
+                                        <div class="col-md-12">
+                                            <div style="padding-top: 50px; text-align: center;">
+                                                <img src="{{STATIC_URL}}shopping/images/interswitch_verve.jpg" width="120px" height="30px"/>
+                                                <img src="{{STATIC_URL}}shopping/images/mastercard.png" width="70px" style="margin-left: 10px;"/>  <!-- IMG -->
+                                                <img src="{{STATIC_URL}}shopping/images/visa.png" width="70px" style="margin-left: 10px;"/>  <!-- IMG -->
+
+
+                                            </div>
+
+                                            <div>
+                                                <a href="{% url 'soko_pay:buy_jejepay_credit_card' %}" class="btn" style="    position: relative; bottom: 0px;">Credit/Debit Card</a>
+                                            </div> 
+                                            <!--<div>
+                                                <a href="#" class="btn" style="position: relative; bottom: 0px;">Coming Soon...</a>
+                                            </div>-->
+
+                                        </div>
+                                    </div>
+
+                                    <div class="shopping two">
+                                        <div class="col-md-12">
+                                            <div style="padding-top: 50px; text-align: center;">
+                                                <img src="{{STATIC_URL}}export/img/cc/paypal.png" style="margin-left: 10px; height: 70px;"/>
+                                            </div>
+
+                                            <div>
+                                                <a href="#" class="btn" style="margin-top: 70px;">Coming Soon...</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                    <!-- Main Section -->
+
+                    <!-- FOOTER  -->
+                    <footer class="black two">
+                        {% include 'zaposta_snippet/footer-bottom.html' %}
+                    </footer>
+                    <!-- FOOTER  -->
+                </div>
+                <!-- /st-content-inner -->
+
+<!-- /st-content-inner -->
+{% endblock %}

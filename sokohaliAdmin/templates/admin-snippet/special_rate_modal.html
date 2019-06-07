@@ -1,0 +1,85 @@
+{% load staticfiles %}
+{% load humanize %}
+<!-- Modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="SpecialrateModal" style="overflow-y:scroll!important;">
+    <div class="modal-dialog modal-big">
+		<form id="SpecialrateForm" enctype="multipart/form-data" action="{% url 'sokohaliAdmin:specialrate' %}" method="post">
+			{% csrf_token %}
+            <div class="modal-content">	
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Apply Special Rate</h4>
+                </div>
+                    <div class="modal-body" style="overflow-y:scroll!important;">
+						    <div class="col-md-12">
+								<div id = "country-selection-div">
+										<div class="col-md-3">
+											<label><strong style="position: relative;left: 12px;"class="required">Origin</strong> &nbsp;</label>
+											<select name="origin" id="origin" class="select-styled2">
+											  <option value="">select country</option>
+											  {% for country in origin_countries %}
+												<option value="{{ country }}">{{ country }}</option>
+											  {% endfor %}
+											  <!--% for country in destination_countries %}
+												<option value="{{ country }}">{{ country }}</option>
+											  % endfor %}-->
+											</select>
+										</div>
+										<div class="col-md-3">
+												<label><strong style="position: relative;left: 12px;"class="required">Destination</strong> &nbsp;</label>
+												<select name="destination" id="destination"class ="select-styled2">
+													<option value="">select country</option>
+													{% for country in destination_countries %}
+													  <option value="{{ country }}">{{ country }}</option>
+													{% endfor %}
+													<!--% for country in origin_countries %}
+													  <option value="{{ country }}">{{ country }}</option>
+													% endfor %}-->
+												  </select>
+										</div>
+										<div class="col-md-3">
+                                            <label class="required">Freight Type:</label>
+                                            {{form2.freight_type}}
+                                        </div>
+										<div class="col-md-3">
+                                            <label class="required">Rate($)/lb:</label>
+                                            {{form2.rate_per_lb_D}}
+                                        </div>
+										<div class="hidden">
+                                            <input type="text" name="user" id="user_value" value=""/>
+                                        </div>
+								</div>		
+						    </div>
+						{% if user_routes %}
+						<div class="col-md-12" style="position: relative; top: 45px;">
+								<p style="text-align: center;"><b>List of Rates</b></p>
+							<table width="80%" border="0" style="line-height:24px;">
+								<!--<tr>
+										<th>Origin</th>
+										<th>Destination</th>
+										<th>Shipping method</th>
+										<th>Rate</th>		
+								</tr>-->
+								{% for rates in user_routes %}
+								<tr>
+										<td>{{rates.origin}}</td>
+										<td>{{rates.destination}}</td>
+										<td>{{rates.freight_type}}</td>
+										<td>${{rates.rate_per_lb_D}}/lb</td>
+								</tr>
+								{% endfor %}
+							</table>	
+						</div>
+						{% endif %}
+                    </div>
+		
+				
+                    <div class="modal-footer">
+                        <button class="btn green" id="submit_spRate" rel="s1">Submit</button>
+                    </div>
+                <!--</div>-->
+			</div>
+		</form>
+    </div>
+</div>

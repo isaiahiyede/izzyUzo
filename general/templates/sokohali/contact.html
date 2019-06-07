@@ -1,0 +1,42 @@
+{% extends 'sokohali/sokohali_homepage.html' %}
+{% load staticfiles %}
+
+{% block title %}<title>Sokohali - Contact Page</title>{% endblock %}
+{% block meta_desc_key %}
+<meta name="description” content=“Sokohali.com - Contact sokohali." />
+<meta name="keywords" content="Sokohali.com - Contact sokohali" />
+{% endblock %}
+
+
+
+{% block bodytag %}<body>{% endblock %}
+
+{% block actions %}
+<ul class="dropdown-menu">
+    <li> <a href="/#overview1">Offer Facilities</a> </li>
+    <li><a href="/#overview2">Rent Facilities</a></li>
+    <li><a href="/#overview3">Offer Different Services</a></li>
+    <li><a href="/#overview4">More Features</a></li>
+</ul>
+{% endblock %}
+
+{% block contents %}
+<section>
+    <div class="container">
+        <div class="row-fluid">
+            <div class="col-md-12" style="padding-top:250px;">
+             <h1><span></span>Contact Us</h1>
+             <h2>Email: info@sokohali.com</h2>
+                <!-- <form action="{% url 'general:joinwaitinglist' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="email" style="height:36px; width:400px; position:relative; top:-8px;"placeholder="Enter your email" name="email" required/>
+                    <input class="hidden" type="text" name="apply" value="apply">
+                    <button type="submit" class="btn round black" style="margin-bottom:20px;">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div> -->
+        </div>
+    </div>
+</section>
+{% endblock %}

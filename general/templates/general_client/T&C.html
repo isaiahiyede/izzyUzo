@@ -1,0 +1,70 @@
+{% extends 'base/base_user_account_new.html' %}
+{% load staticfiles %}
+
+{% block title %}Legal{% endblock %}
+{% block extra_head %}
+<style>
+    div.modal-backdrop.fade.in{
+        z-index: 0 !important;
+    }
+    table td{
+        font-size: medium;
+        line-height: 70px !important;
+    }
+	footer .bottom {
+		position: fixed !important;
+
+	}
+    .log{
+        background-color: black;
+    }
+    
+	.bottom {
+	background-color: black !important;
+	}
+    
+	.col-md-8 {
+		border-style: groove;
+		border-color: rgb(136,133,113);
+		border-radius: 10px;
+	}
+	
+	.header {
+		color: #7c795d;
+		font-family: 'Trocchi', serif;
+		font-size: 45px;
+		font-weight: normal;
+		line-height: 48px;
+		margin: 0;
+	}
+</style>
+
+{% endblock %}
+
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+{% block st_content %}
+<div>
+    <div class="header">
+        <h2 style="text-align: center;"> Terms and Conditions</h2>
+	</div>
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<br />
+			{{terms|safe}}
+	</div>
+	<div class="col-md-2"></div>
+    
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+<footer class="black two bottom navbar-fixed-bottom" id="footer">
+    {% include 'zaposta_snippet/footer-bottom.html' %}
+</footer>
+{% endblock %}

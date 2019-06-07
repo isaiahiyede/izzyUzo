@@ -1,0 +1,98 @@
+{% load humanize %}
+{% load staticfiles %}
+
+{% if shipping_item %}
+<div class="row" id="shipment_details">
+  <div class="container">
+    <h6>Tracking Number:</h6>
+    <p>
+    {{ shipping_item.tracking_number }}
+    </p>
+    <hr>
+    <h6>Receiving Address:</h6>
+    <p>
+    {{ shipping_item.package_receiving_address }}
+    </p>
+    <hr>
+    <h6>Delivery Address:</h6>
+    {% if shipping_item.created_by_admin == True %}
+        <p>{{shipping_item.get_default_destination_warehouse}}</p>
+    {% else %}
+        <p>{{shipping_item.get_delivery_address}}</p>
+    {% endif %}
+    <hr>
+    <h6>Status:</h6>
+    <p>
+        {{ shipping_item.status }}
+    </p>
+    <hr>
+    <h6>Balance:</h6>
+    {% if shipping_item.balance_D > 0 %}
+        <p style="color: red;">$ {{shipping_item.balance_D|floatformat:"2"|intcomma}} </p>
+    {% else %}
+        {% if not shipping_item.new and not shipping_item.cancelled %}
+            <p style="color:green;">Paid</p>
+        {% endif %}
+    {% endif %}
+    <hr>
+
+    <h6>Image:</h6>
+    {% if shipping_item.pkg_image %}
+        <p>
+            <a href="{{shipping_item.pkg_image.url}}" target="_blank">
+                <span>
+                <img src="{{STATIC_URL}}soko-admin/img/pkg_image.jpg" />
+                </span>
+            </a>
+        </p>
+    {% else %}
+        <p>No Image</p>
+    {% endif %}
+    <hr>
+    <div class="datagrid" style="width: 75%">
+        <table class="table table-striped table-bordered table-hover">
+            
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Tracking Number</th>
+                    <th>Description</th>              
+                    <th>created_on</th>
+                    <th>weight (lbs)</th>
+                    <th>Status</th> 
+                    <th>Package #</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{item.user.username}}</td>
+                    <td>{{item.courier_tracking_number}}</td>
+                    <td>{{item.description|truncatechars:30}}</td>              
+                    <td>{{item.created_on}}</td>
+                    <td>{{item.weight}}</td>
+                    <td>{{item.status}}</td>
+                    {% if item.package.tracking_number %}
+                        <td>{{item.package.tracking_number}}</td>
+                    {% else %}
+                        <td> -- </td>
+                    {% endif %}
+
+                </tr>
+                 {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>
+{% else %}
+    <div class="row" id="shipment_details">
+        <div class="container">
+            <h6>No result found...Please enter correct tracking number</h6>
+        </div>
+    </div>
+{% endif %}
+
+{% block script %}
+{% endblock script %}

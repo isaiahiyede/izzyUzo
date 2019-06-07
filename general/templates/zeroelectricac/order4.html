@@ -1,0 +1,124 @@
+{% extends "base/base_index_zeac.html"%}
+{% load staticfiles %}
+{% block title %}ZeAC - Step 2 Order Page{% endblock %}
+
+{% block body %}
+
+    <section class="page">
+        <div class="brd">
+
+            <div class="container-fluid">
+
+                <ul>
+                    <div class="line"></div>
+                    <li class="active">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Review</p>
+                    </li>
+                    <li class="active lineg">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Billing Details</p>
+                    </li>
+                    <li class="active lineg">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Payment & Delivery</p>
+                    </li>
+                    <li class="active lineg">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Order Summary</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid" style="padding-bottom:80px;">
+            <div class="col-md-12" style="padding:0;">
+                <div class="col-md-12 mobile_no_padding">
+                    <div class="title">
+                        <h3><span>4/4. Order Summary</span></h3>
+                    </div>
+                    <div class="window">
+                        <div class="window_main">
+                            <div class="form two">
+                                <div class="col-md-4">
+                                    <div class="col-md-12">
+                                        <label class="two">Shipping & billing info</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>First Name:</label>
+                                        <p>{{request.user.first_name}}</p>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label>Last Name:</label>
+                                        <p>{{request.user.last_name}}</p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Email Address:</label>
+                                        <p>{{request.user.email}}</p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Phone Number:</label>
+                                        <p>{{request.user.useraccount.telephone}}</p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Shipping Address:</label><br/>
+                                        <span>{{address.address_line1}} {{address_line2}}, </span>
+                                        <span>{{address.city}}, {{address.state}},</span>
+                                        <span>{{address.country}}.</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="col-md-12">
+                                        <label class="two">Payment method</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>You Chose:</label>
+                                        <p>{{payment_method}}</p>
+                                    </div>
+                                    <div class="col-md-12 break"></div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="col-md-12">
+                                        <label class="two">Items in your bag</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="card two">
+                                            
+                                            <div class="col-md-12">
+                                                {% for item in cart_items %}
+                                                <span style="line-height: 15px !important;" class="one">{{item.item.title}}</span> <br/>
+                                                <span class="two">$ {{item.item.price}}</span> Quantity: {{item.quantity}}<br/>
+                                                {% endfor %}
+                                                <span class="two">Shipping Cost: </span> ${{shipping_cost}}
+                                            </div>
+                                            
+                                            <div class="col-md-12">
+                                                <h4 style="color: #2dcc70 !important;">Total price: ${{payable}}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="result">
+                            <div class="col-md-3 one">
+                                <a href="/" class="btn gray full">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

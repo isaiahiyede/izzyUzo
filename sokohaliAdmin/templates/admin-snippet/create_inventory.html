@@ -1,0 +1,93 @@
+{% load staticfiles %}
+{% load humanize %}
+<!-- Modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="CreateinvModal" style="overflow-y:scroll!important;">
+        <div class="modal-dialog modal-big">
+            <form id="CreateInvForm" name="createuser" enctype="multipart/form-data" action="{% url 'general:add_inventory' %}" method="post">
+                        {% csrf_token %}
+                        <div class="modal-content">
+                            
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="myFunction()"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title">Create Inventory</h4>
+                            </div>
+                            <!-- <div class="order">
+                                <div class="col-md-12">
+                                    <h1>Create Inventory Form <span class="label"></span><span class="label"></span></h1>
+                                </div>
+                            </div> -->
+                            <!-- modal-c -->
+                            <div class="modal-c open" id="s0">
+                                <div class="modal-body fixtop">
+                                    <!-- Body Inner Content -->
+                                    <div class="body-inner long">
+                                        <div class="col-md-12" style="margin-top:-135px; position: relative;">
+                                            <div class="col-md-8">
+                                                 <label>Upload Product Image</label>
+                                                <input type="file" name="fileupload" value="fileupload" id="fileupload">
+                                            </div>
+                                            <div class="col-md-8">
+                                                 <label>Title</label>
+                                                {{form.title}}     
+                                            </div>
+                                            <div class="col-md-6">
+                                                 <label>Description</label>
+                                                {{form.description}}      
+                                            </div>
+                                            <div class="col-md-8">
+                                                 <label>Price($)</label>
+                                                {{form.price}}      
+                                            </div>
+                                            <div class="col-md-8">
+                                                 <label>Colour</label>
+                                                {{form.colour}}      
+                                            </div>
+                                            <div class="col-md-8">
+                                                 <label>Brand</label>
+                                                {{form.brand}}      
+                                            </div>
+                                            <div class="col-md-8">
+                                                 <label>Size</label>
+                                                {{form.size}}      
+                                            </div>
+                                            <div class="col-md-8">
+                                                 <label>Weight (KG)</label>
+                                                {{form.weight}}      
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label>Category</label>
+                                                <select name="category">
+                                                {% for cat_list in cat_list %}
+                                                    <option value="{{cat_list}}">{{cat_list}}</option>
+                                                {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label>SubCategory</label>
+                                                <select name="sub_sub_cat">
+                                                    {% for sub_cat in dist_itm %}
+                                                        <option value="{{sub_cat}}">{{sub_cat}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-8">
+                                                 <label>Quantity</label>
+                                                {{form.quantity}}      
+                                            </div>
+                                            <!-- <div class="col-md-8">
+                                                 <label>Sold</label>
+                                                {{form.sold}}     
+                                            </div> -->
+                                        </div> 
+                                    </div>
+                                    <!-- Body Inner Content -->
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn green pull-right" value="submit">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+            </form>
+        </div>
+</div>

@@ -1,0 +1,196 @@
+
+<style>
+    #nobk1 tr th{
+        width:10%;
+    }
+    .myselect{
+        width: 100%!important;
+    }
+
+</style>
+
+<div id="item_list" class="col-md-12">
+<!--     {% if alert %} <span id="msg_not" style="position:relative; bottom:415px; right:10px;">{{alert}}</span>{% endif %}
+ -->    
+    {% if items %}
+    <div class="col-md-12">
+        <table class="table bordered" border="0" style="line-height:24px; width:50%; bottom: 500px; right:9px" id="nobk1">
+                <tr>
+                    <th>Desc.</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    {% if item.item_type == "fixed_weight" %}<th>Route</th>{% endif %}
+                    <th>Action</th>
+                </tr>
+                {% for item in items %}
+                <tr>
+                    <td>{{item.description}}</td>
+                    <td>{{item.quantity}}</td>
+                    {% if item.total_value %}
+                    <td>${{item.total_value}}</td>
+                    {% else %}3
+                    <td>&#8358;{{item.naira_value}}</td>
+                    {% endif %}
+                    {% if item.item_type == "fixed_weight" %}<td>{{item.shipping_chain}}</td>{% endif %} 
+                    <td>
+                        <a item_id="{{item.id}}" user_id="{{user.id}}" item_type="{{item.item_type}}"
+                        class="admin_delete">
+                            <i class="fa fa-trash-o" style="cursor:pointer"></i>
+                        </a>
+
+                        {% if item.item_type == "fixed_weight" %}
+                            <a item_id="{{item.id}}" user_id="{{item.user.email}}" item_type="{{item.item_type}}" fxdWeight_id="{{item.cat_num}}"
+                            class="admin_edit" item_chain="{{item.shipping_chain}}" item_desc="{{item.description}}" item_qty="{{item.quantity}}" item_total="{{item.total}}">
+                                <i class="fa fa-pencil" style="cursor:pointer; position:relative; left:5px;"></i>
+                            </a>
+                        {% else %}
+                            <a item_id="{{item.id}}" user_id="{{item.user.email}}" item_type="{{item.item_type}}" 
+                            class="admin_edit" item_chain="{{item.courier_tracking_number}}" item_desc="{{item.description}}" item_qty="{{item.quantity}}" item_total="{{item.total}}">
+                                <i class="fa fa-pencil" style="cursor:pointer; position:relative; left:5px;"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}                            
+        </table>
+    </div>
+    {% endif %}
+    <!--fxd_weight_id=--> 
+</div>
+    
+<div id="create_box_by_admin" class="col-md-12 hidden" style="position: relative; top: 235px; right: 415px;">
+    <div class="ajax-progress2" style="position: absolute; top: 226px; left: 445px;"></div>
+    <div class="col-md-12">
+        <div>
+<!--     {% if alert %} <span id="msg_not" style="color: red;position: relative; top: -118px; left: 271px;">{{alert}}</span>{% endif %}
+ -->    
+    {% if items %}
+        <div class="col-md-12" >
+            <table class="table bordered" width="100%" border="0" style="line-height:24px; margin-top: 130px;  width:50%;" id="nobk">
+                    <tr>
+                        <th class="item_selector_all" >
+<!--                         <input class="select-all" type="checkbox" name="selected_all_items" id ="select_all_items"/>
+ -->                    </th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Route</th>
+                        <th>Price</th>
+                    </tr>
+                    {% for item in items %}
+                    <tr>
+                            <td class="item_selector">
+                              <input class="selected-items" type="checkbox" name="selected_item" value = "{{ item.pk }}" checked />
+                            </td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.shipping_chain}}</td>
+                            {% if item.total_value %}
+                            <td>${{item.total_value}}</td>
+                            {% else %}
+                            <td>&#8358;{{item.naira_value}}</td>
+                            {% endif %}
+                    </tr>
+                    {% endfor %}
+                    <tr></tr>                            
+            </table>
+        </div>
+    {% endif %}
+        <div class="col-md-12">
+            <form name="goCreatePackegeForm" id="goCreatePackegeForm" action="{% url 'sokohaliAdmin:create_package' %}" method="POST">
+               {% csrf_token %}
+
+               <div id="box_dimensions">
+                   <div class="col-md-6">
+                        <label>Length:</label>
+                        <input data-toggle="tooltip" title="Please Enter the appropriate length!" style="height:35px;" name ="id_length" id ="id_length" type="text" placeholder = "" class="longinput" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <label>Height:</label>
+                        <span data-toggle="tooltip" title="Please Enter the appropriate height!" ><input style="height:35px;" name ="id_height" id ="id_height" type="text" class="longinput" placeholder = "" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Width:</label>
+                        <span  data-toggle="tooltip" title="Please Enter the appropriate width" ><input style="height:35px;" name ="id_width" id ="id_Width" type="text" class="longinput" placeholder = "" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/></span>
+                    </div>
+                    <div class="col-md-12 hidden">
+                        <input type="text" id="user_package_created" name="user_package_created" value=""/>
+                    </div>
+
+                    <div class="col-md-12 hidden">
+                        <input type="text" id="cb_pkg_type" name="cb_pkg_type" value="{{item.item_type}}"/>
+                    </div>
+                    <div class="col-md-12 hidden">
+                        <input type="text" id="user_items_selected" name="user_items_selected" value=""/>
+                    </div>
+
+                    <input type="text" class="hidden" name="shipment_type" id="shipment_type" value=""/>
+
+                    <div class="col-md-6 pull-right">
+                        <label>Weight:</label>
+                        <span  data-toggle="tooltip" title="Please Enter the appropriate Weight in pounds(lbs)" data-placement><input style="height:35px;" name ="id_weight" id ="id_weight" type="text" class="longinput" placeholder = "" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/></span>
+                        <div id="box_units">
+                            <input name ="unit" style="position:relative; top:6px;" id ="pounds" type="radio" value="lb" required/>Pounds(lbs)
+                            <input name ="unit" style="position:relative; top:6px;" id ="kgs" type="radio" value="Kg" style="margin-left: 20px;" required/>Kilograms(kgs)   
+                        </div>
+                    </div>
+                    <div class="col-md-6 direction" style="position:relative; top:30px;">
+                        <label>Select direction</label>
+                        <select class ="myselect" id="shipping_direction" name="shipping_direction" required>
+                            <option sh_chain="" value="">Select shipping route</option>
+                            {% for route in marketer_routes %}
+                                {% ifequal route.id selected_route.id %}
+                                    <option sh_chain="{{route.id}}" selected="selected" value="{{route}}">{{route}}</option>
+                                {% else %}
+                                    <option sh_chain="{{route.id}}" value="{{route}}">{{route}}</option>
+                                {% endifequal %}
+                            {% endfor %}
+                        </select> 
+                    </div>
+                    <div class ="hidden" id="WHaddress">
+                        
+                    </div>
+               </div>
+
+               <div class="col-md-12 fixed_weight_shipping_method hidden" style="position:relative; top:-30px;">
+                  <p style="position:relative; top:19px; right:13px;"><strong> SHIPPING METHOD:</strong></p>
+
+                    <div class="col-md-3 myStyle">
+                        <label>
+                                <input style="position:relative; right:26px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_air" value="Air Freight" />Air Freight
+                        </label>
+                    </div>
+
+                    <div class="col-md-3 myStyle">
+                        <label>
+                                <input style="position:relative; right:26px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_sea" value="Sea Freight" />Sea Freight
+                        </label>
+                    </div>
+               </div>
+
+               <div class="col-md-6 direction2 hidden" style="position:relative; right:14px; bottom:26px;">
+                    <label>Select direction</label>
+                    <select class ="myselect" id="shipping_direction2" name="shipping_direction2" required>
+                        <option sh_chain="" value="">Select shipping route</option>
+                        {% for route in marketer_routes %}
+                            <option sh_chain="{{route.id}}" value="{{route}}">{{route}}</option>
+                        {% endfor %}
+                    </select> 
+                </div>
+
+                <div class ="hidden" id="WHaddress2">
+                        
+                </div>
+                
+                <!--<div class="col-md-6 pull-right" style="position:relative; top:15px;" id="box_units">
+                    <input name ="unit" style="position:relative; top:6px;" id ="pounds" type="radio" value="lb" required/>Pounds(lbs)
+                    <input name ="unit" style="position:relative; top:6px;" id ="kgs" type="radio" value="Kg" style="margin-left: 20px;" required/>Kilograms(kgs)   
+                </div>-->
+
+                <input class="hidden" type="submit" name="" id="nothing_to_do" class='btn' value="Submit"/>
+            </form> 
+         </div>
+      </div>
+    </div>
+</div>

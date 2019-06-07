@@ -1,0 +1,86 @@
+{% load custom_tags %}
+<!-- FOOTER  -->
+<footer class="black two">
+    <div class="sfooter" style="display:none;">
+
+        <div class="container ">
+            <div class="inner ">
+                <div class="col-md-4 ">
+                    <div class="block">
+                        <a href="" class="row">
+
+                            <h1>Shipping</h1>
+                        </a>
+                        <a href="" class="row">
+
+                            <h1>Shopping</h1>
+                        </a>
+                        <a href="#" class="row">
+                            <h1>Deals</h1>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8 ">
+
+                    <div class="col-md-6 ">
+
+                        <div class="col-md-12">
+                            <h2>Address:</h2>
+                            <p>{{ request.marketing_member.complete_address }}
+                                <br/>Phone: {{ request.marketing_member.phone_number }}
+                                <br/> Email: <a href="#">{{ request.storefront_email }}</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom ">
+        <div class="container ">
+
+            <p style="line-height:35px;">&copy; {{ request.storefront_name }} {% current_year %}. All rights Reserved<br>Powered by <a href="https://www.sokohali.com" target="_blank" style='color: #fff'>Sokohali</a></p>
+            <div class="social ">
+               {% if request.marketing_member.facebook_link %}
+                    <a href="{{ request.marketing_member.facebook_link }}" target="_blank">
+                        <img src="{{STATIC_URL}}zaposta/img/s1w.png " />
+                    </a>
+                {% endif %}
+
+                {% if request.marketing_member.twitter_link %}
+                    <a href="{{ request.marketing_member.twitter_link }}" target="_blank">
+                        <img src="{{STATIC_URL}}zaposta/img/s2w.png " />
+                    </a>
+                {% endif %}
+
+                {% if request.marketing_member.googleplus_link %}
+                    <a href="{{ request.marketing_member.googleplus_link }}" target="_blank">
+                        <img src="{{STATIC_URL}}zaposta/img/s3w.png " />
+                    </a>
+                {% endif %}
+
+                {% if request.marketing_member.linkedin_link %}
+                    <a href="{{ request.marketing_member.linkedin_link }}" target="_blank">
+                        <img src="{{STATIC_URL}}zaposta/img/s4w.png " />
+                    </a>
+                {% endif %}
+            </div>
+            <nav class="links ">
+                <li>
+                    <a href="#">Terms and Conditions</a>
+                </li>
+                <li>
+                    <a href="#">FAQ</a>
+                </li>
+                <li>
+                    <a href="#">Support</a>
+                </li>
+                <!-- <li>
+                    <a href="#">Blog</a>
+                </li> -->
+            </nav>
+
+        </div>
+    </div>
+</footer>
+<!-- FOOTER  -->

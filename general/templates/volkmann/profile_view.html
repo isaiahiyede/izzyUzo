@@ -1,0 +1,218 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  View Profile
+              </h1>
+        <ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">View profile</a></li>
+          <li class="active">Data</li>
+        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+
+        
+
+        <div class="row" style="overflow-x: hidden;">
+           <style>
+                                
+              label{
+                  font-size: 15px;
+              }
+            </style>   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+                   <hr>
+                   <div class="card-content shipment_details" id="shipment_details">
+                    <div class="row">
+                    <form action="" method="post">
+                                            <div class="col-md-12" style="min-height: 1136px !important">
+
+                                                <h1>Your profile details
+                                                    {% if not request.user.is_staff %}| <a href="{% url 'general:edit_profile'  request.user.username %}">Edit</a>{% endif %}
+                                                </h1><br><br>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>Title:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span>{{ profile.title }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>First Name:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span>{{ profile.first_name }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>Last Name:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span>{{ profile.last_name }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>Adddress:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span> {% if profile.address %} {{ profile.address}} {% endif %}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>City:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span> {% if profile.city %} {{ profile.city }} {% endif %}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>State:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span> {% if profile.state %} {{ profile.state }} {% endif %}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>Country:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span> {% if profile.country %} {{ profile.country }} {% endif %}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>Telephone:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span> {% if profile.telephone %} {{ profile.telephone }} {% endif %}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>How Did You Find Us:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span> {% if profile.how_did_you_find_us %} {{ profile.how_did_you_find_us}} {% endif %}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>E-mail:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span> {{ profile.user.email}}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    <div class="col-md-6 info">
+                                                        <span>Password:</span>
+                                                    </div>
+                                                    <div class="col-md-6 info">
+                                                        <span>xxxxxx {% if not request.user.is_staff %}<a href="/resetpassword/" style="color: blue;">[Change Password]</a></span>{% endif %}
+                                                    </div>
+                                                </div>
+
+                                                <!--% if request.user.is_superuser or request.user.useraccount.limited_access %}-->
+                                                    <!--% if profile.bank_account_no != ""%}
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-6 info">
+                                                                <span>Bank:</span>
+                                                            </div>
+                                                            <div class="col-md-6 info">
+                                                                <span>{{ profile.bank}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-6 info">
+                                                                <span>Bank Account Number:</span>
+                                                            </div>
+                                                            <div class="col-md-6 info">
+                                                                <span>{{decrypt_acc_no}}</span>
+                                                            </div>
+                                                        </div>-->
+                                                    {% if profile.bvn_no != "" %}
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-6 info">
+                                                                <span>BVN No:</span>
+                                                            </div>
+                                                            <div class="col-md-6 info">
+                                                                <span>xxxxxxxxxxx</span>
+                                                                <!-- <span> decrypt_bvn_no}}</span> -->
+                                                            </div>
+                                                        </div>
+
+
+                                                    {% else %}
+                                                    {% if profile.photo_id %}
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-6 info">
+                                                                <span>Photo ID:</span>
+                                                            </div>
+                                                            <div class="col-md-6 info">
+                                                                <span><a href="{{ profile.photo_id.url}}" target="_blank">View</a></span>
+                                                            </div>
+                                                        </div>
+                            {% endif %}
+                            {% if profile.utility_bill %}
+                                                        <div class="col-md-12">
+                                                            <div class="col-md-6 info">
+                                                                <span>Utility Bill:</span>
+                                                            </div>
+                                                            <div class="col-md-6 info">
+                                                                <span><a href="{{ profile.utility_bill.url}}" target="_blank">View</a></span>
+                                                            </div>
+                                                        </div>
+                            {% endif %}
+                                                    {% endif %}
+                                                <!--% endif %}-->
+                                                {% if request.user.is_staff %}
+                                                    {% if profile.address_activation_completed and not profile.address_activation %}
+                                                 <div class="col-md-12 buttons" style="margin-top:9px;">
+
+                                                    <a href="{% url 'sokohaliAdmin:usertype' profile.id 'activate_address' %}" class="rst"><!--<span class="glyphicon glyphicon-repeat"></span>-->Activate Address</a>
+                                                    {% endif %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            </form>
+                    </div>
+                   </div>
+              </div>
+             </div>
+           </div>
+        </div>
+
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+{% endblock script %}

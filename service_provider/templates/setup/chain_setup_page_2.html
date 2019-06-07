@@ -1,0 +1,273 @@
+{% extends 'setup/add-service.html' %}
+{% load staticfiles %}
+
+{% block progress_bar_width %}
+    style="width: 354px;"
+{% endblock %}
+
+{% block custom-styles %}
+    {{ block.super }}
+    <link href="{% static 'sokohali/css/bootstrap-select.css' %}" rel="stylesheet">
+    <style>
+      select{
+        width: 50% !important;
+      }
+      #id_country{
+        width: 0%!important;
+      }
+      #id_state{
+        width:0%!important;
+      }
+    </style>
+{% endblock %}
+
+{% block inner_page_content %}
+<!-- Page Inner Content/Changes -->
+    <div class="page-content active">
+        <!-- Header -->
+        <div class="header">
+            <div class="left">
+                <h1>Set Up Your Services</h1>
+                <!--% include 'setup_snippet/route_inner.html' %}-->
+                <p>This is where you set up your services for use</p>
+            </div>
+            <!-- Right Status -->
+            {% if issues_to_fix > 0 %}
+            <div class="right">
+                <h2 style="float:left;">Issues to fix:</h2>
+                <span class="label">{{ issues_to_fix }}</span>
+                <span class="label yellow" style="display:none;">1</span>
+            </div>
+            {% endif %}
+            <!-- Right Status -->
+        </div>
+        <!-- Header -->
+        <!-- Page Content -->
+        <div class="pagect">
+            <div class="steps">
+                <div class="progress">
+                </div>
+                <div class="smcircle">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <span>Your Customers {% if not country %}<br/>(Origin){% endif %}</span>
+                </div>
+                <div class="item gray disabled">
+                    <div class="dcircle">
+                        <img src="{% static 'soko-admin/img/icon1.png' %}" />
+                    </div>
+                    <div class="tooltip bottom"><strong>Storefront</strong></div>
+                </div>
+                <div class="item gray two disabled">
+                    <div class="dcircle">
+                        <img src="{% static 'soko-admin/img/icon2.png' %}" />
+                     </div>
+                    <div class="tooltip top">your<strong>integrated payment </strong>
+                    </div>
+                </div>
+                <div class="item gray disabled">
+                    <div class="dcircle">
+                        <img src="{% static 'soko-admin/img/icon3.png' %}" />
+                    </div>
+                    <div class="tooltip bottom"><strong>Local Distribution member </strong>{% if not country %}in origin country{% endif %}</div>
+                </div>
+
+                <div class="item {% if offer_warehouse_form.instance.id and offer_warehouse_form.instance.offered_for_rent %}green two{% else %}two red{% endif %}">
+                    <div class="circle" rel="w4">
+                        <img src="{% static 'soko-admin/img/icon4.png' %}" />
+                    </div>
+                    <div class="tooltip top">Offer <strong>warehousing service that can process packages for yourself and others!</strong>
+                    </div>
+                </div>
+                <div class="item {% if offer_shipping_service_form.instance.id and offer_shipping_service_form.instance.offered_for_rent %}green{% else %}red{% endif %}">
+                    <div class="circle" rel="w5">
+                        <img src="{% static 'soko-admin/img/icon5.png' %}" />
+                    </div>
+                    <div class="tooltip bottom">Offer <strong>Shipping service that can book shipments for yourself and others!</strong>
+                    </div>
+                </div>
+                <div class="item {% if offer_customs_clearing_form.instance.id and offer_customs_clearing_form.instance.offered_for_rent %}green two{% else %}two red{% endif %}">
+                    <div class="circle" rel="w6">
+                        <img src="{% static 'soko-admin/img/icon6.png' %}" />
+                    </div>
+                    <div class="tooltip top">Offer <strong>Customs Clearing service that can clear goods for yourself and others!</strong>
+                    </div>
+                </div>
+                <div class="item gray disabled">
+                    <div class="dcircle">
+                        <img src="{% static 'soko-admin/img/icon3.png' %}" />
+                    </div>
+                    <div class="tooltip bottom"><strong>Local Distribution member in destination country<!--for USA that will deliver to the door (not available for you)--></strong>
+                    </div>
+                </div>
+                <div class="smcircle two">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <span>Your Customers {% if not country %}<br/>(Destination){% endif %}</span>
+                </div>
+            </div>
+            <div class="overlay"></div>
+            <!-- Right Side Widget -->
+            <div class="widget">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <!-- Widget Content  -->
+                <div class="widget_content" id="w3">
+                    <div class="header red">
+                        <div class="circle">
+                            <img src="{% static 'soko-admin/img/icon3.png' %}" />
+                        </div>
+                        <h1>Local Distribution</h1>
+                        <p>Not Set Yet</p>
+                    </div>
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; height: auto; overflow: hidden;"></div>
+                    </div>
+                    <div class="footer">
+                        <a href="#" class="btn green">Save</a>
+                    </div>
+                </div>
+                <!-- Widget Content  -->
+                <!-- Widget Content  -->
+                <div class="widget_content" id="w4">
+                    <div class="header {% if offer_warehouse_form.instance.id and offer_warehouse_form.instance.offered_for_rent %}green{% else %}red{% endif %}">
+                        <div class="circle">
+                            <img src="{% static 'soko-admin/img/icon4.png' %}" />
+                        </div>
+                        <h1>Warehouse</h1>
+                        <p>{% if offer_warehouse_form.instance.id and offer_warehouse_form.instance.offered_for_rent %}Set{% else %}Not Yet Set{% endif %}</p>
+                    </div>
+                    <form id="offer_warehouse_facility" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="service_name" value="warehouse"/>
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; height: auto; overflow: hidden;">
+                            <div class="widget_scroll_inner">
+
+                                <div class="checkbox">
+                                  {% for field in offer_warehouse_form %}
+                                    {% if field.name == 'auto_subscriber_approval' or field.name == 'publish_reviews' or field.name == 'offered_for_rent' %}
+                                      <div class="col-md-12">
+                                          <label>{{ field }} {{ field.label}}</label>
+                                      </div>
+                                    {% else %}
+                                      <div class="col-md-12">
+                                          <span class="question">{{ field.label}}</span><br/>
+                                          {{ field }}
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                    <div class="footer">
+                        <button class="btn green save_info">Save</button>
+                    </div>
+                    </form>
+                </div>
+                <!-- Widget Content  -->
+                <!-- Widget Content  -->
+                
+                
+                
+                <div class="widget_content" id="w5">
+                    <div class="header {% if offer_shipping_service_form.instance.id and offer_shipping_service_form.instance.offered_for_rent %}green{% else %}red{% endif %}">
+                        <div class="circle">
+                            <img src="{% static 'soko-admin/img/icon5.png' %}" />
+                        </div>
+                        <h1>Shipping</h1>
+                        <p>{% if offer_shipping_service_form.instance.id and offer_shipping_service_form.instance.offered_for_rent %}Set{% else %}Not Yet Set{% endif %}</p>
+                    </div>
+                    <form id="offer_shipping_service" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="service_name" value="shipper"/>
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; height: auto; overflow: hidden;">
+                            <div class="widget_scroll_inner">
+
+                              <div class="checkbox">
+                                {% for field in offer_shipping_service_form %}
+                                  {% if field.name == 'auto_subscriber_approval' or field.name == 'publish_reviews' or field.name == 'offered_for_rent' %}
+                                    <div class="col-md-12">
+                                        <label>{{ field }} {{ field.label}}</label>
+                                    </div>
+                                  {% else %}
+                                    <div class="col-md-12">
+                                        <span class="question">{{ field.label}}</span><br/>
+                                        {{ field }}
+                                    </div>
+                                  {% endif %}
+                                {% endfor %}
+
+                              </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <button class="btn green save_info">Save</button>
+                    </div>
+                    </form>
+                </div>
+                <!-- Widget Content  -->
+                <!-- Widget Content  -->
+                <div class="widget_content" id="w6">
+                    <div class="header {% if offer_customs_clearing_form.instance.id and offer_customs_clearing_form.instance.offered_for_rent %}green{% else %}red{% endif %}">
+                        <div class="circle">
+                            <img src="{% static 'soko-admin/img/icon6.png' %}" />
+                        </div>
+                        <h1>Customs Clearing</h1>
+                        <p>{% if offer_customs_clearing_form.instance.id  and offer_customs_clearing_form.instance.offered_for_rent  %}Set{% else %}Not Yet Set{% endif %}</p>
+                    </div>
+
+                    <form id="offer_clearing_service" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="service_name" value="clearing_agent"/>
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; height: auto; overflow: hidden;">
+                            <div class="widget_scroll_inner">
+                              <div class="checkbox">
+                                {% for field in offer_customs_clearing_form %}
+                                  {% if field.name == 'auto_subscriber_approval' or field.name == 'publish_reviews' or field.name == 'offered_for_rent' or field.name == 'quote_per_cosignment' %}
+                                    <div class="col-md-12">
+                                        <label>{{ field }} {{ field.label}}</label>
+                                        {% if field.help_text %}<h6>({{ field.help_text }})</h6>{% endif %}
+                                    </div>
+                                  {% else %}
+                                    <div class="col-md-12">
+                                        <span class="question">{{ field.label}}</span><br/>
+                                        {{ field }}
+                                    </div>
+                                  {% endif %}
+                                {% endfor %}
+
+                              </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <button class="btn green">Save</button>
+                    </div>
+                    </form>
+                </div>
+                <!-- Widget Content  -->
+
+            </div>
+            <!-- Right Side Widget -->
+        </div>
+        <!-- Page Content -->
+    </div>
+    <!-- Page Inner Content/Changes -->
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}

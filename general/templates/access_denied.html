@@ -1,0 +1,58 @@
+{% extends "base/zaposta_base.html" %}
+
+
+{% block title %}Access Denied{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+{% block st_content %}
+<div class="st-content-inner">
+    <!-- extra div for emulating position:fixed of the menu -->
+    <!-- Main Section -->
+    <section id="main" class="form-outer">
+        <div class="hero">
+            <div class="container">
+                <div class="form show">
+                    <div class="inner">
+
+                        <!-- Login Account -->
+                        <div class="container" id="login">
+                            <div class="col-md-6 promo">
+                                <h1>ACCESS DENIED</h1>
+                            </div>
+
+                            <div class="col-md-6 left">
+
+                                <p style="margin-top: 50px;">You do not have the permission to view the requested page.</p>
+                                <p>Please contact Site Admin for further clarification.</p>
+                                <!--<img src="{{STATIC_URL}}page-not-found.jpg"/>-->
+                            </div>
+
+                        </div>
+                        <!-- Login Account -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Main Section -->
+
+    <!-- Other Services -->
+
+    <!-- Other Services -->
+
+    <!-- FOOTER  -->
+    {% include "zaposta_snippet/footer_v1.html" %}
+    <!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endblock %}
+
+
+{% block script %}
+
+
+{% endblock %}

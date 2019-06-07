@@ -1,0 +1,388 @@
+{% extends "base/zaposta_base.html" %}
+{% load humanize %}
+{% load activelink %}
+{% load staticfiles %}
+
+{% load account_standing %}
+<!--load operation_countries-->
+{% load currency %}
+
+{% block title %}Shipping - Shipment Confirmation{% endblock %}
+
+
+{% block extra_script %}
+    <!-- Special Font for Icons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- BASED ON SELECTION OF CONSOLIDATION, INSURANCE AND PACKAGE STRIPPING OPTIONS -->
+
+{% endblock %}
+
+{% block extra_head_3 %}
+
+{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+{% block st_content %}
+<!-- this is the wrapper for the content -->
+<div class="st-content-inner">
+	<!-- extra div for emulating position:fixed of the menu -->
+	<!-- Steps Section -->
+		<section id="steps" class="tt">
+		<div class="white"></div>
+		<!-- Page -->
+		<div class="container page">
+		<form action="" method="POST">
+			{% include 'zaposta_snippet/order_placement_stages.html' with active_page=6 %}
+
+			<div class="col-md-8 content_outer">
+				<div class="col-md-12 content" style="padding-bottom:0;">
+
+					<div class="header">Confirmation</div>
+
+					<div class="credit two">
+
+
+            {% if handling_option == "pick-up-package" or handling_option == "drop-at-postoffice" %}
+						<div class="col-md-12 printout two">
+							<div class="col-md-12 bts">
+								<a onclick = 'window.open("{% url 'shipping:package_label' 'all' %}", "invoice", "width=650,height=650,scrollbars=yes,menubar=yes,status=yes,top=10,location=false")' class="btn yellow view_label" >Print Shipment Label</a>
+            	</div>
+						</div>
+            {% else %}
+            <div class="col-md-12">
+							<div class="col-md-12 bts">
+            	</div>
+						</div>
+            {% endif %}
+
+
+
+						<div class="col-md-12" style="padding-top:30px;">
+							<div class="alert alert-info two" role="alert">
+                  				<strong>Shipment Confirmation</strong>
+    							<br/>Your shipment was successfully created on
+    							<br/> Date: <span style="font-weight:600; margin-right:5px;">{{ current_datetime|date:'d/m/Y' }}</span> Time: <span style="font-weight:600;">{{ current_datetime|time:'h:i:s' }} GMT</span>
+
+
+							</div>
+						</div>
+
+						<div class="col-md-12" style="padding-top:15px;">
+							<p>Thank you for shipping with <strong style="color:#000;">{{ request.storefront_name|title }}</strong></p>
+
+							{% if balance_D > 0 %}
+							<p>To complete your shipment, print this document and bring it with you to any of our partner bank branches across the country to lodge your payment.</p>
+							<p>If you are unable to print this document, please write down your confirmation/shipment number below now. You need to use this <strong style="color:#000;">SHIPMENT NUMBER</strong> and your <strong style="color:#000;">FIRST NAME</strong> as <strong style="color:#000;">"DEPOSITOR NAME"</strong> to make your payment to {{ request.storefront_name|title }} at the bank.</p>
+							{% endif %}
+						</div>
+
+						<div class="col-md-12" style="padding-top:15px;">
+							<h1>Shipment Details</h1>
+						</div>
+						<div class="table three">
+							<table width="100%" borde="0">
+								<tr>
+									<th>Services/Purchases</th>
+									<th></th>
+								</tr>
+
+								{% if pickup_charge_D > 0 %}
+									<tr>
+										<td>
+											Pickup/DropOff Charge
+										</td>
+										<td>
+											<strong> $ {{ pickup_charge_D|floatformat:2|intcomma }} /
+											{% country_currency_code lb_country %}&nbsp;{{ pickup_charge_N|floatformat:2|intcomma }} </strong>
+										</td>
+									</tr>
+								{% endif %}
+								<tr>
+									<td>
+										Freight (International)
+									</td>
+									<td>
+										<strong>$ {{ freight_intl_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ freight_intl_N|floatformat:2|intcomma }}</strong>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Freight (Local)
+									</td>
+									<td>
+										<strong>$ {{ freight_local_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ freight_local_N|floatformat:2|intcomma }}</strong>
+									</td>
+								</tr>
+								<tr style="background-color:#e0e0e0;">
+									<td>
+										Total Actual Weight
+									</td>
+									<td>
+										<strong>{{ total_actual_weight|floatformat:2 }}lbs / {{ total_actual_weight_k|floatformat:2 }}kg</strong>
+									</td>
+								</tr>
+								<tr style="background-color:#e0e0e0;">
+									<td>
+										Total Actual Dimension
+									</td>
+									<td>
+										<strong>{{ total_dim_weight|floatformat:2 }}lbs / {{ total_dim_weight_k|floatformat:2 }}kg</strong>
+									</td>
+								</tr>
+								{% if insurance_fee_D > 0 %}
+								<tr>
+									<td>
+										Product Safety and Delivery Guarantee
+									</td>
+									<td>
+										<strong>$ {{ insurance_fee_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ insurance_fee_N|floatformat:2|intcomma }}</strong>
+									</td>
+								</tr>
+								{% endif %}
+								<tr>
+									<td>
+										VAT
+									</td>
+									<td>
+										<strong>$ {{ VAT_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ VAT_N|floatformat:2|intcomma }}</strong>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Service Charge
+									</td>
+									<td>
+										<strong>$ {{service_charge_D|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{service_charge_N|floatformat:2|intcomma}}</strong>
+									</td>
+								</tr>
+								{% if shipment.insure %}
+								<tr>
+									<td>
+										PS&DG (Product safety and delivery guarantee {{ insuranceRate|floatformat:1 }}%)
+									</td>
+									<td>
+										<strong>$ {{shipment.insurance_fee_D|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{shipment.insurance_fee_N|floatformat:2|intcomma}}</strong>
+									</td>
+								</tr>
+								{% endif %}
+
+								{% if shipment.consolidate %}
+								<tr>
+									<td>
+										Consolidation Fee
+									</td>
+									<td>
+										<strong>$ {{shipment.consolidation_fee_D|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{shipment.consolidation_fee_N|floatformat:2|intcomma}}</strong>
+									</td>
+								</tr>
+								{% endif %}
+
+								{% if shipment.strip_my_package %}
+								<tr>
+									<td>
+										Strip-My-Package Fee
+									</td>
+									<td>
+										<strong>{$ {shipment.strip_package_fee_D|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{shipment.strip_package_fee_N|floatformat:2|intcomma}}</strong>
+									</td>
+								</tr>
+								{% endif %}
+
+								{% if shipment.apply_shipping_credit %}
+								<tr>
+									<td>
+										Zaposta Credit Applied
+									</td>
+									<td>
+										<strong>$ {{shipment.shipping_credit_applied_D|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{shipment.shipping_credit_applied_N|floatformat:2|intcomma}}</strong>
+									</td>
+								</tr>
+								{% endif %}
+
+								{% if balance_D > 0 %}
+									<tr class="error_alert">
+										<td>
+											Balance
+										</td>
+										<td>
+											<strong>$ {{balance_D|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{balance_N|floatformat:2|intcomma}}</strong>
+										</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td>
+											Balance
+										</td>
+										<td>
+											<strong>$ 0.0 / {% country_currency_code lb_country %}&nbsp;0.0</strong>
+										</td>
+									</tr>
+								{% endif %}
+							</table>
+							<div class="table two" style="padding:0;">
+								<div class="col-md-12 line blue">
+									<p>Total Amount Payable:</p>
+									<div>
+										<p>$ {{total_D|floatformat:2|intcomma}} / {% country_currency_code lb_country %}&nbsp;{{total_N|floatformat:2|intcomma}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						{% if packages %}
+						<div class="col-md-12" style="padding-top:30px;">
+							<h1>Packages</h1>
+						</div>
+							{% for pkg in packages %}
+							<div class="col-md-12">
+								<div class="package two">
+									<span></span>
+									<p><strong>{{ pkg.tracking_number }}</strong> | Dimension {{pkg.number}}: {{pkg.dimension}} / {{pkg.box_weight}} lbs ({{pkg.box_weight_K}}kg) / Quantity: {{pkg.box_quantity}} </p>
+								</div>
+							</div>
+							<div class="col-md-12" style="padding-top:20px;">
+							<h1>Items in package</h1>
+							</div>
+							<div class="table two">
+								<table width="100%" borde="0">
+									<tr>
+										<th>Tracking No</th>
+										<th>Description</th>
+										<th>Quantity</th>
+										<th>Total Price</th>
+									</tr>
+									{% for item in pkg.shippingitem_set.all %}
+									<tr>
+										<td>
+											{{item.courier_tracking_number}}
+										</td>
+										<td class="product_name">
+											{{item.description}}
+										</td>
+										<td>
+											{{item.quantity}}
+										</td>
+										<td>
+											<strong style="float: left;">$ {{ item.total_value|floatformat:2|intcomma }} <!--/ {% country_currency_code lb_country %}&nbsp;{{ item.total_value_N|floatformat:2|intcomma }}</strong>-->
+										</td>
+									</tr>
+									{% endfor %}
+								</table>
+							</div>
+							{% endfor %}
+						{% endif %}
+
+						<!--<div class="col-md-12" style="padding-top:30px;">
+							<h1>Your Details</h1>
+						</div>
+						<div class="table four" style="padding-bottom:15px;">
+							<table width="100%" borde="0">
+								<tr style="display:none;">
+									<th></th>
+									<th></th>
+								</tr>
+								<tr>
+									<td>Full name of customer:</td>
+									<td><strong>{{owner|title }}</strong></td>
+								</tr>
+
+								<tr>
+									<td>Zaposta Bank Account at Guaranty Trust Bank:</td>
+									<td><strong>0171988384</strong></td>
+								</tr>
+							</table>
+						</div>-->
+
+
+					</div>
+				</div>
+			</div>
+			<!-- Standing -->
+			<!--<div class="standing col-md-4">
+
+			</div>-->
+			<!-- Standing -->
+			<!-- Bottom -->
+			<div class="bottom">
+				<a href="{% url 'general:my_account' %}" class="btn prev"><img src="{{STATIC_URL}}zaposta/img/arrow_left.png">Return</a>
+				<!--<button class="btn next blue">Next Step<img src="{{STATIC_URL}}zaposta/img/arrow_right.png"></button>-->
+			</div>
+			<!-- Bottom -->
+		</div>
+		<!-- Page -->
+
+		</form>
+	</section>
+	<!-- Steps Section -->
+
+	<!-- FOOTER  -->
+	{% include "zaposta_snippet/footer_v2.html" %}
+
+	<!-- FOOTER  -->
+
+	<!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endblock %}
+
+{% block popup %}
+<!-- Package Label Modal -->
+  {% include 'shipping_snippet/courier_label_modal.html' with packages=packages %}
+	{%  include 'shipping_snippet/custom_label_modal.html' with modal_id="view_label_modal" packages=packages %}
+<!-- Package Label Modal -->
+{% endblock %}
+
+
+
+{% block operation_countries %}
+	 <!--operatingcountries request.user.is_staff -->
+{% endblock %}
+
+
+{% block edit_shipment_order %}
+{% endblock %}
+
+{% block script %}
+<!-- <script type="text/javascript" src="{% static 'sokohali/js/printThis.js' %}"/></script>
+<script>
+  $('#print_label').click(function(){
+    $("#view_label_modal").printThis({
+        debug: false,
+        // importCSS: true,
+        // importStyle: true,
+        //printContainer: true,
+        //loadCSS: "../css/style.css",
+        //pageTitle: "My Modal",
+        //removeInline: false,
+        //printDelay: 333,
+        //header: null,
+        //formValues: true
+    });
+  })
+
+</script> -->
+<script>
+function printDiv(div) {
+    // Create and insert new print section
+    var elem = document.getElementById(div);
+    var domClone = elem.cloneNode(true);
+    var $printSection = document.createElement("div");
+    $printSection.id = "printSection";
+    $printSection.appendChild(domClone);
+    document.body.insertBefore($printSection, document.body.firstChild);
+
+    window.print();
+
+    // Clean up print section for future use
+    var oldElem = document.getElementById("printSection");
+    if (oldElem != null) { oldElem.parentNode.removeChild(oldElem); }
+                          //oldElem.remove() not supported by IE
+
+    return true;
+}
+</script>
+{% endblock %}

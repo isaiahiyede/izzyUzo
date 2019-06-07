@@ -1,0 +1,195 @@
+{% extends 'volkmann/mailbag.html' %}
+{% load staticfiles %}
+{% load humanize %}
+{% load currency %}
+
+
+{% block breadcrumbs %} 
+        <div class="header"> 
+              <h1 class="page-header">
+                  VEI WALLET ACTIVITY
+              </h1>
+        <ol class="breadcrumb">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">VEI WALLET ACTIVITY</a></li>
+          <li class="active">Data</li>
+        </ol> 
+        </div>    
+{% endblock breadcrumbs %}
+
+{% block innercontent %}
+
+        
+
+        <div class="row" style="overflow-x: hidden;">
+           <style>
+                                
+              label{
+                  font-size: 15px;
+              }
+            </style>   
+          <div class="col-md-12">
+             <div class="card">
+              <div class="card-action">
+                   <div class="card-content shipment_details" id="shipment_details">
+			        <div class="row">
+			        <div class="st-content-inner">
+						<!-- Main Section -->
+						<section id="main" class="payment_main">
+		
+							<div class="hero two" id="payment_page">
+			<div class="container outer">
+				<div class="form">
+					<div class="inner">
+						
+						<strong style="margin-left: 30px;{% if request.user.useraccount.credit_amount_D > 0 %}color:green;{% else %}color:red;{% endif %}">Credit balance: $ {{request.user.useraccount.credit_amount_D|floatformat:2|intcomma}}</strong>
+						<!-- Register Account -->
+						<div class="container" id="register">
+							<!-- <div class="col-md-6 promo two d3"> -->
+							
+							<!-- Regular Account -->
+							<div class="col-8 col-md-8">
+
+								<h1>View your transactions</h1><br/>
+								<p style="margin-bottom:0;">
+								{% if messages %}
+								{% for msg in messages %}
+								<span style="color: blue;">{{msg}}</span>
+								{% endfor %}
+								<br/>
+								{% endif %}
+								
+								</p>
+
+								<div>
+									<div>
+										<!-- Nav tabs -->
+										<ul class="nav nav-tabs" role="tablist">
+											<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Credit</a>
+											</li>
+											<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Debit</a>
+											</li>
+										</ul>
+										<!-- Tab panes -->
+										<div class="tab-content">
+
+											<div role="tabpanel" class="tab-pane active" id="home">
+												<div class="col-md-12 listitem top">
+													<div class="col-md-2">
+														<p>Date</p>
+													</div>
+													<div class="col-md-2">
+														<p>Amount($)</p>
+													</div>
+													<div class="col-md-4">
+														<p>Status</p>
+													</div>
+													<div class="col-md-4">
+														<p>Ref.No/Channel</p>
+													</div>
+													
+												</div>
+												<div class="inner_scroll">
+													{% for jeje in jejepay_credits %}
+													<div class="col-md-12 listitem">
+														<div class="col-md-2">
+															<p>{{ jeje.created_at|date:"d-m-Y" }}</p>
+														</div>
+														<div class="col-md-2">
+															<p>{{jeje.amount|floatformat:2|intcomma}}</p>
+														</div>
+														<div class="col-md-4">
+															<p>{{ jeje.status}}</p>
+														</div>
+														<div class="col-md-4">
+															<p>{{jeje.ref_no}}/{{jeje.payment_channel}}/{{jeje.message}}</p>
+														</div>
+														
+													</div>
+													
+													{% endfor %}
+
+												</div>
+
+											</div>
+											<div role="tabpanel" class="tab-pane" id="profile">
+												<div class="col-md-12 listitem top">
+													<div class="col-md-2">
+														<p>Date</p>
+													</div>
+													<div class="col-md-2">
+														<p>Amount($)</p>
+													</div>
+													<div class="col-md-4">
+														<p>Status</p>
+													</div>
+													<div class="col-md-4">
+														<p>Ref.No/Channel</p>
+													</div>
+													
+												</div>
+												<div class="inner_scroll">
+													{% for jeje in jejepay_debits %}
+													<div class="col-md-12 listitem">
+														<div class="col-md-2">
+															<p>{{ jeje.created_at|date:"d-m-Y" }}</p>
+														</div>
+														<div class="col-md-2">
+															<p>{{jeje.amount|floatformat:2|intcomma}}</p>
+														</div>
+														<div class="col-md-4">
+															<p>{{ jeje.status}}</p>
+														</div>
+														<div class="col-md-4">
+															<p>{{jeje.ref_no}}/{{jeje.payment_channel}}/{{jeje.message}}</p>
+														</div>
+														
+													</div>
+													
+													{% endfor %}
+
+												</div>
+
+											</div>
+											
+
+
+
+										</div>
+
+									</div>
+
+
+									<div class="col-md-12 buttons" style="margin-top:9px; display:none;">
+										<a href="#" class="btn blue">Add Funds</a>
+										<a href="#" class="rst"><span class="glyphicon glyphicon-repeat"></span>Reset</a>
+
+									</div>
+								</div>
+								<!-- Regular Account -->
+							</div>
+						</div>
+						<!-- Register Account -->
+					</div>
+				</div>
+			</div>
+							</div>
+
+						</section>
+						<!-- Main Section -->
+
+					</div>
+			        </div>
+                   </div>
+              </div>
+             </div>
+           </div>
+        </div>
+
+{% endblock innercontent %}
+
+{% block modal %}
+{% endblock modal %}
+
+{% block script %}
+{% endblock script %}

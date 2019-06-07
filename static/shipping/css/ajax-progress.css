@@ -1,0 +1,62 @@
+div.ajax-progress {
+  position: relative;
+  display: none;
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  background-image: url('https://zaposta.s3.amazonaws.com/static/shipping/indicator.gif');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: white;
+  -moz-border-radius:    10px;
+  -webkit-border-radius: 10px;
+  border-radius:         10px;
+}
+
+div.ajax-progress1 {
+  /*position: relative;*/
+  display: none;
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  background-image: url('https://zaposta.s3.amazonaws.com/static/shipping/indicator.gif');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: white;
+  /*border: 1px solid black;*/
+  -moz-border-radius:    10px;
+  -webkit-border-radius: 10px;
+  border-radius:         10px;
+}
+
+div.ajax-progress2 {
+  display: none;
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  background-image: url('https://zaposta.s3.amazonaws.com/static/shipping/indicator.gif');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: white;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+iv.ajax-progress3 {
+  display: none;
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  left: 50%;
+  background-image: url('https://zaposta.s3.amazonaws.com/static/shipping/indicator.gif');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: white;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}

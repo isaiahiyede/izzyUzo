@@ -1,0 +1,312 @@
+3es<!DOCTYPE html>
+{% load staticfiles %}
+<!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<!-- <<<<<<< Updated upstream -->
+    <meta name="description" content="Sokohali.com - Global delivery network. Setup the network you need to start and expand your international delivery business. Offer your facilities to other delivery businesses." />
+    <meta name="keywords" content="Sokohali.com - Global delivery network. Setup the network you need to start and expand your international delivery business. Rent a warehouse. Rent a customs clearing agent. Rent local distribution members." />
+<!-- ======= -->
+    <!-- <meta name="description" content="Sokohali.com - Demo page. Services marketplace. Shipping shipping web storefront. Shipping mobile storefront. Package processing app. Order management system." />
+    <meta name="keywords" content="Sokohali.com - Demo page. Services marketplace. Shipping shipping web storefront. Shipping mobile storefront. Package processing app. Order management system." /> -->
+<!-- >>>>>>> Stashed changes -->
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="{% static 'sokohali.ico' %}">
+
+    <title>Sokohali - Demo</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static "demointerim/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700' rel='stylesheet' type='text/css'>
+
+    <script src="https://use.fontawesome.com/a728b8f481.js"></script>
+
+    <link href="{% static "demointerim/css/unslider.css" %}" rel="stylesheet">
+    <link href="{% static "demointerim/css/unslider-dots.css" %}" rel="stylesheet">
+
+    <!-- Custom styles for the dashboard -->
+    <link href="{% static "demointerim/css/style.css" %}" rel="stylesheet">
+
+</head>
+
+<body class="demo_page">
+    <!-- Top Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="top_social">
+            <div class="container">
+                <div class="right">
+                    <!-- <p>Follow Us:</p>
+                    <a href="https://www.facebook.com/Sokohali/">
+                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/company/sokohali">
+                        <i class="fa fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://twitter.com/sokohali">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a> -->
+                </div>
+            </div>
+        </div>
+        <div class="container">
+
+            <div class="navbar-header">
+
+
+                <div class="menu navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <div id="nav-toggle">
+                        <span></span>
+                        <p>MENU</p>
+                    </div>
+                </div>
+
+                <a class="navbar-brand" href="/">
+                </a>
+            </div>
+
+            <!-- <a href="#Joinwaitinglist" class="btn red mobile_add" data-toggle="modal" data-target="#Joinwaitinglist">Register Now</a> -->
+            <a href="/register/" class="btn red mobile_add">Register Now</a>
+ 
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+                    <li>
+                        <a href="{% url 'general:about' %}">
+                           About
+                        </a>
+                    </li>
+
+                    <li class="dropdown large">
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-th-large" aria-hidden="true"></i>What you can do</a>
+
+                        <ul class="dropdown-menu">
+                            <li> <a href="/#overview1">Offer Facilities</a> </li>
+                            <li><a href="/#overview2">Rent Facilities</a></li>
+                            <li><a href="/#overview3">Offer Different Services</a></li>
+                            <li><a href="/#overview4">More Features</a></li>
+                        </ul>
+
+                    </li>
+                    <li>
+                        <a href="{% url 'general:business_settings' %}">
+                            Business Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'general:contact' %}">
+                            Contact
+                        </a>
+                    </li>
+                    <li class="dropdown last" style="display:none;">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            More 
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Other Service 1</a></li>
+                            <li><a href="#">Other Service 2</a></li>
+                            <li><a href="#">Other Service 3</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+
+        </div>
+    </nav>
+    <!-- Top Navigation -->
+    <!-- Section -->
+    <section>
+        <div class="container sweb">
+            <div class="col-md-12" style="padding-bottom:30px;">
+                <h1><span>Sokohali Network: </span>Services <br/> Marketplace</h1>
+                <h2 style="margin-bottom:15px;">Members can offer or rent services they need to complete an end-to-end delivery chain.
+                </h2>
+            </div>
+            <!-- <div class="col-md-6">
+                <div class="panel"></div>
+                <a href="#" class="btn w">View Storefront</a>
+            </div> -->
+            <div class="col-md-6" style="position:relative; left:280px;">
+                <div class="panel" style="border-color:#fff; min-height:0px !important; border:none !important;">
+                    <div class="col-md-6" style="position:relative; left:-15px;">
+                        <iframe width="540" height="365" src="https://www.youtube.com/embed/L8aXUgfYaa0" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <!-- <a href="#" class="btn two black"><i class="fa fa-chrome" aria-hidden="true"></i>Get the Chrome App</a> -->
+            </div>
+        </div>
+    </section><br/><br/>
+    <section>
+        <div class="container">
+            <div class="col-md-12" style="padding-bottom:30px;">
+                <h1><span>Web App: </span>Shipping <br/> Web Storefront</h1>
+                <h2 style="margin-bottom:15px;">Postal centres can relate with their customers on the web
+                </h2>
+            </div>
+            <div class="col-md-6">
+                <div class="panel" style="border-color:#fff; min-height:0px !important;">
+                    <div class="col-md-6" style="position:relative; left:7px;">
+                        <iframe width="510" height="345" src="https://www.youtube.com/embed/TYfc_zMpfpM" frameborder="0" allowfullscreen></iframe>
+                    </div>                
+                </div>
+                <a href="http://smatpost.sokohali.com/" class="btn two black" style="position:relative; left:155px;
+                width:260px;"><i class="fa fa-chrome" aria-hidden="true"></i>View Web Storefront for Import</a>            
+            </div>
+            <div class="col-md-6">
+                <div class="panel" style="border-color:#fff; min-height:0px !important;">
+                    <div class="col-md-6" style="position:relative; left:7px;">
+                        <iframe width="510" height="345" src="https://www.youtube.com/embed/Uw6_KobUjFc" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <a href="http://smatpost.sokohali.com/" class="btn two black" style="position:relative; left:155px; width:260px;"><i class="fa fa-chrome" aria-hidden="true"></i>View Web Storefront for Export</a>
+            </div>
+
+            <!-- <div class="col-md-6">
+                <div class="panel" style="border-color:#fff; min-height:0px !important;">
+                    <div class="col-md-6" style="position:relative; left:0px; margin-top:50px;">
+                        <iframe width="510" height="345" src="https://www.youtube.com/embed/FPM2nrSb30o" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <a href="https://chrome.google.com/webstore/detail/zaposta-chrome-extension/apfmmeplcfanojoeaphhkiigkjemoodm" class="btn two black" style="position:relative; left:165px;"><i class="fa fa-chrome" aria-hidden="true"></i>Get the Chrome App</a>
+            </div> -->
+
+            <div class="col-md-6" style="position:relative; left:280px;">
+                <div class="panel" style="border-color:#fff; min-height:0px !important;">
+                    <div class="col-md-6" style="position:relative; left:0px; margin-top:50px;">
+                        <iframe width="510" height="345" src="https://www.youtube.com/embed/FPM2nrSb30o" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <a href="https://chrome.google.com/webstore/detail/zaposta-chrome-extension/apfmmeplcfanojoeaphhkiigkjemoodm" class="btn two black" style="position:relative; left:165px;"><i class="fa fa-chrome" aria-hidden="true"></i>View Chrome App</a>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Section -->
+    <!-- Section -->
+    <section class="smobile">
+        <div class="container">
+            <div class="col-md-12" style="padding-bottom:30px; text-align:center;">
+                <h1><span>Mobile Apps: </span>Shipping <br/> Mobile Storefront</h1>
+                <h2 style="margin-bottom:15px;">Postal centres can relate with their customers through mobile apps
+                </h2>
+                <a href="#" class="btn two black" style="cursor:pointer !important;"><i class="fa fa-apple" aria-hidden="true"></i>IOS App</a>
+                <a href="#" class="btn two green" style="cursor:pointer !important;"><i class="fa fa-android" aria-hidden="true"></i>Android App</a>
+            </div>
+        </div>
+    </section>
+    <!-- Section -->
+    <!-- Section -->
+    <section class="pmobile">
+        <div class="container">
+            <div class="col-md-12" style="padding-bottom:30px; text-align:center;">
+                <h1><span>Mobile App: </span>Package Processing</h1>
+                <h2 style="margin-bottom:15px;">Members that handle delivery processes can use mobile to work on the go
+</h2>
+                <a href="#" class="btn two green" style="cursor:pointer !important;"><i class="fa fa-android" aria-hidden="true"></i>Processing App</a>
+            </div>
+        </div>
+    </section>
+    <!-- Section -->
+    <!-- Section -->
+    <section class="pweb">
+        <div class="container">
+            <div class="col-md-12" style="padding-bottom:30px;">
+                <h1><span>Web App: </span>Order Management <br/>System</h1>
+                <h2 style="margin-bottom:15px;">Every member can manage the different aspects of their business in one window
+</h2>
+            </div>
+            <div class="col-md-6">
+                <div class="panel" style="border-color:#fff; min-height:0px !important;">
+                    <img src="{% static "sokohalihomepage/img/sokobatch.png" %}" style="cursor:pointer;"/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel" style="border-color:#fff; min-height:0px !important;">
+                    <img src="{% static "sokohalihomepage/img/issz.png" %}" style="cursor:pointer;"/>
+                </div>
+            </div>
+            <div class="col-md-12">
+<!--                 <a href="#" class="btn black">View the Dashboard</a>
+ -->            </div>
+        </div>
+    </section>
+    <!-- Section -->
+
+    {%}
+
+    <footer>
+        <div class="container">
+            <div class="panel"></div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <!-- <ul>
+                    <li>
+                        <a href="#">Legal</a>
+                    </li>
+                    <li>
+                        <a href="#">Help</a>
+                    </li>
+                    <li>
+                        <a href="#">Support</a>
+                    </li>
+                </ul> -->
+                <p style="float:right;"> © Sokohali. All rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    {% block modal %}
+        {% include 'joinwaitinglist.html' %}
+    {% endblock %}
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static "demointerim/js/jquery.min.js" %}"></script>
+    <script src="{% static "demointerim/js/bootstrap.min.js" %}"></script>
+
+    <script src="{% static "demointerim/js/script.js" %}"></script>
+    <script src="{% static "demointerim/js/unslider.js" %}"></script>
+
+    <script>
+        jQuery(document).ready(function ($) {
+            $('.slider').unslider({
+                arrows: false
+            });
+        });
+    </script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $('.page_slider').unslider({
+                arrows: false,
+                animation: 'fade'
+            });
+
+        });
+    </script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $('.slider_icon').unslider({
+                arrows: false,
+                autoplay: true,
+                nav: false,
+                infinite: true
+            });
+        });
+    </script>
+</body>
+
+</html>

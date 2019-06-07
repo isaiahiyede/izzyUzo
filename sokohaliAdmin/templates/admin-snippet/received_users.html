@@ -1,0 +1,35 @@
+<div id="matchingusers"  style="position:relative; bottom:0px;" class="span12" style="padding-top: 20px; padding-bottom: 20px;">
+    
+        <table width="100%" border="0" class="table table-striped" id="matching_users_table">
+            {% if users %}
+                <tr >
+                    <th width="50">Action</th>
+                    <th width="100">Suite No</th>
+                    <th width="100">First Name</th>
+                    <th width="100">Last Name</th>
+                    <th width="100">Email</th>
+                    
+                </tr>
+            {% endif %}
+            {% for user in users %}
+                <tr >
+                    <td width="10"><input type="radio" name="user_id" user_id="{{user.pk}}" class="user_pk" id="id_user_id" value="{{user.pk}}" style="position:relative; right:5px;"></td>
+                    <td width="100">{{ user.suite_no }}</td>
+                    <td width="100">{{ user.first_name }}</td>
+                    <td width="100">{{ user.last_name }}</td>
+                    <td width="100">{{ user.user.email }}</td>
+                   
+                </tr>
+        
+            {% empty %}
+                <h3 style="color:red">No matching user(s)found.</h3>
+            {% endfor %}
+        </table>
+
+        <input type="hidden" id="selected_user_id" name="selected_user_id" value="">
+        {% if users %}
+            <button style="position: relative;" class="btn btn-primary pull-right" type="button" 
+            id="create_receiver_notify">Next<i style="position: relative;left: 10px;" class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+        {% endif %}
+</div>
+

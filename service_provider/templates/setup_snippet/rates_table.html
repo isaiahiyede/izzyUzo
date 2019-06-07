@@ -1,0 +1,26 @@
+<table width="100%" border="0" class="tb-{{ route.pk}}" {% if adjust %}style="position: relative; top: -140px;"{% endif %}>
+    <tr>
+        <th>S/N</th>
+        <!-- <th>Route</th> -->
+        <th>Shipping Method</th>
+        <th>From Weight</th>
+        <th>To Weight</th>
+        <th>Rate ($/lbs)</th>
+        <th>Action</th>
+    </tr>
+    {% for obj in route.shippingrate_set.all|dictsort:'shipping_method' %}
+    <tr class="{{ obj.shipping_method }}">
+        <td>{{forloop.counter}}</td>
+        <!-- <td>{{ obj.origin }} <i class="fa fa-long-arrow-right" aria-hidden="true"></i> {{ obj.destination }}</td> -->
+        <td>{{ obj.shipping_method.title }}</td>
+        <td>{{ obj.from_range }}</td>
+        <td>{{ obj.to_range }}</td>
+        <td>{{ obj.rate_D }}</td>
+        <td>
+          <a href="#" class='edit_rate' route="{{ route.origin }} - {{ route.destination}}" sm="{{ obj.shipping_method.title }}" wrg="{{ obj.from_range }} - {{ obj.to_range }}" route_id='{{ obj.id }}' rate_D="{{ obj.rate_D }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          <!-- <a href="?delete={{ obj.id }}" class="delete" style="padding-left: 30px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a> -->
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>

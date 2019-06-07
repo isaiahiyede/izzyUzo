@@ -1,0 +1,345 @@
+{% extends "base/base_index_zeac.html" %}
+{% load staticfiles %}
+{% block title %}ZeAC - zero electric Air Conditioner{% endblock %}
+
+{% block body %}
+
+<section class="hero hidden">
+        <div class="container-fluid">
+            <div class="col-md-6">
+                <h1>zero electric <br/><span>Air Conditioner</span></h1>
+                <p>A simple climate control system made out of an Air-Con Cylinder that produces cooling when you add water, and potted plants that consume CO2 and release fresh oxygen in your home.</p>
+
+            </div>
+        </div>
+        <div class="arrow"><i class="fa fa-arrow-down" aria-hidden="true"></i></div>
+        <div class="video">
+            <div class="counter">
+                <div>
+                    <p>units sold <br/> so far</p>
+                </div>
+                <div>
+                    <h1>22</h1>
+                </div>
+
+            </div>
+            <div class="circle">
+
+
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/m9jSqGe8aVQ?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+
+            </div>
+        </div>
+</section>
+
+<div class="single-product-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="single-sidebar">
+                        <h2 class="sidebar-title">Search Products</h2>
+                        <form action="#">
+                            <input type="text" placeholder="Search products...">
+                            <input type="submit" value="Search">
+                        </form>
+                    </div>
+                    
+                    <div class="single-sidebar hidden">
+                        <h2 class="sidebar-title">Products</h2>
+                        <div class="thubmnail-recent">
+                            <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                        <div class="thubmnail-recent">
+                            <img src="img/product-thumb-1.jpg" class="recent-thumb" alt="">
+                            <h2><a href="single-product.html">Sony Smart TV - 2015</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>$700.00</ins> <del>$800.00</del>
+                            </div>                             
+                        </div>
+                    </div>
+                    
+                    <div class="single-sidebar hidden">
+                        <h2 class="sidebar-title">Recent Posts</h2>
+                        <ul>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                            <li><a href="#">Sony Smart TV - 2015</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-md-8">
+                    <div class="product-content-right">
+                        <div class="woocommerce">
+                            <form method="post" action="#">
+                                <table cellspacing="0" class="shop_table cart">
+                                    {% if items %}
+                                    <thead>
+                                        <tr>
+                                            <th class="product-remove">&nbsp;</th>
+                                            <th class="product-thumbnail">Image</th>
+                                            <th class="product-name">Description</th>
+                                            <th class="product-quantity">Quantity</th>
+                                            <th class="product-price">Price</th>
+                                            <th class="product-subtotal">SubTotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for product in items %}
+                                        <tr class="cart_item">
+                                            <td class="product-remove">
+                                                <a title="Remove this item" class="remove" href="{% url 'general:delete_item' product.id %}" onclick="return confirm('Are you sure you want to delete?')">×</a> 
+                                            </td>
+
+                                            <td class="product-thumbnail">
+                                                <img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="{{product.docfile.url}}">
+                                            </td>
+
+                                            <td class="product-name">
+                                                <span href="single-product.html">{{product.title}}</span> 
+                                            </td>
+
+                                            <td class="product-price">
+                                                <span class="amount">{{product.quantity}}</span> 
+                                            </td>
+
+                                            <td class="product-quantity">
+                                                <span class="quantity">$&nbsp;{{product.price}}</span> 
+                                            </td>
+
+                                            <td class="product-subtotal">
+                                                <span class="amount">$&nbsp;{{product.total}}</span> 
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                        <tr>
+                                            <td class="actions" colspan="6">
+                                                <div class="coupon hidden">
+                                                    <label for="coupon_code">Coupon:</label>
+                                                    <input type="text" placeholder="Coupon code" value="" id="coupon_code" class="input-text" name="coupon_code">
+                                                    <input type="submit" value="Apply Coupon" name="apply_coupon" class="button">
+                                                </div>
+                                                <input type="submit" value="Update Cart" name="update_cart" class="button hidden">
+                                               <a href="{% url 'general:checkout' %}" value="Proceed to Checkout" class="add_to_cart_button" style="float: right;" style="float: right;">Proceed to Checkout</a>
+                                                
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    {% else %}
+                                        <p>You have <strong>no items</strong> currently in your cart! <strong>Add items now!</strong>
+                                        </p>
+                                    {% endif %}
+                                </table>
+                            </form>
+
+                            <div class="cart-collaterals">
+
+
+                            <div class="cross-sells hidden">
+                                <h2>You may be interested in...</h2>
+                                <ul class="products">
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="img/product-2.jpg">
+                                            <h3>Ship Your Idea</h3>
+                                            <span class="price"><span class="amount">£20.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
+                                    </li>
+
+                                    <li class="product">
+                                        <a href="single-product.html">
+                                            <img width="325" height="325" alt="T_4_front" class="attachment-shop_catalog wp-post-image" src="img/product-4.jpg">
+                                            <h3>Ship Your Idea</h3>
+                                            <span class="price"><span class="amount">£20.00</span></span>
+                                        </a>
+
+                                        <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="22" rel="nofollow" href="single-product.html">Select options</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <div class="cart_totals ">
+                                <h2>Cart Totals</h2>
+
+                                <table cellspacing="0">
+                                    <tbody>
+                                        <tr class="cart-subtotal">
+                                            <th>Cart Subtotal</th>
+                                            <td><span class="amount">${{payable}}</span></td>
+                                        </tr>
+
+                                        <tr class="shipping hidden">
+                                            <th>Shipping and Handling</th>
+                                            <td>Free Shipping</td>
+                                        </tr>
+
+                                        <tr class="order-total">
+                                            <th>Order Total</th>
+                                            <td><strong><span class="amount">${{payable}}</span></strong> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>
+        </div>
+</div>
+
+<section class="order first hidden" id="order">
+        <div class="container-fluid">
+            <div class="col-md-12" style="padding:0;">
+                <!-- box -->
+                {% for product in products %}
+                <div class="col-md-12">
+                    <div class="box">
+                        <!-- left side -->
+                        <div class="col-md-5">
+                            <div class="prod_slider">
+                                <div class="slider_inner">
+                                    <!-- <img src="{% static 'zeroelectric/img/prod1.png' %" /> -->
+                                    <img src="{{product.docfile1.url}}">
+                                </div>
+                                <div class="slider_inner">
+                                    <!-- <img src="{% static 'zeroelectric/img/prod2.png' %" /> -->
+                                    <img src="{{product.docfile2.url}}">
+                                </div>
+                                <div class="slider_inner">
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- left side -->
+                        <!-- right side -->
+                        <div class="col-md-7">
+                            <h3>{{product.description}}</h3>
+                            <p></p>
+                            <p class="green">Contains one package:</p>
+                            <ul>
+                                <li>
+                                    <p>{{product.details}}</p>
+                                </li>
+                                <h3></h3>
+                                <!-- <li>
+                                    <p>Basic Power Package</p>
+                                </li>
+                                <li>
+                                    <p>Recycled Plastic Pot</p>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <p>Tilt Ceramic Cylinder Base</p>
+                                </li>
+                                <li>
+                                    <p>Illuminated Water Tank</p>
+                                </li>
+                                <li>
+                                    <p>Automatic Hydration</p>
+                                </li> -->
+                            </ul>
+                            <div class="col-md-7">
+                                <h3>${{product.price}}</h3>
+                            </div>
+                            <div class="col-md-7">
+                                <a href="#" class="btn green">Order Now</a>
+                            </div>
+                            <!-- <div class="alert alert-warning" role="alert"><b>Note:</b> Shipping is estimated to start early <b>October 2017.</b>
+                                <a href="#">Read more about it.</a>
+                            </div> -->
+                        </div>
+                        <!-- right side -->
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- box -->
+
+                <!-- box -->
+                <div class="col-md-12">
+                    <div class="box">
+                        <!-- left side -->
+                        <div class="col-md-5">
+                            <div class="prod_slider">
+                                <div class="slider_inner">
+                                    <img src="{% static 'zeroelectric/img/prod1.png' %}" />
+                                </div>
+                                <div class="slider_inner">
+                                    <img src="{% static 'zeroelectric/img/prod2.png' %}" />
+                                </div>
+                                <div class="slider_inner">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <h1>$3499</h1>
+                                <a href="#" class="btn green">Order Now</a>
+                            </div>
+
+                        </div>
+                        <!-- left side -->
+                        <!-- right side -->
+                        <div class="col-md-7">
+                            <h3>14 Cylinders Power Package</h3>
+                            <p></p>
+                            <p class="green">Contains 14x each package:</p>
+                            <ul>
+                                <li>
+                                    <p>6x9" Air-Con Cylinder in a Pot</p>
+                                </li>
+                                <li>
+                                    <p>Basic Power Package</p>
+                                </li>
+                                <li>
+                                    <p>Recycled Plastic Pot</p>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <p>Tilt Ceramic Cylinder Base</p>
+                                </li>
+                                <li>
+                                    <p>Illuminated Water Tank</p>
+                                </li>
+                                <li>
+                                    <p>Automatic Hydration</p>
+                                </li>
+                            </ul>
+                            <div class="alert alert-warning" role="alert"><b>Note:</b> Shipping is estimated to start late <b>January 2018.</b>
+                                <a href="#">Read more about it.</a>
+                            </div>
+                        </div>
+                        <!-- right side -->
+                    </div>
+                </div>
+                <!-- box -->
+            </div>
+        </div>
+</section>
+
+{% endblock %}

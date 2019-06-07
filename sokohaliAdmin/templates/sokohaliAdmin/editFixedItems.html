@@ -1,0 +1,13 @@
+<div class="col-md-12" style="padding:0; position:relative; bottom:155px; width:60%" id="FixedWeight">
+		<label>Categories:</label>
+		 <select class ="myselect" id="item_Cat" required>
+		  <option value="Select Category">Select Category</option>
+		    {% for category in fixed_weight_category %}
+		    	{% ifequal category.id cat_id.id %}
+			  		<option value="{{category.id}}" selected="selected">{{category.description}}</option>
+			  	{% else %}
+			  		<option value="{{category.id}}">{{category.description}}</option>
+		    	{% endifequal %}
+			{% endfor %}
+	    </select>
+</div>

@@ -1,0 +1,323 @@
+{% load staticfiles %}
+<style>
+.form-horizontal .form-group {
+		margin-right: -15px;
+		margin-left: 5px;
+}
+
+element.style {
+		margin-left: 3px;
+}
+
+div.modal-body {
+		overflow: scroll;
+}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+<!-- /.modal -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="editModal{{batch.batch_number}}">
+				<div class="modal-dialog modal-big">
+
+						<div class="modal-content">
+								<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<h4 class="modal-title">Create Dock Receipt Form</h4>
+								</div>
+								<!-- <div class="order">
+										<div class="col-md-12">
+													<h1></h1> -->
+												<!-- <form>
+												
+												<p>
+													<strong>Airway Bill&nbsp;&nbsp;</strong><input type="radio" name="mype" value="ve1" onClick="Hide('div2', this); Reveal('didfv1', this)" />
+													<strong>Sea Bill&nbsp;&nbsp;</strong><input type="radio" name="mype" value="value2" onClick="Hide('didfv1', this); Reveal('div2', this)" />
+												</p>
+											</form> -->
+										<!-- </div>
+								</div> -->
+								<!-- modal-c -->
+								
+								<form method ="POST" action="{% url 'sokohaliAdmin:dockreceipts' %}" enctype="multipart/form-data"class="form-horizontal scroll">
+									{% csrf_token %}
+								<div class="modal-c open" id="s0">
+										<div class="modal-body">
+													<div class="form-group" style="margin-bottom:5mm;">
+														<div class="col-sm-7">
+															<input type="hidden" class="form-control" name="batch_number" id="btch_noo" placeholder="Batch Number" value="{{batch_number}}"readonly>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Exporter Name and Address</label>
+															{{dock_form.exporter_name_and_address}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Zip Code</label>
+															{{dock_form.zip_code}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Consigned To</label>
+															{{dock_form.consigned_to}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Notify Party(Complete Name and Address)</label>
+															{{dock_form.notify_party_name_and_address}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Document Number</label>
+															{{dock_form.document_number}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>B/L OR AWB Number</label>
+															{{dock_form.bl_or_awb_number}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Export References</label>
+															{{dock_form.export_references}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Forwarding Agent / FMC Number</label>
+															{{dock_form.forwarding_agent_fmc_no}}
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Point(State) and Country of Origin or FTZ Number</label>
+															{{dock_form.state_and_country_of_origin_or_ftz_number}}
+														</div>
+													</div>
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn green trigger" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s1">
+										<div class="modal-body">
+												<!-- Body Inner Content -->
+												<!-- <div class="body-inner long"> -->
+												<div class="form-group" style="margin-top:5mm;">
+													<div class="col-sm-7">
+														<label>Domestic Routing / Export Instruction</label>
+														{{dock_form.domestic_routing}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Loading Pier / Terminal</label>
+														{{dock_form.loading_pier}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Type of Move</label>
+														{{dock_form.type_of_move}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Containerized (Vessel Only)</label>
+														{{dock_form.containerized}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Pre-Carriage By</label>
+														{{dock_form.precarriage_by}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Place of Receipt by Pre-Carrier</label>
+														{{dock_form.place_of_receipt_by_precarrier}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Exporting Carrier</label>
+														{{dock_form.exporting_carrier}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Part of Loading / Export</label>
+														{{dock_form.port_of_loading}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Foreign Port of Unloading (Vessel/Air Only)</label>
+														{{dock_form.foreign_port_of_unloading}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Place of DeliveryBy On-Carrier</label>
+														{{dock_form.place_of_delivery_by_oncarrier}}
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s0">Back</button>
+												<button type="button" class="btn green trigger" rel="s2">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s2">
+										<div class="modal-body">
+												<!-- Body Inner Content -->
+												<div class="form-group" style="margin-top:5mm;">
+													<div class="col-sm-7">
+														<label>MKS. & NOS./CONT. NOS</label>
+														{{dock_form.mks_nos}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Number of Packages</label>
+														{{dock_form.no_of_pkgs}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Description of Packages and Goods</label>
+														{{dock_form.description_of_package_and_goods}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Gross Weight</label>
+														{{dock_form.gross_weight}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Measurement</label>
+														{{dock_form.measurement}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Lighter Truck</label>
+														{{dock_form.lighter_truck}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Arrived Date</label>
+														<!-- {dock_form.arrived_date}} -->
+														<input type="date"  name="arrived_date" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" required/>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Arrived Time</label>
+														<!-- {dock_form.arrived_time}} -->
+														<input type="time" placeholder="Arrived Time"  name="arrived_time" style='margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;'>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Unloaded Date</label>
+														<!-- {dock_form.unloaded_date}} -->
+														<input type="date"  name="unloaded_date" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" required/>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Unloaded Time</label>
+														<!-- {dock_form.unloaded_time}} -->
+														<input type="time" placeholder="Unloaded Time"  name="unloaded_time" style='margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;'>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Checked By</label>
+														{{dock_form.checked_by}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Placed Location</label>
+														{{dock_form.placed_location}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Receiving Clerk Name</label>
+														{{dock_form.receiving_clerk_name}}
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7">
+														<label>Date from Receiving Clerk</label>
+														<!-- {dock_form.date_from_receiving_clerk}} -->
+														<input type="date"  name="date_from_receiving_clerk" style="margin-left: 0px; margin-right: 0px; width: 460px; line-height: 20px; padding: 10px;" required/>
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s1">Back</button>
+												<button id="button" type="submit" class="btn green">Submit</button>
+										</div>
+								</div>
+							</form>
+							<!-- <div class="row" id="div2" style="display: none">Show Div 2</div> -->
+								<!-- modal-c -->
+						</div>
+						<!-- /.modal-content -->
+
+				</div>
+				<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+
+<script>
+$("#button").click(function() {
+	// $("input").each(function() {
+	console.log("GOT HERE");
+	$(".red").each(function() {
+			if($(this).val() == "")
+				{
+					$(this).css("border", "2px solid red");
+				}
+			else{
+					$(this).css("border", "2px solid green");
+			}
+		});
+});
+</script>
+
+<script type="text/javascript">
+	function Reveal(it, box) {<!--from   ww  w. ja  v a 2  s .com-->
+	var vis = (box.checked) ? "block" : "none";
+	document.getElementById(it).style.display = vis;
+	}
+
+	function Hide(it, box) {
+	var vis = (box.checked) ? "none" : "none";
+	document.getElementById(it).style.display = vis;
+	}
+</script>

@@ -1,0 +1,15 @@
+<html>
+    <body onload="document.submit2paypal_form.submit()">
+        <!--paypal Payment -->
+        <form name="submit2paypal_form" action="https://www.sandbox.paypal.com/au/cgi-bin/webscr" target="_self" method="POST">
+        <input type="hidden" name="amount" value="{{ amount }}" />
+        <input type="hidden" name="cmd" value="_xclick" />
+        <input type="hidden" name="txn_ref" value="{{ txn_ref }}" />
+        <input type="hidden" name="business" value="{{receiver_email}}" />     
+        <input type="hidden" name="currency_code" value="USD" />        
+        <input type="hidden" name="return" value="{{site_redirect_url}}" />               
+        </form>
+    </body>
+</html>
+
+

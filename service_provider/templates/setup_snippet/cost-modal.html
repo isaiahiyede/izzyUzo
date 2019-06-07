@@ -1,0 +1,52 @@
+{% load staticfiles %}
+{% load humanize %}
+
+
+
+<div class="modal fade" id="costcalc" role= "dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Cost settings</h4>
+          </div>
+          <div class="modal-body">
+
+                    <form id="cost-settings-form" method="POST" action="{% url 'service_provider:cost_settings' %}">
+                    {% csrf_token %}
+                    <!--<input type="hidden" name="service_name" value="shipping_route"/>-->
+
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; bottom: 10px; position: relative; height: auto; overflow: hidden;">
+                            <div class="widget_scroll_inner">
+
+                                <div class="checkbox">
+                                  
+                                      {% for field in costform %}
+                                      <div class="col-md-12">
+                                        <span class="">{{ field.label}}</span><br/>
+                                                {{ field }}
+                                      </div>
+                                      
+                                      
+                                    <!--% endif %}-->
+                                  {% endfor %}
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                
+                
+                
+            </div>
+          <div class="modal-footer">
+              <button class="btn green save_info">Save</button>
+          </div>
+                </form>
+        </div>
+    </div>
+</div>

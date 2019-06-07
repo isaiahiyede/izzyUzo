@@ -1,0 +1,74 @@
+@import url(bootstrap-3.min.css);
+/* for django errors*/
+* {
+	border-radius: 0px !important;
+}
+.home_page {
+	/*padding-top: 50px;*/
+	text-align: center;
+}
+.item {
+  /*background: #fefef0;
+  background: #C5E1A5;*/
+  border: 1px solid #cec;
+  /*height: 350px;*/
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+
+.item img {
+  max-width: 100%;
+
+  height: 270px;
+}
+.item-img-div {
+	width: 200px;
+  margin: 0 auto;
+  margin-bottom: 7px;
+}
+.desc {
+	background: #81D4FA;
+	background: #B2EBF2;
+	background: #B2EBF2;
+	margin-bottom: 10px;
+	line-height: 30px;
+	padding: 15px;
+}
+
+.form-control {
+	background: #DCEDC8;
+	background: #FFF9C4;
+	background: #f7f8be;
+}
+.form-control:focus {
+	background: #f0f0f0;
+}
+
+.submit {
+	font-size: 1.4em;
+	line-height: 40px;
+}
+
+.footer {
+	height: 400px;
+	background: #f0f0f0;
+}
+
+.view_result {
+	width: 100%;
+	background: #f00;
+	height: 300px;
+}
+
+
+.wrapper_result {
+	/*margin: 400px;*/
+	background: #fff;
+	display: none;
+}
+/*final_answer result.html*/
+.final_answer {
+	padding: 300px;
+
+}

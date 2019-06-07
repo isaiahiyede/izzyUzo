@@ -1,0 +1,336 @@
+{% extends 'base/base_index.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<section id="intro">
+        <div class="bk two"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 txt" id="firsttxt">
+                    <p><b>Domestic Shipping.</b><br/> Send and Receive parcels from anywhere in your Country </p>
+                    {% if request.COOKIES.admin_username %}
+                        {% include 'sokohaliadmin_snippet/login_customer_acct.html' %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="widget two four">
+		<div class="container">
+			<!-- Clock/Location -->
+			<div class="title">
+				<!--<p><i class="fa fa-clock-o"></i> 07:40:50 AM</p>
+				<p><i class="fa fa-map-marker"></i> London</p>-->
+				<p class="q">
+					<!-- <a href="{% url 'general:quick-estimate' %}" style="cursor: pointer;"><i class="fa fa-question" aria-hidden="true"></i> Quick Estimate</a></p> -->
+			</div>
+			<!-- Clock/Location -->
+			<!-- Collect the nav links, forms, and other content for toggling -->
+
+			<ul class="nav navbar-nav">
+				<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+				<li style="width: 32.88% !important;">
+					<a class="page-scroll" href="#worldwide" rel="li1">
+						<div class="top">
+							<h1>{{ request.storefront_name }} <br/>Domestic Shipping</h1>
+						</div>
+						<div class="inner">
+							<p>Helping you deliver goods nationwide.</p>
+						</div>
+					</a>
+				</li>
+				<!-- <li style="width: 21.66% !important;">
+					<a class="page-scroll" href="#marketplace" rel="li2">
+						<div class="top">
+							<h1>Export <br/>Marketplace</h1>
+						</div>
+						<div class="inner">
+							<p>Buy authentic African Food, Clothing, Leather Goods, Art and more.</p>
+						</div>
+					</a>
+				</li> -->
+				<li style="display:none;">
+					<a class="page-scroll" href="#shipping" rel="li3">
+						<div class="top">
+							<h1>Shipping from <br/> United States</h1>
+						</div>
+						<div class="inner">
+							<p>Get a free US shipping address. Shop and let us ship to you.</p>
+						</div>
+					</a>
+				</li>
+				<li style="display:none;">
+					<a class="page-scroll" href="#shopping" rel="li4">
+						<div class="top">
+							<h1>Shopping from <br/>Overseas</h1>
+						</div>
+						<div class="inner">
+							<p>Over a hundred thousand shops and billions of items</p>
+						</div>
+
+					</a>
+				</li>
+				<li style="width: 32.88% !important;">
+					<a class="page-scroll" href="#sokopay" rel="li5">
+						<div class="top">
+							<h1>Fund <br/>Wallet</h1>
+						</div>
+						<div class="inner">
+							<p>Top-up your E-Wallet with ease. Securely pay Sellers with SokoPay for easy payment on {{ request.storefront_name }}.</p>
+						</div>
+					</a>
+				</li>
+				<li class="last" style="display: none;">
+					<a class="page-scroll" href="#zpn" rel="li6" style="display: none;">
+						<div class="top">
+							<h1>Partner <br/>Network</h1>
+						</div>
+						<div class="inner">
+							<p>Reseller partners, shipping partners & local distribution networks.</p>
+						</div>
+					</a>
+				</li>
+				<!-- Subscription Part -->
+				<div class="lastli">
+					<div class="img" style="bottom: 130px !important;"></div>
+					<div class="col-md-12" style="padding-bottom:20px;">
+						<p><strong>Send and Receive parcels from anywhere in the Country.</strong></p>
+					</div>
+					<div class="col-md-12 bot">
+						{% if user.is_staff %}
+							<a href="{% url 'sokohaliAdmin:user-manager' %}" class="btn white"> Get Started</a>
+						{% else %}
+								<!-- <a class="btn white" data-toggle="modal" data-target="#id_import_options" onclick="">Get Started</a> -->
+								<a href="#shipwd" class="btn white page-scroll">Get Started</a>
+						{% endif %}
+
+						<p>From <strong>$2.5</strong> per package!</p>
+					</div>
+					<p> &nbsp; </p>
+					<!--<div class="col-md-12 bot">
+						<a href="{% url 'general:quick-estimate' %}" style="color: black;"><h4>Quick Estimate?</h4></a>
+					</div>-->
+				</div>
+				<!-- Subscription Part -->
+			</ul>
+
+			<!-- /.navbar-collapse -->
+		</div>
+    </div>
+</section>
+<section style="overflow: scroll;">
+    <form method="post" action="{% url 'shipping:domestic_package' %}">
+    {% csrf_token %}
+    <div class="container">
+        <!--<div class="form-group">
+            <label for="country">Select Country:</label> <br/>
+            <select>
+                <option value ="">Select Country</option>
+                <option value = 1>NIGERIA</option>
+            </select>
+        </div>-->
+        <div class="form-group">
+            <label>Country</label><br />
+			<select class = "form-control domcountry"id="country" required name="country" selected="selected">
+                
+            </select>
+		</div>
+        <div class="form-group">
+            <label>Origin State</label><br />
+            <select name="state" id="state" class="form-control"required ></select>
+            <script language="javascript">
+                populateCountries("country", "state");   
+            </script>
+        </div>
+        <div class="form-group">
+            <label>Destination State</label><br />
+            <select name="state2" id="state2" class="form-control"required ></select>
+            <!--<script language="javascript">
+                populateCountries("country2", "state2");   
+            </script>-->
+        </div>
+	
+	<div class="form-group">
+		<label for="weight">Weight Of Package(kg):</label>
+		<input type="number" class="form-control" id="wgt" name="weight">
+	</div>
+	<div class="form-group">
+		<label for="description">Brief Description of item(s) in package:</label>
+		<input type="text" name="description"class="form-control" style="border: 2px solid #444444 !important; height:45px;"/>
+	</div>
+	
+        <div class="col-md-12">
+		<h3>How do you want to ship your package?</h3>
+	</div>
+		<div class="col-md-6">
+			<h3>From:</h3>
+				<div class="radio">
+					<label class="radio-from" id="me"><input type="radio"  value="drop-off" name="from" > Drop Off Package</label>
+					<label style="margin-left: 5%;"><input type="radio" name="from" class="radio-from" value="pickup"> Pick up Package</label>
+				</div>
+				<div class="form-group hidden" id="drop-off">
+					<!--<label style="margin-top: 10px;">Postal Locations</label>
+					<select class="form-control"required ></select>-->
+				</div>
+				<div class="form-group hidden" id="pickup">
+					<input type="text" name="address1" class="form-control" placeholder="Address 1" style="border: 2px solid #444444 !important; height:45px;"/><br/>
+					<input type="text" name="address2" class="form-control" placeholder="Address 2" style="border: 2px solid #444444 !important; height:45px;"/><br/>
+					<input type="text" name="city" class="form-control" placeholder="City" style="border: 2px solid #444444 !important; height:45px;"/><br />
+					<input type="text" name= "zipcode" class="form-control" placeholder="Zip/Postal Code" style="border: 2px solid #444444 !important; height:45px;"/><br>
+					<input type="text" name="phone" class="form-control" placeholder="Telephone number" style="border: 2px solid #444444 !important; height:45px;"/><br>
+					
+				</div>
+		</div>
+		<div class="col-md-6">
+			<h3>TO:</h3>
+				<div class="radio">
+					<label><input type="radio" name="to" class="radio-to" value="pick-up"> Pick up Package</label>
+					<label style="margin-left: 5%;"><input type="radio" name="to" class="radio-to" value="home-delivery"> Home Delivery</label>
+				</div>
+				<div class="form-group hidden" id="pick-up">
+					<!--<label style="margin-top: 10px;">Postal Locations</label>
+					<select class="form-control"required ></select>-->
+				</div>
+				<div class="form-group hidden" id="home_delivery">
+					<input type="text" name="to_address1" class="form-control" placeholder="Address 1" style="border: 2px solid #444444 !important; height:45px;"/><br/>
+					<input type="text" name="to_address2" class="form-control" placeholder="Address 2" style="border: 2px solid #444444 !important; height:45px;"/><br/>
+					<input type="text" name="to_city" class="form-control" placeholder="City" style="border: 2px solid #444444 !important; height:45px;"/><br />
+					<input type="text" name="to_zipcode" class="form-control" placeholder="Zip/Postal Code" style="border: 2px solid #444444 !important; height:45px;"/><br>
+					<input type="text" name="to_phone" class="form-control" placeholder="Telephone number" style="border: 2px solid #444444 !important; height:45px;"/><br>
+					
+				</div>
+		</div>	
+
+		<div class="pull-right">
+			<button type="button" class="btn green btn-info" id="rates">View Rates</button>
+		</div>
+		<div class="col-md-12 hidden" id="price_table">
+			<!--<div class="table-responsive">          
+			<table class="table">
+			  <thead>
+			    <tr>
+			      <th>#</th>
+			      <th>Courier</th>
+			      <th>Price</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <td><input type="radio" name="" class="" value="pick-up"></td>
+			      <td>Anna</td>
+			      <td>Pitt</td>
+			    </tr>
+			  </tbody>
+			</table>
+			</div>-->
+		</div>
+	
+		<div class="pull-right hidden" id="submit">
+			<button type="submit" class="btn green btn-info" id="submit">Submit</button>
+		</div>
+		
+		
+		
+        
+        
+    </div>
+    </form>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+    $('.domcountry').on('change', function(){
+        //alert("i reach o");
+     var country = $('.domcountry:selected').val();
+     populateStates('country','state2');
+     });
+    
+ $('body').on('change', 'input:radio[name="from"]',function(){
+	//$('#postal-center').addClass('hidden');
+	//$('#pickup_addy').addClass('hidden');
+	var selected = $('input[name="from"]:checked').val();
+	var country = $('.domcountry option:selected').val();
+	var state = $('#state option:selected').val();
+	alert(selected);
+        if (selected === "drop-off"){ 
+		//alert("drop-off was clicked");
+		$.ajax({
+			url: "{% url 'shipping:local_locations' %}",
+			type: 'GET',
+			data: {'state': state, 'country': country, 'identifier':selected},
+			success: function(data){
+				$('.loadingDiv').addClass('hidden');
+				$('#drop-off').replaceWith(data);
+				$('#drop-off').removeClass('hidden');
+				$('#pickup').addClass('hidden');
+			},
+		});
+	}else{
+		//alert("pickup was clicked");
+		$('#drop-off').addClass('hidden');
+		$('#pickup').removeClass('hidden');
+	}
+   //$("input[name='radioName']:checked").val()
+  });
+ 
+ 
+  $('body').on('change', 'input:radio[name="to"]',function(){
+	//$('#pickup-center').addClass('hidden');
+	//$('#home_addy').addClass('hidden');
+	var selected = $('input[name="to"]:checked').val();
+	var country = $('.domcountry option:selected').val();
+	var state = $('#state2 option:selected').val();
+	//alert(country);
+        if (selected === "pick-up"){ 
+		//alert("drop-off was clicked");
+		$.ajax({
+			url: "{% url 'shipping:local_locations' %}",
+			type: 'GET',
+			data: {'state': state, 'country': country, 'identifier': selected},
+			success: function(data){
+				$('.loadingDiv').addClass('hidden');
+				$('#pick-up').replaceWith(data);
+				$('#pick-up').removeClass('hidden');
+				$('#home_delivery').addClass('hidden');
+			},
+		});
+	}else{
+		//alert("pickup was clicked");
+		$('#pick-up').addClass('hidden');
+		$('#home_delivery').removeClass('hidden');
+	}
+   //$("input[name='radioName']:checked").val()
+  });
+
+
+$('body').on('click', '#rates', function(){
+	var from = $('input[name="from"]:checked').val();
+	if (from === "drop-off"){
+	    var origin_address = $('#loc_dropoff option:selected').val();
+	}
+	var to = $('input[name="to"]:checked').val();
+	if (to === "pick-up"){
+	    var dest_address = $('#loc_pickup option:selected').val();
+	}
+	var country = $('.domcountry option:selected').val();
+	var origin_state = $('#state option:selected').val();
+	var dest_state = $('#state2 option:selected').val();
+	var weight = $('#wgt').val();
+	
+	alert("i was clicked");
+	
+	$.ajax({
+		url: "{% url 'shipping:local_prices' %}",
+		type: 'GET',
+		data: {'origin_state': origin_state, 'dest_state':dest_state, 'origin_address':origin_address, 'dest_address':dest_address, 'country': country, 'weight': weight, 'from_option':from, 'to_option':to},
+		success: function(data){
+			$('.loadingDiv').addClass('hidden');
+			$('#price_table').replaceWith(data);
+			$('#price_table').removeClass('hidden');
+			$('#rates').addClass('hidden');
+			$('#submit').removeClass('hidden');
+			
+		},
+	});
+	})   
+</script>
+{% endblock extra_scripts %}

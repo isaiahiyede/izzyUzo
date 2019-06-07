@@ -1,0 +1,122 @@
+{% extends "base/zaposta_base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+{% load account_standing %}
+{% load custom_filters %}
+{% load currency %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+{% block st_content %}
+<!-- this is the wrapper for the content -->
+<div class="st-content-inner">
+    <!-- extra div for emulating position:fixed of the menu -->
+    <!-- Main Section -->
+    <section id="main">
+        <div class="hero" id="shipping" style="background:none;">
+            <div class="container">
+                <div class="row-fluid">
+                    <div class="col-md-6" style="padding-left:0px; display:none;">
+                        <h1>Shipping</h1>
+                        <h2>Now even on the go with the Mobile App! <br/>
+                        Over hundred thousand shops and billions of items.</h2>
+                        <a href="#" class="btn full">Get the App</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps Section -->
+            <section id="steps" class="four">
+
+                <div class="white">
+                    <div class="container" style="padding-right:0;">
+                        <div class="col-md-4 est">
+                            <!-- <a href="{% url 'general:quick-estimate' %}"><i class="fa fa-question-circle"></i> Get a Quick Estimate</a> -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Page -->
+                <div class="container page two">
+                    <div class="account_tab gray">
+                         {% include 'zaposta_snippet/user_account_nav.html' %}
+                        <div class="right_btns col-md-4">
+                            <div class="col-md-12">
+
+                                    {% if request.user.useraccount.marketer.storefront_name == "smatpost" %}
+                                    <a class="btn yellow" href="{% url 'general:my_mail_bag' %}">
+                                        <span><img src="{% static 'export/img/add1.png' %}">{{count}}</span> Mail Bag 
+                                    </a>
+                                    {% else %}
+                                    <a class="btn yellow" href="{% url 'marketer_homepage' %}#shipwd" >
+                                        <span><img src="{% static 'export/img/add1.png' %}"></span> Book A Shipment
+                                    </a>
+                                    {% endif %}
+                                    <!--<a class="btn yellow" data-toggle="modal" data-target="#id_import_options" onclick="" >
+                                        <span><img src="% static 'export/img/add1.png' %}"></span> Book A Shipment
+                                    </a>-->
+                                
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="content_inside">
+                        <!-- Content -->
+                        {% block inner_content %}
+                        
+                        {% endblock %}
+                        <!-- Content -->
+                        
+                        <!-- Standing -->
+                        {% block include_acct_standing %}
+                            {% zaposta_acct_standing request False 'two' %}
+                        {% endblock %}
+
+                        <!-- Standing -->
+                    </div>
+
+
+                </div>
+                <!-- Page -->
+            </section>
+            <!-- Steps Section -->
+        </div>
+    </section>
+    <!-- Main Section -->
+
+    <!-- FOOTER  -->
+    {% include "zaposta_snippet/footer_v2.html" %}
+    <!-- FOOTER  -->
+    <!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endblock %}
+
+{% block popup %}
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"> </button>
+                        <h4 class="modal-title" id="myModalLabel">How It Works</h4>
+                    </div>
+                    <div class="modal-body">
+                        <iframe src="https://player.vimeo.com/video/73877567?byline=0&portrait=0" width="1088" height="635" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+
+         {% include 'zaposta_snippet/create_item_modal.html' %}
+        
+         {% include 'zaposta_snippet/import-options-user-modal.html' %}   
+         <!--  include 'zaposta_snippet/service-type-modal.html' with modal_id="select_service_type" %}
+          include 'zaposta_snippet/service-type-modal-user.html' with modal_id="select_service_type_user" %} -->
+
+
+{% endblock %}

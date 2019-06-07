@@ -1,0 +1,191 @@
+{% extends "base/base_index_zeac.html"%}
+{% load staticfiles %}
+{% block title %}ZeAC - Step 2 Order Page{% endblock %}
+
+{% block body %}
+    <section class="page">
+        <div class="brd">
+
+            <div class="container-fluid">
+
+                <ul>
+                    <div class="line"></div>
+                    <li class="active">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Review</p>
+                    </li>
+                    <li class="active lineg">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Billing Details</p>
+                    </li>
+                    <li>
+                        <div class="step">
+                            <p>3</p>
+                        </div>
+                        <p>Payment & Delivery</p>
+                    </li>
+                    <li>
+                        <div class="step">
+                            <p>4</p>
+                        </div>
+                        <p>Order Summary</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid" style="padding-bottom:80px;">
+            <div class="col-md-12" style="padding:0;">
+                <div class="col-md-12 mobile_no_padding">
+                    <div class="title">
+                        <h3><span>2/4. Billing Details</span></h3>
+                    </div>
+                    <!--div class="title">address goes here</div>-->
+                    <div class="window">
+                        <form action="{% url 'general:pay_options' %}" method="POST" id="address_form">
+                        <div class="window_main">
+                            <!-- <div class="option two">
+                                <div class="alert alert-warning" role="alert">
+                                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                    <b>Note:</b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices lacus sit amet dictum aliquam. Sed venenatis eleifend risus sed feugiat. Curabitur vel euismod felis. Maecenas iaculis finibus ligula, in viverra velit imperdiet vitae.
+                                    <a href="#">Read more about it.</a>
+                                </div>
+                            </div> -->
+                            <div class="form">
+
+                                {% if addresses %}
+                                <div class="col-md-4 address" style="height: 200px;overflow: scroll;">
+                                    <h5>Your Saved Addresses</h5>
+                                    {% for address in addresses %}
+                                       <input style="margin-bottom: 0px!important;" type="radio" 
+                                       name="selection" value="{{address.id}}" class="addy"/> 
+                                        <span style="padding-left: 5px; margin-bottom: 5px;">{{address.address_line1 }},</span>
+                                        <span style="padding-left: 5px;">{{address.address_line2 }},</span>
+                                        <span style="padding-left: 5px;">{{address.city}}, {{address.state}},&nbsp;{{address.country}}</span>
+                                        <input class="hidden" type="text" value="{{address.id}}" name="saved_address"/><br/><br/>
+                                   {% endfor %}
+                                </div>
+                                {% endif %}
+
+                                <div class="col-md-4">
+
+                                    <div class="col-md-12">
+                                        <label>Address 1:</label>
+                                        <input type="text" name="address1" id="address1" required/>
+                                    </div>
+
+                                    <input type="hidden" name="get_page" id="get_page">
+                                    <input type="hidden" name="saved_address_selected" id="saved_address_selected">
+                                    <input type="hidden" name="selected_add" id="selected_add" value="">
+
+                                    <div class="col-md-12">
+                                        <label>Address 2:</label>
+                                        <input type="text" name="address2" id="address2" required/>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>City:</label>
+                                        
+                                        <input type="text" name="city" id="city" required/>
+                                    </div>
+                                    
+
+                                    <div class="col-md-12">
+                                        <label>State:</label>
+                                        <!-- <select name="state" id="state" required ></select>
+                                        <script language="javascript">
+                                            populateCountries("country", "state");
+                                            // populateCountries("country2");
+                                        </script> -->
+                                        <!-- <input type="text" /> -->
+                                        <select name="state" id="state" required>
+                                            <!-- <option>New Jersey </option>  -->
+                                            <option>Abia </option>  
+                                            <option>Adamawa </option>
+                                            <option>Akwa Ibom </option>
+                                            <option>Anambra </option>
+                                            <option>Bauchi </option>
+                                            <option>Bayelsa </option>
+                                            <option>Benue </option>
+                                            <option>Borno </option>
+                                            <option>Cross River </option>
+                                            <option>Delta </option>
+                                            <option>Ebonyi </option>
+                                            <option>Edo </option>
+                                            <option>Ekiti </option>
+                                            <option>Enugu </option>
+                                           <option> Gombe </option>
+                                            <option>Imo </option>
+                                            <option>Jigawa </option> 
+                                            <option>Kaduna </option> 
+                                            <option>Kano </option>
+                                            <option>Katsina </option> 
+                                            <option>Kebbi </option>
+                                            <option>Kogi </option>
+                                            <option>Kwara </option>
+                                            <option>Lagos </option>
+                                            <option>Nasarawa </option>
+                                            <option>Niger </option>
+                                            <option>Ogun </option> 
+                                            <option>Ondo </option>
+                                            <option>Osun </option>
+                                            <option>Oyo </option> 
+                                            <option>Plateau </option> 
+                                            <option>Rivers </option>
+                                            <option>Sokoto </option> 
+                                            <option>Taraba </option> 
+                                            <option>Yobe </option>
+                                            <option>Zamfara</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="col-md-4">
+                                    
+                                    <div class="col-md-12">
+                                        <label>Country:</label>
+                                        <!-- <select id="country" required name="country" selected="selected"></select> -->
+                                        <!-- <select name="sources" id="sources" class="custom-select sources" placeholder="Select Country">
+                                            <option value="0">United States</option>
+                                            <option value="1">United Kingdom</option>
+                                            <option value="2">Nigeria</option>
+                                        </select> -->
+                                        <input type="text" name="country" value="Nigeria" placeholder="Country" id="country" readonly>
+                                    </div>
+                                    
+                                      <div class="col-md-12">
+                                        <label>Postal / Zip Code:</label>
+                                        <input type="text" name="zip_code" id="zip_code"/>
+                                    </div>                                 
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                        
+        
+                        <div class="result">
+                            <div class="col-md-3 one">
+                                <a href="{% url 'general:cart_view' %}" class="btn gray full">Back</a>
+                            </div>
+                            <div class="col-md-3 two">
+                                <div class="col-md-12" style="border:none;">
+
+                                    <input type="submit" class="hidden"/>
+                                     <!--<a href="{% url 'general:pay_options' %}" class="btn green full hidden" id="subbmit">Proceed next</a>-->
+                                    <button type="submit" class="btn green full" id="subbmit">Proceed</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+<div class="modal clean" id="{{modal_id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog two modal-lg">
+        <div class="modal-content" style="background: #ffffff; padding-left: 0px;">
+        <!-- <div class="modal-content" style="background: url(''); padding-left: 0px;"> -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <!--<h4 class="modal-title" id="myModalLabel" style="display:none;">Mobile App</h4>-->
+            </div>
+            {% block inner_content %}{% endblock %}
+        </div>
+    </div>
+</div>

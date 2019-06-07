@@ -1,0 +1,52 @@
+{% load account_standing %}
+
+{% load activelink %}
+
+     
+
+<ul class="col-md-8">
+    <li {% ifactive 'general:my_account' %}class="active"{% endifactive %} {% if request.user.useraccount.marketer.domestic_shipping %} style="width:160px;"{% else %} style="width: 200px;"{% endif %}>
+        <a href="{% url 'general:my_account' %}">
+            <p>My Account</p>
+        </a>
+    </li>
+
+    <li {% ifactive 'general:my_shipments' %}class="active"{% endifactive %} {% ifactive 'shipping:shipping' %}class="active"{% endifactive %} {% if request.user.useraccount.marketer.domestic_shipping %} style="width:160px;"{% else %}
+    style="width: 200px;"{% endif %}>
+        <a href="{% url 'general:my_shipments' %}">
+            <span class="badge green">{% shipments_count user %}</span>
+            <p>International Shipments
+            </p>
+        </a>
+    </li>
+
+    {% if request.user.useraccount.marketer.domestic_shipping %}
+    <li  {% if request.user.useraccount.marketer.domestic_shipping %} style="width:160px;"{% else %}style="width: 200px;"{% endif %}>
+        <a href="">
+            <span class="badge green">{% local_shipments_count user %}</span>
+            <p>Local Shipments
+            </p>
+        </a>
+    </li>
+    {% endif %}
+
+    <li {% ifactive 'general:my_soko_pay' %}class="active"{% endifactive %} {% if request.user.useraccount.marketer.domestic_shipping %} style="width:160px;"{% else %} style="width: 200px;"{% endif %}>
+        <a href="{% url 'general:my_soko_pay' %}">
+            <p>My Payments</p>
+        </a>
+    </li>
+
+    <li {% ifactive 'general:my_messages' %}class="active"{% endifactive %} {% if request.user.useraccount.marketer.domestic_shipping %} style="width:160px;"{% else %} style="width: 200px;"{% endif %}>
+        <a href="{% url 'general:my_messages' %}">
+            <span class="badge blue">{% messages_count user %}</span>
+            <p>My Messages
+            </p>
+        </a>
+    </li>
+    <!--<li  ifactive 'marketplace:product_listing' class="active" endifactive >
+        <a href="url 'marketplace:product_listing' ">
+            <p>Export MarketPlace</p>
+        </a>
+    </li>-->
+
+</ul>

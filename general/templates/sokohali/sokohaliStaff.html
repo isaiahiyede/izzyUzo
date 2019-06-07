@@ -1,0 +1,120 @@
+{% extends "adminBase/base_index.html" %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load humanize %}
+{% load activelink %}
+
+{% block title  %}{{ payment_type|title }} Dashboard {% endblock %}
+
+{% block custom-styles %}
+<style>
+
+    /*div.sidebar-link:hover{
+        background-color: #E3E3E3;
+    }*/
+
+</style>
+
+{% endblock %}
+
+{% block body %}<body>{% endblock %}
+
+
+  {% block searchbar %}
+      <div class="searchbar">
+          <div class="container">
+              <div class="col-md-12">
+                  <input type="text" />
+                  <i class="fa fa-search t" aria-hidden="true"></i>
+                  <span class="bar"></span>
+              </div>
+
+
+
+          </div>
+      </div>
+  {% endblock %}
+
+  {% block navbar %}
+  <ul class="nav navbar-nav">
+     <li>
+        <a href="{% url 'sokohaliAdmin:local_dist_member' %}">Local Distribution Member</a>
+     </li>
+   </ul>
+  {% endblock %}
+
+  {% block set_up %}
+  {% endblock set_up %}
+
+    {% block sticky_warning %}
+        <div class="sticky_msg">
+            <div class="container">
+
+                <div class="col-md-12">
+
+
+                    <div class="alert" role="alert">
+                        <h3><strong>Welcome Administrator,</strong></h3>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {% for msg in messages %}
+                          <blockquote style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</blockquote>
+                        {% endfor %}
+
+                    </div>
+                    <!-- Alert Warning -->
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block inner_content %}
+        <div class="inner">
+            <!-- Scrollable Content -->
+            <div class="scrollable">
+
+                <div class="container">
+                    <div class="row-fluid">
+                        
+                        <div class="col-md-12 user_list" style="position:relative; bottom:70px;">
+
+                            <div ng-controller="AppCtrl" class="datepickerdemoBasicUsage" ng-app="MyApp">
+                                <md-content>
+                                    <md-datepicker ng-model="myDate" md-placeholder="Fecha"></md-datepicker>
+
+                                </md-content>
+                            </div>
+   
+                            <div class="tab-content" style="padding-bottom: 10px;">
+                                   
+                                {% for subscriber in subscribers %}
+                                    <div class="row-fluid" style="position: relative; bottom:25px">
+                                      <span>{{ subscriber.user.username}}&nbsp;|&nbsp;{{ subscriber.user.email}}&nbsp;|{% if subscriber.get_marketer %} &nbsp; {{subscriber.get_marketer}} {% endif %}</span>
+                                    </div>
+
+                                    {% include 'setup_snippet/subscriber_summary_table.html' with subscriber=subscriber %}<br/><br/>
+
+                                {% endfor %}
+                              </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Scrollable Content -->
+            </form>
+
+            <div class="loading">
+
+            </div>
+        </div>
+    {% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+{% block custom_select %}
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'soko-admin/js/rates_processing.js' %}"></script>
+{% endblock %}

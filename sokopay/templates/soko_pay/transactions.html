@@ -1,0 +1,178 @@
+{% extends "base/zaposta_base.html" %}
+{% load humanize %}
+{% load staticfiles %}
+{% load currency %}
+
+{% block title %}Soko Pay Transactions{% endblock %}
+{% block extra_head %}
+<style>
+	div.modal-backdrop.fade.in{
+		z-index: 0 !important;
+	}
+</style>
+
+{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+{% block st_content %}
+<div class="st-content-inner">
+	<!-- extra div for emulating position:fixed of the menu -->
+	<!-- Main Section -->
+	<section id="main" class="payment_main">
+		<!-- place widget -->
+		<div class="wt two">
+			<div class="container" style="position:relative;">
+				<img src="img/ism1.png" />
+				<p>21:04</p>
+				<img src="img/ism2.png" />
+				<p>London, UK</p>
+			</div>
+		</div>
+		<!-- place widget -->
+		<div class="hero two" id="payment_page">
+			<div class="container outer">
+				<div class="form">
+					<div class="inner">
+						<!-- Register Account -->
+						<div class="container" id="register">
+							<!-- <div class="col-md-6 promo two d3"> -->
+							<div class="col-md-6 promo two d3" style="background: url('{% static 'sokohali/img/pay_soko.jpg' %}') center center no-repeat;">
+								<a href="{% url 'soko_pay:add_funds_landing_page' %}" class="goback"><span class="glyphicon glyphicon-arrow-left"></span>Back</a>
+							</div>
+							<!-- Regular Account -->
+							<div class="col-md-6 left">
+
+								<h1>View your recent transactions</h1>
+								<p style="margin-bottom:0;">
+								{% if messages %}
+								{% for msg in messages %}
+								<span style="color: blue;">{{msg}}</span>
+								{% endfor %}
+								<br/>
+								{% endif %}
+								Please find below your Soko-Pay transactions
+								</p>
+
+								<div>
+									<div>
+										<!-- Nav tabs -->
+										<ul class="nav nav-tabs" role="tablist">
+											<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Credit</a>
+											</li>
+											<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Debit</a>
+											</li>
+										</ul>
+										<!-- Tab panes -->
+										<div class="tab-content">
+
+											<div role="tabpanel" class="tab-pane active" id="home">
+												<div class="col-md-12 listitem top">
+													<div class="col-md-3">
+														<p>Date</p>
+													</div>
+													<div class="col-md-3">
+														<p>Amount({% country_currency_code request.user.useraccount.country %})</p>
+													</div>
+													<div class="col-md-3">
+														<p>Status</p>
+													</div>
+													<div class="col-md-3">
+														<p>Ref.No.</p>
+													</div>
+												</div>
+												<div class="inner_scroll">
+													{% for jeje in jejepay_credits %}
+													<div class="col-md-12 listitem">
+														<div class="col-md-3">
+															<p>{{ jeje.created_at|date:"d-m-Y" }}</p>
+														</div>
+														<div class="col-md-3">
+															<p>{{jeje.amount|floatformat:2|intcomma}}</p>
+														</div>
+														<div class="col-md-3">
+															<p>{{ jeje.status}}</p>
+														</div>
+														<div class="col-md-3">
+															<p>{{jeje.ref_no}}</p>
+														</div>
+													</div>
+													
+													{% endfor %}
+
+												</div>
+
+											</div>
+											<div role="tabpanel" class="tab-pane" id="profile">
+
+												<div class="col-md-12 listitem top">
+													<div class="col-md-3">
+														<p>Date</p>
+													</div>
+													<div class="col-md-3">
+														<p>Amount({% country_currency_code request.user.useraccount.country %})</p>
+													</div>
+													<div class="col-md-3">
+														<p>Status</p>
+													</div>
+													<div class="col-md-3">
+														<p>Ref.No.</p>
+													</div>
+												<div class="inner_scroll">
+													{% for jeje in jejepay_debits %}
+													<div class="col-md-12 listitem">
+														<div class="col-md-3">
+															<p>{{jeje.created_at|date:"d-m-Y"}}</p>
+														</div>
+														<div class="col-md-3">
+															<p>{{jeje.amount|floatformat:2|intcomma}}</p>
+														</div>
+														<div class="col-md-3">
+															<p>{{ jeje.status}}</p>
+														</div>
+														<div class="col-md-3">
+															<p>{{jeje.ref_no}}</p>
+														</div>
+													{% endfor %}
+
+
+												</div>
+											</div>
+
+
+
+										</div>
+
+									</div>
+
+
+									<div class="col-md-12 buttons" style="margin-top:9px; display:none;">
+										<a href="#" class="btn blue">Add Funds</a>
+										<a href="#" class="rst"><span class="glyphicon glyphicon-repeat"></span>Reset</a>
+
+									</div>
+								</div>
+								<!-- Regular Account -->
+							</div>
+						</div>
+						<!-- Register Account -->
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</section>
+	<!-- Main Section -->
+
+	<!-- FOOTER  -->
+	<footer class="black two">
+		{% include 'zaposta_snippet/footer-bottom.html' %}
+	</footer>
+	<!-- FOOTER  -->
+	<!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endblock %}

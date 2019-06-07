@@ -1,0 +1,75 @@
+{% extends 'sokohali/sokohali_homepage.html' %}
+{% load staticfiles %}
+<!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
+
+{% block title %}<title>Sokohali - Business Settings</title>{% endblock %}
+
+{% block bodytag %}<body class="services_page">{% endblock %}
+{% block meta_desc_key %}
+<meta name="description” content=“Sokohali.com - Make the best of your assets.Offer your facilities to other shippers who want to complete their delivery chains with the facilities you have.Select end to end routes for your business.Set a price you wish to rent out your services and facilities.Customize you website to your own taste and brand aesthetics.Select and setup a payment medium that is suitable to recieve money from your customers." />
+<meta name="keywords" content="Sokohali.com - Business Settings.Setup delivery routes.Setup payment options.Configure prices.Customisable website." />
+{% endblock %}
+
+
+{% block actions %}
+<ul class="dropdown-menu">
+    <li> <a href="/#overview1">Offer Facilities</a> </li>
+    <li><a href="/#overview2">Rent Facilities</a></li>
+    <li><a href="/#overview3">Offer Different Services</a></li>
+    <li><a href="/#overview4">More Features</a></li>
+</ul>
+{% endblock %}
+
+    {% block contents %}
+    <section>
+        <div class="container">
+            <div class="col-md-12" style="padding-bottom:30px;">
+                <h1><span></span> Business Settings</h1>
+                <h2 style="margin-bottom:15px;">Make the best of your assets. Offer your facilities to <br/>other shippers who want to complete their delivery chains with the facilities you have.
+                </h2>
+            </div>
+            {% for msg in messages %}
+                <script>
+                    function show_alert(){
+                    var alert = '<p style="padding-left:400px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</p>';
+                    document.write(alert);
+                    }
+                    display = window.setTimeout(show_alert(), 1000);
+                    window.clearTimeout(display);
+                </script>
+            {% endfor %}
+            <div class="col-md-6">
+                <div class="panel">
+                    <img src="{% static "sokohalihomepage/img/sv1.png" %}"/>
+                    <h1>Setup Delivery Routes</h1>
+                    <p>Select end to end routes for your business.</p>
+                    <a href="#Joinwaitinglist" class="btn black" data-toggle="modal" data-target="#Joinwaitinglist">Apply Now</a>
+                </div>
+                <div class="panel">
+                    <h1>Setup Payment Options</h1>
+                    <p>Select and setup a payment medium that is suitable to recieve money from your customers.</p>
+                    <a href="#Joinwaitinglist" class="btn black" data-toggle="modal" data-target="#Joinwaitinglist">Apply Now</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel">
+                    <h1>Configure<br/> Prices</h1>
+                    <p>Set a price you wish to rent out your services and facilities.</p>
+                    <a href="#Joinwaitinglist" class="btn black" data-toggle="modal" data-target="#Joinwaitinglist">Apply Now</a>
+                </div>
+                <div class="panel">
+                    <h1>Customize Website</h1>
+                    <p>Customize you website to your own taste and brand aesthetics.</p>
+                    <a href="#Joinwaitinglist" class="btn black" data-toggle="modal" data-target="#Joinwaitinglist">Apply Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endblock %}
+    <!-- Section -->
+
+    {% block modal %}
+
+        {% include 'joinwaitinglist.html' %}
+
+    {% endblock %}

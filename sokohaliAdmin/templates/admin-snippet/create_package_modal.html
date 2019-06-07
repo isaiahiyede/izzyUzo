@@ -1,0 +1,120 @@
+{% load staticfiles %}
+
+{% block modal_id %}
+<div class="modal" tabindex="-1" role="dialog" id="CreatePackage">
+{% endblock modal_id %} <!--style="padding-bottom:10px; display: none;">-->
+
+{% block header %}
+    <div class="modal-dialog modal-big">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">New Package Window</h4>
+                </div>
+			    <div class="modal-c open" id="s0">
+				<div class="modal-body fixtop" style="position:relative; bottom:145px">
+				{% endblock header %}
+					{% block contents %}
+								    <div class="body-inner long" style="overflow:hidden;">
+								        <h4 style="text-align: center;"><strong>Please select one of the two methods</strong></h4>
+										<div class="col-md-12">
+											<div class="col-md-6 pull-left">
+											    <h3>Create Package</h3>
+											    <img src="{{ STATIC_URL }}shipping/img/form.png">
+												    <h4>This is a very quick way of creating packages for customers.</h4>    
+											</div>
+
+
+
+
+									       <div class="col-md-6 pull-right">
+											   <h3>Notify User</h3>
+									           <img src="{{ STATIC_URL }}shipping/img/steps.png">
+									                <h4>This is to notify Customers that they have package(s) with us and as such, they should make a booking.</h4>
+											</div>
+										</div>
+								    </div>
+								</div>
+
+						    {% endblock contents %}
+
+						{% block footer %}
+
+						<style>
+						  .disabledbutton {
+						      pointer-events: none;
+						      opacity: 0.5;
+						  }
+						</style>
+											
+						<div class="modal-footer">
+						   <a class="btn green left" id="proceedtoshipping">Proceed to shipping Form</a>
+						   <a class="btn green  disabledbutton" id="notifyUser">Notify User</a>
+					   </div>
+					   {% endblock %}
+				</div>
+				
+                <!--<div id="step2" style="margin-top:-10px;">-->
+				<!-- <div class="modal-c" id="s1">
+                    <div class="modal-body fixtop">
+						<div class="body-inner two" style="overflow-y:scroll !important;">
+                            <div class="col-md-12" style="padding:0;">
+						        
+							        <h3>Find user<br>
+									    <input type="text" name="query" id="id_query_create_booking" class="input-lg" placeholder="Search Suite#, First Name, Last Name, email"/><br>
+									    <a href="#" id="finduser_create_booking" rel="create_booking" class="custom_btn go">Go</a>
+									</h3>
+							</div>
+
+							<div class="col-md-12" style="padding:0;">
+								<div id="matchingusers_create_booking" class="span12" style="padding-top: 20px; padding-bottom: 20px;">
+								
+								<a href="#" id="create_booking11" rel="create_booking" style="margin-left: 400px;"></a>
+								</div>
+						    </div>
+							<div class="col-md-12" style="padding:0;">
+								<div class="ajax-progress"></div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+                            <button type="button" class="btn gray trigger left" rel="s0">Back</button>
+                 -->            <!--<button type="button" class="btn green trigger" rel="s3">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>-->
+                    <!-- </div>	
+			    </div> -->
+					<!-- STEP 21 END -->			
+				<!-- STEP 2 START // FIXED LEFT SIDE -->
+				<!--<div id="finduser1" style="margin-top:-10px;">-->
+				<!-- <div class="modal-c" id="s2">
+					<div class="modal-body fixtop">
+						<div class="body-inner two" style="overflow-y:scroll !important;">
+                            <div class="col-md-12" style="padding:0;">
+
+								<h3>Find user<br>
+									<input type="text" name="query" id="id_query_pwb" class="input-lg" placeholder="Search Suite#, First Name, Last Name, email"/>
+									<a href="#" id="finduser_pwb" rel="pwb" class="custom_btn go">Go</a>
+								</h3>	
+							</div>
+							<div class="col-md-12" style="padding:0;">
+								<div id="matchingusers_pwb" class="span12" style="padding-top: 20px; padding-bottom: 20px;">
+								
+								<a href="#" id="userinfo11" rel="userinfo1" style="margin-left: 400px;"></a>
+							</div>
+							<div class="col-md-12" style="padding:0;">
+								<div class="ajax-progress" style="left: 20%;"></div>
+							</div>
+						</div>
+						<div class="modal-footer">
+                            <button type="button" class="btn gray trigger left" rel="s0">Back</button>
+                            <button type="button" class="btn green trigger" rel="s4">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                        </div>
+					</div>
+				</div> -->
+							
+			<!-- 
+			</div> --> <!-- MODAL CONTENT END -->
+			
+	</div>
+	
+</div>
+	

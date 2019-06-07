@@ -1,0 +1,16 @@
+
+<form action="{% url 'sokohaliAdmin:staff_login_access' %}" method="POST">
+{% csrf_token %}
+    <div class="col-md-12" style=" position: relative; padding-top: 20px;left: -31px;">
+      <div class="col-md-9">
+
+            <p>Login access to customer account</p>
+            <input type="text" name="email" class="form-control" placeholder="Enter email" style="border: 1px solid black !important;"/>
+
+      </div>
+
+      <div class="col-md-3" style="padding-top: 43px;">
+        <input type="submit" value="submit" style="height: 40px;" />
+      </div>
+    </div>
+</form>

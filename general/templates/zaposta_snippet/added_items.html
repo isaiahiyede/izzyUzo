@@ -1,0 +1,30 @@
+<div class="col-md-12" id="added_items"> 
+    <table border="0" class="table table-striped" id="user_items_table">
+            <tr>
+                    <th></th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Amount($)</th>
+                    <th>Status</th>
+                    <th>Action</th>         
+            </tr>
+            
+            {% for item in items_list %}
+	            <tr>
+	                <td class="itemms_ID">                              
+                        <input class="selected-items" type="checkbox" name="selected_item" value = "{{ item.pk }}" checked />
+                    </td>    
+                    <td>{{ item.description}}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.amount }}</td>
+                    <td>{{ item.status }}</td>
+                    <td></td>
+	                   
+	            </tr>
+	            
+	            <input class="hidden" type="text" id="ams_client_create_pkg" value="">
+           
+            {% endfor %}
+            
+    </table>                                        
+</div>

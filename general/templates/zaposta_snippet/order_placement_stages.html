@@ -1,0 +1,35 @@
+{% load activelink %}
+
+<div class="breadcrumbs">
+    <ul>
+        <!--<li id="step1" class="past" style="display:block;">-->
+        <li id="step1" class="past">
+            <p>Login or Register</p>
+            <span></span>
+        </li>
+        <li id="step2" {% if active_page > 3 %}class="past"{% endif %} {% if active_page = 3 %}class="active"{% endif %}>
+            <p>Review Cart</p>
+            <span>
+                <i class="fa fa-shopping-cart"></i>
+            </span>
+        </li>
+        <li id="step3" {% if active_page > 4 %}class="past"{% endif %} {% if active_page = 4 %}class="active"{% endif %}>
+            <p>Shipping</p>
+            <span>
+                <i class="fa fa-truck"></i>
+            </span>
+        </li>
+        <li id="step4" {% if active_page > 5 %}class="past"{% endif %} {% if active_page = 5 %}class="active"{% endif %}>
+            <p>Payment</p>
+            <span>
+                 <i class="fa fa-credit-card"></i>
+            </span>
+        </li>
+        <li id="step5" {% if active_page > 6 %}class="past"{% endif %} {% if active_page = 6 %}class="active"{% endif %}>
+            <p>Confirmation</p>
+            <span>
+                <i class="fa fa-file-text-o"></i>
+            </span>
+        </li>
+    </ul>
+</div>

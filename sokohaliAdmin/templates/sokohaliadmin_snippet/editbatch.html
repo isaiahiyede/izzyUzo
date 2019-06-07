@@ -1,0 +1,364 @@
+{% load staticfiles %}
+<style>
+.form-horizontal .form-group {
+		margin-right: -15px;
+		margin-left: 5px;
+}
+
+
+element.style {
+		margin-left: 3px;
+}
+
+div.modal-body {
+		overflow: scroll;
+}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
+<!-- /.modal -->
+		<div class="modal fade" tabindex="-1" role="dialog" id="editAwbModal{{each_batch.batch}}">
+				<div class="modal-dialog modal-big">
+
+						<div class="modal-content">
+								<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<h4 class="modal-title">Edit Airway Bill Form</h4>
+								</div>
+								<!-- <div class="order">
+										<div class="col-md-12">
+
+										</div>
+								</div> -->
+								<!-- modal-c -->
+								<form method ="POST" action="{% url 'sokohaliAdmin:form_update' %}" enctype="multipart/form-data"class="form-horizontal scroll">
+									{% csrf_token %}
+								<div class="modal-c open" id="s0">
+										<div class="modal-body">
+										<!-- <div class="modal-body fixtop"> -->
+												<!-- Body Inner Content -->
+												<!-- <div class="body-inner long"> -->
+													<div class="form-group" style="margin-bottom:5mm;">
+														<div class="col-sm-7">
+															<input type="hidden" class="form-control" name="batch_number" placeholder="Batch Number" value="{{each_awb.batch}}"readonly>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7">
+															<label>Shippers Name and Address: </label>
+															<textarea class="form-control" name="shippers_name_and_address" value="{{each_awb.shippers_name_and_address}}" placeholder="Shippers Name and Address" rows="4" cols="4" required>{{each_awb.shippers_name_and_address}}</textarea>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7"> 
+															<label>Shippers Number</label>
+															<input type="number" style="height:50px" class="form-control" name="shippers_number" value="{{each_awb.shippers_number}}" placeholder="Shippers Phone Number">
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7"> 
+															<label>Shippers Account Number</label>
+															<input type="text" class="form-control" name="shippers_acct_no" value="{{each_awb.shippers_acct_no}}" placeholder="Shippers Account Number" required>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7"> 
+															<label>Consignees Name and Address</label>
+															<textarea class="form-control" name="consignees_name_and_address" value="{{each_awb.consignees_name_and_address}}" placeholder="Consignee's Name" rows="4" cols="4" required>{{each_awb.consignees_name_and_address}}</textarea>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7"> 
+															<label>Consignees Number</label>
+															<input type="number" style="height:50px" class="form-control" name="consignees_number" value="{{each_awb.consignees_number}}" placeholder="Consignee's  Phone Number">
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7"> 
+															<label>Consignees Account Number</label>
+															<input type="text" class="form-control" name="consignees_acct_no" value="{{each_awb.consignees_acct_no}}" placeholder="Consignee's Account Number" required>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7"> 
+															<label>Carrier Agent Name and City</label>
+															<textarea class="form-control" name="carrier_agent_name_and_city" value="{{each_awb.carrier_agent_name_and_city}}" placeholder="Carrier Agent Name and City" rows="2" cols="4"required>{{each_awb.carrier_agent_name_and_city}}</textarea>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7"> 
+															<label>Carrier Agent IATA Code</label>
+															<input type="text" class="form-control" name="carrier_agent_iata_code" value="{{each_awb.carrier_agent_iata_code}}" placeholder="Carrier Agent IATA Code" required>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7"> 
+															<label>Carrier Agent Account Number</label>
+															<input type="number" style="height:50px;" class="form-control" name="agent_acct_no" value="{{each_awb.agent_acct_no}}" placeholder="Agent Account Number" required> 
+														</div> 
+													</div>
+													<div class="form-group">
+														<div class="col-sm-7"> 
+															<label>Airport of Departure</label>
+															<input type="text" class="form-control" name="airport_of_departure" value="{{each_awb.airport_of_departure}}" placeholder="Airport of Departure and Requested Routing " required>
+														</div>
+													</div>
+												<!-- </div> -->
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn green trigger" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s1">
+										<div class="modal-body">
+												<!-- Body Inner Content -->
+												<!-- <div class="body-inner long"> -->
+												<div class="form-group" style="margin-top:5mm;">
+													<div class="col-sm-7"> 
+														<label>Origin Routing Code</label>
+														<input type="text" class="form-control" name="origin_routing_code" value="{{each_awb.origin_routing_code}}" placeholder="Origin Routing (Code e.g. IAD) " required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Origin Airline Carrier</label>
+														<input type="text" class="form-control" name="origin_airline_carrier" value="{{each_awb.origin_airline_carrier}}" placeholder="Origin Airline Carrier (Code e.g. AF)" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Destination / Departure Routing Code</label>
+														<input type="text" class="form-control" name="destination_and_departure_routing_code1" value="{{each_awb.destination_and_departure_routing_code1}}" placeholder="Airport of Destination/Departure (Code e.g. CDG)" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Second Airline Carrier</label>
+														<input type="text" class="form-control" name="second_airline_carrier" value="{{each_awb.second_airline_carrier}}" placeholder="Airline Carrier (Code e.g. AF)" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>State of Destination</label>
+														<input type="text" class="form-control" name="state_of_destination" value="{{each_awb.state_of_destination}}" placeholder="State of Destination (Code e.g. LOS)">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Third Airline Carrier</label>
+														<input type="text" class="form-control" name="third_airline_carrier" value="{{each_awb.third_airline_carrier}}" placeholder="Airport Carrier (Code e.g. AF)">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Airport of Destination</label>
+														<input type="text" class="form-control" name="airport_of_destination" value="{{each_awb.airport_of_destination}}" placeholder="Airport of Destination">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Requested Flight and Date(First)</label>
+														<input type="text" class="form-control" name="requested_flight_and_date1" value="{{each_awb.requested_flight_and_date1}}" placeholder="First Requested Flight/Date">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Requested Flight and Date(Second)</label>
+														<input type="text" class="form-control" name="requested_flight_and_date2" value="{{each_awb.requested_flight_and_date2}}" placeholder="Second Requested Flight/Date">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Handling Information</label>
+														<input type="text" class="form-control" name="handling_info" value="{{each_awb.handling_info}}" placeholder="Handling Information">
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Issued Airline Carrier and Address</label>
+														<textarea class="form-control" name="issued_airline_carrier_and_address" value="{{each_awb.issued_airline_carrier_and_address}}" placeholder="Issued Airline Carrier and Address" rows="4" cols="4" required>{{each_awb.issued_airline_carrier_and_address}}</textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Accounting Information</label>
+														<input type="text" class="form-control" name="accounting_info" value="{{each_awb.accounting_info}}" placeholder="Accounting Information"  required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Ref Number</label>
+														<input type="text" class="form-control" name="ref_number" value="{{each_awb.ref_number}}" placeholder="Reference Number" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Currency Code</label>
+														<input type="text" class="form-control" name="currency_code" value="{{each_awb.currency_code}}" placeholder="Currency Code e.g. USD" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Value For Carriage</label>
+														<input type="text" class="form-control" name="value_for_carriage" value="{{each_awb.value_for_carriage}}" placeholder="Declared Value for Carriage (Code e.g. NVD)" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Value For Custom</label>
+														<input type="text" class="form-control" name="value_for_custom" value="{{each_awb.value_for_custom}}" placeholder="Declared Value for Customs (Code e.g. NCV)" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Amount on Insurance</label>
+														<input type="number" step="0.01" style="height:50px;" class="form-control" name="amount_of_insurance" value="{{each_awb.amount_of_insurance}}" placeholder="Amount of Insurance" required>
+													</div>
+												</div>
+												<!-- <div class="form-group">
+													<div class="col-sm-7"> 
+														<input type="text" class="form-control" name="handling_info" placeholder="Handling Information" required>
+													</div>
+												</div> -->
+												<!-- </div> -->
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s0">Back</button>
+												<button type="button" class="btn green trigger" rel="s2">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+										</div>
+								</div>
+								<!-- modal-c -->
+								<!-- modal-c -->
+								<div class="modal-c" id="s2">
+										<div class="modal-body">
+												<!-- Body Inner Content -->
+												<div class="form-group" style="margin-top:5mm;">
+													<div class="col-sm-7"> 
+														<label>Number of Pieces to Ship</label>
+														<input type="number" style="height:50px;" class="form-control" name="number_of_pieces_to_ship" value="{{each_awb.number_of_pieces_to_ship}}" placeholder="Number of Pieces RCP" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Gross Weight</label>
+														<input type="number" step="0.01" style="height:50px;" class="form-control" name="gross_weight" value="{{each_awb.gross_weight}}" placeholder="Gross Weight " required>
+													</div>
+												</div>
+												<!-- <div class="form-group">
+													<div class="col-sm-7"> 
+														<input type="number" step="0.01" style="height:50px;" class="form-control" name="chargeable_weight" placeholder="Chargeable Weight " required>
+													</div>
+												</div> -->
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Chargeable Rate</label>
+														<input type="number" step="0.01" style="height:50px;" class="form-control" name="chargeable_rate" value="{{each_awb.chargeable_rate}}" placeholder="Chargeable Rate " required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Nature and Quantity of Goods</label>
+														<textarea rows="4" cols="4" class="form-control" name="nature_and_quantity_of_goods" value="{{each_awb.nature_and_quantity_of_goods}}" placeholder="Nature and Quantity of Goods" required>{{each_awb.nature_and_quantity_of_goods}}</textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Note on the Package</label>
+														<textarea rows="4" cols="4" class="form-control" name="note_on_the_package" value="{{each_awb.note_on_the_package}}" placeholder="Note concerning the PACKAGE been Shipped" required>{{each_awb.note_on_the_package}}</textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Regulation of Goods</label>
+														<textarea rows="4" cols="4" class="form-control" name="regulation_of_goods" value="{{each_awb.regulation_of_goods}}" placeholder="Regulation on the type of  Goods">{{each_awb.regulation_of_goods}}</textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Other Charges Due Carrier</label>
+														<input type="number" step="0.01" style="height:50px" class="form-control" name="other_charges_due_carrier" value="{{each_awb.other_charges_due_carrier}}" placeholder="Total Other Charges Due Carrier" >
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Place of Execution</label>
+														<input type="text" class="form-control" name="place_of_execution" value="{{each_awb.place_of_execution}}" placeholder="Place of Execution" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Tracking Number Prefix</label>
+														<input type="number"  style="height:50px" max="1000" class="form-control" name="tracking_number_prefix" value="{{each_awb.tracking_number_prefix}}" placeholder=" Airline Tracking Number Prefix" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Airline Tracking Number</label>
+														<input type="number" style="height:50px" class="form-control" name="airline_tracking_number" value="{{each_awb.airline_tracking_number}}" placeholder="Airline Tracking Number" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Shippers Name</label>
+														<input type="text" class="form-control" name="shippers_name" value="{{each_awb.shippers_name}}" placeholder="Shipper Name" required>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-sm-7"> 
+														<label>Carrier Name</label>
+														<input type="text" class="form-control" name="carrier_name" value="{{each_awb.carrier_name}}" placeholder="Carrier Name" required>
+													</div>
+												</div>
+												<!-- Body Inner Content -->
+										</div>
+										<div class="modal-footer">
+												<button type="button" class="btn gray trigger left" rel="s1">Back</button>
+												<button id="button" type="submit" class="btn green">Submit</button>
+										</div>
+								</div>
+							</form>
+							<!-- <div class="row" id="div2" style="display: none">Show Div 2</div> -->
+								<!-- modal-c -->
+						</div>
+						<!-- /.modal-content -->
+
+				</div>
+				<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
+
+<script>
+$("#button").click(function() {
+	// $("input").each(function() {
+	console.log("GOT HERE");
+	$(".red").each(function() {
+			if($(this).val() == "")
+				{
+					$(this).css("border", "2px solid red");
+				}
+			else{
+					$(this).css("border", "2px solid green");
+			}
+		});
+});
+</script>
+
+
+<script type="text/javascript">
+	function Reveal(it, box) {<!--from   ww  w. ja  v a 2  s .com-->
+	var vis = (box.checked) ? "block" : "none";
+	document.getElementById(it).style.display = vis;
+	}
+
+	function Hide(it, box) {
+	var vis = (box.checked) ? "none" : "none";
+	document.getElementById(it).style.display = vis;
+	}
+</script>

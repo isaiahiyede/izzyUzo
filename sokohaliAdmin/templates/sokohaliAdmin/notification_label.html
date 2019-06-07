@@ -1,0 +1,114 @@
+{% load humanize %}
+{% load custom_tags %}
+{% load staticfiles %}
+
+<head>
+  <title>{{ request.storefront_name }} - {{ pkg.tracking_number }} Shipping Label</title>
+  {% if request.marketing_member.ico %}
+  <link rel="shortcut icon" href="{{ request.marketing_member.ico.url }}">
+  {% endif %}
+
+    <style type="text/css">
+        div.Body {
+            width: 400px;
+        }
+        div.Label {
+            width: 350px;
+            height: 550px;
+            text-align: center;
+            float: left;
+        }
+        div.closeButton {
+            float: right;
+            /*padding-left: 50px;*/
+        }
+        body{
+            font-family: Arial;
+            width: 500px;
+            height: 600px;
+            text-align: center;
+        }
+    </style>
+
+    <script>
+    function myFunction() {
+        window.print();
+      }
+    </script>
+
+    <script type="text/javascript">
+        function autoPrint()
+        {
+            try
+            {
+                jsPrintSetup.setPrinter("DYMO Labelwriter 4XL");
+                jsPrintSetup.setPaperSizeUnit(jsPrintSetup.kPaperSizeMillimeters);
+                jsPrintSetup.definePaperSize(251,251,'nordgen_seedlabel_1','nordgen_seedlabel_100x150mm','nordgen normal seed label',100,150,jsPrintSetup.kPaperSizeMillimeters);
+                jsPrintSetup.setOption('paperSizeType',jsPrintSetup.kPaperSizeNativeData);
+                jsPrintSetup.setPaperSizeData(251);
+
+                jsPrintSetup.setOption('printRange',jsPrintSetup.kRangeSpecifiedPageRange);
+                jsPrintSetup.setOption('startPageRange', 1);
+                jsPrintSetup.setOption('endPageRange', 1);
+
+                jsPrintSetup.setSilentPrint(1);
+                jsPrintSetup.print();
+                //setTimeout("showButton()",1000);
+            }
+            catch(err)
+            {
+                alert(err);
+                //alert("Please provide a DYMO Labelwriter 4XL printer");
+            }
+        }
+    </script>
+
+</head>
+<body onload="javascript:autoPrint()">
+    <div class="Body">
+        <div class="closeButton">
+            <a href="{{ request.path }}"><img src="{{ STATIC_URL }}shopping/images/arrow_right2.png" width="15px" height="15px"/></a> &nbsp &nbsp
+            <a href="JavaScript:window.close()"><img src="{{ STATIC_URL }}shopping/images/close3.png" width="15px" height="15px"/></a>
+            <button onclick="myFunction()">Print</button>
+        </div>
+        <div class= "label">
+            <div id="labelHeader">
+              {% if request.marketing_member.ico %}
+                <img src="{{ request.marketing_member.ico.url }}" />
+              {% endif %}
+              <h1>{{ request.storefront_name }}</h1>
+            </div>
+            <hr/>
+            <p></p>
+
+            {% block labelBody %}
+            <div id="destinationAddress" >
+                  <span style="font-size: large; font-weight: bold;">Name: {{pkg.user.get_full_name}}</span><br/>
+                  <span style="font-size: large; font-weight: bold;">Suite No: {{pkg.suite_no}}</span><br/>
+                  <span style="font-size: large; font-weight: bold;">Address: {{pkg.address}}</span><br/>
+                  <span style="font-size: large; font-weight: bold;">Phone No: {{pkg.telephone}}</span><br/>
+                  <span style="font-size: large; font-weight: bold;">Description:{{pkg.item_description}}</span>
+            </div>
+            <p></p>
+            {% endblock labelBody %}
+            <hr/>
+            <div id="labelfooter">
+                <!-- <img src="{{ STATIC_URL }}shopping/images/ca_social_links.png" width="350px"/> -->
+                 {% if not request.user.useraccount.marketer.storefront_name == "volkmannexpress" %}
+                <p style="line-height:35px;">© {{ request.storefront_name }} {% current_year %}. <br/>All rights Reserved. Powered by <a href="https://www.sokohali.com" target="_blank">Sokohali</a></p>
+                {% else %}
+                <p style="line-height:35px;">© {{ request.storefront_name }} {% current_year %}. <br/>VolkmannExpress Inc.</p>
+                {% endif %}
+
+            </div>
+
+            {% block labelFooter %}
+            <!-- <div>
+                <span style="font-size: 60px; font-weight: bold; color: #dcdcdc;">{{ order.tracking_number|slice:"6:" }} <br/>
+                <span>Powered By Sokohali {% current_year %}</span>
+            </div> -->
+            {% endblock labelFooter %}
+        </div>
+
+    </div>
+</body>

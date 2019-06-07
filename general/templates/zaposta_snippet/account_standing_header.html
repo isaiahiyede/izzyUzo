@@ -1,0 +1,46 @@
+<!-- header top side -->
+
+{% load account_standing %}
+<header class="log">
+    <div class="container-fluid">
+        <a href="/" class="logo">
+            <img src="{{STATIC_URL}}shopping/images/logo.png" class="notshow" />
+            <img src="{{STATIC_URL}}shopping/images/logo3.png" />
+        </a>
+        <nav>
+            <ul>
+            {% if request.user.is_authenticated %}
+               <!-- {% if not request.user.is_staff %}
+                <li class="accs">
+                    <span>Account Standing</span>
+                
+                    {% account_standing_shipping request request.user "" %}
+                    <div class="right">
+                        <a href="{% url 'userAccount:add_funds' request.user.username %}" class="btn">Add Funds</a>
+                    </div>
+                </li>
+                {% endif %}-->
+                <li class="logout">
+                    <a href="{% url 'general:logout' %}">Logout<span class="glyphicon glyphicon-log-out"></span></a>
+                </li>
+            {% else %}
+                <li class="signup">
+                    <a href="{% url 'general:login' %}">Login / Sign Up</a>
+                </li>
+            {% endif %}
+                <!-- menu trigger -->
+                <li class="triggerouter">
+                    <p>MENU</p>
+                    <div class="triggernav">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </li>
+                <!-- menu trigger -->
+            </ul>
+
+        </nav>
+    </div>
+</header>
+<!-- header top side -->

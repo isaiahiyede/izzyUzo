@@ -1,0 +1,64 @@
+{% extends "base/zaposta_base.html" %}
+
+
+{% block title %}Storefront Not Found{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+{% block header %}
+{% endblock header %}
+
+
+{% block st_content %}
+<div class="st-content-inner">
+    <!-- extra div for emulating position:fixed of the menu -->
+    <!-- Main Section -->
+    <section id="main" class="form-outer">
+        <div class="hero">
+            <div class="container">
+                <div class="form show">
+                    <div class="inner">
+
+                        <!-- Login Account -->
+                        <div class="container" id="login">
+                            <div class="col-md-6 promo">
+                                <h1>Storefront Not Found</h1>
+
+                            </div>
+
+
+
+                            <div class="col-md-6 left">
+
+                                <p style="margin-top: 50px;">The storefront you are looking for not found.</p>
+                                <p>Please check the link and try again.</p>
+                                <img src="{{STATIC_URL}}page-not-found.jpg"/>
+                            </div>
+
+                        </div>
+                        <!-- Login Account -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Main Section -->
+
+    <!-- Other Services -->
+
+    <!-- Other Services -->
+
+    <!-- FOOTER  -->
+    {% include "zaposta_snippet/footer_v1.html" %}
+    <!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endblock %}
+
+
+{% block script %}
+
+
+{% endblock %}

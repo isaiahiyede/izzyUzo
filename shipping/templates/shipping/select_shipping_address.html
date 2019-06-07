@@ -1,0 +1,154 @@
+{% extends "base/zaposta_base.html" %}
+{% load humanize %}
+{% load activelink %}
+
+
+{% load account_standing %}
+<!-- load operation_countries-->
+{% load currency %}
+
+{% block title %}Select Delivery Address{% endblock %}
+
+{% block extra_head %}
+  <style>
+    .error{
+      color: red;
+    }
+  </style>
+{% endblock %}
+
+{% block extra_script %}
+    <!-- Special Font for Icons -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<script type="text/javascript" src="{{STATIC_URL}}export/js/jquery.validate.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}zaposta/js/select_shipping_address.js"></script>
+
+{% endblock %}
+
+{% block extra_head_3 %}
+{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+{% block st_content %}
+<!-- this is the wrapper for the content -->
+<div class="st-content-inner">
+  <!-- extra div for emulating position:fixed of the menu -->
+  <!-- Steps Section -->
+  <section id="steps" {% ifstartswith 'shopping:shipping_address' %}class="three tt" {% else %} class="tt" {% endifstartswith %}>
+      <div class="white"></div>
+      <!-- Page -->
+	  <form action="" method="POST">
+	  {% csrf_token %}
+
+      <div class="container page">
+          {% include 'zaposta_snippet/order_placement_stages.html' with active_page=4 %}
+
+			<div class="col-md-8 content_outer">
+				<div class="col-md-12 content" style="padding-bottom:0;">
+
+					<div class="header">Shipping - Shipping Addresses</div>
+
+					<div class="credit two">
+						<div class="col-md-12" style="padding-top:30px;">
+
+							<h1>Saved Shipping Addresses</h1>
+
+						</div>
+						<div class="col-md-12" style="padding-top:15px;">
+							<p>Select a shippping address from your address book or add a new address.</p>
+							<!--<p class="alert_green" id="p_select_address"></p>-->
+							<p id="p_select_address"></p>
+							{% if messages %}
+								{% for message in messages%}<p class="error_alert">{{message}}</p>{% endfor %}
+							{% endif %}
+						</div>
+
+
+							{% include "shipping_snippet/address_book.html" with addresses=addresses class='two' %}
+
+
+						<div class="col-md-12" style="padding-top:30px;">
+							<h1>New Shipping Addresses</h1>
+						</div>
+						<div class="col-md-12" style="padding-top:15px;">
+							<p>Please click the button below to add a new shipping address to your address book.</p>
+						</div>
+						<div class="col-md-12" style="text-align:center; padding-top:30px; padding-bottom:30px;">
+							<a href="#" id="show_add_address_modal" class="btn yellow" style="float:none; width:50%;">Add New Shipping Address</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+          <!-- Standing -->
+          <div class="standing col-md-4">
+
+				<!-- Package List  -->
+				 <!--block include_acct_standing
+					 ifstartswith 'shopping:shipping_address'
+					   zaposta_acct_standing_v1 request 'three'
+					 else %}
+						{% zaposta_acct_standing_v1 request ''
+					 endifstartswith
+				 endblock -->
+          </div>
+          <!-- Standing -->
+          <!-- Bottom -->
+          <div class="bottom">
+			{% ifstartswith 'shopping:shipping_address' %}
+				<a href="{% url 'shopping:select_box_and_freight' %}" class="btn prev"><img src="{{STATIC_URL}}zaposta/img/arrow_left.png">Previous Step</a>
+				<a href="#" name="proceed" class="btn next blue" onclick='validateAddressSelection("{% url 'shopping:shopping_payment' %}");'>Next Step<img src="{{STATIC_URL}}zaposta/img/arrow_right.png"></a>
+			{% else %}
+				<a href="{% url 'shipping:select_package' %}" class="btn prev"><img src="{{STATIC_URL}}zaposta/img/arrow_left.png">Previous Step</a>
+				<a href="#" class="btn next green" onclick='validateAddressSelection("{% url 'shipping:shipping_payment' %}");'>Next Step<img src="{{STATIC_URL}}zaposta/img/arrow_right.png"></a>
+			{% endifstartswith %}
+		  </div>
+          <!-- Bottom -->
+      </div>
+
+	  </form>
+      <!-- Page -->
+  </section>
+  <!-- Steps Section -->
+
+  <!-- FOOTER  -->
+   {% include "zaposta_snippet/footer_v2.html" %}
+  <!-- FOOTER  -->
+
+  <!-- the content -->
+</div>
+<!-- /st-content-inner -->
+<!--<div class="divLoading" style="display: none;">
+
+</div>-->
+{% endblock %}
+
+
+
+<!-- block operation_countries
+      operatingcountries request.user.is_staff
+ endblock -->
+
+
+{% block edit_shipment_order %}
+<!-- Edit Saved Address Modal -->
+    <div class="modal clean three" id="eaddr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Edit Saved Address Modal -->
+
+    <!-- Add Address Modal -->
+    {% include 'shipping_snippet/add_address.html' %}
+    <!-- Add Address Modal -->
+{% endblock %}

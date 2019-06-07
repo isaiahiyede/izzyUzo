@@ -1,0 +1,68 @@
+<div id="create_box" style="display:none; overflow: scroll;">
+    <div class="ajax-progress2"></div>
+    <div class="col-md-12">
+        <div id="item_list">
+    {% if alert %} <span id="msg_not" style="color: red;position: relative; top: -118px; left: 271px;">{{alert}}</span>{% endif %}
+    
+    {% if items %}
+        <div class="col-md-12" style="overflow: scroll">
+            <table width="100%" border="0" style="line-height:24px;" id="nobk">
+                    <tr>
+                        <th class="item_selector_all hidden" >
+                        <input class="select-all" type="checkbox" name="selected_all_items" id ="select_all_items"/>
+                        </th>
+                        <th>Item number</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                    {% for item in items %}
+                    <tr>
+                            <td class="item_selector hidden">
+                              <input class="selected-items" type="checkbox" name="selected_item" value = "{{ item.pk }}" checked />
+                            </td>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{item.description}}</td>
+                            <td>{{item.quantity}}</td>
+                            {% if item.total_value %}
+                            <td>${{item.total_value}}</td>
+                            {% else %}
+                            <td>&#8358;{{item.naira_value}}</td>
+                            {% endif %}
+                    </tr>
+                    {% endfor %}							
+            </table>
+        </div>
+    {% endif %}
+        <div class="col-md-12">
+           <div class="col-md-12">
+                <label>Length:</label>
+                <input style="height:35px;" name ="length (inches)" id ="length" type="text" class="longinput" placeholder = ""/>
+            </div>
+            <div class="col-md-12">
+                <label>Height:</label>
+                <input style="height:35px;" name ="height (inches)" id ="height" type="text" class="longinput" placeholder = ""/>
+            </div>
+            <div class="col-md-12">
+                <label>Width:</label>
+                <input style="height:35px;" name ="width (inches)" id ="width" type="text" class="longinput" placeholder = ""/>
+            </div>
+            <div class="col-md-12">
+                <label>Weigth:</label>
+                <input style="height:35px;" name ="weight" id ="weight" type="text" class="longinput" placeholder = ""/>
+            </div>
+            <div class="col-md-12">
+                <label>Select direction</label>
+                <select id="shipping_direction" name="shipping_direction" required>
+                    <option value="United States-Nigeria">USA-NGA</option>
+                    <option value="Nigeria-United States">NGA-USA</option>
+                </select> 
+            </div>
+            <div class="col-md-12">
+                <input name ="pkg_type" id ="pounds" type="radio" value="lb"/>Pounds(lbs)
+                <input name ="pkg_type" id ="kgs" type="radio" value="Kgs" style="margin-left: 20px;" required/>Kilograms(kgs)	
+            </div>
+        </div>
+      </div>
+    </div>
+</div>

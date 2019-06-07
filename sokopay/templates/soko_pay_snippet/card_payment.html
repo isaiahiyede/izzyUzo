@@ -1,0 +1,163 @@
+{% load staticfiles %}
+{% load custom_tags %}
+
+
+<div class="modal clean three" style="" id="card_payment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content two">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body" style="min-height: 620px; overflow: hidden;">
+                <div class="row-fluid">
+                    <div class="t two">
+
+
+                        <div class="tinner">
+                            <div class="tinner1" style="position: relative; top: -20px;">
+								                <div class="col-md-12">
+                                    <img class="center-block" src="{% static 'export/img/zappay.png'%}" style="position:relative; margin-left: auto; margin-right: auto; height: 200px;">
+                                </div>
+                                <div class="col-md-12" style="position:relative;left:10px;">
+                                    <p style="color:black;">
+                                   	<span style="text-align: center;"><strong>ATTENTION: We do NOT store your card details.</strong><span>
+                                    <!-- <ul>
+                                      <li>We do NOT save your card details for security reasons.</li>
+                                      <li>Use card details linked to your BVN.</li>
+                  									  <li>Ensure the mobile phone number linked to your BVN is turned on as it will be used to verify your payment transaction.</li>
+                    								</ul> -->
+                                    </p>
+                                </div>
+                                <hr style="border:1px solid rgb(231, 231, 231);">
+
+                                	<div class="row-fluid" id="card_details" style="position:relative; bottom:2px;">
+		                                <form id='card_details_form'>
+          										      {% csrf_token %}
+
+              										  <div class="col-md-12" style="position:relative; top:-10px;">
+                                        <div class="col-md-7" style="position:relative; left:105px;">
+                                            <label>Card Number:</label>
+                                            <input style="position:relative; width:102%;" type="number" oninput="maxLengthCheck(this)" onkeypress="return isNumeric(event)" min = "1" maxlength="16" name="cardNumber" required />
+                                        </div>
+    		                            </div>
+
+		                                <div class="col-md-12" style="position:relative; top:-35px; left: 14px;">
+		                                    <div class="col-md-6 flutter-select" style="left: 76px;">
+		                                   		  <label style="position:relative;">Expiry Month:</label><br/>
+		                                        <select name="expiryMonth" style="position:relative;" required>
+		                                          <option value="">Select Month</option>
+		                                          {% for val in months_list %}
+                      													<option value="{{ val }}">{{ val }}</option>
+                      												  {% endfor %}
+		                                        </select>
+		                                    </div>
+
+		                                    <div class="col-md-6 flutter-select-year" style="padding-left: 14px;">
+		                                    	  <label style="position:relative; right:7px;">Expiry Year:</label><br/>
+		                                        <select name="expiryYear" style="position:relative; right:10px;" required>
+		                                          <option value="">Select Year</option>
+		                                          {% for val in years_list %}
+                      													<option value="{{ val|slice:'2:' }}">{{ val }}</option>
+                      												  {% endfor %}
+		                                        </select>
+		                                    </div>
+
+                                        <div class="col-md-12" style="position:relative; top: 5px; left: 61px;">
+                                            <div class="col-md-4">
+                                                <label>CVV2/CVC:</label><br/>
+                                                <input type="password" style="width: 78%;" oninput="maxLengthCheck(this)" onkeypress="return isNumeric(event)" min = "1" maxlength="3" name="cvv" required />
+                                            </div>
+                                            <!--<div class="col-md-4" style="left: 31px;">
+                                                <label>PIN:</label><br/>
+                                                <input type="password" style="width: 78%;" oninput="maxLengthCheck(this)" onkeypress="return isNumeric(event)" min = "1" maxlength="4" name="pin" required />
+                                            </div>-->
+                                        </div>
+    		                                <!--<div class="col-md-12" style="position:relative; top:-50px;">
+
+    		                                    <div class="col-md-6">
+		                                      <label style="position:relative; right:7px;">Pin:</label><br/>
+		                                      <input style="position:relative; right:8px; width:183px;" type="number" oninput="maxLengthCheck(this)" onkeypress="return isNumeric(event)" min = "1" maxlength="4" name="pin" required />
+		                                    </div>
+		                                </div>-->
+                                </div>
+				                        <div class="col-md-12">
+              											<div class="col-md-6">
+              											  <input style="cursor:pointer; position:relative; width:128px; left:90px; bottom:20px;" type="reset" name="reset" value="Clear" required />
+              											</div>
+              											<div class="col-md-6">
+                                      <a href="#" style="cursor:pointer; position:relative; left:-6px; width:128px; bottom:20px;" class="btn yellow" id='submit_card'>Submit</a>
+              											</div>
+              											<!--- hidden input fields --->
+              											<input type="hidden" name="customerID" value="{{ request.storefront_name}}-{{ request.user.pk}}"/>
+              				                        	{% if txn_ref %}
+              												<input type="hidden" name="txn_ref" value="{{ txn_ref }}"/>
+              											{% endif %}
+
+              										  </div>
+                                </div>
+              							</form>
+
+
+									<div class="row-fluid hidden" id="otp_details" style="position:relative; bottom:2px;">
+										<form id="otp_form">
+										<div class="content">
+											<div class="col-md-12" style="background: #b32f2d;">
+												<p id="response_msg" style="color: #fff;"></p>
+											</div>
+
+											<div class="col-md-12" style="margin-left: -16px;">
+												<div class="col-md-4">
+													<label>Amount:</label>
+													<input type="text" id="id_amount_N" disabled />
+												</div>
+												<div class="col-md-4">
+													<label>Convenience Fee:</label>
+													<input type="text" id="id_txn_charge_N" disabled />
+												</div>
+
+												<div class="col-md-4">
+													<label>Total:</label>
+													<input type="text" id="id_total_N" disabled />
+												</div>
+
+											</div>
+
+
+											<div class="col-md-12" style="margin-left: -16px;">
+												<div class="col-md-8">
+													<label>OTP:</label>
+													<input style="position:relative; width:102%;" type="number" name="otp" required />
+
+													<input type="hidden" name="otpTransactionIdentifier" id="id_otptransactionidentifier" />
+													<input type="hidden" name="jejepay_ref" id="id_jejepay_ref"/>
+												</div>
+											</div>
+
+											<div class="col-md-6" style="padding-top: 30px;">
+												<a href="#" style="cursor:pointer;" class="btn yellow" id='submit_otp'>Submit</a>
+											</div>
+										</div>
+										</form>
+
+									</div>
+
+									<!--<hr style="border:1px dashed black">-->
+
+
+
+                        	</div>
+                        <!--<div class="col-md-12">
+				            <p style="color:black;"> &copy; Sokohali {% current_year %}. All rights Reserved</p>
+        				</div>-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+	<div class="loading">
+
+	</div>
+</div>

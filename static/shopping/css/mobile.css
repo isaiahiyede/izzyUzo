@@ -1,0 +1,178 @@
+@charset "UTF-8";
+/* CSS Document */
+/***** Desktop view CSS under here (767px+) *****/
+
+.topside #top_box.tab_hding_text.two.three .right {
+    text-align: left;
+}
+
+.topside #top_box.tab_hding_text.two.three .right p,
+.topside #top_box.tab_hding_text.two.three .right h2 {
+    float: left;
+    width: 100%;
+}
+
+.topside #top_box.tab_hding_text.two.three .right p {
+    height: auto;
+}
+
+.topside #top_box.tab_hding_text.two.three .right.two {
+    background: #fff;
+    height: 100%;
+    float: right;
+    padding-bottom: 0;
+}
+
+.topside #top_box.tab_hding_text.two.three {}
+
+.topside #top_box.tab_hding_text.two.three .right.two img {
+    width: auto;
+    max-width: 100%;
+}
+/***** iPhone portrait view CSS under here (<320px) *****/
+
+@media only screen and (max-width: 767px) {
+    #category #navi_ctgry .mobile-bar ul {
+        width: 100%;
+        margin: 0;
+    }
+    #category #navi_ctgry .mobile-bar ul li {
+        width: 33%;
+        display: inline-block;
+    }
+    #category #navi_ctgry .mobile-bar ul li a {
+        padding-left: 0% !important;
+        padding-right: 0% !important;
+        width: 100%;
+    }
+    #login #shop-content.body .login .user,
+    #login #shop-content.body .login .password {
+        width: 88%;
+    }
+    #login #shop-content.body .login {
+        margin-left: 0%;
+        width: 100%;
+        background: rgb(252, 252, 252);
+    }
+    #login #shop-content.body .login input,
+    .topside #top_box.tab_hding_text.two.three .left input {
+        width: 90%;
+        padding-left: 10px;
+        float: left;
+    }
+    .topside #top_box.tab_hding_text.two.three .left input {
+        width: 98%;
+    }
+    #login #shop-content.body .login .button,
+    #login #shop-content.body .alert {
+        padding-left: 0;
+        padding-right: 0;
+        width: 88%;
+    }
+    #login #shop-content.body .alert {
+        padding-left: 15%;
+        padding-right: 5%;
+        width: 68%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-position: 10px 10px;
+    }
+    /** Hide Login Redunctant Elements **/
+    
+    #loginpage #category #navi_ctgry .mobile-bar,
+    #accountpayment #category #navi_ctgry .mobile-bar,
+    #accountpayment .right,
+    #accountpayment .footer-outer {
+        display: none;
+    }
+    #loginpage #category #navi_ctgry .navigation_top,
+    #accountpayment .navigation_top {
+        display: none;
+    }
+    #loginpage .logo a,
+    #accountpayment #category .top_part .logo a {
+        width: 90%;
+        margin-left: 7%;
+        float: left;
+    }
+    #accountpayment #category #body_ctgry {
+        padding-bottom: 20px;
+    }
+    #loginpage #category .top_part .logo a img,
+    #accountpayment #category .top_part .logo a img {
+        max-width: 100%;
+        width: 100%;
+        float: left;
+    }
+    #loginpage #login .text {
+        display: none;
+    }
+    #loginpage #login.topside {
+        min-height: 470px;
+    }
+    #loginpage #login .steps {
+        display: none;
+    }
+    #loginpage #login #shop-content.body h2,
+    #loginpage #login #shop-content.body .row p {
+        text-align: center;
+    }
+    #loginpage #login #shop-content.body h2 {
+        font-size: 18px;
+        padding-left: 0;
+        padding-bottom: 10px;
+    }
+    #loginpage #login #one h2 {
+        padding-top: 0px;
+    }
+    #loginpage #login #shop-content.body .login .recover {
+        width: 100%;
+        text-align: center;
+        padding: 0;
+        margin: 0;
+        margin-top: 15px;
+    }
+    #loginpage #login #shop-content.body {
+        margin-top: 0;
+    }
+    #loginpage .footer-outer {
+        display: none;
+    }
+    #loginpage #category #body_ctgry {
+        background: #fff;
+    }
+    .topside #top_box.tab_hding_text.two.three .right.two,
+    .topside #top_box.tab_hding_text.two.three .right.two h2 {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        text-align: center;
+        height: auto;
+    }
+    .topside #top_box.tab_hding_text.two.three .right.two p {
+        padding: 5%;
+        padding-left: 3%;
+        width: 90%;
+        margin: 0;
+    }
+    .topside #top_box.tab_hding_text.two h2,
+    .topside #top_box.tab_hding_text.two.three .left p {
+        text-align: center;
+    }
+    .topside #top_box.tab_hding_text.two.three .right.two h2 {
+        padding-bottom: 10px;
+    }
+    .topside #top_box.tab_hding_text.two.three .row.two.btns {
+        width: 100%;
+    }
+    .topside #top_box.tab_hding_text.two.three .row.two.btns .button {
+        width: 90%;
+        margin-right: 5%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+/***** End *****/
+/***** iPhone landscape view CSS under here (460+px) *****/
+
+@media only screen and (min-width: 460px) and (max-width: 767px) {}
+/***** End *****/

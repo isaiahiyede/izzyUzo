@@ -1,0 +1,124 @@
+{% extends "base/base_index_zeac.html"%}
+{% load staticfiles %}
+{% block title %}ZeAC - Step 1 Order Page{% endblock %}
+
+{% block body %}
+    <section class="page">
+        <div class="brd">
+
+            <div class="container-fluid">
+
+                <ul>
+                    <div class="line"></div>
+                    <li class="active">
+                        <div class="step">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <p>Review</p>
+                    </li>
+                    <li>
+                        <div class="step">
+                            <p>2</p>
+                        </div>
+                        <p>Billing Details</p>
+                    </li>
+                    <li>
+                        <div class="step">
+                            <p>3</p>
+                        </div>
+                        <p>Payment & Delivery</p>
+                    </li>
+                    <li>
+                        <div class="step">
+                            <p>4</p>
+                        </div>
+                        <p>Order Summary</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid" style="padding-bottom:80px;">
+            <div class="col-md-12" style="padding:0;">
+                <div class="col-md-12 mobile_no_padding">
+                    <div class="title">
+                        <h3><span>1/4. Review your Shopping Cart</span></h3>
+                    </div>
+                    <div class="window">
+                        <div class="window_main">
+
+                            <!-- Product -->
+                            {% if items %}
+                            {% for product in items %}
+                            <div class="product">
+                                <div class="col-md-2">
+                                    <div class="pic">
+
+                                        <img width="145" height="145" alt="" class="shop_thumbnail" src="{{product.item.item_image.url}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+
+                                    <h5>{{product.item.description}}</h5>
+
+                                </div>
+                                <div class="col-md-3">
+                                    <h1>${{product.total}}</h1>
+
+                                </div>
+                                <div class="col-md-12 btns">
+                                    <div class="col-md-9">
+                                        <h3 style="text-align:right">Quantity:&nbsp;{{product.quantity}}</h3>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="{% url 'general:delete_item' product.id %}" onclick="return confirm('Are you sure you want to delete?')" class="btn full red">Remove</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor%}
+                            {% else %}
+                                <h3 align="center"><strong>No product in Cart</strong></h3>
+                            {% endif %}
+                            <!-- Product -->
+                        </div>
+
+
+
+                        <div class="result" style="border-top:none;">
+                            <div class="col-md-9">
+                                <!-- <p><b>Note:</b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultrices lacus sit amet dictum aliquam. Sed venenatis eleifend risus sed feugiat. Curabitur vel euismod felis. Maecenas iaculis finibus ligula, in viverra velit imperdiet vitae.</p> -->
+                            </div>
+                            <div class="col-md-3">
+                                <div class="col-md-12">
+                                    <h2>Total:&nbsp;<span>${{payable}}</span></h2>
+                                </div>
+                            </div>
+
+                        </div>
+
+                         <div class="result">
+                            <div class="col-md-3 one">
+                                <a href="{% url 'general:product_view' %}" class="btn gray full">Back</a>
+                            </div>
+                            {% if items %}
+                            <div class="col-md-3 two">
+                                <div class="col-md-12" style="border:none;">
+                                    <a href="{% url 'general:checking_out' %}" class="btn green full">Proceed</a>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="col-md-3 two">
+                                <div class="col-md-12" style="border:none;">
+                                    <a href="#" class="btn grey full">Proceed</a>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

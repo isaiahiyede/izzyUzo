@@ -1,0 +1,41 @@
+<!-- header top side -->
+
+{% load account_standing %}
+{% load humanize %}
+
+<!-- Standing -->
+<div class="standing col-md-4">
+    
+    <!-- % if shop_or_ship == True %} -->
+    <!-- Package Timmer  -->
+    <div class="timmer">
+        <div class="header">
+            <!-- {{shop_or_ship_text}}# {{tracking_number}} will be delivered: -->
+            Your Packages will be delivered soon
+        </div>
+        <!--<h2>22<span>days</span>18<span>hours</span>25<span>mins</span>12<span>secs</span></h2>-->
+        <h2 class="jquery-countdown" id="pkg_countdown" data-date="{{expires_on|date:'M j, Y'}}">
+        <!--<h2 class="jquery-countdown" id="pkg_countdown" data-date="Nov 24, 2015">-->
+        </h2>
+        
+        <div class="col-md-12">
+            <a href="{% url 'general:my_shipments' %}" class="btn yellow">Track Shipment</a>
+            <!-- <a href="#" class="btn yellow">View {shop_or_ship_text}}</a> -->
+        </div>
+    </div>
+    <!-- % endif %} -->
+    <!-- Package Timmer  -->
+    {% if not user.useraccount.marketer.storefront_name == "smatpost" %}        
+        {% include "zaposta_snippet/zaposta_account_standing_inner.html" with zap_credit_D=zap_credit_D zap_credit_N=zap_credit_N acct_standing_border=acct_standing_border %}
+    {% endif %}
+
+    <!-- Standing -->
+    <!-- Bottom -->
+    <!-- <div class="bottom" style="display:none;">
+
+        <a href="#" class="btn prev"><img src="img/arrow_left.png">Previous Step</a>
+        <a href="#" class="btn next green">Next Step<img src="img/arrow_right.png"></a>
+        
+    </div>-->
+    <!-- Bottom -->
+</div>

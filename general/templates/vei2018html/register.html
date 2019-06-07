@@ -1,0 +1,144 @@
+<!--A Design by W3layouts
+Author: W3layout
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+{% extends 'vei2018html/index.html' %}
+{% load staticfiles %}
+
+
+{% block top_div %}
+{% endblock top_div %}
+
+<!-- //w3-banner -->
+{% block inner_content %}
+<div class="navbar-top" style="background: grey;">
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+	  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	  </button>
+		 <div class="navbar-brand logo">
+			 <img src="{% static 'vei2018Static/images/volkmann.jpg' %}" style="border-radius: 50%;height: 40px; margin-top: 20px; position: relative; left: 20px;">
+		</div>
+
+	</div>
+
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	 <ul class="nav navbar-nav link-effect-4">
+		<li ><a href="/">Home</a></li>
+		<li><a href="/">About</a></li>
+		<li ><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span data-letters="Pages">More</span><span class="caret"></span></a>
+			<ul class="dropdown-menu">
+				<li><a href="/">Services</a></li>
+				<li><a href="/">Trucking</a></li>
+				<li><a href="{% url 'general:iaai' %}">Auto Deals</a></li>
+				<li><a href="/">Mail Bag</a></li>
+				<li><a href="/">Addresses</a></li>
+				<li><a href="/">Payment</a></li>
+				<li><a href="/">VEI Wallet</a></li>
+				<li><a href="/">Shopping</a></li>
+				<li><a href="/">Shipping</a></li>
+				<li ><a class="/">Pricing</a></li> 
+			</ul>
+		</li>
+		 <li><a href="{% url 'general:volkLogin' %}">Login</a></li>
+	  </ul>
+	</div><!-- /.navbar-collapse -->
+</div>
+
+<!-- contact -->
+<div id="about-reg" class="contact agileits">
+	<div class="container">
+		<h2 class="" style="
+				margin-top: 0px;
+				font-size: 3rem;
+    			position:  relative;
+    			left: 26px;">Sign Up Form</h2>
+		<div class="contact-agileinfo">
+			<div class="col-md-6" style="
+			    position: relative;
+    			margin-top: -48px;">
+				<form id="signup_regular" action="" method="POST">
+							{% csrf_token %}
+
+					<!-- Regular Account -->
+					<div style="display: block !important;">
+						{% if header_msg %}
+							<h4>{{header_msg}}</h4>
+						{% else %}
+						{% endif %}
+
+						{% if messages %}
+							{% for message in messages %}
+							<h5 style="margin-bottom:0; color: green;">{{message}}</h5>
+							{% endfor %}
+						{% endif %}
+
+						{% if form.non_field_errors %}
+
+						<span class="error_alert">{{form.non_field_errors}}</span>
+						{% endif %}
+						<style>
+							#id_how_did_you_find_us, #id_password, #id_password1{
+								width: 48%;
+							}
+						</style>
+						{% for field in form %}
+							
+							<div class="col-md-12 {% if field.errors %}error{% endif %}" style="height: 56px;">
+							<label for></label>
+								<div class="form-group">
+									{{field}}
+									{% if field.errors %}
+										<span style="color:red;" class="error_alert">{{field.errors}}</span>
+									{% endif %}
+								</div>
+							</div>
+						{% endfor %}
+						<br><br>
+						<div class="col-md-12 buttons" style="margin-top:9px;">
+							<!--<a href="#" onclick="submitForm('signup_regular');" class="btn blue">Create Account</a>-->
+							<button class="btn btn-success">Create Account</button><br/><br/>
+							<a href="#" onclick="formReset('signup_regular');" class="rst"><span><i class="fa fa-key" aria-hidden="true"></i>&nbsp;&nbsp;</span>Reset</a>&nbsp;&nbsp;&nbsp;
+							<span style="color:black;">OR&nbsp;&nbsp;&nbsp;</span><a href="{% url 'general:volkLogin' %}" class="rst">Login Here</a><br/>
+						</div>
+					</div>
+
+				</form>
+			</div>
+			
+			<div class="clearfix"> </div>
+		</div>
+	</div>
+</div>
+<!-- //contact -->
+
+{% endblock inner_content %}
+
+
+{% block script %}
+<script src="https://www.google.com/recaptcha/api.js" async="" defer=""></script>
+
+<script>
+
+	function formReset(form_id){
+			$(".input_form").each(function(){
+				$(this).css('border-color',  "rgb(161, 161, 161)");
+	});
+	document.getElementById(form_id).reset();
+	return false;
+	}
+
+	function changeBorderColor(input_id) {
+		document.getElementById(input_id).style.borderColor = "red";
+	}
+</script>
+{% endblock script %}
+
+

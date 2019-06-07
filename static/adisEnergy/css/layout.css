@@ -1,0 +1,1250 @@
+    body {
+        font-family: 'Ubuntu', sans-serif;
+    }
+    
+    h1,
+    p {}
+    
+    p {
+        font-size: 14px;
+    }
+    /* General layout */
+    
+    .container-fluid {
+        padding-left: 45px;
+        padding-right: 45px;
+    }
+    
+    a:hover {
+        text-decoration: none;
+    }
+    /* UI&UX */
+    
+    .show-mobile {
+        display: none;
+    }
+    
+    .btn {
+        height: 50px;
+        line-height: 48px;
+        padding: 0 45px;
+        background: #fff;
+        border: 2px solid rgb(231, 231, 231);
+        color: rgb(231, 231, 231);
+        -webkit-border-radius: 25px;
+        -moz-border-radius: 25px;
+        border-radius: 25px;
+    }
+    
+    .btn.green {
+        border-color: #2dcc70;
+        color: #2dcc70;
+    }
+    
+    .btn.green.full {
+        background: #2dcc70;
+        color: #fff;
+    }
+    
+    .btn.green:hover {
+        border-color: #2dcc70;
+        background: #2dcc70;
+        color: #fff;
+    }
+    
+    .btn.green.full:hover {
+        background: #27b061;
+        border-color: #27b061
+    }
+    
+    .btn.pink {
+        color: #ed1079;
+        border-color: #ed1079;
+    }
+    
+    .btn.pink:hover {
+        background: #ed1079;
+        color: #fff;
+        border-color: #ed1079;
+    }
+    
+    .btn:hover {
+        background: rgb(201, 201, 201);
+    }
+    /* Navbar */
+    
+    .navbar {
+        border-bottom: 1px solid rgb(245, 245, 245);
+        border-radius: 0;
+        border-bottom: none;
+        background: #fff;
+    }
+    
+    .navbar .container-fluid {
+        padding-right: 0;
+    }
+    
+    .navbar-brand {
+        padding: 0;
+        margin: 0 !important;
+        position: relative;
+        height: 100px;
+        min-width: 220px;
+    }
+    
+    .navbar-brand span {
+        color: rgb(181, 181, 181);
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: 500;
+        position: absolute;
+        bottom: 30px;
+        left: 84px;
+        line-height: 14px;
+        width: 200px;
+        display: none;
+    }
+    
+    .navbar-brand img {
+        max-height: 70px;
+        margin-top: 15px;
+    }
+    
+    .navbar-header {
+        height: 100px;
+    }
+    
+    .nav li a {
+        height: 100px;
+        padding: 0 30px;
+        line-height: 100px;
+        color: rgb(141, 141, 141);
+        font-size: 14px;
+    }
+    
+    .nav li a:hover,
+    .nav li a:focus {
+        background: none;
+        color: rgb(51, 51, 51);
+    }
+    
+    .nav li a.btn {
+        margin-top: 25px;
+        height: 50px;
+        line-height: 48px;
+        position: relative;
+        padding: 0 45px;
+        margin-left: 15px;
+    }
+    
+    .nav li a.btn span,
+    .btn span {
+        position: absolute;
+        top: 52px;
+        left: 22px;
+        width: 138px;
+        background: #ed1079;
+        height: 50px;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        display: none;
+    }
+    
+    .nav li a.btn span p,
+    .btn span p {
+        line-height: 10px;
+        font-size: 10px;
+        font-weight: 500;
+        text-transform: uppercase;
+        margin: 0;
+        margin-bottom: -15px;
+        color: #fff;
+        padding-top: 12px;
+    }
+    
+    .nav li a.btn span img,
+    .btn span img {
+        max-width: 73%;
+    }
+    
+    .nav li a.btn span:before,
+    .btn span:before {
+        content: '';
+        position: absolute;
+        top: -9px;
+        left: 44%;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 8px 10px 8px;
+        border-color: transparent transparent #ed1079 transparent;
+    }
+    
+    .nav.main-nav {
+        padding-right: 30px;
+    }
+    
+    .nav.social {
+        padding-left: 30px;
+        padding-right: 30px;
+        border-left: 1px solid rgb(241, 241, 241);
+        border: none;
+        position: relative;
+    }
+    
+    .nav.social:before {
+        content: '';
+        width: 2px;
+        height: 16px;
+        position: absolute;
+        left: -1px;
+        top: 42px;
+        border-left: 2px dotted rgb(231, 231, 231);
+    }
+    
+    .nav.social li a {
+        padding: 0 15px;
+        font-size: 16px;
+        color: rgb(51, 51, 51);
+    }
+    
+    .nav.social li a:hover {
+        color: #2dcc70;
+    }
+    /* Sections */
+    
+    section {
+        min-height: 50vh;
+        width: 100%;
+    }
+    
+    section h1,
+    section h1.hsmall span {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        font-size: 52px;
+        line-height: 52px;
+        padding-bottom: 30px;
+        color: rgb(51, 51, 51);
+    }
+    
+    section h1.hsmall {
+        text-align: center;
+    }
+    
+    section h1 span {
+        color: #2dcc70;
+        font-weight: 600;
+        font-size: 62px;
+    }
+    
+    section h3 span {
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 10px;
+        line-height: 10px;
+        letter-spacing: 0.3px;
+        color: #2dcc70;
+        color: #fff;
+        position: absolute;
+        background: #2dcc70;
+        padding-bottom: 0;
+        margin-bottom: 0;
+        padding: 10px 15px;
+        font-family: 'Ubuntu', sans-serif;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        top: -35px;
+        display: none;
+    }
+    
+    section h3 span:before {
+        content: '';
+        position: absolute;
+        bottom: -9px;
+        left: 15px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 8px 0 8px;
+        border-color: #2dcc70 transparent transparent transparent;
+    }
+    
+    section h3 span.two {
+        background: #4d80e9;
+    }
+    
+    section h3 span.two:before {
+        border-color: #4d80e9 transparent transparent transparent;
+    }
+    
+    section h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 32px;
+        padding-bottom: 15px;
+        color: rgb(51, 51, 51);
+        margin-top: 5px;
+        position: relative;
+    }
+    
+    section h1.hsmall {
+        font-weight: 600;
+    }
+    
+    section h1 .circle {
+        width: 52px;
+        height: 52px;
+        background: rgb(31, 31, 31);
+        border: 3px solid #2dcc70;
+        -webkit-border-radius: 26px;
+        -moz-border-radius: 26px;
+        border-radius: 26px;
+        float: left;
+        margin-right: 30px;
+        position: relative;
+        margin: 0 auto;
+        float: none;
+    }
+    
+    section h1 .circle:before {
+        content: '';
+        width: 76px;
+        height: 76px;
+        position: absolute;
+        left: -15px;
+        top: -15px;
+        -webkit-border-radius: 38px;
+        -moz-border-radius: 38px;
+        border-radius: 38px;
+        border: 4px solid #2dcc70;
+    }
+    
+    section p {
+        font-size: 14px;
+        line-height: 24px;
+        color: rgb(141, 141, 141);
+    }
+    
+    section p.faded {
+        color: rgb(181, 181, 181);
+    }
+    
+    section p span {
+        color: #000;
+        font-weight: 500;
+    }
+    
+    section p.subtitle {
+        color: #2dcc70;
+        font-weight: 500;
+        margin-top: -30px;
+    }
+    
+    section p.quote {
+        color: rgb(51, 51, 51);
+    }
+    
+    .hero {
+        min-height: 100vh;
+        padding-top: 33vh;
+        background: url(../img/bk.jpg) right bottom no-repeat #fff;
+        background-size: 100%;
+        margin-top: -100px;
+    }
+    
+    .hero .arrow {
+        position: absolute;
+        left: 0;
+        bottom: 30px;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .hero .arrow .fa {
+        font-size: 16px;
+        color: rgb(51, 51, 51);
+        animation: bounce 1s infinite alternate;
+        -webkit-animation: bounce 1s infinite alternate;
+    }
+    
+    @keyframes bounce {
+        from {
+            transform: translateY(0px);
+        }
+        to {
+            transform: translateY(-15px);
+        }
+    }
+    
+    @-webkit-keyframes bounce {
+        from {
+            transform: translateY(0px);
+        }
+        to {
+            transform: translateY(-15px);
+        }
+    }
+    
+    .how {
+        background: url(../img/bk1.png) center bottom no-repeat;
+        background-size: 100%;
+        padding: 30px 0;
+        padding-bottom: 220px;
+        margin-bottom: -170px;
+        position: relative;
+        z-index: 3;
+    }
+    
+    .how p {
+        padding-right: 0px;
+    }
+    
+    .hero .col-md-6 {
+        max-width: 530px;
+    }
+    
+    .how .col-md-6 img {
+        max-width: 100%;
+    }
+    
+    .how .exp {
+        width: 100%;
+        margin-top: 45px;
+        padding-bottom: 100px;
+        text-align: center;
+        z-index: 3;
+        position: relative;
+    }
+    
+    .how .exp .circle {
+        width: 300px;
+        height: 300px;
+        background: #fff;
+        border: 3px dashed rgb(241, 241, 241);
+        -webkit-border-radius: 150px;
+        -moz-border-radius: 150px;
+        border-radius: 150px;
+        float: none;
+        overflow: hidden;
+    }
+    
+    .how .exp .fa {
+        font-size: 32px;
+        line-height: 55px;
+        color: #fff;
+        width: 100%;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 30px;
+        position: relative;
+        border: 3px solid #fff;
+        background: #4d80e9;
+        -webkit-border-radius: 30px;
+        -moz-border-radius: 30px;
+        border-radius: 30px;
+        text-align: center;
+        clear: both;
+    }
+    
+    .how .exp .fa.green {
+        background: #2dcc70;
+        border-color: #fff;
+        color: #fff;
+    }
+    
+    .how .exp .fa.blue {
+        color: #fff;
+        background: #99b6f2;
+        line-height: 57px;
+        font-size: 38px;
+    }
+    
+    .how .exp p {
+        max-width: 300px;
+        float: none;
+        margin: 0 auto;
+        padding-top: 0px;
+        text-align: left;
+        position: relative;
+        min-height: 50px;
+        text-align: left;
+        margin-top: -30px;
+        text-align: center;
+    }
+    
+    .how .exp:last-child p .fa {
+        color: #2dcc70;
+    }
+    
+    .how .exp .circle img {
+        max-width: 100%;
+    }
+    
+    .how .pot {
+        width: 100%;
+        min-height: 1080px;
+        background: url(../img/how2.jpg) center center no-repeat;
+        background-size: 100%;
+        padding: 0 !Important;
+        padding-top: 45px !important;
+    }
+    
+    .how .components {
+        padding: 30px;
+        padding-top: 33vh;
+        padding-bottom: 45px;
+        min-height: 100vh;
+        position: relative;
+        z-index: 3;
+    }
+    
+    .how #hw1 {
+        background: url(../img/hw1.jpg) right bottom no-repeat rgb(245, 245, 245);
+        background-size: 100%;
+        z-index: 2;
+        position: relative;
+    }
+    
+    .slider {
+        position: relative;
+    }
+    
+    .slider,
+    .slider_panel,
+    .plants {
+        width: 100%;
+        float: left;
+        min-height: 100vh;
+        position: relative;
+    }
+    
+    .slider_panel {
+        min-height: 900px;
+    }
+    
+    .slider_panel .components {
+        position: relative;
+        z-index: 3;
+    }
+    
+    .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    /* Slider */
+    
+    .slick-prev,
+    .slick-next {
+        top: 45vh;
+        position: absolute;
+    }
+    
+    .slick-next {
+        right: 0;
+    }
+    
+    .slick-dots {
+        position: absolute;
+        bottom: 100px;
+        left: 0;
+        width: 52%;
+    }
+    
+    .slick-dots li button {
+        width: 2px;
+        height: 2px;
+        padding: 4px;
+        background: rgb(231, 231, 231);
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        border: 2px solid #fff;
+        z-index: 2;
+        position: relative;
+    }
+    
+    .slick-dots li.slick-active button {
+        background: rgb(21, 21, 21);
+    }
+    
+    .slick-dots li button:before {
+        display: none;
+    }
+    
+    .slick-dotted.slick-slider {
+        margin-bottom: 0;
+    }
+    
+    .plants {
+        min-height: 900px;
+    }
+    
+    .plants .components {
+        position: relative;
+        z-index: 3;
+        padding-top: 300px;
+    }
+    
+    .how #hw2 {
+        position: relative;
+        background: url(../img/hw2.jpg) left 100px no-repeat #fff;
+        background-size: 100%;
+        padding-bottom: 20vh;
+    }
+    
+    .how #hw3 {
+        position: relative;
+        background: url(../img/hw2_1.jpg) left 100px no-repeat #fff;
+        background-size: 100%;
+        padding-bottom: 20vh;
+    }
+    
+    .how #hw4 {
+        position: relative;
+        background: url(../img/hw2_2.jpg) left 100px no-repeat #fff;
+        background-size: 100%;
+        padding-bottom: 20vh;
+    }
+    
+    .how #hw5 {
+        position: relative;
+        background: url(../img/hw2_3.jpg) left 100px no-repeat #fff;
+        background-size: 100%;
+        padding-bottom: 20vh;
+    }
+    
+    .how #hw1:before {
+        content: '';
+        position: absolute;
+        top: -60px;
+        left: 0;
+        width: 100%;
+        height: 400px;
+        background: url(../img/bot.png) center top no-repeat;
+        background-size: 100%;
+    }
+    
+    .how #hw1:after,
+    .dev:after {
+        content: '';
+        position: absolute;
+        bottom: -150px;
+        left: 0;
+        width: 100%;
+        height: 400px;
+        background: url(../img/bk2.png) center bottom no-repeat;
+        background-size: 100%;
+    }
+    
+    .how #hw2 .components {
+        padding-top: 45vh;
+    }
+    
+    .how .btn {
+        float: right;
+        max-width: 183px;
+        position: relative;
+    }
+    
+    .how .link {
+        float: left;
+    }
+    
+    .how .link p {
+        color: #2dcc70;
+        color: #4d80e9;
+        font-weight: 500;
+        padding-top: 30px;
+        float: left;
+    }
+    
+    .how .link p span {
+        color: #4d80e9;
+    }
+    
+    .how .link .fa {
+        color: #4d80e9;
+        font-size: 32px;
+        margin-top: 26px;
+        margin-right: 15px;
+        float: left;
+    }
+    
+    .how .link:hover p,
+    .how .link:hover .fa,
+    .how .link:hover p span {
+        color: rgb(51, 51, 51);
+    }
+    
+    .dev {
+        padding: 100px 0;
+        padding-top: 230px;
+        min-height: 100vh;
+        background: rgb(245, 245, 245);
+        position: relative;
+    }
+    
+    .dev .steps {
+        width: 100%;
+        height: 320px;
+        margin-bottom: 60px;
+        margin-top: 60px;
+        padding-top: 158px;
+    }
+    
+    .dev .steps .progress {
+        height: 4px;
+        background: rgb(231, 231, 231);
+        box-shadow: none;
+        overflow: visible;
+        position: relative;
+    }
+    
+    .dev .steps .progress .progress-bar {
+        background: #2dcc70;
+        box-shadow: none;
+        position: relative;
+    }
+    
+    .dev .steps .progress .progress-bar:after {
+        content: '';
+        width: 32px;
+        height: 32px;
+        background: #2dcc70;
+        position: absolute;
+        right: -16px;
+        top: -14px;
+        -webkit-border-radius: 16px;
+        -moz-border-radius: 16px;
+        border-radius: 16px;
+        z-index: 2;
+    }
+    
+    .dev .steps .progress .progress-bar:before {
+        content: '';
+        z-index: 3;
+        background: #fff;
+        width: 16px;
+        height: 16px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        position: absolute;
+        right: -8px;
+        top: -6px;
+    }
+    
+    .dev .steps .progress span {
+        width: 260px;
+        height: auto;
+        padding: 10px 15px;
+        background: #fff;
+        text-align: left;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        margin-top: 25px;
+        display: inline-block;
+        position: absolute;
+        z-index: 3;
+        border: 2px solid rgb(231, 231, 231);
+    }
+    
+    .dev .steps .progress .bubble {
+        width: 128px;
+        height: 128px;
+        background: #fff;
+        position: absolute;
+        z-index: 3;
+        top: -154px;
+        left: 25%;
+        -webkit-border-radius: 128px;
+        -moz-border-radius: 128px;
+        border-radius: 128px;
+        border: 2px solid rgb(231, 231, 231);
+        text-align: center;
+    }
+    
+    .dev .steps .progress .bubble img {
+        width: 122px;
+        height: 124px;
+        border: 4px solid #fff;
+        -webkit-border-radius: 126px;
+        -moz-border-radius: 126px;
+        border-radius: 126px;
+    }
+    
+    .dev .steps .progress span:after,
+    .dev .steps .progress span:before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: 45%;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 8px 10px 8px;
+        border-color: transparent transparent #fff transparent;
+    }
+    
+    .dev .steps .progress span:before {
+        top: -12px;
+        border-width: 0 8px 10px 8px;
+        border-color: transparent transparent rgb(231, 231, 231) transparent;
+    }
+    
+    .dev .steps .progress span.top:after,
+    .dev .steps .progress .bubble:after,
+    .dev .steps .progress .bubble:before {
+        content: '';
+        position: absolute;
+        top: auto;
+        bottom: -8px;
+        left: 45%;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 8px 0 8px;
+        border-color: #fff transparent transparent transparent;
+    }
+    
+    .dev .steps .progress span.top:before,
+    .dev .steps .progress .bubble:before {
+        top: auto;
+        bottom: -12px;
+        border-width: 10px 8px 0 8px;
+        border-color: rgb(231, 231, 231) transparent transparent transparent;
+    }
+    
+    .dev .steps .progress span.top {
+        margin-top: 0;
+        bottom: 30px;
+        width: 290px;
+    }
+    
+    .dev .steps .progress span.active:after {
+        border-color: transparent transparent #fff transparent;
+    }
+    
+    .dev .steps .progress span p {
+        margin: 0;
+    }
+    
+    .dev .steps .progress span p bold {
+        font-weight: 500;
+        color: rgb(51, 51, 51);
+    }
+    
+    .dev .steps .progress span.active {
+        background: #fff;
+        border: 2px solid #2dcc70;
+    }
+    
+    .dev .steps .progress span.active:before {
+        border-color: transparent transparent #2dcc70 transparent;
+    }
+    
+    .dev .steps .progress span.active p {
+        color: #2dcc70;
+    }
+    
+    .about {
+        min-height: 100vh;
+        background: #fff;
+        padding: 100px 0;
+        padding-top: 230px;
+    }
+    
+    .about img {
+        margin: 30px 0;
+    }
+    
+    .order {
+        background: rgb(245, 245, 245);
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        padding-top: 40vh;
+        padding-bottom: 100px;
+    }
+    
+    .order:before {
+        content: '';
+        background: url(../img/bot2.png) center top no-repeat;
+        background-size: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 400px;
+    }
+    
+    .order .box {
+        width: 100%;
+        height: 500px;
+        border: 2px solid rgb(231, 231, 231);
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        box-shadow: 0 30px 60px 0 rgba(32, 35, 68, 0.1);
+        margin-top: 35px;
+    }
+    
+    .order {}
+    /* Footer */
+    
+    footer {
+        width: 100%;
+        min-height: 100px;
+        background: #fff;
+        border-top: 3px solid rgb(241, 241, 241);
+    }
+    
+    footer p {
+        line-height: 100px;
+        height: 100px;
+        text-align: left;
+        float: left;
+        margin: 0;
+        color: rgb(141, 141, 141);
+        width: 100%;
+    }
+    
+    footer p span {
+        color: rgb(51, 51, 51);
+    }
+    
+    footer p a {
+        float: right;
+        color: #2dcc70;
+        color: rgb(141, 141, 141);
+        padding-left: 60px;
+    }
+    
+    footer p a:hover {
+        color: rgb(51, 51, 51);
+    }
+    /*** Large Desktop Fixing ***/
+    
+    @media (min-width: 1480px) {
+        .container-fluid {
+            max-width: 1200px;
+        }
+        .how .btn {
+            margin-bottom: 60px;
+        }
+        .how #hw1 {
+            background-size: 1600px;
+            background-position: 50% bottom;
+        }
+        .how #hw2 {
+            background-size: 1600px;
+            background-position: 0% bottom;
+        }
+        .how {
+            margin-bottom: -22vh;
+            padding-bottom: 32vh;
+        }
+        .how #hw1:after {
+            bottom: -250px;
+        }
+    }
+    /*** MOBILE RESPONSIVE STYLE ***/
+    /*** MOBILE RESPONSIVE STYLE ***/
+    /*** MOBILE RESPONSIVE STYLE ***/
+    
+    @media (max-width: 767px) {
+        .show-mobile {
+            display: block;
+        }
+        .hide-mobile {
+            display: none;
+        }
+        .btn,
+        .nav li a.btn {
+            height: 64px;
+            line-height: 62px;
+            -webkit-border-radius: 32px;
+            -moz-border-radius: 32px;
+            border-radius: 32px;
+        }
+        /* Nav */
+        .navbar-toggle .icon-bar {
+            background: rgb(51, 51, 51);
+            width: 25px;
+        }
+        .navbar-toggle {
+            padding: 10px;
+            padding-left: 12.5px;
+            height: 50px;
+            width: 50px;
+            margin-top: 25px;
+            background: rgb(241, 241, 241);
+            margin-right: 45px;
+        }
+        .navbar-brand {
+            padding-left: 45px;
+        }
+        .navbar-collapse.collapse.in {
+            position: relative;
+            background: rgb(245, 245, 245);
+            border-top: 4px solid rgb(245, 245, 245);
+        }
+        .nav.social,
+        .nav {
+            float: left;
+            width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+            margin: 0;
+            width: 100%;
+        }
+        .navbar {
+            overflow: hidden;
+        }
+        .navbar .container-fluid {
+            padding: 0;
+        }
+        .navbar-collapse {
+            border-top: 1px solid rgb(241, 241, 241);
+        }
+        .nav.social {
+            padding: 0;
+            border-bottom: 1px solid rgb(241, 241, 241);
+            display: none;
+        }
+        .nav.social.show-mobile {
+            display: block;
+            border-bottom: none;
+            border-top: 1px solid rgb(241, 241, 241);
+        }
+        .nav.social li {
+            width: 32.6%;
+            display: inline-block;
+        }
+        .nav.social li a {
+            padding: 0;
+            text-align: center;
+            width: 100%;
+            font-size: 18px;
+            border-right: 1px solid rgb(231, 231, 231);
+        }
+        .nav.social li:last-child a {
+            border-right: none;
+        }
+        .nav.main-nav {
+            padding: 0;
+        }
+        .nav.main-nav li {
+            border-bottom: 1px solid rgb(241, 241, 241);
+            background: #fff;
+        }
+        .nav.main-nav li:last-child {
+            border-bottom: none;
+            padding: 45px;
+        }
+        .nav li a {
+            padding: 0 45px;
+        }
+        .nav.main-nav li .btn {
+            margin-left: 0;
+            margin: 0;
+        }
+        /* Sections */
+        section h1,
+        section h1.hsmall {
+            font-size: 24px;
+            line-height: 32px;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+        section h1 span {
+            font-size: 36px;
+        }
+        section h1.hsmall {
+            font-size: 36px;
+            width: 100%;
+            float: left;
+        }
+        section h1 .circle {
+            float: none;
+            clear: both;
+            margin: 0 auto;
+            line-height: 100px;
+        }
+        section h1.hsmall span {
+            margin-top: 30px;
+            width: 100%;
+            float: left;
+        }
+        section p,
+        .nav li a,
+        .btn {
+            font-size: 15px;
+        }
+        section p {
+            line-height: 30px;
+        }
+        section h3 {
+            font-size: 18px;
+            line-height: 28px;
+        }
+        section .col-md-6 {
+            padding: 0;
+        }
+        .hero {
+            padding-top: 90px;
+            background-size: 600px;
+        }
+        .hero .arrow {
+            text-align: left;
+            padding-left: 75px;
+            bottom: 0;
+            display: none;
+        }
+        .how {
+            background-size: 600px;
+            background-position: bottom left;
+            padding-bottom: 160px;
+            margin-bottom: -100px;
+        }
+        .how .exp .col-md-12,
+        .how .exp .col-md-4 {
+            padding: 0;
+        }
+        .how .exp .col-md-4 {
+            margin-left: -8px;
+        }
+        .how .exp p {
+            padding-bottom: 30px;
+        }
+        .how p {
+            padding: 0;
+        }
+        .how #hw1 {
+            background-position: -400px 70px;
+            background-size: 600px;
+            background-size: 850px;
+            padding-top: 320px;
+        }
+        .how #hw2,
+        .how #hw3,
+        .how #hw4,
+        .how #hw5 {
+            background-position: -30px 20px;
+            background-size: 850px;
+        }
+        .how #hw1:before {
+            background-size: 400px;
+            top: 0;
+        }
+        .how #hw1:after,
+        .dev:after {
+            background-size: 400px;
+            bottom: -50px;
+        }
+        .order:before {
+            background-size: 600px;
+            background-position: left top;
+        }
+        #how .become {
+            padding: 0 30px;
+        }
+        #how .btn {
+            max-width: 100%;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .slider,
+        .slider_panel {
+            min-height: 500px;
+        }
+        .slick-dots {
+            bottom: 20px;
+            width: 100%;
+            z-index: 5;
+            position: relative;
+        }
+        .plants .components {
+            padding-top: 520px;
+        }
+        .dev {
+            padding-top: 160px;
+        }
+        .dev .steps .progress span {
+            position: relative;
+            float: left;
+            left: 0 !important;
+            margin-left: 0 !important;
+        }
+        .dev .steps .progress,
+        .dev .steps .progress span {
+            width: 100%;
+        }
+        .dev .steps .progress {
+            background: none;
+            margin-bottom: 40px;
+            height: auto;
+            float: none;
+        }
+        .dev .steps .progress .progress-bar {
+            width: 4px !important;
+            height: 470px;
+            position: absolute;
+            top: 0px;
+            left: 47%;
+        }
+        .dev .steps .progress span,
+        .dev .steps .progress span.top {
+            top: auto;
+            bottom: auto;
+            margin-top: 60px;
+        }
+        .dev .steps .progress span.top {
+            margin-bottom: 100px;
+        }
+        .dev .steps .progress .progress-bar:before,
+        .dev .steps .progress .progress-bar:after {}
+        .dev .col-md-6.col-md-offset-3 {
+            float: left;
+        }
+        .about img {
+            max-width: 100%;
+        }
+        .about {
+            padding-top: 100px;
+        }
+        .order {
+            padding-top: 160px;
+        }
+        /* Footer */
+        footer,
+        footer .container-fluid {
+            float: left;
+            height: auto;
+        }
+        footer p {
+            line-height: 24px;
+            padding-top: 25px;
+            height: auto;
+        }
+        footer p a {
+            float: left;
+            width: 100%;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            border-top: 1px dashed rgb(241, 241, 241);
+            padding-left: 0;
+        }
+        footer p a.atop {
+            margin-top: 25px;
+        }
+    }
+    
+    @media (min-width: 1500px) {}

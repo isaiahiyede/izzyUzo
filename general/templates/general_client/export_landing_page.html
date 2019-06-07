@@ -1,0 +1,176 @@
+{% extends 'base/base_user_account_new.html' %}
+{% load humanize %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load currency %}
+
+{% block title %}Export{% endblock %}
+
+{% block inner_content %}
+<div class="col-md-8 content_outer">
+    <div class="col-md-12 shipment_outer">
+        <div class="search_outer">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="col-md-10">
+                    <input class="search" name="tracking_number" type="text" placeholder="Tracking Number: EX1234567890USA>NGA" style="width: 100% !important;" required/>
+                     <button class="btn green" style="width: 80px !important;">Track</button>
+                </div>
+
+            </form>
+        </div>
+        <div class="inner">
+            {% if shipment or messages %}
+            <div class="col-md-12">
+
+                <div class="alert alert-info two show_package" role="alert">
+                    {% if shipment %}
+                        <strong>Booking: {{shipment.tracking_number}}</strong>
+                        {% shipment_objs_info shipment.shipment_items_info 'Item' 's' %}
+                        {% shipment_objs_info shipment.shipment_pkgs_info 'Package' 's' %}
+                        <br/> {{shipment.created_at|date:'d-m-Y'}} / {{shipment.shipping_method_dict}} / <span style="font-weight:600;">{% country_currency_v1 shipment.country %} {{shipment.admin_total_payable_D|floatformat:"2"|intcomma}}</span>
+                        {% if shipment.strip_my_package %}/ Strip {% endif %} {% if shipment.consolidate %}/ Consolidated {% endif %} {% if shipment.insure %}/ Ins.{% endif %}
+                    {% else %}
+                        {% for message in messages %}<p> {{message}} </p>{% endfor %}
+                    {% endif %}
+                </div>
+
+            </div>
+            {% endif %}
+
+
+            <div class="grid_registered small" style="z-index:99;">
+                <div class="container" id="login">
+                    <!-- form -->
+                    <div class="form">
+                        <div class="in">
+                            <div class="col-md-6 txt two">
+                                <div class="col-md-12" style="padding:0; text-align:center;">
+                                    <h1>Ship easy from Nigeria to the US, North America and the Rest of the World!</h1>
+                                    <p style="width:100%; padding-bottom:15px;">Affordable International Mail and Package Delivery from Nigeria
+                                        <br/>Easily Export goods and Send Mail from Nigeria to the rest of the world.</p>
+                                    <a href="{% url 'export:drop_off_location' %}" class="btn yellow" style="float:none; min-width:210px;">Start</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 bk_left two">
+                            <div class="col-md-12">
+                                <h1>Now Shipping from Nigeria to over 200 Countries</h1>
+
+                                <p><i class="fa fa-dot-circle-o"></i> Send Fast International Mail and Small Packages for as low as $7</p>
+                                <p><i class="fa fa-dot-circle-o"></i>Ship Packages of all sizes to North America, Europe and Hundreds of other countries for as low as $15</p>
+                                <p><i class="fa fa-dot-circle-o"></i>Ship food items from Nigeria to relatives and friends in the US</p>
+                                <p><i class="fa fa-dot-circle-o"></i>Ship clothing, textile and leather goods all over the world at affordable rates</p>
+                                <p><i class="fa fa-dot-circle-o"></i>We offer 100% export processing. You don't have to worry about paperwork</p>
+                                <p><i class="fa fa-dot-circle-o"></i>Export Packaging</p>
+                                <p><i class="fa fa-dot-circle-o"></i>Air and Sea Freight Options</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- form -->
+                    <div class="col-md-12 text two" style="padding-bottom:0;">
+                        <h1>What can you ship</h1>
+
+                        <div class="col-md-6">
+                            <p><i class="fa fa-check"></i>Letters and Documents</p>
+                            <p><i class="fa fa-check"></i>Dry Sea Food Items</p>
+                            <p><i class="fa fa-check"></i>Dry Vegetables and Tubers</p>
+                            <p><i class="fa fa-check"></i>Clothing and Textile</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><i class="fa fa-check"></i>Leader Goods</p>
+                            <p><i class="fa fa-check"></i>Computing and Electronics Equipment</p>
+                            <p><i class="fa fa-check"></i>Art and Craft Works</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text two" style="padding-top:0;">
+                        <h1>What you <strong>CAN NOT</strong> ship</h1>
+
+                        <div class="col-md-6">
+                            <p><i class="fa fa-times"></i>Animals and Meats Foods</p>
+                            <p><i class="fa fa-times"></i>Fresh Vegetables and Plants</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><i class="fa fa-times"></i>Pharmaceuticals</p>
+                            <p><i class="fa fa-times"></i>Firearms and explosives</p>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text">
+                        <h1>How it Works</h1>
+                        <p>Tell us what you are shpping. Pay for shipping. Print the Shipping Label and drop the package off or we can come to pick it up. Track your package until it's delivered.</p>
+                        <div class="col-md-8 col-md-offset-2" style="text-align:center;">
+                            <a href="{% url 'export:drop_off_location' %}" class="btn yellow">Start</a>
+                        </div>
+                        <div class="txtitem">
+                            <div class="col-md-12">
+                                <h2>Tell us what you are shipping</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at consectetur justo. </p>
+                            </div>
+                            <div class="image">
+                                <img src="{% static 'export/img/export1.jpg' %}" />
+                            </div>
+                        </div>
+                        <div class="txtitem">
+                            <div class="col-md-12">
+                                <h2>Select or specify a delivery address</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at consectetur justo. </p>
+                            </div>
+                            <div class="image">
+                                <img src="{% static 'export/img/export2.jpg' %}" />
+                            </div>
+                        </div>
+                        <div class="txtitem">
+                            <div class="col-md-12">
+                                <h2>Pay for shipping</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at consectetur justo. </p>
+                            </div>
+                            <div class="image two">
+                                <img src="{% static 'export/img/export3.jpg' %}" />
+                            </div>
+                            <div class="col-md-12">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at consectetur justo. Pellentesque eget metus commodo, elementum nisi at, tempus leo.</p>
+                            </div>
+                        </div>
+                        <div class="txtitem">
+                            <div class="col-md-12">
+                                <h2>Print the Shipping Label and drop the package off or we can come to pick it up</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at consectetur justo. </p>
+                            </div>
+                            <div class="image two">
+                                <img src="{% static 'export/img/export4.jpg' %}" />
+                            </div>
+                            <div class="col-md-12">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at consectetur justo. Pellentesque eget metus commodo, elementum nisi at, tempus leo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mob_apps two hidden">
+                        <h1>On mobile devices
+and in browser</h1>
+                        <p style="margin-bottom:20px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at consectetur justo.
+                            <br/> Pellentesque eget metus commodo, elementum nisi at, tempus leo.</p>
+                        <div class="col-md-6" style="padding-right:7.5px;">
+                            <a href="#" class="col-md-12 m1">
+                                <p><img src="{% static 'export/img/s7w.png' %}" /> Google Play</p>
+                            </a>
+                        </div>
+                        <div class="col-md-6" style="padding-left:7.5px;">
+                            <a href="#" class="col-md-12 m2">
+                                <p><img src="{% static 'export/img/s6w.png' %}" /> Apple Store</p>
+                            </a>
+                        </div>
+                        <a href="#" class="col-md-12 m3">
+                            <p><span>download app from</span> <span>Chrome Web Store</span></p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

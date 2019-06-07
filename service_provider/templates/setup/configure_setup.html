@@ -1,0 +1,282 @@
+{% extends 'setup/add-service.html' %}
+{% load staticfiles %}
+<!--block progress_bar_width -->
+<!--    style="width: 177px;"-->
+<!-- endblock -->
+
+{% block custom-styles %}
+    {{ block.super}}
+
+    <link href="{% static 'sokohali/css/bootstrap-select.css' %}" rel="stylesheet">
+
+    <style>
+        /*.row-fluid h4{ font-weight: 600 !important; font-size: 18px !important;}*/
+
+        .page .page-content .pagect input{
+          min-width: inherit;
+        }
+        input[type="email"] {
+            height: 48px;
+            min-width: 200px;
+            padding: 0;
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            line-height: 48px;
+            color: rgb(121, 121, 121);
+            border: none;
+            box-shadow: none;
+            padding-left: 15px;
+            border: 2px solid rgb(231, 231, 231);
+            background: rgb(245, 245, 245);
+            min-width: 60px;
+            float: left;
+            position: relative;
+        }
+        .custom_h4{
+          font-size: 16px !important;
+          font-weight: initial !important;
+        }
+
+    </style>
+{% endblock %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block left_div %}
+    <div class="left">
+        <div class="progress">
+            <!--<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" {% block progress_bar_width %}style="width: 25%;" {% endblock %}>-->
+            <!--    <span></span>-->
+            <!--</div>-->
+        </div>
+    </div>
+{% endblock %}
+
+{% block back_nxt_div %}
+    <div class="right">
+        <div class="bt prv hide">
+            <a href="#">Back</a>
+            <div class="bt prv hide">
+
+            </div>
+        </div>
+        <div class="bt nxt">
+            <a href="{% url 'service_provider:add_service' %}?page=1"style="color: #27ae60; text-decoration: none;">Next <i class="fa fa-long-arrow-right" aria-hidden="true" style="margin-left:15px;"></i></a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block inner_page_content %}
+<!-- Page Inner Content/Changes -->
+    <div class="page-content active" id="pgfirst">
+        <div class="header">
+
+            <div class="left">
+                <h1 style="line-height: 44px !important;">Activate Customisable Storefront {% if marketingmember_name %}for {{ marketingmember_name }} {% endif %}</h1>
+
+            </div>
+            <!-- Right Status -->
+            <!--<div class="right">
+                <span class="label yellow" style="float:left;">
+                    !
+                </span>
+                <h2><a href="{% url 'service_provider:select_service' %}" style="color: #000;">Select Service</a></h2>
+            </div>-->
+            <!-- Right Status -->
+
+        </div>
+        <div class="pagect two">
+            <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dapibus, augue non bibendum aliquet, risus ipsum laoreet metus, at pulvinar sem nulla at erat. Aenean ac elit ac felis laoreet malesuada.</p>-->
+            <!-- Form -->
+            <div class="form active" id="route0">
+                <form class="route_form" name="delivery_route_form" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="checkbox">
+                    <div class="row-fluid">
+                        <h3>Activate marketing member tools for your customers</h3>
+                        {% if marketingmemberinfo_form.errors %}<h4 class="error">Please complete all form fields highlighted below</h4>{% endif %}
+
+                        <label>
+                            {{ form.storefront }} <span style="font-size: 16px !important;">{{ form.storefront.label }}</span>
+                        </label>
+
+                        <!-- <div class="container_div {% if form.storefront and not marketingmemberinfo_form.errors %}hidden{% endif %}"> -->
+                        <div class="container_div hidden">
+                          <div class="col-md-12" style="padding-top: 10px;">
+                            {% for field in marketingmemberinfo_form %}
+                                <div class="col-md-6" style="padding-left:0;">
+                                    <h4 class="custom_h4">{{ field.label }}</h4>{{ field }}<br/>
+                                    <!-- {% if field.help_text %}<h6 class="text-info">{{ field.help_text }}</h6>{% endif %} -->
+                                    {% if field.errors %}<h5 class="error">{{ field.errors }}</h5>{% endif %}
+                                </div>
+                            {% if forloop.counter|divisibleby:'2' %}
+                            </div>
+                            <div class="col-md-12" style="padding-top: 10px;">
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- <div class="row-fluid" style="padding-top: 30px;">
+                        <h4>Earn by running a postal center:</h4>
+                        <h5>Select last mile delivery in [{{ destination }}]</h5>
+                        <label>
+                            {{ form.package_pickup }} Package pickup center
+                        </label>
+                        <label>
+                            {{ form.package_dropoff }} Package dropoff center
+                        </label>
+                    </div> -->
+
+                    <div class="row-fluid container_div hidden" id="bank-details" style="padding-top: 30px;">
+                        <h3>Setup your integrated payment systems instantly</h3>
+                        <!--<h5>Select last mile delivery in [{{ destination }}]</h5>-->
+
+                        <label id="id_bank_dep">
+                            {{ form.bank_deposit }} Bank Deposit
+                        </label>
+                        <!-- <div class="bank_accounts {% if not form.bank_deposit.value %}hidden{% endif %}"> -->
+                        <div class="container_div1 {% if not form.bank_deposit.value %}hidden{% endif %}">
+                            <h5 id="id_bank_dep_err" class="error hidden">Please complete all fields</h5>
+                            {% csrf_token %}
+
+                            {{ bankaccount_formset.management_form }}
+
+                            {% for bank_form in bankaccount_formset %}
+                            <div class="col-md-12 bank_formset" style="padding-top: 10px;">
+
+                                {% for field in bank_form %}
+                                <div class="col-md-3" style="padding-left:0;">
+                                    {{ field }}
+                                </div>
+                                {% endfor %}
+
+                                <!-- <div class="col-md-3" style="padding-left:0;">
+                                    {{ bank_form.bank }}
+                                </div>
+                                <div class="col-md-3" style="padding-left:0;">
+                                    {{ bank_form.account_name }}
+                                </div>
+                                <div class="col-md-3" style="padding-left:0;">
+                                    {{ bank_form.account_no }}
+                                </div>
+                                <div class="col-md-2" style="padding-left:0;">
+                                    {{ bank_form.currency }}
+                                </div> -->
+
+                                {% if bank_form.instance.pk %}{{ bank_form.DELETE }}{% endif %}
+                                {{ bank_form.id }}
+                                <!-- <div class="col-md-3" style="padding-left:0; top: 10px;">
+                                  <a href="#" class="remove_row" obj_id="{{ acct.pk }}">
+                                    <i class="fa fa-times fa-lg" aria-hidden="true" style="float: left; margin-top: 5px; margin-left: 80px;"></i>
+                                  </a>
+                                  <a href="#" class="add_row hidden">
+                                    <i class="fa fa-plus fa-lg" aria-hidden="true" style="float: left; margin-top: 5px; margin-left: 80px;"></i>
+                                  </a>
+                                </div> -->
+
+                            </div>
+                            {% endfor %}
+                            <label>
+                              {% if bankaccount_formset.non_form_errors %}
+                                 {% for error in bankaccount_formset.non_form_errors %}
+                                     {{ error|escape }}
+                                 {% endfor %}
+                             {% endif %}
+                           </label>
+
+
+                            <!--  bankaccount_formset.id -->
+
+                        </div>
+
+                        <label>
+                            {{ form.card_payment }} Debit cards: Visa, Mastercard, Verve
+                        </label>
+                        <label>
+                            {{ form.stripe }} Stripe
+                        </label>
+                        <label>
+                            {{ form.paypal }} PayPal
+                        </label>
+                    </div>
+
+                </div>
+
+                <!--<div class="checkbox">
+                    {% for field in foreem %}
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <label>
+                                {{ field }} {{ field.label }}
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <label style="padding-top: 0px;">
+                                <input type="checkbox" />Activate Sokohali integrated payment systems instantly
+                            </label>
+
+                        </div>
+
+                        <div class="right"></div>
+                    </div>
+                </div>-->
+                <div class="col-md-12 buttton hidden" style="padding-top: 50px;">
+                    <!--<input type="hidden" name="action" value="add_route" />-->
+                    <button class="btn green">Save</button>
+                </div>
+                </form>
+            </div>
+            <!-- Form -->
+
+        </div>
+
+    </div>
+    <!-- Page Inner Content/Changes -->
+{% endblock %}
+
+
+{% block script %}
+  {{ block.super }}
+
+  <script src="{% static 'soko-admin/js/jquery.formset.js' %}"></script>
+  <script>
+
+      $(document).ready(function(){
+        if($('#id_storefront').is(':checked')){
+          $('.container_div').removeClass('hidden');
+          //$('#bank-details').removeClass('hidden');
+        }
+      })
+      
+      $('#id_storefront').change(function(){
+        if($(this).is(':checked')){
+          $('.buttton').removeClass('hidden');  
+        }
+        else{
+           $('.buttton').addClass('hidden'); 
+        }
+      });
+      
+      
+      $('.col-md-12.bank_formset').formset({
+        addText: '<i class="fa fa-plus fa-lg" aria-hidden="true">Add More</i>',
+        deleteText: '<i class="fa fa-times fa-lg" aria-hidden="true" style="padding-top: 16px;"></i>'
+      })
+
+      $('.hide_show').change(function(){
+        $target_div = $(this).parent().parent().find('.'+$(this).attr('div'))
+        if($(this).is(':checked')){
+            $target_div.removeClass('hidden')
+        }else{
+          $target_div.addClass('hidden')
+        }
+      });
+  </script>
+
+{% endblock %}

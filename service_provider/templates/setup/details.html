@@ -1,0 +1,108 @@
+{% extends "sokohaliAdmin/dashboard_table.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% load custom_tags %}
+{% block custom-styles %}
+
+
+{% endblock %}
+
+{% block title  %} Dashboard Details {% endblock %}
+
+
+{% block inner_content %}
+
+<div class="container">
+  <h2>{{chain.origin}}-->{{chain.destination}}</h2>
+  <p><b>Rented Services</b> | Package count:<b> {{chain.get_pkgs_in_chain.count}} </b>| Total weight of Packages:<b> {{pkgs_weight}}lbs</b></p>                                          
+  <table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>S/N</th>
+        <th>Service</th>
+        <th>Owner</th>
+        <th>Rate</th>
+        <th>Total Amount</th>
+        <th>Total Amount paid</th>
+        <th>Total Amount due</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for k,v in rented_services.items %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ k }}</td>
+        {% if k == "Clearing" %}
+        <td class="owner">{{v.clearing_agent.offered_by }}</td>
+        <td>${{v.price }}/kg</td>
+        <td>${% multiply v.price pkgs_weight "kg" %}</td>
+        <td style="color: green;">${% amt_paid chain 'CLEARING' v.clearing_agent.offered_by %}</td>
+        <td style="color: red;">${% amt_due v.price pkgs_weight "kg" chain 'CLEARING' v.clearing_agent.offered_by %}</td>
+        <td><a class="pay" href="{% url 'soko_pay:sub_payments' %}?owner={{ v.clearing_agent.offered_by }}&amount={% amt_due v.price pkgs_weight 'kg' chain 'CLEARING' v.clearing_agent.offered_by %}">Pay Now</a></td>
+        {% elif k == "Shipper" %}
+        <td>{{v.shipper.offered_by }}</td>
+        <td>${{v.rate }}/lb</td>
+        <td>${% multiply v.rate pkgs_weight "lbs" %}</td>
+        <td style="color: green;">${% amt_paid chain 'SHIPPING' v.shipper.offered_by %}</td>
+        <td style="color: red;">${% amt_due v.rate pkgs_weight "lbs" chain 'SHIPPING' v.shipper.offered_by %}</td>
+        <td><a class="pay" href="{% url 'soko_pay:sub_payments' %}?owner={{ v.shipper.offered_by }}&amount={% amt_due v.rate pkgs_weight 'lbs' chain 'SHIPPING' v.shipper.offered_by %}">Pay Now</a></td>
+        {% else %}
+        <td>{{ v.offered_by }}</td>
+        <td>${{v.process_charge_per_kg }}/kg</td>
+        <td class="total-amt">${% multiply v.process_charge_per_kg pkgs_weight "kg" %}</td>
+        <td style="color: green;">${% amt_paid chain k v.offered_by %}</td>
+        <td style="color: red;">${% amt_due v.process_charge_per_kg pkgs_weight "kg" chain k v.offered_by %}</td>
+        <td><a class="pay" href="{% url 'soko_pay:sub_payments' %}?owner={{ v.offered_by }}&amount={% amt_due v.process_charge_per_kg pkgs_weight 'kg' chain k v.offered_by %}">Pay Now</a></td>
+        {% endif %}
+
+        
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p><b>Your Services</b></p>                                          
+  <table class="table table-striped table-bordered table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>S/N</th>
+        <th>Service</th>
+        <th>Owner</th>
+        <th>Rate</th>
+        <th>Total Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for k,v in own_service.items %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ k }}</td>
+        {% if k == "Clearing" %}
+        <td>{{v.clearing_agent.offered_by }}</td>
+        <td>${{v.price }}/kg</td>
+        <td style="color: green;">${% multiply v.price pkgs_weight "kg" %}
+        {% elif k == "Shipper" %}
+        <td>{{v.shipper.offered_by }}</td>
+        <td>${{v.rate }}/lb</td>
+        <td style="color: green;">${% multiply v.rate pkgs_weight "lbs" %}
+        {% else %}
+        <td>{{ v.offered_by }}</td>
+        <td>${{v.process_charge_per_kg }}/kg</td>
+        <td style="color: green;">${% multiply v.process_charge_per_kg pkgs_weight "kg" %}</td>
+        {% endif %}      
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+
+{% block modal %}
+<div class="modal fade" id="details" role="dialog">
+  
+</div>
+{% endblock %}
+
+
+

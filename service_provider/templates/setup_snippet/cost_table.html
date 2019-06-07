@@ -1,0 +1,28 @@
+<table width="100%" border="0" class="" {% if adjust %}style="position: relative; top: -140px;"{% endif %}>
+    <tr>
+        <th>S/N</th>
+        <!-- <th>Route</th> -->
+        <th>Country</th>
+        <th>Dollar exchange rate</th>
+        <th>VAT rate(%)</th>
+        <th>Insurance rate(%)</th>
+        <th>Handling Charge Fee($)</th>
+        <th>Edit Cost</th>
+    </tr>
+    {% for obj in costcalc %}
+    <tr class="{{ obj.marketer }}">
+        <td>{{forloop.counter}}</td>
+        <!-- <td>{{ obj.origin }} <i class="fa fa-long-arrow-right" aria-hidden="true"></i> {{ obj.destination }}</td> -->
+        <td>{{ obj.country }}</td>
+        <td>{{ obj.dollar_exchange_rate }}</td>
+        <td>{{ obj.vat_rate }}%</td>
+        <td>{{ obj.insurance_rate}}%</td>
+        <td>${{ obj.handling_charge_fee }}</td>
+        <td>
+          <a href="#" class='edit_cost' costkey={{obj.pk}}><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          <!-- <a href="?delete= obj.id }}" class="delete" style="padding-left: 30px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a> -->
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>

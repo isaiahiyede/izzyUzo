@@ -1,0 +1,12 @@
+<nav class="st-menu">
+    <div class="top">
+        <!--<img src="{{STATIC_URL}}zaposta/img/logo4.png" class="logo" />-->
+        <!--<img src="{{STATIC_URL}}sokohali/img/partner_logos/marketing_member.png" class="logo" />-->
+        
+        <img src="{{ request.subscriber_logo_url }}" class="logo" />
+    </div>
+    <span class="close">CLOSE</span>
+    
+    {% include 'zaposta_snippet/nav-menu-inside.html' %}
+    
+</nav>

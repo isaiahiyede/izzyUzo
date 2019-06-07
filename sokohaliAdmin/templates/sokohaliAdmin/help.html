@@ -1,0 +1,572 @@
+{% extends "adminBase/base_index.html" %}
+{% load staticfiles %}
+{% load custom_filters %}
+{% load humanize %}
+{% block title  %}Help{% endblock %}
+
+
+{% block set_up %}
+	<li>
+		<a href="{% url 'general:profile' user.username %}" style="text-align: center;">My Profile</a>
+	</li>
+	<li>
+	<a href="{% url 'sokohaliAdmin:help' %}" style="text-align: center;">Help</a>
+</li>
+{% endblock set_up %}
+
+{% block custom-styles %}
+<style>
+button.accordion {
+	background-color: #eee;
+	color: #444;
+	cursor: pointer;
+	padding: 18px;
+	width: 100%;
+	border: none;
+	text-align: left;
+	outline: none;
+	font-size: 15px;
+	transition: 0.4s;
+}
+
+button.accordion.active, button.accordion:hover {
+	background-color: #ddd; 
+}
+
+div.panel {
+	padding: 0 18px;
+	display: none;
+	background-color: white;
+}
+
+.scroll{
+	  height: 500px;
+	  overflow-y: auto;
+	  }
+
+.thumbnail:hover {
+	position:relative;
+	top:-25px;
+	left:-35px;
+	width:600px;
+	/*width: 842px;*/
+	height:auto;
+	display:block;
+	z-index:999;
+}
+</style>
+{% endblock %}
+
+{% block body %}<body>{% endblock %}
+
+	{% block searchbar %}
+	   <!-- <div class="searchbar">
+		<form action="{% url 'sokohaliAdmin:search' %" method="GET" id="usersearch">
+			<div class="container">
+				<div class="col-md-12">
+					<input type="text" name="page" class="hidden" value="userpage" />
+					<input type="text" placeholder="Search for orders or shipments, e.g. Order OR235533" name="input_value" />
+					<i class="fa fa-search t" aria-hidden="true"></i>
+					<span class="bar"></span>
+				</div>
+
+				<div class="search_filter">
+					<p class="htitle">Filter by:</p>
+					<select id="type" name = 'value'>
+						<option value="hide">Type</option>
+						<option value="2010">Package</option>
+						<option value="2011">Order</option>
+						<option value="2012">Shipment</option>
+						<option value="2013">User</option>
+					</select>
+
+					<div class="datepickerdemoBasicUsage">
+						<p style="position:relative; left:40px; bottom:25px;">From:</p>
+						   <input type="date"  name="from" style="position:relative; border-radius:8px; top: 3px; width: 35%; height:30px; background-color:#D76358; border: 1px solid #D76358;"/>
+						<p style="position:relative; left:180px; bottom:25px;">To:</p>
+						   <input type="date" name="to" style="background-color:#D76358; position:relative; border-radius:8px; top:3px; width:35%; height:30px; left: 33px; border: 1px solid #D76358;"/>
+					</div>
+					<div class="longselect">
+						<a id="search" class="btn btn-xs" onclick="document.getElementById('usersearch').submit()" style="margin:15px 0px 0px 15px; padding:0px 20px; font-size: 14px; min-width:100px; border-radius:12px; height:48px;">Search</a>
+					</div>
+
+				</div>
+			</div>
+		</form>
+		</div> -->
+	{% endblock %}
+
+	{% block sticky_warning %}
+		<div class="sticky_msg">
+			<div class="container">
+
+				<div class="col-md-12">
+
+					<!-- Alert Warning -->
+					<div style="margin:15px 0px 5px 0px;">
+					{% for msg in messages %}
+						<script>
+							function show_alert(){
+							var alert = '<blockquote style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</blockquote>';
+							document.write(alert);
+							}
+							display = window.setTimeout(show_alert(), 1000);
+							window.clearTimeout(display);
+						</script>
+					{% endfor %}
+					</div>
+					<!-- <div class="alert alert-danger alert-dismissible" role="alert">
+						<i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<strong>Warning! You have {% userCount request 'Unverified' % Account(s) to VERIFY and ACTIVATE their Shipping Address!!!</strong>
+						<a href="{% url 'sokohaliAdmin:sidebar' 'unverified' %" class="fix">Verify User<i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+					</div> -->
+					<!-- Alert Warning -->
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+
+	{% block inner_content %}
+
+	<div class="col-md-12 scroll">
+		<div class="col-sm-1"></div>
+		<div class="col-sm-10">
+
+			<h2 align="center" style="margin-top: 15px;">USER MANAGER</h2>
+
+			<button class="accordion"><strong>+ HOW TO CREATE A USER</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;Click the <strong>Create User</strong> button on the left hand pane of the page. <img src="{% static 'help_img/user/CreateUser/Screenshot(123).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;The <strong>CREATE USER FORM</strong> opens.<img src="{% static 'help_img/user/CreateUser/Screenshot(124).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;Fill in the form and click the CONTINUE button.</p>
+			  <p>4.)&emsp;User is Created!</p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO FILTER USERS</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;To view all Users: Click the <strong>All</strong> button.<img src="{% static 'help_img/user/FilterUser/Screenshot(125).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;To View Newly registered users within the last 24 hours of registration: Click the <strong>NEW</strong> Button.<img src="{% static 'help_img/user/FilterUser/Screenshot(126).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;To View all users that have their addresses activated: Click the <strong>ADDRESS ACTIVATED</strong> button.<img src="{% static 'help_img/user/FilterUser/Screenshot(127).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;To View all the admin users on the site: Click the <strong>Admin</strong> button<img src="{% static 'help_img/user/FilterUser/Screenshot(128).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;To View all the De-activated users on the site:Click the <strong>De-Activated</strong> button<img src="{% static 'help_img/user/FilterUser/Screenshot(129).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>6.)&emsp;To View all Flagged users: Click the <strong>FLAGGED</strong> button<img src="{% static 'help_img/user/FilterUser/Screenshot(130).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>7.)&emsp;How to view all users that need their accounts to be verified: Click the <strong>VERIFY USER</strong> button<img src="{% static 'help_img/user/FilterUser/Screenshot(131).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO SEARCH FOR USER</strong></button>
+			<div class="panel">
+			  <p>&emsp;On the search bar, You can search for a user or users using their firstname, lastname, email, username, or even the suite number. The search can also be limited to the time frame or period in which they were registered, if a date was selected from the calendar. Click the <strong>SEARCH</strong> button to submit the user information. <img src="{% static 'help_img/user/FilterUser/Screenshot(132).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO VERIFY A USER</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;Select a User that has the status <strong>UNVERFIED ACCOUNT</strong>: <img src="{% static 'help_img/user/VerifyUser/Screenshot(128).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Click the <strong>OPEN</strong> button<img src="{% static 'help_img/user/VerifyUser/Screenshot(129).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;OR Hover over the <strong>ellipses</strong>(A dropdown Shows)<img src="{% static 'help_img/user/VerifyUser/Screenshot(130).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;Click the <strong>ACTIVATE ADDRESS</strong> tab<img src="{% static 'help_img/user/VerifyUser/Screenshot(131).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;An alert box pops up with message "Are you sure you want to ACTIVATE this address?"<img src="{% static 'help_img/user/VerifyUser/Screenshot(132).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>6.)&emsp;It opens a new page where the user information is displayed and the verification status is also shown.</p>
+			  <p>7.)&emsp;Scroll to the bottom right of the page and click <strong>ACTIVATE ADDRESS</strong>.<img src="{% static 'help_img/user/VerifyUser/Screenshot(133).png' %}" class="thumbnail" height="100" width="100"><img src="{% static 'help_img/user/VerifyUser/Screenshot(134).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO MAKE A USER ADMIN</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;OR Hover over the <strong>ellipses</strong>(A dropdown Shows) <img src="{% static 'help_img/user/User2Admin/Screenshot(132).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Click the <strong>MAKE ADMIN</strong> tab<img src="{% static 'help_img/user/User2Admin/Screenshot(133).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO FLAG A USER</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;OR Hover over the <strong>ellipses</strong>(A dropdown Shows) <img src="{% static 'help_img/user/User2Admin/Screenshot(132).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Click the <strong>FLAG</strong> tab<img src="{% static 'help_img/user/User2Admin/Screenshot(134).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO UNFLAG A USER</strong></button>
+			<div class="panel">
+			  <p><strong>NB</strong>:&emsp;All Users that are Red are Flagged</p>
+			  <p>1.)&emsp;OR Hover over the <strong>ellipses</strong>(A dropdown Shows) <img src="{% static 'help_img/user/User2Admin/Screenshot(135).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Click the <strong>VERIFIED</strong> tab and click <strong>OK</strong> for confirmation.<img src="{% static 'help_img/user/User2Admin/Screenshot(136).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO DEACTIVATE A USER</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;OR Hover over the <strong>ellipses</strong>(A dropdown Shows) <img src="{% static 'help_img/user/User2Admin/Screenshot(132).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Click the <strong>DEACTIVATE</strong> tab<img src="{% static 'help_img/user/User2Admin/Screenshot(137).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO VIEW HISTORY OF A USER ACCOUNT</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;OR Hover over the <strong>ellipses</strong>(A dropdown Shows) <img src="{% static 'help_img/user/User2Admin/Screenshot(132).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Click the <strong>HISTORY</strong> tab<img src="{% static 'help_img/user/User2Admin/Screenshot(138).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;View the history page<img src="{% static 'help_img/user/User2Admin/Screenshot(139).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO GIVE A USER SPECIAL RATE</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;OR Hover over the <strong>ellipses</strong>(A dropdown Shows) <img src="{% static 'help_img/user/User2Admin/Screenshot(132).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Click the <strong>SPECIAL RATE</strong> tab<img src="{% static 'help_img/user/User2Admin/Screenshot(140).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;Fill the form being displayed and click the submit button to <strong>Submit</strong> the form.<img src="{% static 'help_img/user/User2Admin/Screenshot(141).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO GRANT STAFF ACCESS TO ADMIN PAGES</strong></button>
+			<div class="panel">
+			  <p><strong>NB</strong>:&emsp;The Staff Access tab is only seen by the Administrator and only this personcan grant priviledges to other staffs.</p>
+			  <p>1.)&emsp;Click the <strong>Staff Access</strong> tab <img src="{% static 'help_img/user/User2Admin/Screenshot(142).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;The staff access page now opens and you can select the staff you want to grant priviledges to.<img src="{% static 'help_img/user/User2Admin/Screenshot(143).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+
+			<h2 align="center" style="margin-top: 15px;">SHIPMENT MANAGER</h2>
+
+			<button class="accordion"><strong>+ HOW TO NOTIFY A CUSTOMER ON RECEIVING OF THEIR ITEM(S)</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Notify Customer</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(1).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Search for the customer whose name is on the item you received by entering their name, or email or any letter of the customer name on the search field and click on the “<strong>Search Icon</strong>”. After locating the customer click on the “<strong>Radio Button</strong>” beside the customer name and click on “<strong>Next</strong>”.<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(2).png' %}" class="thumbnail" height="100" width="100"><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(3).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;Enter the <strong>last four digits</strong> of the customer item, a <strong>brief description</strong> and <strong>upload a snapshot</strong> of the item and click on “<strong>Submit</strong>”. (<strong>Note</strong> that this action will send an email notification to the customer that his/her package has been received).<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(4).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;Message sent to the Customers <strong>Email</strong> Successfully!!!<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(5).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO PROCESS PACKAGE</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Click on “<strong>Process Package</strong>" Button that is green in colour from Shipment Manager page.<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(7).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;A modal form shows, click on “<strong>Checkbox</strong>” for all items that have been received by you and click “<strong>Continue</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(9).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;Read the notification clearly and click on “<strong>OK</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(10).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;Click on the “<strong>Camera</strong>" Button then click on “<strong>Capture</strong>” and finally click on “<strong>Save</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(11).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>6.)&emsp;Click on “<strong>Continue</strong>” if you are satisfied with the image or click on “<strong>Back</strong>” to capture the image again<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(12).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>7.)&emsp;Enter the dimensions of the package and click “<strong>Continue</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(13).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>8.)&emsp;Click “<strong>Process Package</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(14).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>9.)&emsp;A new windows tab shows, Click on “<strong>Print</strong>” to print the package label<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(15).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>10.)&emsp;Go back to shipment manager window(The process is now complete and the package is now “<strong>Processed</strong>”)<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(16).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO OVERRIDE PAYMENT ON A PACKAGE</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Hover the <strong>ellipsis</strong> at the right side of the Shipment package</p>
+			  <p>3.)&emsp;A Dropdown shows, Click “<strong>Override Payment</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(18).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;An alert will pop up with message "Are you sure you want to overide this payment", click <strong>OK</strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(19).png' %}" class="thumbnail" height="100" width="100"><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(20).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO VIEW PACKAGE  INVOICE</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Hover the <strong>ellipsis</strong> at the right side of the Shipment package</p>
+			  <p>3.)&emsp;A Dropdown shows, Click “<strong>View Invoice</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(21).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;A new window shows the <strong>Invoice</strong> of the package<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(22).png' %}" class="thumbnail" height="100" width="100"><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(23).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO APPLY DISCOUNT TO A PACKAGE</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Hover the <strong>ellipsis</strong> at the right side of the Shipment package</p>
+			  <p>3.)&emsp;A Dropdown shows, Click “<strong>View Invoice</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(24).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;A modal form shows, type the percentage discount to apply and click <strong>Submit</strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(25).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;An alert pops with message "Are you sure you want to apply a discount to this package?", click <strong>OK</strong> to apply discount<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(26).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO EDIT A PACKAGE</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Hover the <strong>ellipsis</strong> at the right side of the Shipment package</p>
+			  <p>3.)&emsp;A Dropdown shows, Click “<strong>EDIT</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(27).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;A modal form shows, type the percentage discount to apply and click <strong>Submit</strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(28).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;A message shows "This package has been successfully edited" <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(29).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW PACKAGE HISTORY</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Hover the <strong>ellipsis</strong> at the right side of the Shipment package</p>
+			  <p>3.)&emsp;A Dropdown shows, Click “<strong>HISTORY</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(30).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;A new window shows the <strong>Package History</strong></strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(31).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO ASSIGN PACKAGE TO A BATCH</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Hover the <strong>ellipsis</strong> at the right side of the Shipment package</p>
+			  <p>3.)&emsp;A Dropdown shows, Click “<strong>ASSIGN TO BATCH</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(32).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;An alert pops with message "Are you sure you want to assign this package to a batch?"</strong></strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(33).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;A new modal box shows for you to select the any of the batches available, click "<strong>Submit</strong>"</strong></strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(34).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;A message shows "This packagehas been Assingned to a Batch"</strong></strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(35).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO UPDATE PACKAGE STATUS TO READY FOR COLLECTION</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;At the Left side of the screen, click "<strong>Processing For Delivery</strong>", Tick the Check box tied to the package that is "<strong>Ready for Collection</strong>"</p>
+			  <p>3.)&emsp;Hover over the "<strong>Additional Selector</strong>" button</p>
+			  <p>4.)&emsp;A Dropdown shows, Click “<strong>Ready for Collection</strong></p>
+			  <p>5.)&emsp;An alert box shows "Please confirm that the selected action for these Package(s) is Ready for Collection", click <strong>OK</strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(36).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO UPDATE PACKAGE STATUS TO ENROUTE TO DELIVERY</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;At the Left side of the screen, click "<strong>Ready For Collection</strong>", Tick the Check box tied to the package that is "<strong>Enroute to Delivery</strong>"</p>
+			  <p>3.)&emsp;Hover over the "<strong>Additional Selector</strong>" button</p>
+			  <p>4.)&emsp;A Dropdown shows, Click “<strong>Enroute to Delivery</strong></p>
+			  <p>5.)&emsp;An alert box shows "Please confirm that the selected action for these Package(s) is Enroute to Delivery", click <strong>OK</strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(37).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO UPDATE PACKAGE STATUS TO DELIVERED</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;At the Left side of the screen, click "<strong>Enroute To Delivery</strong>", Tick the Check box tied to the package that is "<strong>Delivered</strong>"</p>
+			  <p>3.)&emsp;Hover over the "<strong>Additional Selector</strong>" button</p>
+			  <p>4.)&emsp;A Dropdown shows, Click “<strong>Delivered</strong></p>
+			  <p>5.)&emsp;An alert box shows "Please confirm that the selected action for these Package(s) is Delivered", click <strong>OK</strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(38).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO REVOKE A PACKAGE</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Select package that needs to be <strong>Revoked</strong>.</p>
+			  <p>3.)&emsp;Hover the <strong>ellipsis</strong> at the right side of the Shipment package</p>
+			  <p>4.)&emsp;A Dropdown shows, Click “<strong>REVOKE</strong>”<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(45).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;Package Revoked!!!</strong></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO MAKE BOOKING FOR CUSTOMER</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;From Admin Dashboard Page click on “<strong>Shipping</strong>” a dropdown shows, click “<strong>Manage Shipment</strong>” <img src="{% static 'help_img/shipment/NotifyUser/Screenshot(6).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;At the Left side of the screen, click "<strong>Create Package</strong>"<strong>OK</strong><img src="{% static 'help_img/shipment/NotifyUser/Screenshot(39).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;A modal box shows, Click "<strong>Proceed to Shipping Form</strong>"<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(40).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;Another modal box shows for you to search for a User, Search for a user and when it shows click the <strong>Radiobutton</strong> tied to the user, Then click "<strong>Continue</strong>"<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(41).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;A modal box shows the details of the user that was searched. For <strong>PACKAGE TYPE</strong> click the <strong>RadioButton</strong> tied to <strong>Regular</strong>. Fill the necessary details and click <strong>Add Item</strong>. A table shows the Item created. Click the <strong>Next</strong> button<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(42).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>6.)&emsp;A modal form shows, fill the necessary details and click "<strong>Create Package</strong>"button<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(43).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>7.)&emsp;Package Created!<img src="{% static 'help_img/shipment/NotifyUser/Screenshot(44).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+
+			<h2 align="center" style="margin-top: 15px;">BATCH MANAGER</h2>
+
+			<button class="accordion"><strong>+ HOW TO CREATE A BATCH</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;On the Batch page, Click “<strong>Create Batch</strong>” at the lower left side of the page. <img src="{% static 'help_img/batch/Batch Creation/Screenshot(9).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;A modal Box is shown, fill the necessary details. <strong>Note :</strong>All fields with Asterix are compulsory.</p>
+			  <p>3.)&emsp;Click the <strong>Submit</strong> Button.<img src="{% static 'help_img/batch/Batch Creation/Screenshot(10).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;Batch is Created!</p>
+			  <p>5.)&emsp;The batch status is “<strong>New</strong>”  and the shipping method is “<strong>Air Cargo</strong>”<img src="{% static 'help_img/batch/Batch Creation/Screenshot(17).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO UPDATE A BATCH</strong></button>
+			<div class="panel">
+			  <p>1.)	&emsp;On The Batch page, Hover the <strong>ellipsis</strong> at the right side of the Batch</p>
+			  <p>2.)&emsp;A Dropdown shows, Click “<strong>Update Batch</strong>”<img src="{% static 'help_img/batch/EDIT BATCH/Screenshot(13).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;Edit the fields that needs to be Edited.</p>
+			  <p>4.)&emsp;Click <strong>Submit</strong> Button.<img src="{% static 'help_img/batch/EDIT BATCH/Screenshot(14).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO CREATE AIRWAYBILL FOR AIR-CARGO</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On The Batch page, Hover the ellipsis <strong>...</strong> at the right side of the Batch</p>
+			  <p>2.)&emsp;A Dropdown shows, Click “<strong>Create Airway Bill</strong>”<img src="{% static 'help_img/batch/AIRWAYBILL CREATION/Screenshot(11).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;A form shows, Fill the form and Click the <strong>Submit</strong> button<img src="{% static 'help_img/batch/AIRWAYBILL CREATION/Screenshot(12).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO EDIT AIRWAYBILL FOR AIR-CARGO</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On The Batch page, Hover the ellipsis <strong>...</strong> at the right side of the Batch</p>
+			  <p>2.)&emsp;A Dropdown shows, Click “<strong>Edit Airway Bill</strong>”<img src="{% static 'help_img/batch/EDIT AIRWAYBILL/Screenshot(25).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;A Modal form show with details of what was previously Submited.</p>
+			  <p>4.)&emsp;Edit the fields that needs to be Edited</p>
+			  <p>5.)&emsp;Click <strong>Submit</strong> button.<img src="{% static 'help_img/batch/EDIT AIRWAYBILL/Screenshot(26).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO VIEW BATCH MANIFEST</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On The Batch page, Hover the ellipsis <strong>...</strong> at the right side of the Batch</p>
+			  <p>2.)&emsp;A Dropdown shows, Click “<strong>Batch Manifest</strong>”.<img src="{% static 'help_img/batch/Batch Manifest/Screenshot(30).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;A new Windows Tab opens and shows the Batch Manifest with details of the items assigned to it.<img src="{% static 'help_img/batch/Batch Manifest/Screenshot(31).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO PROCESS A BATCH</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On The Batch page, Click the <strong>Checkbox</strong> button  of the Batch that needs to be Processed<img src="{% static 'help_img/batch/BATCH PROCESSING/Screenshot(63).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Next Hover the <strong>Additional Selector</strong> Button</p>
+			  <p>3.)&emsp;A Dropdown Button shows.</p>
+			  <p>4.)&emsp;Click <strong>Processing</strong><img src="{% static 'help_img/batch/BATCH PROCESSING/Screenshot(65).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;A Popup show with message "Please confirm that the selected action for this batch(es) is <strong>Processing</strong>"</p>
+			  <p>6.)&emsp;Click <strong>OK</strong> to Submit<img src="{% static 'help_img/batch/BATCH PROCESSING/Screenshot(66).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>Batch is Processed!</p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO DELIVER A BATCH TO CARRIER</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On The Batch page, Click the <strong>Checkbox<img src="{% static 'help_img/batch/DELIVER BATCH TO CARRIER/Screenshot(67).png' %}" class="thumbnail" height="100" width="100"></strong> button  of the Batch that needs to be Delivered to Carrier</p>
+			  <p>2.)&emsp;Next Hover the <strong>Additional Selector</strong> Button</p>
+			  <p>3.)&emsp;A Dropdown Button shows.</p>
+			  <p>4.)&emsp;Click <strong>Delivered To Carrier</strong><img src="{% static 'help_img/batch/DELIVER BATCH TO CARRIER/Screenshot(69).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;A Popup show with message "Please confirm that the selected action for this batch(es) is <strong>Delivered to carrier</strong>"</p>
+			  <p>6.)&emsp;Click <strong>OK</strong> to Submit<img src="{% static 'help_img/batch/DELIVER BATCH TO CARRIER/Screenshot(70).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO UPDATE BATCH STATUS TO DEPARTED</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On The Batch page, Click the <strong>Checkbox</strong> button  of the Batch that needs to be updated to Departed</p>
+			  <p>2.)&emsp;Next Hover the <strong>Additional Selector</strong> Button</p>
+			  <p>3.)&emsp;A Dropdown Button shows.</p>
+			  <p>4.)&emsp;Click <strong>Departed</strong><img src="{% static 'help_img/batch/BATCH DEPARTED/Screenshot(73).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;A Popup show with message "Please confirm that the selected action for this batch(es) is <strong>Departed</strong>"</p>
+			  <p>6.)&emsp;Click <strong>OK</strong> to Submit<img src="{% static 'help_img/batch/BATCH DEPARTED/Screenshot(74).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO UPDATE BATCH STATUS TO CLEARING CUSTOMS</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On The Batch page, Click the <strong>Checkbox</strong> button  of the Batch that needs to be updated to clearing custom</p>
+			  <p>2.)&emsp;Next Hover the <strong>Additional Selector</strong> Button</p>
+			  <p>3.)&emsp;A Dropdown Button shows.</p>
+			  <p>4.)&emsp;Click <strong>Clearing Custom</strong><img src="{% static 'help_img/batch/BATCH CLEARING CUSTOMS/Screenshot(77).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;A Popup show with message "Please confirm that the selected action for this batch(es) is <strong>Clearing Customs</strong>"</p>
+			  <p>6.)&emsp;Click <strong>OK</strong> to Submit<img src="{% static 'help_img/batch/BATCH CLEARING CUSTOMS/Screenshot(78).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO UPDATE BATCH STATUS TO PROCESSING FOR DELIVERY</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On The Batch page, Click the <strong>Checkbox</strong> button  of the Batch that needs to be updated to processing for delivery</p>
+			  <p>2.)&emsp;Next Hover the <strong>Additional Selector</strong> Button</p>
+			  <p>3.)&emsp;A Dropdown Button shows.</p>
+			  <p>4.)&emsp;Click <strong>Processing For Delivery</strong><img src="{% static 'help_img/batch/BATCH PROCESSING FOR DELIVERING/Screenshot(81).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;A Popup show with message "Please confirm that the selected action for this batch(es) is <strong>Processing for Delivery</strong>"</p>
+			  <p>6.)&emsp;Click <strong>OK</strong> to Submit<img src="{% static 'help_img/batch/BATCH PROCESSING FOR DELIVERING/Screenshot(82).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO ARCHIVE A BATCH</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On The Batch page, Click the <strong>Checkbox</strong> button  of the Batch that needs to be Archived</p>
+			  <p>2.)&emsp;Next Hover the <strong>ellipsis</strong> at the right side of the Batch</p>
+			  <p>3.)&emsp;A Dropdown Button shows.</p>
+			  <p>4.)&emsp;Click <strong>Archive</strong><img src="{% static 'help_img/batch/BATCH ARCHIVE/Screenshot(84).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;A Popup show with message "You about to Archive this batch!!!"</p>
+			  <p>6.)&emsp;Click <strong>OK</strong> to Submit<img src="{% static 'help_img/batch/BATCH ARCHIVE/Screenshot(84).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<h2 align="center" style="margin-top: 15px;">PAYMENT MANAGER</h2>
+
+			<button class="accordion"><strong>+ HOW TO CREATE A SECURITY QUESTION BEFORE APPROVING OR DECLINING PAYMENT</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On the Payment page Click “<strong>CREATE A SECURITY QUESTION</strong>”<img src="{% static 'help_img/payment/CreateSecQues/Screenshot(97).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;A modal form shows, select a question  and type in your Answer</p>
+			  <p>3.)&emsp;Click the <strong>Submit</strong> button to create a question.<img src="{% static 'help_img/payment/CreateSecQues/Screenshot(102).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;<strong>Note</strong>: These is a onetime process<img src="{% static 'help_img/payment/CreateSecQues/Screenshot(105).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO APPROVE PAYMENT</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On the Payment page, Hover over <strong>Bank Payment</strong>, a dropdown shows, Click “<strong>Pending</strong>”<img src="{% static 'help_img/payment/PAYMENT/Screenshot(98).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;All Payment that are pending shows.<img src="{% static 'help_img/payment/PAYMENT/Screenshot(122).png' %}" class="thumbnail" height="100" width="100">
+			  <p>3.)&emsp;To Approve a user payment, Select the RadioButton that is tied to the user
+			  <p>4.)&emsp;Click the green logo as <strong>Approve</strong>
+			  <p>5.)&emsp;A modal form shows with your Security Question
+			  <p>6.)&emsp;Fill in the Answer to the Security Question
+			  <p>7.)&emsp;Click <strong>Submit</strong><img src="{% static 'help_img/payment/PAYMENT/Screenshot(103).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>8.)&emsp; A message shows "This payment has been successfully approved"<img src="{% static 'help_img/payment/PAYMENT/Screenshot(100).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO DECLINE PAYMENT</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On the Payment page, Hover over <strong>Bank Payment</strong>, a dropdown shows, Click “<strong>Pending</strong>”<img src="{% static 'help_img/payment/PAYMENT/Screenshot(98).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;All Payment that are pending shows.<img src="{% static 'help_img/payment/PAYMENT/Screenshot(122).png' %}" class="thumbnail" height="100" width="100">
+			  <p>3.)&emsp;To Decline a user payment, Select the RadioButton that is tied to the user</p>
+			  <p>4.)&emsp;Click the <strong>X</strong> logo as <strong>Decline</strong>
+			  <p>5.)&emsp;A modal form shows with your Security Question
+			  <p>6.)&emsp;Fill in the Answer to the Security Question
+			  <p>7.)&emsp;Click <strong>Submit</strong><img src="{% static 'help_img/payment/PAYMENT/Screenshot(104).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>8.)&emsp; A message shows "This payment has been declined"<img src="{% static 'help_img/payment/PAYMENT/Screenshot(101).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+			<h2 align="center" style="margin-top: 15px;">MESSAGE CENTER</h2>
+
+			<button class="accordion"><strong>+ HOW TO WORK WITH MESSAGE CENTER</strong></button>
+			<div class="panel">
+			  <h5><strong>ON CLIENT PAGE</strong></h5>
+			  <p>1.)&emsp;On <strong>My Messages</strong> page, Click <strong>Compose a Message</strong><img src="{% static 'help_img/messages/Screenshot(106).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;A modal form shows.</p>
+			  <p>3.)&emsp;Compose the message  by filling the necessary fields</p>
+			  <p>4.)&emsp;When done Click the <strong>Submit</strong> button<img src="{% static 'help_img/messages/Screenshot(107).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;Message created!</p>
+
+			  <p></p>
+
+			  <h5><strong>ON ADMIN PAGE</strong></h5>
+			  <p>1.)&emsp;On the <strong>Message</strong>, Click <strong>New Messages</strong></p>
+			  <p>2.)&emsp;Then Click the <strong>Pencil</strong> icon of the current message order, with message <strong>Logo</strong><img src="{% static 'help_img/messages/Screenshot(111).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;A page shows the message from the <strong>Client</strong> side</p>
+			  <p>4.)&emsp;Reply the message and Click <strong>Send</strong><img src="{% static 'help_img/messages/Screenshot(114).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;Message sent and tied to <strong>Replied Messages</strong> in Message page<img src="{% static 'help_img/messages/Screenshot(113).png' %}" class="thumbnail" height="100" width="100"></p>
+
+			  <p></p>
+
+			  <h5><strong>ON CLIENT PAGE</strong></h5>
+			  <p>1.)&emsp;On <strong>My Messages</strong> page, Click <strong>Replied</strong>,  a list of all Replied messages shows<img src="{% static 'help_img/messages/Screenshot(115).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>2.)&emsp;Hover over the message that has been replied by the admin</p>
+			  <p>3.)&emsp;A <strong>Pencil</strong> icon shows, Click on it<img src="{% static 'help_img/messages/Screenshot(120).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>4.)&emsp;A modal form shows history of conversation done, and a box to Reply the admin back</p>
+			  <p>5.)&emsp;Compose a message in the box and Click the <strong>Submit</strong> button<img src="{% static 'help_img/messages/Screenshot(116).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>6.)&emsp;Message sent!</p>
+
+			  <p></p>
+
+			  <h5><strong>ON ADMIN PAGE</strong></h5>
+			  <p>1.)&emsp;On the <strong>Message</strong> page, Click <strong>New Messages</strong></p>
+			  <p>2.)&emsp;Then Click the <strong>Pencil</strong> icon of the current message order, with message <strong>Logo</strong><img src="{% static 'help_img/messages/Screenshot(111).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;A page shows the Reply message from the <strong>Client</strong> side</p>
+			  <p>4.)&emsp;Reply the mesage and Click <strong>Send</strong><img src="{% static 'help_img/messages/Screenshot(119).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>&emsp;Message sent</p>
+			</div>
+
+			<button class="accordion"><strong>+ HOW TO ARCHIVE A MESSAGE</strong></button>
+			<div class="panel">
+			  <p>1.)&emsp;On the Message page, a list of Messages shows</p>
+			  <p>2.)&emsp;Click the <strong>Archive</strong> logo at the extreme right of the message you wish to archive.<img src="{% static 'help_img/messages/Screenshot(109).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>3.)&emsp;A Pop up shows with a message “Are you sure you want to Archive this thread?”
+			  <p>4.)&emsp;Click <strong>OK</strong> to Archive the message thread<img src="{% static 'help_img/messages/Screenshot(110).png' %}" class="thumbnail" height="100" width="100"></p>
+			  <p>5.)&emsp;Message thread <strong>Archived</strong><img src="{% static 'help_img/messages/Screenshot(121).png' %}" class="thumbnail" height="100" width="100"></p>
+			</div>
+
+		</div>
+	</div>
+	
+
+
+	{% endblock %}
+
+
+{% block modal_script %}
+	<script>
+		$('#ProcessModal').modal('hide');
+	</script>
+{% endblock %}
+
+{% block script %}
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-route.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-messages.min.js'></script>
+	<!--<script src="{% static 'soko-admin/js/angular-material.js' %}"></script>-->
+	<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script>
+	<script src="{% static 'soko-admin/js/index.js' %}"></script>
+
+	<script>
+	var acc = document.getElementsByClassName("accordion");
+	var i;
+
+	for (i = 0; i < acc.length; i++) {
+		acc[i].onclick = function(){
+			this.classList.toggle("active");
+			var panel = this.nextElementSibling;
+			if (panel.style.display === "block") {
+				panel.style.display = "none";
+			} else {
+				panel.style.display = "block";
+			}
+		}
+	}
+	</script>
+
+
+{% endblock %}

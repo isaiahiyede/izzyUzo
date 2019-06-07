@@ -1,0 +1,215 @@
+{% load staticfiles %}
+{% load humanize %}
+
+{% if service_name == "warehouse" %}
+<div class="modal fade" id="loc" role= "dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Warehouse Location</h4>
+          </div>
+          <div class="modal-body" style="overflow-y: scroll;">
+                    <!--<div class="header % if offer_warehouse_form.instance.id and offer_warehouse_form.instance.offered_for_rent %}green% else %}red% endif %}">-->
+                    <!--    <div class="circle">-->
+                    <!--        <img src="% static 'soko-admin/img/icon4.png' %}" />-->
+                    <!--    </div>-->
+                        <!--<h1>Warehouse Locations</h1>-->
+                    <!--    <p>% if offer_warehouse_form.instance.id and offer_warehouse_form.instance.offered_for_rent %}Set% else %}Not Yet Set% endif %}</p>-->
+                    <!--</div>-->
+                    
+                <form id="offer_warehouse_location" method="POST" action="{% url 'service_provider:service_location' 'warehouse' chain_id %}">
+                    
+                    
+                    {% csrf_token %}
+                    <input type="hidden" id="service_name" value="warehouse"/>
+                    <input type="hidden" id="chain_id" value="{% if origin %}{{ chain_id}}{% else %}'offer'{% endif %}"/>
+                    
+                    {% if edit %}
+                    <input type="hidden" name="edit_id" value = "{{edit.pk}}" />
+                    {% endif %}
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; bottom: 10px; position: relative; height: auto; overflow: hidden;">
+                            <div class="widget_scroll_inner">
+
+                                <div class="checkbox">
+                                  <!--<div class="col-md-12">-->
+                                  <!--% for field in location_form %}-->
+                                    <!--% if field.name == 'auto_subscriber_approval' or field.name == 'publish_reviews' or field.name == 'offered_for_rent' %}-->
+                                    <!--  <div class="col-md-12">-->
+                                    <!--      <label>{ field }} { field.label}}</label>-->
+                                    <!--  </div>-->
+                                    <!--{\% else %}-->
+                                      <div class="col-md-12">
+                                          <span class="">{{ form.address1.label}}</span><br/>
+                                          {{ form.address1 }}
+                                      </div>
+                                      <div class="col-md-12">
+                                          <span class="">{{ form.address2.label}}</span><br/>
+                                          {{ form.address2 }}
+                                      </div>
+                                      <div class="col-md-12">
+                                          <span class="">{{ form.city.label}}</span><br/>
+                                          {{ form.city }}
+                                      </div>
+                                      <div class="col-md-12">
+                                        <span class="">{{ form.country.label}}</span><br/>
+                                        <select id="country" name="country" selected="selected"></select>
+                                      </div>
+                                      <div class="col-md-12">
+                                        <span class="">{{ form.state.label}}</span><br/>
+                                        <select name="state" id="state"></select>
+                                        <script language="javascript">
+                                                populateCountries("country", "state");
+                                        </script>
+                                      </div>
+                                      <div class="col-md-12">
+                                          <span class="">{{ form.phone_number.label}}</span><br/>
+                                          {{ form.phone_number }}
+                                      </div>
+                                      <div class="col-md-12">
+                                          <span class="">{{ form.zip_code.label}}</span><br/>
+                                          {{ form.zip_code }}
+                                      </div>
+                                    <!--% endif %}-->
+                                  <!-- endfor %}-->
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                
+            
+          <div class="modal-footer">
+              <button class="btn green save_info">Save</button>
+          </div>
+                </form>
+        </div>
+    </div>
+</div>
+{% elif service_name == "shipper" %}
+<!--''' Shippers Route form '''-->
+<div class="modal fade" id="route" role= "dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Shipping Routes</h4>
+          </div>
+          <div class="modal-body" style="overflow-y: scroll;">
+                    
+                    
+                    <form id="offer_shipping_route" method="POST" action="{% url 'service_provider:service_location' 'shipper' chain_id %}">
+                
+                    
+                    {% csrf_token %}
+                    <input type="hidden" id="service_name" value="shipper"/>
+                    <input type="hidden" id="chain_id" value="{% if origin %}{{ chain_id}}{% else %}'offer'{% endif %}"/>
+                    
+                    {% if edit %}
+                    <input type="hidden" name="edit_id" value = "{{edit.pk}}" />
+                    {% endif %}
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; bottom: 10px; position: relative; height: auto; overflow: hidden;">
+                            <div class="widget_scroll_inner">
+
+                                <div class="checkbox">
+                                  
+                                      
+                                      <div class="col-md-12">
+                                        <span class="">{{ form.origin.label}}</span><br/>
+                                                {{ form.origin}}
+                                      </div>
+                                      <div class="col-md-12">
+                                        <span class="">{{ form.destination.label}}</span><br/>
+                                                {{ form.destination}}
+                                      </div>
+                                      <div class="col-md-12">
+                                        <span class="">{{form.rate.label}}</span><br/>
+                                                        {{ form.rate }}
+                                      </div>
+                                      
+                                    <!--% endif %}-->
+                                  <!-- endfor %}-->
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                
+            </div>
+          <div class="modal-footer">
+              <button class="btn green save_info">Save</button>
+          </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!--''' Clearing agent form '''-->
+<div class="modal fade" id="clearing" role= "dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Clearing Locations</h4>
+          </div>
+          <div class="modal-body" style="overflow-y: scroll;">
+                    
+                    
+                    <form id="offer_shipping_route" method="POST" action="{% url 'service_provider:service_location' 'clearing_agent' chain_id %}">
+                    
+                        
+                        {% csrf_token %}
+                    <input type="hidden" id="service_name" value="clearing_agent"/>
+                    <input type="hidden" id="chain_id" value="{% if origin %}{{ chain_id}}{% else %}'offer'{% endif %}"/>
+                    {% if edit %}
+                    <input type="hidden" name="edit_id" value = "{{edit.pk}}" />
+                    {% endif %}
+                    <div class="widget_scroll">
+                        <div style="float:left; width:100%; bottom: 10px; position: relative; height: auto; overflow: hidden;">
+                            <div class="widget_scroll_inner">
+
+                                <div class="checkbox">
+                                  
+                                      
+                                      <div class="col-md-12">
+                                        <span class="">{{ form.country.label}}</span><br/>
+                                                {{ form.country}}
+                                      </div>
+                                      <!--<div class="col-md-12">
+                                        <span class="">{form.destination.label}}</span><br/>
+                                        <select id="country" name="country" selected="selected"></select>
+                                      </div>-->
+                                      <div class="col-md-12">
+                                        <span class="">{{form.price.label}}</span><br/>
+                                                        {{ form.price }}
+                                      </div>
+                                      
+                                    <!--% endif %}-->
+                                  <!-- endfor %}-->
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                
+            </div>
+          <div class="modal-footer">
+              <button class="btn green save_info">Save</button>
+          </div>
+                </form>
+        </div>
+    </div>
+</div>
+{% endif %}

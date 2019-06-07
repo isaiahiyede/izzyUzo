@@ -1,0 +1,174 @@
+{% load staticfiles %}
+<div id="id_import_options" class="modal fade align-center" role="dialog">
+  <div class="modal-dialog" style="width: 1000px; height:650px; position: relative;left: 60px;">
+    <div class="modal-content" style="width:850px; overflow-y:scroll; max-height:600px; min-height: 350px;">
+
+      <div class="modal-header"  style="border-bottom:none !important;">
+        <button type="button" style="background-size:0px !important;" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><strong>Select Origin &amp; Destination</strong></h4>
+      </div>
+
+      <div class="modal-body">
+        <form  action = "{% url 'shipping:retrieve_modal_values' %}" method = "post" id = "service-option-form">
+        {% csrf_token %}
+
+        <div class="row">
+
+          <div class="hidden" id = "promo-details-div">
+          </div>
+          <div id = "country-selection-div">
+            <div class="col-md-6 origin_countries">
+                <strong style="position: relative;left: 12px;">Origin</strong> &nbsp;
+                <select class="form-control" style="height:48px; position:relative; left:12px; width:84%;" name="country_from" id = "id_country_from">
+                  <option value="">Select Country</option>
+                  {% for country in origin_countries %}
+                    <option value="{{ country }}">{{ country }}</option>
+                  {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="col-md-6 destination_countries">
+              <strong style="position: relative;left: 12px;">Destination</strong> &nbsp;
+                <select class="form-control" style="height:48px; position:relative; left:12px; width:84%;" name="country_to" id = "id_country_to">
+                  <option value="">Select Country</option>
+                  {% for country in destination_countries %}
+                    <option value="{{ country }}">{{ country }}</option>
+                  {% endfor %}
+
+                </select>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- select import action -->
+      <span class="hidden" id = "service-selection">
+        <p> &nbsp; </p>
+          <strong style="position:relative;left:12px;"> How do you want you ship your package? </strong><br/><br/>
+
+
+          <div class="row">
+            <div class="col-md-4">
+              <input class="form-control" type="hidden"  name="import-handling-option" value="" id="id_shipping_option" />
+
+              <checkbox id="send-from-shop" class="btn dark align-center import_option" style="background: url({% static 'shipping/img/send-package.png' %}) center center; position:relative; left:12px; height:95px;  color: #000000; width: 245px;  padding:10px;" onclick='return select_shipping_option("send-from-shop")'/>
+              <!-- SEND PACKAGE FROM SHOP -->
+              <!-- Sending package from a shop -->
+            </div>
+            <div class="col-md-4">
+               <checkbox class="btn dark align-center import_option" id="export-import" style="background: url({% static 'shipping/img/drop-off.png' %}) center center; position:relative; left:5px; height:95px;  color: #000000; width: 245px;  padding:10px;" onclick='return select_shipping_option("export-import")'>
+                <!-- DROP OFF AT A POST OFFICE -->
+            </div>
+            <div class="col-md-4">
+              <checkbox id = "pick-up-package" class="btn dark align-center import_option" style="background: url({% static 'shipping/img/pickup.png' %}) center center; position:relative; height:95px;  color: #000000; width: 245px;  padding:10px;" onclick='return select_shipping_option("pick-up-package")'>
+                <!-- PICK UP MY PACKAGE -->
+            </div>
+          </div>
+          <p> &nbsp; </p>
+           <p> &nbsp; </p>
+            <p> &nbsp; </p>
+      </span>
+
+        <!-- pick up address -->
+        <span id="pick-up-location-form" class="hidden">
+          <strong>
+            <h5 id = 'location_title' style="position: relative; left:12px;"> </h5>
+          </strong>
+
+          <div class="row">
+            <div class="col-md-12">
+              <fieldset style="width:60%;">
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-address-book" aria-hidden="true"></i></span>
+                      <input class="form-control" type="text"  name="address1" placeholder = "Address 1" id="pk_address1" style="border: 2px solid #444444 !important;"/>
+                    </div>
+                  </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-address-book" aria-hidden="true"></i></span>
+                      <input class="form-control" type="text"  name="address2" placeholder = "Address 2" id="pk_address2" style="border: 2px solid #444444 !important;"/>
+                    </div>
+                  </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-university" aria-hidden="true"></i></span>
+                      <input class="form-control" type="text"  name="city" placeholder = "City" id="pk_city" style="border: 2px solid #444444 !important;"/>
+                    </div>
+                  </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-cloud" aria-hidden="true"></i></span>
+                      <input class="form-control" type="text"  name="state" placeholder = "State" id="pk_state" style="border: 2px solid #444444 !important;"/>
+                    </div>
+                  </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                  <div class="col-md-12 pickup_countries">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-globe" aria-hidden="true"></i></span>
+                      <select class="form-control" name="country" id = "pk_country" style="border: 2px solid #444444 !important;">
+                        {% for country in origin_countries %}
+                          <option value="{{ country }}">{{ country }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                      <input class="form-control" type="text"    name="origin_zipcode" placeholder = "Zip code" id="pk_zipcode" style="border: 2px solid #444444 !important;" />
+                    </div>
+                  </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
+                      <input class="form-control" type="number" name="phone" placeholder = "Phone" id="pk_phone" style="border: 2px solid #444444 !important;"/>
+                    </div>
+                  </div>
+                </div>
+                <br/>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <input class="form-control" type="hidden"  name="pick-up" />
+                  </div>
+                </div><br/><br/>
+              </fieldset>
+            </div>
+          </div>
+        </span>
+
+      <div class="modal-footer">
+          <input type="submit" name = "import-options" style="position: relative; width:180px;" value="proceed" class="btn btn-success pull-right" onclick='return validate_index_import_selection()'/>
+      </div>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>

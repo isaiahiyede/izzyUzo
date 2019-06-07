@@ -1,0 +1,51 @@
+<!-- FOOTER  -->
+<footer class="black">
+    <div class="sfooter">
+        <!--<div class="container">
+            <div class="inner two">
+                <div class="col-md-7">
+                    <h1>Subscribe to our Newsletter to get the best deals daily!</h1>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" placeholder="Enter your email address" />
+                    <a href="#" class="btn" data-toggle="modal" data-target="#myModal">Subscribe</a>
+                </div>
+            </div>
+        </div>-->
+        <div class="container">
+            <div class="inner">
+                <div class="col-md-4">
+                    <div class="block">
+                       
+                        <a href="#start_shipping" class="row" data-toggle="modal" data-target="#select_country">
+                            <h1>Shipping</h1>
+                        </a>
+                        
+                        <a href="#start_shipping" class="row" data-toggle="modal" data-target="#select_country.shp">
+                            <h1>Shopping</h1>
+                        </a>
+                        <a href="#" class="row">
+                            <h1>Deals</h1>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    
+                    <div class="col-md-6">
+                        
+                        <div class="col-md-12">
+                            <h2>Address:</h2>
+                            <p>{{ request.marketing_member.complete_address }}
+                                <br/>Phone: {{ request.marketing_member.phone_number }}
+                                <br/> Email: <a href="#">{{ request.storefront_email }}</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% include 'zaposta_snippet/footer-bottom.html' %}
+</footer>
+<!-- FOOTER  -->

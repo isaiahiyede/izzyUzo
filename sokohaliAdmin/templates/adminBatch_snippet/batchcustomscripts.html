@@ -1,0 +1,225 @@
+
+<script>
+
+    $(document).ready(function(){  
+      $(".batch_statuses li").each(function(){
+        var href = $(this).find('a').attr('href');
+        var pathName = window.location.pathname
+        console.log("href " + href);
+        console.log("Path " + pathName);
+        if (href === pathName) {
+        $(this).addClass('active');
+        }
+      });
+    });
+
+
+    $('body').on('click','#archive',function(){
+        var response = confirm("You about to Archive this batch!!!");
+        if(response){
+            return true;
+        }else{
+            return false;
+        }
+    });
+
+
+    $('body').on('click','#unarchive',function(){
+        var response = confirm("You about to Unrchive this batch!!!");
+        if(response){
+            return true;
+        }else{
+            return false;
+        }    
+    });
+
+
+    $('body').on('click','#checkboxes',function(){
+        if($(this).hasClass('allChecked')){
+            $('input[type="checkbox"]',".inf").prop('checked',false);
+        }
+        else{
+            $('input[type="checkbox"]',".inf").prop('checked',true);
+        }
+       $(this).toggleClass('allChecked');
+    });
+
+
+    $('body').on('click','.specials',function(){
+
+        var current_status = $(this).text();
+        var checked_items = []
+        var old_status = []
+
+        $("input:checkbox[name=ch]:checked").each(function(){
+            checked_items.push($(this).attr("id"));
+            old_status.push($(this).val());
+
+        });
+
+        if (checked_items == ""){
+            alert('No batch(es) has been selected for ' + '"' + current_status  + '"' + ' update');
+        }else{
+            var response = confirm('Please confirm that the selected action for this batch(es) is ' + '"' + current_status + '"');
+            if (response){
+                $("#update_type").val(current_status);
+                $("#batch_ids").val(checked_items);
+                $("#old_status").val(old_status);
+
+                //submit form
+                $("#batchUpdateForm").submit();
+                return true;
+            }else{
+                return false;
+            }
+        }
+    });
+
+
+    $('body').on('click',"#search",function(){
+        var batch_No = $("#batch_number").val();
+        var batch_type = $("#type").find(":selected").text();
+        $("#batchType").val(batch_type);
+        $("#batchNo").val(batch_No);
+        if((batch_No == "") && (batch_type == "Type")){
+            alert("Please enter a valid 'BATCH NUMBER' or 'BATCH TYPE' ");
+        }else{
+            //submit form
+            $("#searchForm").submit(); 
+        }
+    });
+
+
+    $('body').on('click','.updatebatch',function(){
+        var batch_id = $(this).parent().parent().parent().parent().parent().parent().find("#batch_num").val();
+        var batch_awb_doc = $(this).parent().parent().parent().parent().parent().parent().find("#batch_doc").attr('href');
+        var awbDoc = $(this).parent().parent().parent().parent().parent().parent().find("#batch_doc").text();
+        var batch_bol_doc = $(this).parent().parent().parent().parent().parent().parent().find("#batch_bol_doc").attr('href');
+        var bolDoc = $(this).parent().parent().parent().parent().parent().parent().find("#batch_bol_doc").text();
+
+        $('#bch_doc').attr("href",batch_awb_doc);
+        $('#bch_doc').text(awbDoc);
+        
+        $('#bch_bol_doc').attr("href",batch_bol_doc);
+        $('#bch_bol_doc').text(bolDoc);
+        
+        $("#btch_num").val(batch_id);
+        $("#update_batch_number").val(batch_id);
+
+        $.ajax({
+            url: "{% url 'sokohaliAdmin:getbatchitem' %}",
+            type: "POST",
+            data: $("#getbatchvaluesform").serialize(),
+
+            success: function(data){
+            console.log("working" + " " + data.shipping_method + "," + data.carrier + "," + data.freight_type);
+                $("#update_shipping_method .select-styled").html(data.shipping_method);
+                $("#update_carrier").val(data.carrier);
+                $("#update_freight_type .select-styled").html(data.freight_type);
+                $("#update_pkg_count").val(data.pkg_count);
+                $("#btch_type_here").val(data.batch_type);
+                $("#update_btch_number").val(data.btch_number);
+
+                $("#update_total_pellets").val(data.total_pellets);
+                $("#update_shipping_cost_D").val(data.shipping_cost_D);
+                $("#update_port_of_exit").val(data.port_of_exit);
+                $("#update_port_of_arrival").val(data.port_of_arrival);
+                $("#update_departure_date").val(data.departure_date);
+                $("#update_arrival_date").val(data.arrival_date);
+                $("#update_clearing_cost").val(data.clearing_cost);
+                $("#update_harzmat_status").val(data.harzmat_status);
+                $("#update_booking_ref").val(data.booking_ref);
+
+                $("#update_batch_type .select-styled").html(data.batch_type);
+                $("#update_batch_status .select-styled").html(data.batch_status);
+                $('#UpdateBatch').modal('show');
+            },
+            error: function(data){
+                console.log("not working");
+            }
+        });
+    });
+
+    // Popup window code
+    function newPopup(url) {
+    popupWindow = window.open(
+        url,'popUpWindow','height=600,width=700,right=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+    }
+
+
+    $('body').on('click','.manipulate',function(){
+        var id = $(this).attr('item_id');
+        // alert(id);
+        $('#btch_no').val(id);
+          // alert(batch_id + " " + 'was clicked');
+
+        $('#edititemModal').modal('show');
+    });
+
+    $('body').on('click','.operate',function(){
+        var id = $(this).attr('item_id');
+        // alert(id);
+        $('#btch_noo').val(id);
+          // alert(batch_id + " " + 'was clicked');
+
+        $('#editModal').modal('show');
+    });
+
+
+    $('body').on('click','.manipulate_awb',function(){
+        var batch_number = $(this).attr('item_id');
+        console.log("Batch Number is : "+ batch_number);
+        var csrf_token     = $('input[name="csrfmiddlewaretoken"]').val();
+        // console.log("csrf_token is : "+ csrf_token);
+          $.ajax({
+            url: "{% url 'sokohaliAdmin:form_edit'  %}",
+            type: "POST",
+            data: {"batch_number":batch_number, "csrfmiddlewaretoken":csrf_token},
+
+            success: function(data){
+                //console.log("Data is : "+ each_awb);
+                $('#editAwbModal').replaceWith(data);
+                $('#editAwbModal').modal('show');
+            },
+            error: function(data){
+                console.log("Not working");
+            }
+          });      
+        });
+
+    // $('body').on('click','.operate_dock',function(){
+    //     var batch_number = $(this).attr('item_id');
+    //     console.log("Batch Number is : "+ batch_number);
+    //     var csrf_token     = $('input[name="csrfmiddlewaretoken"]').val();
+    //     // console.log("csrf_token is : "+ csrf_token);
+    //       $.ajax({
+    //         url: "% url 'sokohaliAdmin:dock_form_edit'  %}",
+    //         type: "POST",
+    //         data: {"batch_number":batch_number, "csrfmiddlewaretoken":csrf_token},
+
+
+    //         success: function(data){
+    //             //console.log("Data is : "+ each_awb);
+    //             $('#editDockModal').replaceWith(data);
+    //             $('#editDockModal').modal('show');
+    //         },
+    //         error: function(data){
+    //             console.log("Not working");
+    //         }
+    //       });      
+    //     });
+
+    $('body').on('click', '.modal-footer .trigger', function () {
+        $('.modal-c').removeClass('open');
+        var target = $(this).attr('rel');
+        $(".modal-c#" + target).addClass('open');
+    });
+
+    $('body').on('click', '#submitUpdate', function(e){
+        e.preventDefault();
+        var selected_btch_update = $('.first-select .select-styled').text()
+        $("#current_batch_status").val(selected_btch_update);
+        $("#updateForm").submit();
+    });
+
+</script>

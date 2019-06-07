@@ -1,0 +1,84 @@
+{% load staticfiles %}
+{% load humanize %}
+<!-- Modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ViewInvModal" style="overflow-y:scroll!important;">
+        <div class="modal-dialog modal-big">
+            <div class="modal-content">
+                
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="myFunction()"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">View Product</h4>
+                </div>
+                <div class="order">
+                    <div class="col-md-12">
+                        <h1>View Product <span class="label"></span><span class="label"></span></h1>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner long">
+                                <div class="col-md-12">
+                                    <div class="col-md-8">
+                                        <input type='hidden' name='id' value='{{itmdetail.id}}'>
+                                        <label>Uploaded Image</label>
+                                        <img src="{{itmdetail.item_image.url}}" width="150" height="150">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Title</label>
+                                        {{itmdetail.title}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Description</label>
+                                        {{itmdetail.description}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Price</label>
+                                        ${{itmdetail.price}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Colour</label>
+                                        {{itmdetail.colour}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Brand</label>
+                                        {{itmdetail.brand}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Size</label>
+                                        {{itmdetail.size}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Weight(KG)</label>
+                                        {{itmdetail.weight}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Product Category</label>
+                                        {{itmdetail.category}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Product SubCategory</label>
+                                        {{itmdetail.sub_sub_cat}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Quantity</label>
+                                        {{itmdetail.quantity}}
+                                    </div>
+                                     <div class="col-md-8">
+                                        <label>Item Remaining</label>
+                                        {{itmdetail.item_remaining}}
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label>Sold</label>
+                                        {{itmdetail.sold}}
+                                    </div>
+                              </div> 
+                        </div>
+                        <!-- Body Inner Content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

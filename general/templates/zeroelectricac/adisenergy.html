@@ -1,0 +1,528 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="webthemez">
+    <title>AdisEnergy</title>
+	<!-- core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="{% static 'zeroelectric/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'zeroelectric/css/animate.min.css' %}" rel="stylesheet"> 
+    <link href="{% static 'zeroelectric/css/prettyPhoto.css' %}" rel="stylesheet">
+    <link href="{% static 'zeroelectric/css/styles.css' %}" rel="stylesheet"> 
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->       
+    <link rel="shortcut icon" href="{% static 'zeroelectric/images/zeCCImages/logo3.png' %}"> 
+</head> 
+
+<body id="home">
+
+<header id="header">
+        <nav id="main-nav" class="navbar navbar-default navbar-fixed-top" role="banner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="www.zeroelectricac.com"><img src="{% static 'zeroelectric/images/zeCCImages/logo4.png' %}" alt="logo" height="45"></a>
+                    <a class="navbar-brand" href="www.zeroelectricac.com"><img src="{% static 'zeroelectric/images/zeCCImages/logo3.png' %}" alt="logo" height="45"></a>                  
+                </div>
+				
+                <div class="collapse navbar-collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li class="scroll active"><a href="#home">Home</a></li>  
+                        <li class="scroll"><a href="#about">About</a></li> 
+						 <li class="scroll"><a href="#portfolio">Gallery</a></li>
+                        <li class="scroll"><a href="#pricing">How it Works</a></li>
+                        <li class="scroll"><a href="#contact-us">Contact</a></li>                        
+                    </ul>
+                </div>
+            </div><!--/.container-->
+        </nav><!--/nav-->
+</header><!--/header-->
+
+<section id="hero-banner">
+      <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="4000" id="bs-carousel">
+          <!-- Overlay -->
+          <div class="overlay"></div>
+
+          <!-- Indicators -->
+          <ol class="carousel-indicators">
+            <li data-target="#bs-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#bs-carousel" data-slide-to="1"></li> 
+            <li data-target="#bs-carousel" data-slide-to="2"></li> 
+          </ol>
+          
+          <!-- Wrapper for slides -->
+          <div class="carousel-inner">
+            <div class="item slides active">
+              <div class="slide-1"></div>
+              <div class="hero">
+                <hgroup>
+                    <h1></h1>
+                    <h3>Only 5 to 150 watts in Power Mode</h3>        
+                    
+                </hgroup> 
+              </div>
+            </div>
+            <div class="item slides">
+              <div class="slide-2"></div>
+              <div class="hero">        
+                <hgroup>
+                    <h1></h1>
+                    <h3>Eco Friendly Natural Cool Comfort</h3>
+                </hgroup>        
+              </div>
+            </div>
+            <div class="item slides">
+              <div class="slide-4"></div>
+              <div class="hero">        
+                <hgroup>
+                    <h1></h1>
+                    <h3>High Efficiency Climate Control and Heat Removal</h3>
+                </hgroup>        
+              </div>
+            </div> 
+            </div>
+          </div> 
+        </div>
+</section><!--/#main-slider-->
+
+<section id="about">
+        <div class="container">
+
+            <style>
+                .centered {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    color:white;
+                    transform: translate(-50%, -50%);
+                }
+            </style>
+
+            <div class="section-header">
+                <h2 class="section-title wow fadeInDown">About </h2>          
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="centered">We are Burning Down Earth to Cool Ourselves</h3>
+                  <img class="img-responsive" src="{% static 'zeroelectric/images/banner/burning.jpg' %}" alt="">
+                </div>
+
+                <div class="col-sm-12 wow fadeInRight">
+                    <h3 class="column-title"></h3>
+
+                    <p class="wow fadeInDown">Air conditioners require up to 4,000 Watts, or about 14-15 300 watts/hr solar panels to start. Current evaporative cooling with water requires 70-90% less electrical energy, however, they are ineffective in humidity>45%, which is most of Earth. Cooling affects climate change: Vapour compression AC refrigerants damage
+                    the ozone. Cooling affect Energy use: The United States uses more electricity for cooling than all of Africa uses for everything. Cooling affects Public Health: Heat effects health of vulnerable populations.</p>
+
+                    <p class="wow fadeInDown">We have created a ceramic composite material which while hydrated with water absorbs radiant heat from environments and things through evaporation and can reduce the moisture in the air through condensation - with little to no electricity. It works in both dry and humid climates. The zeCC powered version contains this composite material, LED lights, and a fan to accelerate the process to cool spaces with minimal electrical energy (0-120 W/h) in a Portable and Sleek design</p>
+                    
+                </div>
+            </div>
+        </div>
+</section><!--/#about-->
+ 
+<section id="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title text-center wow fadeInDown">Gallery</h2>
+                <p class="wow fadeInDown">Checkout our modifications and installations</p>
+            </div>
+
+            <div class="text-center divhide">
+                <ul class="portfolio-filter">
+                    <li><a class="active" href="#" data-filter="*">All Works</a></li>
+                    <li><a href="#" data-filter=".designing">Designing</a></li>
+                    <li><a href="#" data-filter=".mobile">Mobile App</a></li>
+                    <li><a href="#" data-filter=".development">Development</a></li>
+                </ul><!--/#portfolio-filter-->
+            </div>
+
+            <div class="portfolio-items">
+                <div class="portfolio-item designing">
+                    <div class="portfolio-item-inner">
+                        <img class="img-responsive" src="{% static 'zeroelectric/images/zeCCImages/zeCC1.jpg' %}" alt="">
+                        <div class="portfolio-info">
+                            <h3>Project Name</h3>
+                            Some description..
+                            <a class="preview" href="{% static 'zeroelectric/images/zeCCImages/zeCC1.jpg' %}" rel="prettyPhoto"><i class="fa fa-eye"></i></a>
+                        </div>
+                    </div>
+                </div><!--/.portfolio-item-->
+
+                <div class="portfolio-item mobile development">
+                    <div class="portfolio-item-inner">
+                        <img class="img-responsive" src="{% static 'zeroelectric/images/zeCCImages/zeCC2.jpg' %}" alt="">
+                        <div class="portfolio-info">
+                            <h3>Project Name</h3>
+                             Some description..
+                            <a class="preview" href="{% static 'zeroelectric/images/zeCCImages/zeCC2.jpg' %}" rel="prettyPhoto"><i class="fa fa-eye"></i></a>
+                        </div>
+                    </div>
+                </div><!--/.portfolio-item-->
+
+                <div class="portfolio-item designing">
+                    <div class="portfolio-item-inner">
+                        <img class="img-responsive" src="{% static 'zeroelectric/images/zeCCImages/zeCC9.jpg' %}" alt="">
+                        <div class="portfolio-info">
+                            <h3>Project Name</h3>
+                             Some description..
+                            <a class="preview" href="{% static 'zeroelectric/images/zeCCImages/zeCC9.jpg' %}" rel="prettyPhoto"><i class="fa fa-eye"></i></a>
+                        </div>
+                    </div>
+                </div><!--/.portfolio-item-->
+
+                <div class="portfolio-item mobile">
+                    <div class="portfolio-item-inner">
+                        <img class="img-responsive" src="{% static 'zeroelectric/images/zeCCImages/zeCC4.jpg' %}" alt="">
+                        <div class="portfolio-info">
+                            <h3>Project Name</h3>
+                            Some description..
+                            <a class="preview" href="{% static 'zeroelectric/images/zeCCImages/zeCC4.jpg' %}" rel="prettyPhoto"><i class="fa fa-eye"></i></a>
+                        </div>
+                    </div>
+                </div><!--/.portfolio-item-->
+
+                <div class="portfolio-item designing development">
+                    <div class="portfolio-item-inner">
+                        <img class="img-responsive" src="{% static 'zeroelectric/images/zeCCImages/zeCC5.jpg' %}" alt="">
+                        <div class="portfolio-info">
+                            <h3>Project Name</h3>
+                             Some description..
+                            <a class="preview" href="{% static 'zeroelectric/images/zeCCImages/zeCC5.jpg' %}" rel="prettyPhoto"><i class="fa fa-eye"></i></a>
+                        </div>
+                    </div>
+                </div><!--/.portfolio-item-->
+
+                <div class="portfolio-item mobile">
+                    <div class="portfolio-item-inner">
+                        <img class="img-responsive" src="{% static 'zeroelectric/images/zeCCImages/zeCC6.jpg' %}" alt="">
+                        <div class="portfolio-info">
+                            <h3>Project Name</h3>
+                             Some description..
+                            <a class="preview" href="{% static 'zeroelectric/images/zeCCImages/zeCC6.jpg' %}" rel="prettyPhoto"><i class="fa fa-eye"></i></a>
+                        </div>
+                    </div>
+                </div><!--/.portfolio-item-->
+
+                <div class="portfolio-item designing development">
+                    <div class="portfolio-item-inner">
+                        <img class="img-responsive" src="{% static 'zeroelectric/images/zeCCImages/zeCC7.jpg' %}" alt="">
+                        <div class="portfolio-info">
+                            <h3>Project Name</h3>
+                             Some description..
+                            <a class="preview" href="{% static 'zeroelectric/images/zeCCImages/zeCC7.jpg' %}" rel="prettyPhoto"><i class="fa fa-eye"></i></a>
+                        </div>
+                    </div>
+                </div><!--/.portfolio-item-->
+
+                <div class="portfolio-item mobile">
+                    <div class="portfolio-item-inner">
+                        <img class="img-responsive" src="{% static 'zeroelectric/images/zeCCImages/zeCC8.jpg' %}" alt="">
+                        <div class="portfolio-info">
+                            <h3>Project Name</h3>
+                             Some description..
+                            <a class="preview" href="{% static 'zeroelectric/images/zeCCImages/zeCC8.jpg' %}" rel="prettyPhoto"><i class="fa fa-eye"></i></a>
+                        </div>
+                    </div>
+                </div><!--/.portfolio-item-->
+            </div>
+        </div><!--/.container-->
+</section><!--/#portfolio-->
+
+<section id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title wow fadeInDown">How it works</h2>
+                <p class="wow fadeInDown">The key ingredient is the ceramic composite material. Its nano-pores discharge moisture by gravitational pressure and capillary force. Natural evaporation and condensation of moisture from the expanded surfaces of the material draws from and releases heat energy to the surrounding objects - resulting in reduced or increased temperature and humidity.</p>
+                <ul>
+                <li>Can reduce the temperature of air from over 40 C to under 30 C without electricity at RH of over 65%</li>
+                <li>Can keep devices running at room temperature using their waste heat.</li>
+                <li>Room temperature tracks material temperature at any relative humidity.</li>
+            </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/CkJT5fFJ8wM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/I2Re4d-_klY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+</section><!--/#pricing-->
+
+
+<section id="pricing" style="padding-top: 50px;">
+    
+         <style>
+                thead {
+                    background: black;
+                    color:white;            
+                }
+                .orange{
+                    background: #e1cd66;
+                }
+                .red{
+                    background: #ff0033;
+                    color: orange;
+                }
+                .blueshade{
+                    background: #0A4F75;
+                    color: white;
+                }
+        </style>
+
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title wow fadeInDown">Competition</h2><br><br>
+                <table class="table table-bordered">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Usefulness/efficiency</th>
+                      <th scope="col">zeCC</th>
+                      <th scope="col">Compressor AC</th>
+                      <th scope="col">Coolerado AC®</th>
+                    </tr>
+                  </thead>
+                  <tbody  style="background: #d3ffce;">
+                    <tr>
+                      <th scope="row">Cooling without electricity</th>
+                      <td>Yes</td>
+                      <td>No</td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">24/7 Standby Cooling</th>
+                      <td>Yes</td>
+                      <td>No</td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Autoreverse cooling and warming</th>
+                      <td>Yes</td>
+                      <td>No</td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Humidity barrier</th>
+                      <td>No</td>
+                      <td>No</td>
+                      <td>Yes</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Single unit</th>
+                      <td>Yes</td>
+                      <td>Yes/No</td>
+                      <td>NO</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Mobile Portability</th>
+                      <td>Yes</td>
+                      <td>No</td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Works outside</th>
+                      <td>Yes</td>
+                      <td>No</td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Works with open windows</th>
+                      <td>Yes</td>
+                      <td>No</td>
+                      <td>No</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">How cooling is distributed</th>
+                      <td>Radial</td>
+                      <td>Directional</td>
+                      <td>Conduit</td>
+                    </tr>
+                  </tbody>
+                </table><br><br>
+
+                <table class="table table-bordered">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Usefulness/efficiency</th>
+                      <th scope="col">zeCC</th>
+                      <th scope="col">Compressor AC</th>
+                      <th scope="col">Coolerado AC®</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Starting power</th>
+                      <td class="blueshade">0 - 150 Watts</td>
+                      <td class="red">4000 Watts</td>
+                      <td class="orange">400 - 600 Watts</td>
+                    </tr>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Running Power</th>
+                      <td class="blueshade">0 - 150 Watts</td>
+                      <td class="red">1600 - 2000 Watts</td>
+                      <td class="orange">@400 Watts</td>
+                    </tr>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Fuel Consumption</th>
+                      <td class="blueshade">1⁄2 - 2 Liters water/day +- 1 litre diesel with electricity
+                      </td>
+                      <td class="red">20 litres of diesel/day</td>
+                      <td class="orange">5 litres of diesel/day and 20 litres of water/day</td>
+                    </tr>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Piping and conduits</th>
+                      <td class="blueshade">No</td>
+                      <td class="red">Yes</td>
+                      <td class="orange">Yes</td>
+                    </tr>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Installation cost</th>
+                      <td class="blueshade">No</td>
+                      <td class="red">Yes</td>
+                      <td class="orange">Yes</td>
+                    </tr>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Annual operating cost</th>
+                      <td class="blueshade">0 - $150</td>
+                      <td class="red">$432 - $1,728</td>
+                      <td class="orange">$400</td>
+                    </tr>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Emissions</th>
+                      <td class="blueshade">None to Solar Power</td>
+                      <td class="red">CFC/ Carbon/Heat</td>
+                      <td class="orange">Carbon</td>
+                    </tr>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Noise level</th>
+                      <td class="blueshade">below 60 decibels</td>
+                      <td class="red">above 60 decibels</td>
+                      <td class="orange">above 60 decibels</td>
+                    </tr>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Health benefits</th>
+                      <td class="blueshade">Natural cooling</td>
+                      <td class="red">Stale cold air</td>
+                      <td class="orange">Cool filtered air</td>
+                    </tr>
+                    <tr class="table-success">
+                      <th class="orange" scope="row">Cost</th>
+                      <td class="blueshade">From $750</td>
+                      <td class="red">From $3000</td>
+                      <td class="orange">From $6000</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+</section><!--/#pricing-->
+
+
+<section id="contact-us">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title wow fadeInDown">Contact Us</h2>
+                <p class="wow fadeInDown">Contact us for a free trial and pay 48 hours after trial (there is a waiting list). We deliver to these cities:<br>
+                Malawi: Blantyre, Lilongwe<br>
+                Nigeria: South East Nigeria, Lagos, Abuja.<br>
+                Avoid a waiting list and receive delivery within 3 weeks by paying before delivery.<br>
+                Email: info@adisenergy.com
+                </p>
+            </div>
+        </div>
+</section><!--/#contact-us-->
+
+<section id="contact">
+        
+        <div class="container">
+            <div class="container contact-info">
+                <div class="row">
+                    <div class="col-sm-8 col-md-8">
+                        <div class="contact-form">
+                                      <!--NOTE: Update your email Id in "contact_me.php" file in order to receive emails from your contact form-->
+        
+		<form name="sentMessage" id="contactForm"  novalidate> 
+		 <div class="control-group">
+            <div class="controls">
+			     <input type="text" class="form-control" 
+			   	   placeholder="Full Name" id="name" required
+			           data-validation-required-message="Please enter your name" />
+			         <p class="help-block"></p>
+		   </div>
+	         </div> 	
+                <div class="control-group">
+                  <div class="controls">
+			<input type="email" class="form-control" placeholder="Email" 
+			   	            id="email" required
+			   		   data-validation-required-message="Please enter your email" />
+		</div>
+	    </div> 	
+			  
+               <div class="control-group">
+                 <div class="controls">
+				 <textarea rows="10" cols="100" class="form-control" 
+                       placeholder="Message" id="message" required
+		       data-validation-required-message="Please enter your message" minlength="5" 
+                       data-validation-minlength-message="Min 5 characters" 
+                        maxlength="999" style="resize:none"></textarea>
+		</div>
+               </div> 		 
+	     <div id="success"> </div> <!-- For success/fail messages -->
+	    <button type="submit" class="btn btn-primary pull-right">Send</button><br />
+          </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
+</section><!--/#bottom-->
+
+<footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    &copy; 2018 Company Name. Template by <a target="_blank" href="https://webthemez.com/sports-fitness/" title="Free Bootstrap Themes and HTML Templates">WebThemez.com</a>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li> 
+                        <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                        <li><a href="#"><i class="fa fa-github"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+</footer><!--/#footer-->
+
+<script src="{% static 'zeroelectric/js/jquery.js' %}"></script>
+<script src="{% static 'zeroelectric/js/bootstrap.min.js' %}"></script> 
+<script src="{% static 'zeroelectric/js/mousescroll.js' %}"></script>
+<script src="{% static 'zeroelectric/js/smoothscroll.js' %}"></script>
+<script src="{% static 'zeroelectric/js/jquery.prettyPhoto.js' %}"></script>
+<script src="{% static 'zeroelectric/js/jquery.isotope.min.js' %}"></script>
+<script src="{% static 'zeroelectric/js/jquery.inview.min.js' %}"></script>
+<script src="{% static 'zeroelectric/js/wow.min.js' %}"></script>
+<script src="{% static 'zeroelectric/contact/jqBootstrapValidation.js' %}"></script>
+<script src="{% static 'zeroelectric/contact/contact_me.js' %}"></script>
+<script src="{% static 'zeroelectric/js/custom-scripts.js' %}"></script>
+
+</body>
+</html>

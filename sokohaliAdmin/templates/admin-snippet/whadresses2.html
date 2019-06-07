@@ -1,0 +1,20 @@
+ <div id="WHaddress2">
+     <div class="col-md-6" id="WHM4"  style="position: relative; top: 93px;">
+        <label>Destination Warehouse Address:</label>
+        <select class ="myselect" name="WHaddress4" id="id_WHaddress4">
+            <option value="">Select Warehouse to send Package to</option>
+        {% for loc in dest_whm %}
+            <option value="{{loc.id}}">{{loc.full_address}}</option>
+        {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6" id="WHM3"  style="position: relative; right: 14px;">
+        <label>Processing Warehouse Address:</label>
+        <select class ="myselect" name="WHaddress3" id="id_WHaddress3">
+            <option value="">Select Processing Warehouse Address </option>
+        {% for loc in origin_whm %}
+            <option value="{{loc.id}}">{{loc.full_address}}</option>
+        {% endfor %}
+        </select>
+    </div>
+</div>

@@ -1,0 +1,363 @@
+{% extends "base/zaposta_base.html" %}
+{% load humanize %}
+{% load activelink %}
+{% load staticfiles %}
+{% load currency %}
+
+{% block title %}Review your packages{% endblock %}
+
+
+{% block doctype %}
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+{% endblock %}
+
+{% block header_2 %}
+  <link href="{% static 'export/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'export/css/main.css' %}" rel="stylesheet">
+  <link href="{% static 'sokohali/css/card_payment.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block extra_head_2 %}
+
+    <style>
+      .error{
+        color: red !important;
+        padding-top: 10px;
+       }
+    </style>
+
+{% endblock %}
+
+
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+{% block st_content %}
+          <!-- this is the wrapper for the content -->
+          <div class="st-content-inner">
+            <!-- extra div for emulating position:fixed of the menu -->
+            <!-- Steps Section -->
+            <section id="steps" class="tt">
+                <div class="white"></div>
+                <!-- Page -->
+                <div class="container page">
+                    {% include 'zaposta_snippet/order_placement_stages.html' with active_page=5 %}
+                    <form id="detail_form" action="" method="POST">
+                        {% csrf_token %}
+                        <div class="col-md-8 content_outer">
+                            <div class="col-md-12 content" style="padding-bottom:0;">
+                                <div class="header">Payment</div>
+                                <div class="credit two">
+                        {% if messages %}
+                        <div class="col-md-12" style="padding-top:20px;">
+                          {% for msg in messages %}
+                          <div class="alert alert-info {% if msg.level_tag == 'error' %}three{% endif %}" role="alert"> {{msg|safe}} </div>
+                          {% endfor %}
+                        </div>
+                        {% endif %}
+                          <div class="col-md-12" style="padding-top:30px;">
+                              <h1>Shipping Details</h1>
+                          </div>
+                          <div class="col-md-12" style="padding-top:15px;">
+                              <p>Select a payment method and accept our terms and conditions.</p>
+                          </div>
+
+                          <div class="pack two">
+                              <div class="col-md-12">
+                                  <h1>Packages</h1>
+                              </div>
+                              <!-- Package -->
+                              {% for pkg in packages %}
+                                <div class="col-md-12">
+                                    <div class="package three">
+                                        <span></span>
+                                        <p><strong>PACKAGE {{ forloop.counter }}</strong> -  Dimension: {{ pkg.dimension }} / {{ pkg.box_weight_higher }}lbs ({{pkg.box_weight_higher_K}}kg) / Quantity: {{ pkg.box_quantity }}
+                                          / {% with pkg.shippingitem_set.all.count as items_count %}Item{{ items_count|pluralize:"s"}}: {{ items_count }} {% endwith %}
+                                        </p>
+                                    </div>
+                                </div>
+                              {% endfor %}
+
+                          </div>
+
+                          <form action="" method="POST">
+                              <div class="table two gray">
+                                  <h1 style="margin-bottom:10px;">Service Options</h1>
+                                  <h2 style="display:none;">
+                                      <div class="subtotal">
+                                          <span><strong>Items Total:</strong> $807 / &#8358;10,784.00</span>
+                                      </div>
+                                  </h2>
+
+                                    <div class="col-md-12 line">
+                                      <p style="margin-left: 27px;">Freight (Local &amp; International)</p>
+                                      <div>
+                                          <p>${{ shipping_cost_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ shipping_cost_N|floatformat:2|intcomma }}</p>
+                                      </div>
+                                    </div>
+
+                                    {% if pick_up_charge_D > 0 %}
+                                      <div class="col-md-12 line">
+                                        <p style="margin-left: 27px;">Pick Up Charge </p>
+                                        <div>
+                                            <p>${{ pick_up_charge_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ pick_up_charge_N|floatformat:2|intcomma }}</p>
+                                        </div>
+                                      </div>
+                                    {% endif %}
+
+                                  <div class="col-md-12 line three">
+                                      <div>
+                                          <p>
+                                              Coverage amount
+                                              <br /> ${{ coverage_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ coverage_N|floatformat:2|intcomma }}
+                                          </p>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-12 line active">
+                                      <span class="checkb active">
+                                          <input type="checkbox" name="insure" id="id_insure" checked="checked" data-value-d="{{ insurance_rate_D }}" data-value-n="{{ insurance_rate_N }}" />
+                                      </span>
+                                      <p>
+
+                                    Product Safety and Delivery Guarantee
+                                    <!--</label>-->
+                                    </p>
+                                      <div>
+                                          <p>${{ insurance_rate_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ insurance_rate_N|floatformat:2|intcomma }} </p>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-12 line blue">
+                                      <p>Total Payable:</p>
+                                      <div>
+                                          <p id="total_payable">${{ total_payable_D|floatformat:2|intcomma }} / {% country_currency_code lb_country %}&nbsp;{{ total_payable_N|floatformat:2|intcomma }}</p>
+                                      </div>
+                                  </div>
+                              </div>
+                              {% if shipping_origin != "United States" and shipping_destination != "United States" %}
+                              <span style="position:relative; left:15px;">
+                                <input style="position:relative; right:5px; bottom:-20px" type="checkbox" id="select_currency" name="select_currency" value="" />Do you want your shipping costs in currency of destination country?
+                              </span>
+                              {% endif %}
+
+                              <div class="col-md-12" style="padding-top:30px;">
+                                  <h1>Payment Method</h1>
+
+                              </div>
+                              <div class="col-md-12" style="padding-top:15px;">
+                                  <p>Select the payment option you want to use for your package{{packages.count|pluralize:',s'}}.
+
+                                </p>
+                              </div>
+                              <div class="col-md-12 payment_methods two">
+
+
+                            <div class="panel two jejem" data-val="Shipping Credit" id="ewallet" style="background: url('{% static 'sokohali/img/pay_soko.png' %}') center center no-repeat; background-size: 330px;">
+                              <!--<div href="#" data-toggle="modal" data-target="#zappay" class="bt">?</div>-->
+                              <p>E-Wallet</p>
+                            </div>
+
+                                  
+                                  <!--<div class="panel two jejem" data-val="Bank Deposit" id="ewallet" style="background: url('{% static 'sokohali/img/bank.jpg' %}') center center no-repeat; background-size: 330px;">
+                                    <div href="#" data-toggle="modal" data-target="#zappay" class="bt"></div>
+                                    <p>Bank Deposit/Wire Transfer</p>
+                                  </div>-->
+                                  
+                                  
+                                  
+                                  <!-- <div class="panel two jejem" data-val="Shipping Credit" id="ewallet">
+                                    <div href="#" data-toggle="modal" data-target="#zappay" class="bt">?</div>
+                                    <p>E-Wallet</p>
+                                  </div> -->
+
+
+
+
+                                     <div class="panel credit" data-val="Card Payment">
+                                      <div class="img">
+                                          <img src="{% static 'export/img/cc/visa.png' %}" />
+                                      </div>
+                                      <div class="img two">
+                                          <img src="{% static 'export/img/cc/verve.png' %}" />
+                                      </div>
+                                      <div class="img" style="margin-right:0;">
+                                          <img src="{% static 'export/img/cc/mastercard.png' %}" />
+                                      </div>
+                                      <p>
+                                          Mastercard, Visa
+                                          <br /> Bank Transfer
+                                      </p>
+
+                                  </div> 
+
+                              </div>
+                            <div class="col-md-12 payment_methods two" style="padding-top:0; padding-bottom:0px;">
+
+                                
+                                <!-- <div class="panel paypal" data-val="PP">
+                                      <p>Paypal</p>
+
+                                  </div> -->
+
+
+
+                                  <div class="panel cash" data-val="Payment on hold">
+                                      <p>Payment on hold</p>
+                                  </div>
+
+                              </div>
+
+                              <div class="form four">
+                                  <div class="col-md-12 checkbox" style="padding-top:15px;">
+                                      <input type="checkbox" name="accept_terms" id="accept_terms" />
+                                      <label for="accept_terms">
+                                          <div><i class="fa fa-check"></i></div>I have read and understood {{ request.marketing_member.storefront_name }}'s Terms and Conditions. (*<a href="/terms-and-conditions/" target="_blank" style="text-decoration: underline;">Terms and Conditions</a>)
+                                      </label>
+                                  </div>
+                            </div>
+                      </div>
+                  </div>
+              </div>
+            <div class="bottom">
+            {% ifactive 'export:package_review' %}
+                  <a href="{% url 'export:package_information' %}" class="btn prev"><img src="{{STATIC_URL}}zaposta/img/arrow_left.png">Previous Step</a>
+                {% else %}
+          <a href="{% url 'shipping:select_package' %}" class="btn prev"><img src="{{STATIC_URL}}zaposta/img/arrow_left.png">Previous Step</a>
+        {% endifactive %}
+            <input type="hidden" name="payment_type" id="id_payment_type" />
+            <button class="btn next green" id='finish'>Finish<img src="{{STATIC_URL}}zaposta/img/arrow_right.png"></button>
+              </div>
+              <!-- Bottom -->
+
+          </form>
+      </div>
+
+      <!-- Page -->
+  </section>
+  <!-- Steps Section -->
+  <!-- FOOTER  -->
+
+    {% include "zaposta_snippet/footer_v2.html" %}
+
+  <!-- the content -->
+
+</div>
+<!-- /st-content-inner -->
+
+
+{% endblock st_content %}
+
+{% block popup %}
+  {% include 'soko_pay_snippet/card_payment.html' %}
+{% endblock %}
+
+
+{% block extra_script %}
+  <script src="{% static 'export/js/script.js' %}"></script>
+
+	<script>
+		$(document).ready(function(){
+		    $('.btn.next.green').addClass('disabled')
+		});
+
+		function stringToFloat(string_val) {
+		  return parseFloat(string_val.replace(',',''))
+		}
+
+		function twoDp(val) {
+		  return val.toFixed(2);
+		}
+
+		function addComma(val){
+		  return val.replace(/\B(?=(\d{3})+\b)/g, ',');
+		}
+
+		$('.checkb input[type="checkbox"]').click(function(){
+			//$('.tabh .col-md-12').removeClass('active');
+			$(this).parent().parent().toggleClass('active');
+			var radio = $(this);
+			value_N = stringToFloat(radio.attr('data-value-N'));
+			value_D = stringToFloat(radio.attr('data-value-D'));
+
+			var total_payable_vals = $("#total_payable")[0].innerText.split(' / ');
+
+			var total_payable_D = stringToFloat(total_payable_vals[0].substring(1));
+			var total_payable_N = stringToFloat(total_payable_vals[1].substring(1));
+
+			var tot_payable_D, tot_payable_N;
+			if (radio.attr('nc') == 0){
+				radio.attr('nc', 1);
+				$(this).attr('checked', 'checked');
+				tot_payable_D = twoDp(total_payable_D + value_D);
+				tot_payable_N = twoDp(total_payable_N + value_N);
+			}
+			else {
+				$(this).removeAttr('checked');
+				tot_payable_D = twoDp(total_payable_D - value_D);
+				tot_payable_N = twoDp(total_payable_N - value_N);
+				radio.attr('nc', 0);
+			}
+			$("#total_payable").html('$'+addComma(tot_payable_D) + ' / &#8358;'+addComma(tot_payable_N));
+		});
+
+		function hideShowSubmitBtn() {
+		  if ($('#accept_terms').prop('checked') && $('#id_payment_type').val() != '') {
+			$('.btn.next.green').removeClass('disabled')
+		  }else{
+			$('.btn.next.green').addClass('disabled')
+		  }
+		}
+
+		$('.panel').click(function(){
+		  //$('#id_payment_type').val("card_payment");
+		  $('#id_payment_type').val($(this).attr('data-val'));
+		  hideShowSubmitBtn();
+		  //alert($(this).attr('data-val'))
+		});
+
+		$('#accept_terms').click(function(){
+		  //console.log($('#accept_terms').prop('checked'))
+		  //var accept_terms = $('#accept_terms').prop('checked');
+		  hideShowSubmitBtn();
+		});
+	</script>
+
+
+  <script>
+	$("#finish").click(function(e){
+		e.preventDefault();
+		if ($('#id_payment_type').val() == 'Card Payment') {
+            //$('#card_payment').modal('show');
+            $('#detail_form').submit();
+        }else{
+		  $('#detail_form').submit();
+		}
+	});
+
+  $('body').on('click','#select_currency', function(){
+    var csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+
+    $.ajax({
+      type: "POST",
+      url: "{% url 'shipping:shipping_payment' %}",
+      data: {'select_currency':'select_currency', csrfmiddlewaretoken: csrf_token},
+
+      success:function(data){
+        console.log('OK');
+      },
+
+      error:function(data){
+        console.log("Not working");
+      }
+    })
+  })
+  </script>
+
+
+
+
+  <script src="{% static 'sokohali/js/card_payment.js' %}"></script>
+{% endblock %}

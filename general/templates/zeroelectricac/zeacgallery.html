@@ -1,0 +1,87 @@
+{% extends "zeroelectricac/product_view.html" %}
+{% load staticfiles %}
+{% load zeAC_custom_filters %}
+
+
+{% block title %}zeAC - Product Details {% endblock %}
+
+{% block contents %}
+
+{% block recommend %}
+{% endblock recommend %}
+
+<section class="products product_view">
+
+        <style>
+            
+            .product_view .box .btns .btn {
+                max-width: 120px;
+                float: right;
+                margin-top: 22px;
+            }
+        </style>
+        
+        <div class="container-fluid">
+            <div class="col-md-12">
+                <div class="title">
+                    <h3>Recommended Products:</h3>
+                </div>
+            </div> 
+
+            <div class="col-md-12 recommended">
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-4">
+                        <!-- box -->
+                        <div class="box">
+                            <a href="{% url 'general:detail_view' product.pk %}" class="prodv">
+                                <div class="img">
+                                <img src="{{product.item_image.url}}" style="max-width:135%;"/>
+                                </div>
+                                <div class="text">
+                                    <h5>
+                                        {{ product.title }}</h5>
+                                    
+                                </div>
+                            </a>
+                            <!-- <button class="testButton" style="margin-left: 150px;margin-bottom: 15px;">Add to cart</button> -->
+                        </div>
+                        
+                    </div>
+                    {% empty %}
+                    <p>No product added</p>
+                    {% endfor %}
+                </div>
+
+                <div class="pagination" style="position:relative; font-size:20px; margin:0px; ">
+                    <span class="step-links">
+                        {% if products.has_previous %}
+                            <a style="font-size:20px;" href="?page={{ products.previous_page_number }}">&laquo;</a>
+                        {% else %}
+                            <a style="font-size:20px;" class="hidden" >&laquo;</a>
+
+                        {% endif %}
+
+                        <span style="font-size:20px;" class="current">
+                            Page {{ products.number }} of {{ products.paginator.num_pages }}.
+                        </span>
+
+                        {% if products.has_next %}
+                            <a style="font-size:20px;" href="?page={{ products.next_page_number }}">&raquo;</a>
+                        {% else %}
+                            <a style="font-size:20px;" class="hidden">&raquo;</a>
+
+                        {% endif %}
+                    </span>
+                </div> 
+
+                <!-- <div class="row">
+                    <div class="col-md-12 more" style="text-align:center; padding-top:20px;">
+                        <a href="#" class="btn full yellow">View More Products</a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+</section>
+
+{% endblock contents %}

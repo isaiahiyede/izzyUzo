@@ -1,0 +1,431 @@
+{% extends 'base/base_user_account_new.html' %}
+
+{% block title %}My Messages{% endblock %}
+
+{% block inner_content %}
+<!-- Content -->
+<div class="col-md-8 content_outer">
+    <div class="col-md-12 content credit">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#t1" aria-controls="t1" role="tab" data-toggle="tab">New</a></li>
+            <li role="presentation"><a href="#t2" aria-controls="t2" role="tab" data-toggle="tab">Replied</a></li>
+            <li role="presentation"><a href="#t3" aria-controls="t3" role="tab" data-toggle="tab">Archive</a></li>
+            <!--<li role="presentation"><a href="#t4" aria-controls="t4" role="tab" data-toggle="tab">Alerts</a></li>-->
+            <li class="compose">
+                <a href="#compose_msg" data-toggle="modal" data-target="#compose_msg">Compose a Message</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="t1">
+                <table width="100%" border="0" class="two">
+                    <tr>
+                        <th></th>
+                        <th>Related to</th>
+                        <th>Booking Ref</th>
+                       <th>Email</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for m in new_messages %}
+                    <tr>
+                        <td style="text-align:left;">
+                            <span class="badge">{{forloop.counter}}</span>
+                        </td>
+                        <td>{{ m.related_to }}</td>
+                        <td>{{ m.booking_ref }}</td>
+                        <td>{{ m.user.email }}</td>
+                        <td>{{ m.created_on|date:'d/m/Y' }}</td>
+                        <td class="selected">
+                            <div class="input-group input-group-lg">
+                                <input type="radio" value="{{m.booking_ref}}" id="{{m.pk}}" name="rd">
+                            </div>
+                            <!--<a class="cancel" href="#delete" data-toggle="modal" data-target="#delete"></a>-->
+                            <a href="#" href="#compose" data-toggle="modal" data-target="#compose" class="edit add_comment" message_id="{{m.pk}}"></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+                <div class="col-md-12 btns" style="text-align:right;">
+                    <a class="btn red del" href="#" id="del">Delete</a>
+                    <a href="#" class="btn dark arch" id="arch">Archive</a>
+                    <a href="#" class="btn cl"><span class="glyphicon glyphicon-repeat"></span>Clear</a>
+                </div>
+
+                <div class="hidden">
+                <form name="messageForm1" id="messageForm1" method="POST" action="{% url 'general:my_messages' %}">
+                    {% csrf_token %}
+                    <input type="text" id="message_type" value="" name="delete">
+                    <input type="text" id="message_ids"  value="" name="message_ids">
+                    <input type="submit" class='btn' id="mess_action" value="submit"/>
+                 </form>
+                </div>
+
+                <div class="hidden">
+                    <form name="messageForm2" id="messageForm2" method="POST" action="{% url 'general:my_messages' %}">
+                    {% csrf_token %}
+                    <input type="text" id="message_typ" value="" name="archive">
+                    <input type="text" id="message_id"  value="" name="message_ids">
+                    <input type="submit" class='btn' id="mess_action" value="submit"/>
+                 </form>
+                </div>
+
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="t2">
+                <table width="100%" border="0" class="two">
+                    <tr>
+                        <th></th>
+                        <th>Related to</th>
+                        <th>Booking Ref</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for m in replied_messages %}
+                    <tr>
+                        <td style="text-align:left;">
+                            <span class="badge">{{forloop.counter}}</span>
+                        </td>
+                        <td>{{ m.related_to }}</td>
+                        <td>{{ m.booking_ref }}</td>
+                        <td>{{ m.user.last_name }}</td>
+                        <td>{{ m.user.email }}</td>
+                        <td>{{ m.created_on|date:'d/m/Y' }}</td>
+                        <td class="selected">
+                            <div class="input-group input-group-lg">
+                                <input type="radio" value="{{m.booking_ref}}" id="{{m.pk}}" name="dele">
+                            </div>
+                            <!--<a class="cancel" href="#delete" data-toggle="modal" data-target="#delete"></a>--><!-->
+
+                            <a href="#" href="#compose" data-toggle="modal" data-target="#compose" class="edit add_comment" message_id="{{m.pk}}"></a> -->
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+                <div class="col-md-12 btns" style="text-align:right;">
+                    <a class="btn red dele" href="#" id="dele">Delete</a>
+                    <a href="#" class="btn dark archi" id="archi">Archive</a>
+                    <a href="#" class="btn cl"><span class="glyphicon glyphicon-repeat"></span>Clear</a>
+                </div>
+
+                <div class="hidden">
+                    <form name="messageForm3" id="messageForm3" method="POST" action="{% url 'general:my_messages' %}">
+                    {% csrf_token %}
+                    <input type="text" id="msg_type" value="" name="delete">
+                    <input type="text" id="msg_ids"  value="" name="message_ids">
+                    <input type="submit" class='btn' id="mess_action" value="submit"/>
+                 </form>
+                </div>
+
+                <div class="hidden">
+                    <form name="messageForm4" id="messageForm4" method="POST" action="{% url 'general:my_messages' %}">
+                    {% csrf_token %}
+                    <input type="text" id="msg_typ" value="" name="archive">
+                    <input type="text" id="msg_id"  value="" name="message_ids">
+                    <input type="submit" class='btn' id="mess_action" value="submit"/>
+                 </form>
+                </div>
+
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="t3">
+                <table width="100%" border="0" class="two">
+                    <tr>
+                        <th></th>
+                        <th>Related to</th>
+                        <th>Booking Ref</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for m in archive_messages %}
+                    <tr>
+                        <td style="text-align:left;">
+                            <span class="badge">{{forloop.counter}}</span>
+                        </td>
+                        <td>{{ m.related_to }}</td>
+                        <td>{{ m.booking_ref }}</td>
+                         <td>{{ m.user.last_name }}</td>
+                        <td>{{ m.user.email }}</td>
+                        <td>{{ m.created_on|date:'d/m/Y' }}</td>
+                        <td class="selected">
+                            <div class="input-group input-group-lg">
+                                <input type="radio" value="{{m.booking_ref}}" id="{{m.pk}}" name="de">
+                            </div>
+                            <!--<a class="cancel" href="#delete" data-toggle="modal" data-target="#delete"></a>--><!--
+                            <a href="#"href="#compose" data-toggle="modal" data-target="#compose" class="edit add_comment" message_id="{{m.pk}}"></a> -->
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </table>
+                <div class="col-md-12 btns" style="text-align:right;">
+                    <a class="btn red de" href="#" id="de">Delete</a>
+                    <a href="#" class="btn cl"><span class="glyphicon glyphicon-repeat"></span>Clear</a>
+                </div>
+
+                <div class="hidden">
+                    <form name="messageForm5" id="messageForm5" method="POST" action="{% url 'general:my_messages' %}">
+                    {% csrf_token %}
+                    <input type="text" id="mssg_typ" value="" name="delete">
+                    <input type="text" id="mssg_id"  value="" name="message_ids">
+                    <input type="submit" class='btn' id="mess_action" value="submit"/>
+                 </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Content -->
+{% endblock %}
+
+
+{% block edit_shipment_order %}
+<!-- Edit Shipment/Shopping Booking Modal -->
+<div class="modal clean three" id="compose" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel" style="display:none;">Mobile App</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Shipment Modal -->
+
+<!-- Modal Ticket -->
+<div class="modal fade" id="compossse_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Compose a message</h4>
+            </div>
+            <div class="modal-body two">
+                <form action="" method="POST">
+                <div class="container-fluid">
+                    <div class="row" style="margin-bottom:5px;">
+                        <div class="col-md-12">
+                            <p style="padding-bottom:5px;">Please fill in your detail regarding your problem and we will contact you as soon as we can!</p>
+                              {% csrf_token %}
+                              {% if error %}
+                              <p style="color: red; font-size: 18px;">Please correct highlighted fields</p>
+                              {% endif %}
+                            <input type="hidden" name="compose_msg" />
+                            <input type="text" placeholder="Related to" name="related_to" required/>
+                            <select id="id_booking_ref" name="booking_ref" required>
+                                {% for shipment in shipments %}
+                                        <option value="{{ shipment.tracking_number}}" selected="selected">{{shipment.tracking_number}} - on {{shipment.created_on}}</option>
+                                {% endfor %}
+                            </select>
+                            <!--<input type="text" placeholder="Message" name="message"/>-->
+                            <textarea name="message" placeholder="Message" required></textarea>
+                            <div class="buttons">
+                                <button class="btn green" style="margin-top:20px;">Submit</button>
+                                <a href="#" class="rst"><span class="glyphicon glyphicon-repeat"></span>Reset</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Ticket -->
+
+<!-- Compose Message Modal -->
+<div class="modal clean three" id="compose_msg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content two">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="t two">
+                        <form action="" method="POST">
+
+                        <div class="tinner" style="overflow-y:visible;">
+                            <div class="tinner1">
+                                <div class="col-md-12">
+                                    <h1>Compose a Message</h1>
+                                </div>
+                                <div class="col-md-12">
+                                    <p>Please fill in your detail regarding your problem and we will contact you as soon as we can!</p>
+                                </div>
+                                <input type="hidden" name="compose_msg" />
+                                <div class="row-fluid">
+                                    <div class="col-md-12">
+                                        <label class="inpl">Related to:</label>
+                                        <input type="text" class="inp" name="related_to" required title="What is your message related to?"/>
+                                    </div>
+                                </div>
+                                <!--<div class="row-fluid">
+                                    <div class="col-md-12">
+                                        <label class="inpl">Booking Ref #:</label>
+                                        <input type="text" class="inp" />
+                                    </div>
+                                </div>-->
+                                <div class="row-fluid">
+                                    <div class="col-md-12">
+                                        <label class="inpl">Booking Ref:</label>
+                                        <div class="select_scroll four">
+                                            <!-- Select -->
+                                            <select id="id_booking_ref" name="booking_ref" required class="custom-select sources" placeholder="Select Booking">
+                                                {% for shipment in shipments %}
+                                                    <option value="{{ shipment.tracking_number}}">{{shipment.tracking_number}} - on {{shipment.created_on}}</option>
+                                                {% endfor %}
+
+                                            </select>
+                                            <!-- Select -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="col-md-12">
+                                        <label class="inpl">Message:</label>
+                                        <textarea class="inp" name="message" placeholder="Message" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btns two">
+                            <a href="#" class="btn"><span class="glyphicon glyphicon-repeat"></span>Clear</a>
+                            <button class="btn yellow">Submit</button>
+                        </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Compose Message Modal -->
+{% endblock %}
+
+
+{% block extra_script %}
+
+    <script>
+        $('body').on('click',".del",function(){
+            current_status = $(this).text()
+            var checked_radio_buttons = [];
+            $("input:radio[name=rd]:checked").each(function(){
+                checked_radio_buttons.push($(this).attr("id"));
+            });
+
+            var response = confirm('Please confirm that the selected action for this message(es) is ' + '"' + current_status + '"');
+            if (response){
+                $("#message_type").val("delete");
+                $("#message_ids").val(checked_radio_buttons)
+
+                //submit form
+                $("#messageForm1").submit();
+                    return true;
+            }else{
+                    return false;
+            }
+        });
+    </script>
+
+    <script>
+        $('body').on('click',".arch",function(){
+            current_status = $(this).text()
+            var checked_radio_buttons = [];
+            $("input:radio[name=rd]:checked").each(function(){
+                checked_radio_buttons.push($(this).attr("id"));
+            });
+
+            var response = confirm('Please confirm that the selected action for this message(es) is ' + '"' + current_status + '"');
+            if (response){
+                $("#message_typ").val("delete");
+                $("#message_id").val(checked_radio_buttons)
+
+                //submit form
+                $("#messageForm2").submit();
+                    return true;
+            }else{
+                    return false;
+            }
+        });
+    </script>
+
+    <script>
+        $('body').on('click',".dele",function(){
+            current_status = $(this).text()
+            var checked_radio_button = [];
+            $("input:radio[name=dele]:checked").each(function(){
+                checked_radio_button.push($(this).attr("id"));
+            });
+
+            var response = confirm('Please confirm that the selected action for this message(es) is ' + '"' + current_status + '"');
+            if (response){
+                $("#msg_type").val("delete");
+                $("#msg_ids").val(checked_radio_button)
+
+                //submit form
+                $("#messageForm3").submit();
+                    return true;
+            }else{
+                    return false;
+            }
+        });
+    </script>
+
+    <script>
+        $('body').on('click',".archi",function(){
+            current_status = $(this).text()
+            var checked_radio_button = [];
+            $("input:radio[name=dele]:checked").each(function(){
+                checked_radio_button.push($(this).attr("id"));
+            });
+
+            var response = confirm('Please confirm that the selected action for this message(es) is ' + '"' + current_status + '"');
+            if (response){
+                $("#msg_typ").val("delete");
+                $("#msg_id").val(checked_radio_button)
+
+                //submit form
+                $("#messageForm4").submit();
+                    return true;
+            }else{
+                    return false;
+            }
+        });
+    </script>
+
+     <script>
+        $('body').on('click',".de",function(){
+            current_status = $(this).text()
+            var chk_radio_buttons = [];
+            $("input:radio[name=de]:checked").each(function(){
+                chk_radio_buttons.push($(this).attr("id"));
+            });
+
+            var response = confirm('Please confirm that the selected action for this message(es) is ' + '"' + current_status + '"');
+            if (response){
+                $("#mssg_typ").val("delete");
+                $("#mssg_id").val(chk_radio_buttons)
+
+                //submit form
+                $("#messageForm5").submit();
+                    return true;
+            }else{
+                    return false;
+            }
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,1155 @@
+{% extends 'base/base_index.html' %}
+{% load staticfiles %}
+
+{% block content %}
+	{% for msg in messages %}
+		<script>alert({{ msg }});</script>
+	{% endfor %}
+
+<!-- Intro Section -->
+<section id="intro">
+	<!-- BK change class for city:newyork,london, toronto, lagos, shanghai-->
+	<div class="bk two"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 txt" id="firsttxt">
+				<p>Send and receive packages.<br/> Send and Receive parcels from anywhere in the World for as low as $3.4. </p>
+				{% if request.COOKIES.admin_username %}
+					{% include 'sokohaliadmin_snippet/login_customer_acct.html' %}
+				<!--  else 
+					include 'sokohaliadmin_snippet/trackshipments.html' % -->
+				{% endif %}
+				
+			</div>
+			{% if promo %}
+				{% for item in promo %}
+					<div class="swidget">
+						<div class="inner">
+							<span class="pull-right" style="font-size:22px; padding-right:10px;">
+								Ship Early. Save More.
+							</span>
+							<div class="col-md-12">
+								<label>Shipping Method:</label>
+								<select id="promo-shipment-type">
+									<option value = "Air Freight">Air Freight</option>
+									<option value = "Sea Freight">Sea Freight</option>
+								</select>
+							</div>
+							<div id="promo-details">
+								<div class="col-md-12">
+									<label>Estimated Departure Date:</label>
+									<input class="res" type="text" disabled value="{{ item.estimated_departure_time|date }} - {{ item.origin }} - {{ item.destination }}"/>
+								</div>
+								<div class="col-md-12">
+									<label>Available space</label>
+									<input class="res" disabled type="text" value="{{ item.available_space }}" placeholder="8 spots left" />
+								</div>
+								<div class="col-md-12">
+									<label>Current rate: <span style="font-weight:normal; font-size:13px !important;">({{item.weight_range_at_rate }} minimum for this price.)</span> </label>
+									<input class="res" disabled type="text" value = "${{ item.current_rate }}" placeholder="$1.20/lbs" />
+								</div>
+							</div>
+							<div class="col-md-12 text-center">
+								<a class="btn yellow" style="margin-bottom:3px;" origin="{{item.origin}}" promo_rate = "{{ item.current_rate }}" destination="{{item.destination}}" id="join_promo">Grab This Offer</a>
+								<span>(Under {{item.weight_range_at_rate }} attracts higher rates)</span>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			{% endif %}
+
+
+			<!--<div class="col-md-6 txt" id="txt1">
+				<h1>{{ request.storefront_name }} <br/> Worldwide </h1>
+				<p>Helping africans sell and deliver goods worldwide.</p>
+			</div>
+			<div class="col-md-6 txt" id="txt2">
+				<h1>Export <br/>Marketplace</h1>
+				<p>Buy authentic African Food, Clothing, Leather Goods, Art and more.</p>
+			</div>
+			<div class="col-md-6 txt" id="txt3">
+				<h1>Shipping from <br/> United States</h1>
+			</div>
+			<div class="col-md-6 txt" id="txt4">
+				<h1>Shopping from <br/>Overseas</h1>
+			</div>
+			<div class="col-md-6 txt" id="txt5">
+				<h1>{{ request.storefront_name }} Payment <br/>Method</h1>
+				<p>Securely pay Sellers, E-Wallet for easy payment on {{ request.storefront_name }}.</p>
+			</div>-->
+			<!--<div class="col-md-6 txt" id="txt6">
+				<h1>Smartpost Partner <br/>Network</h1>
+				<p>Reseller partners, shipping partners & local distribution networks.</p>
+			</div>-->
+		</div>
+	</div>
+
+	<!-- Bottom Widget/Nav -->
+	<div class="widget two four">
+		<div class="container">
+			<!-- Clock/Location -->
+			<div class="title">
+				<!--<p><i class="fa fa-clock-o"></i> 07:40:50 AM</p>
+				<p><i class="fa fa-map-marker"></i> London</p>-->
+				<p class="q">
+					<!-- <a href="{% url 'general:quick-estimate' %}" style="cursor: pointer;"><i class="fa fa-question" aria-hidden="true"></i> Quick Estimate</a></p> -->
+			</div>
+			<!-- Clock/Location -->
+			<!-- Collect the nav links, forms, and other content for toggling -->
+
+			<ul class="nav navbar-nav">
+				<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+				<li style="width: 32.88% !important;">
+					<a class="page-scroll" href="#worldwide" rel="li1">
+						<div class="top">
+							<h1>{{ request.storefront_name }} <br/>WorldWide</h1>
+						</div>
+						<div class="inner">
+							<p>Helping you deliver goods worldwide.</p>
+						</div>
+					</a>
+				</li>
+				<!-- <li style="width: 21.66% !important;">
+					<a class="page-scroll" href="#marketplace" rel="li2">
+						<div class="top">
+							<h1>Export <br/>Marketplace</h1>
+						</div>
+						<div class="inner">
+							<p>Buy authentic African Food, Clothing, Leather Goods, Art and more.</p>
+						</div>
+					</a>
+				</li> -->
+				<li style="display:none;">
+					<a class="page-scroll" href="#shipping" rel="li3">
+						<div class="top">
+							<h1>Shipping from <br/> United States</h1>
+						</div>
+						<div class="inner">
+							<p>Get a free US shipping address. Shop and let us ship to you.</p>
+						</div>
+					</a>
+				</li>
+				<li style="display:none;">
+					<a class="page-scroll" href="#shopping" rel="li4">
+						<div class="top">
+							<h1>Shopping from <br/>Overseas</h1>
+						</div>
+						<div class="inner">
+							<p>Over a hundred thousand shops and billions of items</p>
+						</div>
+
+					</a>
+				</li>
+				<li style="width: 32.88% !important;">
+					<a class="page-scroll" href="#sokopay" rel="li5">
+						<div class="top">
+							<h1>Fund <br/>Wallet</h1>
+						</div>
+
+						<!-- <div class="inner">
+							<p>Top-up your E-Wallet with ease. Securely pay Sellers with SokoPay for easy payment on  request.storefront_name .</p>
+						</div> -->
+
+						<div class="inner">
+							<p>Top-up your E-Wallet with ease. Securely pay Sellers for easy payment on {{ request.storefront_name }}.</p>
+						</div>
+
+					</a>
+				</li>
+				<li class="last" style="display: none;">
+					<a class="page-scroll" href="#zpn" rel="li6" style="display: none;">
+						<div class="top">
+							<h1>Partner <br/>Network</h1>
+						</div>
+						<div class="inner">
+							<p>Reseller partners, shipping partners & local distribution networks.</p>
+						</div>
+					</a>
+				</li>
+
+				{% if not request.storefront_name == "smatpost" %}
+				<!-- Subscription Part -->
+				<div class="lastli">
+					<div class="img" style="bottom: 130px !important;"></div>
+					<div class="col-md-12" style="padding-bottom:20px;">
+						<p><strong>Send and Receive parcels from anywhere in the World.</strong></p>
+					</div>
+					<div class="col-md-12 bot">
+						{% if user.is_staff %}
+							<a href="{% url 'sokohaliAdmin:user-manager' %}" class="btn white"> Get Started</a>
+						{% else %}
+								<!-- <a class="btn white" data-toggle="modal" data-target="#id_import_options" onclick="">Get Started</a> -->
+								<a href="#shipwd" class="btn white page-scroll">Get Started</a>
+						{% endif %}
+
+						<p>From <strong>$3.4</strong> per package!</p>
+					</div>
+					<p> &nbsp; </p>
+					<!--<div class="col-md-12 bot">
+						<a href="{% url 'general:quick-estimate' %}" style="color: black;"><h4>Quick Estimate?</h4></a>
+					</div>-->
+				</div>
+				<!-- Subscription Part -->
+
+				{% else %}
+
+				<div class="lastli">
+					<div class="img" style="bottom: 130px !important;"></div>
+					<div class="col-md-12" style="padding-bottom:20px;">
+						<p><strong>Send and Receive parcels from anywhere in the World.</strong></p>
+					</div>
+					<div class="col-md-12 bot">
+						{% if user.is_staff %}
+							<a href="{% url 'sokohaliAdmin:user-manager' %}" class="btn white"> Get Started</a>
+						{% elif request.user.is_authenticated %}
+								<!-- <a class="btn white" data-toggle="modal" data-target="#id_import_options" onclick="">Get Started</a> -->
+								<a href="{% url 'general:my_mail_bag' %}" class="btn white">Get Started</a>
+						{% else %}
+								<a href="{% url 'general:login' %}" class="btn white">Get Started</a>
+						{% endif %}
+
+						<!-- <p>From <strong>$3.4</strong> per package!</p> -->
+					</div>
+					<p> &nbsp; </p>
+					<!--<div class="col-md-12 bot">
+						<a href="{% url 'general:quick-estimate' %}" style="color: black;"><h4>Quick Estimate?</h4></a>
+					</div>-->
+				</div>
+				
+				{% endif %}
+
+			</ul>
+
+			<!-- /.navbar-collapse -->
+		</div>
+	</div>
+	<!-- Bottom Widget/Nav -->
+</section>
+<!-- Intro Section -->
+
+{% if not request.storefront_name == "smatpost" %}
+<!-- Shipping Widget Section -->
+<section id="shipwd" style="min-height: initial;">
+
+<form  action = "{% url 'shipping:retrieve_modal_values' %}" method = "post">
+  {% csrf_token %}
+
+
+	<div class="container sp">
+		<div class="icon"><i class="fa fa-archive" aria-hidden="true"></i></div>
+		<h1>Start Shipping<br/> a Package</h1>
+		<div class="widg">
+			<div class="inner"></div>
+		</div>
+	</div>
+	<div class="forms">
+		<div class="container">
+			<div class="col-md-4 oneselect">
+				<label>Origin:</label>
+				<select class="form-control org_dest" style="height:48px;" name="country_from" id = "id_country_from">
+					<!-- <option disabled>Select Country</option> -->
+					<option value="">Select Country</option>
+					{% for ctry in countries_origin %}
+						<option value="{{ctry}}">{{ctry}}</option>
+					{% endfor %}
+
+				</select>
+			</div>
+			<!-- <div class="col-md-4 twoselect"> -->
+			<div class="col-md-4">
+				<label>Destination:</label>
+				<select class="form-control org_dest" style="height:48px;" name="country_to" id = "id_country_to">
+					<!-- <option disabled>Select Country</option> -->
+					<option value="">Select Country</option>
+					{% for ctry in countries_destination %}
+						<option value="{{ctry}}">{{ctry}}</option>
+					{% endfor %}
+
+				</select>
+			</div>
+			
+			<div class="col-md-4 hidden" id="WHM">
+			 <label>Warehouse Address:</label>
+                <select class="form-control org_dest" style="height:48px;" name="WHaddress" id = "id_WHaddress">
+                   
+                </select>
+			</div>
+			
+				<input type="hidden" name="shipping_option" id="id_shipping_option" />
+			 <!--<div class="col-md-4">
+				<a href="% url 'general:domestic' %}" class="btn black">Domestic Shipping <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+				<!--<input type="submit" name = "import-options" style="position: relative; width:180px;" value="Proceed" class="btn black"/>-->
+			<!--</div> -->
+		</div>
+	</div>
+	<!-- <div class="container shipinfo one" id="domestic">
+		<div class="col-md-12">
+			<h1>Domestic Shipping</h1>
+		</div>
+		<div class="col-md-12">
+			<h2>Where are you domestic shipping?</h2></div>
+		<div class="col-md-4 large_select">
+			<label>Origin:</label>
+			<select>
+				<option disabled>Select State</option>
+				<option>Abia</option>
+				<option>Adamawa</option>
+				<option>Jigawa</option>
+				<option>Katsina</option>
+				<option>Ogun</option>
+				<option>Ondo</option>
+				<option>Osun</option>
+				<option>Oyo</option>
+				<option>Plateau</option>
+				<option>Rivers</option>
+				<option>Sokoto</option>
+				<option>Taraba</option>
+			</select>
+		</div>
+		<div class="col-md-4 large_select">
+			<label>Destination:</label>
+			<select>
+				<option disabled>Select State</option>
+				<option>Abia</option>
+				<option>Adamawa</option>
+				<option>Jigawa</option>
+				<option>Katsina</option>
+				<option>Ogun</option>
+				<option>Ondo</option>
+				<option>Osun</option>
+				<option>Oyo</option>
+				<option>Plateau</option>
+				<option>Rivers</option>
+				<option>Sokoto</option>
+				<option>Taraba</option>
+			</select>
+		</div>
+		<div class="providers">
+			<div class="col-md-12">
+				<h2>Domestic Shipping Providers:</h2>
+			</div>
+			<div class="col-md-4">
+				<div class="provider">
+					<div class="icon"></div>
+					<h1>Delivery Company Name</h1>
+					<span class="label">from <strong>$3.50</strong></span>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="provider">
+					<div class="icon"></div>
+					<h1>Delivery Company Name</h1>
+					<span class="label">from <strong>$7.00</strong></span>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="provider">
+					<div class="icon"></div>
+					<h1>Delivery Company Name</h1>
+					<span class="label">from <strong>$23.30</strong></span>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="provider"></div>
+			</div>
+			<div class="col-md-4">
+				<div class="provider"></div>
+			</div>
+			<div class="col-md-4">
+				<div class="provider"></div>
+			</div>
+			<div class="col-md-4">
+				<div class="provider"></div>
+			</div>
+			<div class="col-md-4">
+				<div class="provider"></div>
+			</div>
+			<div class="col-md-4">
+				<div class="provider"></div>
+			</div>
+		</div>
+	</div> -->
+	<div class="container shipinfo" id="international">
+		<!-- <div class="col-md-12">
+			<h1>International Shipping</h1>
+		</div> -->
+		<div class="col-md-12">
+			<h2>How do you want to ship your package?</h2>
+		</div>
+		<div class="soption_content" id="service-selection">
+			<!-- <div class="col-md-12">
+				<a href="#" class="help"><i class="fa fa-question bounce" aria-hidden="true"></i>Help me buy</a>
+			</div> -->
+			<div class="col-md-4" onclick='return select_shipping_option("send-from-shop")'>
+				<span class="soption">
+				<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+				<p>Ship <br/>from Online Store</p>
+				</span>
+				<h5 style="color: darkgrey;">If you are shipping directly from an online store or sending through a courier service</h5>
+			</div>
+			<!-- <div class="col-md-4" onclick='return select_shipping_option("drop-at-postoffice")'> -->
+			<div class="col-md-4" onclick='return distributor_api_or_rates()'>
+				<span class="soption two" rel="cont2">
+					<i class="fa fa-map-marker" aria-hidden="true"></i>
+					<p>Drop-Off at<br/> Post Office or Location</p>
+				</span>
+				<h5 style="color: darkgrey;">If you want to drop your package at our nearest delivery partner's office</h5>
+			</div>
+			<!-- <div class="col-md-4" onclick='return select_shipping_option("pick-up-package")'> -->
+			<div class="col-md-4" onclick='return distributor_api_or_rates("pick-up-package")'>
+				<span class="soption" rel="cont3">
+					<i class="fa fa-truck" aria-hidden="true"></i>
+					<p>Pick-Up <br/>my Package</p>
+				</span>
+				<h5 style="color: darkgrey;">If you want our delivery partner to pickup your package from a specified address</h5>
+			</div>
+
+
+		</div>
+
+
+		<!-- Form Content -->
+		<div class="col-md-12 scontent hidden" id="cont2" style="min-height: initial;">
+
+			<div class="col-md-6 has_api hidden">
+				<h2>
+					Enter Post Office Location
+					<!-- <a href="#" class="open_loc_container" rel="loc_container1">
+						Enter Post Office Location<i class="fa fa-eye" style="cursor:pointer; margin-left:10px;" title="Enter Address"></i>
+					</a> -->
+				</h2>
+				<!-- <div class="col-md-12 notgood"> -->
+				<div id="loc_container1" class="loc_container">
+					<div class="col-md-12">
+						<label>Adrdess 1:</label>
+						<input class="form-control" type="text" name="po_address1" placeholder = "Address 1" id="id_po_address1" style="border: 2px solid #444444 !important;"/>
+					</div>
+					<div class="col-md-12">
+						<label>Adrdess 2:</label>
+						<input class="form-control" type="text" name="po_address2" placeholder = "Address 2" id="id_po_address2" style="border: 2px solid #444444 !important;"/>
+					</div>
+					<div class="col-md-12">
+						<label>City:</label>
+						<input class="form-control" type="text" name="po_city" placeholder = "City" id="id_po_city" style="border: 2px solid #444444 !important;"/>
+					</div>
+					<div class="col-md-12">
+						<label>State:</label>
+						<select class="form-control" name="po_state" id = "id_po_state" style="border: 2px solid #444444 !important;">
+							<option value="">Select State</option>
+						</select>
+					</div>
+					<div class="col-md-12">
+						<label>Country:</label>
+						<select class="form-control" name="po_country" id = "id_po_country" style="border: 2px solid #444444 !important;">
+						</select>
+					</div>
+					<div class="col-md-12">
+						<label>Zip Code:</label>
+						<input class="form-control" type="text" name="po_zipcode" placeholder = "Zip code" id="id_po_zipcode" style="border: 2px solid #444444 !important;" />
+					</div>
+					<div class="col-md-12">
+						<label>Phone:</label>
+						<input class="form-control" type="number" name="po_phone" placeholder = "Phone" id="id_pk_phone" style="border: 2px solid #444444 !important;"/>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6 has_configured_rates hidden">
+				<h2>
+					Available DropOff Locations
+					<!-- <a href="#" class="open_loc_container" rel="loc_container2">
+						View Available DropOff Locations<i class="fa fa-eye" style="cursor:pointer; margin-left:10px;" title="Select Location"></i>
+					</a> -->
+				</h2>
+				<div id="loc_container2" class="loc_container">
+					<div class="col-md-12">
+						<label>Locations:</label>
+						<h5>Choose your nearest location below</h5>
+						<select class="form-control" name="dropoff_location" id ="id_dropoff_location" style="height:48px; width: 60%" >
+							<option value="">Select Location</option>
+						</select>
+					</div>
+
+					<div class="col-md-12">
+						<p id="loc_full_address" style="font-size: initial; color: green;"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Form Content -->
+		<div class="col-md-12 scontent two hidden" id="cont3" style="min-height: initial;">
+
+			<div class="col-md-6 has_api hidden">
+				<h2>Enter Pick-Up Location</h2>
+				<div class="col-md-12">
+					<label>Adrdess 1:</label>
+					<input class="form-control" type="text" value=""  name="pk_address1" placeholder = "Address 1" id="id_pk_address1" style="border: 2px solid #444444 !important;"/>
+				</div>
+				<div class="col-md-12">
+					<label>Adrdess 2:</label>
+					<input class="form-control" type="text" value="" name="pk_address2" placeholder = "Address 2" id="id_pk_address2" style="border: 2px solid #444444 !important;"/>
+				</div>
+				<div class="col-md-12">
+					<label>City:</label>
+					<input class="form-control" type="text" value="" name="pk_city" placeholder = "City" id="id_pk_city" style="border: 2px solid #444444 !important;"/>
+				</div>
+				<div class="col-md-12">
+					<label>State:</label>
+					<select class="form-control" name="pk_state" id="id_pk_state" style="border: 2px solid #444444 !important;">
+						<option value="">Select State</option>
+					</select>
+				</div>
+				<div class="col-md-12">
+					<label>Country:</label>
+					<select class="form-control" name="pk_country" id="id_pk_country" style="border: 2px solid #444444 !important;">
+					</select>
+				</div>
+				<div class="col-md-12">
+					<label>Zip Code:</label>
+					<input class="form-control" type="text" value="" name="pk_zipcode" placeholder="Zip code" id="id_pk_zipcode" style="border: 2px solid #444444 !important;" />
+				</div>
+				<div class="col-md-12">
+					<label>Phone:</label>
+					<input class="form-control" type="number" value="" name="pk_phone" placeholder="Phone" id="id_pk_phone" style="border: 2px solid #444444 !important;"/>
+				</div>
+			</div>
+
+			<div class="col-md-6 has_configured_rates hidden">
+				<h2>
+					Notice
+				</h2>
+				<div>
+					<div class="col-md-12">
+						<span style="color: red;">Pick-Up package not available</span>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<h2></h2>
+			<!-- <a href="#" class="btn black">Proceed <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a> -->
+			<input type="submit" name = "import-options" style="position: relative; width:180px; background: #000; border-color: #000;" value="Proceed" class="btn black" onclick='return validate_index_shipping_selection()'/>
+		</div>
+	</div>
+</form>
+</section>
+
+{% endif %}
+<!-- Shipping Widget Section -->
+
+<!-- Services Small Section -->
+<section id="servicesft">
+		<div class="container">
+				<div class="col-md-4">
+						<a href="#worldwide" class="inner page-scroll">
+								<div class="icon"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+								<h1>{{ request.storefront_name }} <br/> Worldwide</h1>
+						</a>
+				</div>
+				<!-- <div class="col-md-4">
+						<a href="#marketplace" class="inner page-scroll">
+								<div class="icon"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+								<h1>Export <br/> Marketplace</h1>
+						</a>
+				</div> -->
+				<div class="col-md-4">
+						<a href="#sokopay" class="inner page-scroll">
+								<div class="icon"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+<!-- 								<h1>Sokopay <br/> Wallet</h1>
+ -->								<h1>Wallet</h1>
+						</a>
+				</div>
+		</div>
+</section>
+<!-- Services Small Section -->
+
+<!-- Worldwide Section -->
+<section id="worldwide">
+	<div class="container">
+		<!-- mobile img -->
+		<img src="{% static 'sokohali/img/s1_mobile.jpg' %}" class="mobile_show" />
+		<div class="row">
+
+			<div class="col-md-6">
+				<div class="icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+				<h1>{{ request.storefront_name }} <br/> WorldWide</h1>
+				<p>Helping You deliver goods and documents worldwide.
+				{{ request.storefront_name }} worldwide brings convenience and affordability to sending goods and documents globally. Deliver goods, documents and packages to any part of the world, from the comfort of your home or office. {{ request.storefront_name }} opens You to the rest of the world through innovative technologies that empowers emerging markets.</p>
+
+				{% if not request.storefront_name == "smatpost" %}
+					{% if user.is_staff %}
+						<a href="{% url 'sokohaliAdmin:user-manager' %}" class="btn white">Get Started</a>
+					{% else %}
+						<!-- <a class="btn white" data-toggle="modal" data-target="#id_import_options" onclick="">Get Started</a> -->
+						<a href="#shipwd" class="btn white page-scroll">Get Started</a>
+					{% endif %}
+				{% else %}
+					{% if user.is_staff %}
+						<a href="{% url 'sokohaliAdmin:user-manager' %}" class="btn white"> Get Started</a>
+					{% elif request.user.is_authenticated %}
+							<!-- <a class="btn white" data-toggle="modal" data-target="#id_import_options" onclick="">Get Started</a> -->
+							<a href="{% url 'general:my_mail_bag' %}" class="btn white">Get Started</a>
+					{% else %}
+							<a href="{% url 'general:login' %}" class="btn white">Get Started</a>
+					{% endif %}
+				{% endif %}
+
+
+				<!--<a href="#" class="btn two">Learn More</a>-->
+			</div>
+		</div>
+	</div>
+	<div class="bottom">
+		<div class="container">
+			<!-- <a class="page-scroll" href="#marketplace">Export <br/>Marketplace</a> -->
+		</div>
+	</div>
+</section>
+<!-- Worldwide Section -->
+
+<!-- Marketplace Section -->
+<!-- <section id="marketplace">
+	<div class="container">
+		<img src="{% static 'sokohali/img/s2_mobile.jpg' %}" class="mobile_show" />
+		<div class="row">
+			<div class="col-md-6">
+				<div class="icon"><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
+				<h1>Export <br/> Marketplace</h1>
+				<p>Buy authentic African Food, Clothing, Leather Goods, Art, and Craft. BUY NAIJA TO GROW THE NAIRA. Why buy at expensive rates abroad? The Export Marketplace opens to international buyers the best in African food, clothing, Art and craft as well as raw materials, granting sellers much needed income and forex earnings.</p>
+
+				{% if user.is_staff %}
+					<a href="{% url 'sokohaliAdmin:user-manager' %}" class="btn">
+				{% else %}
+					<a href="#" class="btn">
+				{% endif %}
+				Buy Now</a>
+			</div>
+		</div>
+	</div>
+	<div class="bottom">
+		<div class="container">
+			<a class="page-scroll" href="#worldwide">{{ request.storefront_name }} <br/>Worldwide</a>
+			<a class="page-scroll" href="#sokopay">{{ request.storefront_name }} Payment <br/>Method</a>
+		</div>
+	</div>
+</section> -->
+<!-- Marketplace Section -->
+
+<!-- Zappay Section -->
+<section id="sokopay">
+	<div class="container">
+		<!-- mobile img -->
+		<img src="{% static 'sokohali/img/s5_mobile.jpg' %}" class="mobile_show" />
+		<div class="row">
+			<div class="col-md-6">
+				<div class="icon"><i class="fa fa-credit-card" aria-hidden="true"></i></div>
+
+				<!-- <h1>SokoPay <br/> Wallet</h1> -->
+				<!-- <p>Securely pay sellers, E-wallet for easy payment on {{ request.storefront_name }} With the {{ request.storefront_name }} Payment method (SokoPay), every transaction remains secured and fast. Simply load your SokoPay wallet with credit and use it to offset shopping or shipping bills instantly. You can also use it to view and monitor transactions via the SokoPay credit log.</p> -->
+
+				<h1>Wallet</h1>
+				<p>Securely pay sellers, E-wallet for easy payment on {{ request.storefront_name }} With the {{ request.storefront_name }} Every transaction remains secured and fast. Simply load your wallet with credit and use it to offset shopping or shipping bills instantly. You can also use it to view and monitor transactions via the credit log.</p>
+
+				<!--<a href="#" class="btn">Pay Now</a>-->
+
+				{% if user.is_staff %}
+					<a href="{% url 'sokohaliAdmin:user-manager' %}" class="btn">
+				{% else %}
+					<a href="{% url 'general:my_payments' %}" class="btn">
+				{% endif %}
+				Top-up Your E-Wallet</a>
+			</div>
+		</div>
+	</div>
+	<div class="bottom">
+		<div class="container">
+			<!-- <a class="page-scroll" href="#marketplace">Export<br/> Marketplace</a>
+			<a class="page-scroll" href="#zpn">{{ request.storefront_name }} Partner <br/>Network</a> -->
+		</div>
+	</div>
+</section>
+<!-- Zappay Section -->
+
+<!-- ZPN Section -->
+<section id="zpn" style="display: none;">
+	<div class="container">
+		<!-- mobile img -->
+		<img src="{% static 'sokohali/img/s6_mobile.jpg' %}" class="mobile_show" />
+		<div class="row">
+			<div class="col-md-6">
+				<h1>{{ request.storefront_name }} Partner <br/>Network</h1>
+				<p>Reseller partners, shipping partners & Local distribution networks. Partner with us and earn from the comfort of your home. Invite customers to use the {{ request.storefront_name }} platform and get paid. Make money without limits by building a share in the largest e-commerce logistics platform.</p>
+				<a href="#" class="btn">Apply Now</a>
+			</div>
+		</div>
+	</div>
+	<div class="bottom">
+		<div class="container">
+			<a class="page-scroll last" href="#sokopay">{{ request.storefront_name }} Payment <br/>Method</a>
+		</div>
+	</div>
+</section>
+<!-- ZPN Section -->
+
+
+<!-- service type modal -->
+
+
+
+
+{% endblock %}
+
+
+
+{% block extra_scripts %}
+	<script>
+
+
+	var field_ids = ['pk_address','pk_city','pk_state','pk_country','pk_address1','pk_address1','pk_zipcode']
+
+	function require_input(option){
+	    if(option == 'drop-at-postoffice' || 'pick-up-package') {
+	        for (var id =0; id < field_ids.length; id++){
+	            $('#' + field_ids[id]).attr('required', true);
+	        }
+	    } else {
+	        for (var id =0; id < field_ids.length; id++){
+	            $('#' + field_ids[id]).attr('required', false);
+	        }
+	    }
+	}
+
+	function distributor_api_or_rates(id){
+
+		$('#id_shipping_option').val(id);
+
+		var origin 			= $('#id_country_from option:selected').val();
+		var destination = $('#id_country_to option:selected').val();
+
+		$.get('{% url "general:distributor_api_or_rates" %}', {'origin': origin, 'destination': destination}, function(data){
+					//$('.col-md-6.has_api').addClass('hidden')
+					//$('.col-md-6.has_configured_rates').addClass('hidden')
+					$('.col-md-6.'+data.other).addClass('hidden')
+					$('.col-md-6.'+data.response).removeClass('hidden')
+
+
+					if (data.response == 'has_configured_rates'){
+						//reset value
+						if (id == 'pick-up-package'){
+								$('#id_shipping_option').val('')
+						}else{
+							$('#id_shipping_option').val('drop-at-location')
+						}
+					}else{
+						if (id == 'pick-up-package'){
+								$('#id_shipping_option').val(id)
+						}else{
+							$('#id_shipping_option').val('drop-at-postoffice')
+						}
+
+					}
+		})
+
+		//populate_country_regions(origin, 'id_pk_state', 'id_pk_country')
+		if ($('#id_po_state > option').length < 2 && $('#id_pk_state > option').length < 2){
+			populate_country_regions(origin)
+		}
+	}
+
+
+
+
+	//$('#shipwd .select-options li').click(function () {
+	$('#shipwd .org_dest').on('change', function () {
+	    var origin 			= $('#id_country_from option:selected').val();
+	    var destination = $('#id_country_to option:selected').val();
+			//$('#loc_container2').addClass('hidden')
+
+			//$('#shipwd .shipinfo').removeClass('active');
+			//$("#international").removeClass('active');
+
+			//$('.soption_content .col-md-4').removeClass('active');
+			//$('.col-md-12.scontent').removeClass('active')
+
+			if (origin != '' && destination != ''){
+					console.log(origin)
+					console.log(destination)
+					if (origin == destination){
+						$('#id_shipping_option').val('')
+						$('#shipwd .shipinfo').removeClass('active');
+						$("#international").removeClass('active');
+						$("#WHM").addClass('hidden');
+						alert("Origin and Destination country cannot be the same.");
+			  		return false;
+			  	}else{
+						$.ajax({
+							data: {'origin':origin, 'destination':destination},
+							type: 'GET',
+							url: "{% url 'general:check_avaliable_routes' %}",
+
+							success: function(data){
+								if (data.result == "ok"){
+									console.log(data.result)
+									$('#shipwd .shipinfo').removeClass('active');
+						      		$("#international").toggleClass('active');
+							  		get_warehouse_address(origin);
+							  		$("#WHM").removeClass('hidden');
+							  		//$('#WHM').replaceWith(data);
+									//reset select fields
+									$('#id_po_state').empty()
+									$('#id_pk_state').empty()
+								}
+								else{
+									console.log(data.result)
+									$('#id_shipping_option').val('')
+									$('#shipwd .shipinfo').removeClass('active');
+									$("#international").removeClass('active');
+									$("#WHM").addClass('hidden');
+									alert("This route has not been configured yet.Please select another route.");
+						  		return false;
+								}
+							},
+
+							error: function(data){
+								console.log('Not working')
+						 }
+
+					});
+			  }
+      }
+	});
+
+function get_warehouse_address(origin){
+	$.ajax({
+		data: {'origin':origin},
+		type: 'GET',
+		url: "{% url 'general:get_warehouse_address' %}",
+		success: function(data){
+			$('#WHM').replaceWith(data);
+		},
+		error:function(data){
+			console.log("Not working");
+		}
+	});
+};	
+ 
+	//function populate_country_regions(origin, id_state, id_country){
+	function populate_country_regions(origin){
+		//console.log(id_state, id_country)
+		$.get('{% url "general:get_country_regions" %}', {'origin': origin}, function(data){
+					id_list = [['id_po_state', 'id_po_country'], ['id_pk_state', 'id_pk_country']]
+					for (i=0; i<id_list.length; i++){
+						var id_state = id_list[i][0]
+						var id_country = id_list[i][1]
+						//$('#'+id_state).html('')
+						$('#'+id_state).empty()
+						//$('#'+id_state +' option').remove()
+						$.each($.parseJSON(data.regions), function(index, element){
+							$('#'+id_state).append('<option value="'+element[0]+'">'+element[1]+'</option>')
+						});
+						$('#'+id_country).empty().append('<option value="'+origin+'">'+origin+'</option>')
+
+						$('.col-md-12.scontent').removeClass('hidden')
+					}
+
+
+		})
+	}
+
+	$('#id_dropoff_location').on('click', function(){
+		//$('#id_dropoff_location option:selected').text('Loading...');
+		console.log($('#id_dropoff_location > option'));
+		if ($('#id_dropoff_location > option').length < 2){
+			var origin = $('#id_country_from option:selected').val();
+			$.get('{% url "general:get_dropoff_locations" %}', {'origin': origin, 'destination': $('#id_country_to option:selected').val(), 'action': 'get-locations'},
+								function(data){
+									if (data.locations == '[]'){
+										alert('No Drop off locations in '+origin + '. Please select a different shipping option.');
+										//reset value
+										$('#id_shipping_option').val('')
+									}else{
+										//$this_select = $('#loc_container2').find('.select-options')
+										$.each($.parseJSON(data.locations), function(index, element){
+											//$this_select.append('<li rel="'+element.id+'">'+element.city +' - ' +element.state+'</li>')
+											$('#id_dropoff_location').append('<option value="'+element.id+'">'+element.city +' - ' +element.state+'</option>')
+										})
+										//$('#'+id).removeClass('hidden');
+									}
+
+			})
+		}
+	});
+
+	$('#id_dropoff_location').on('change', function(data){
+				$('#id_shipping_option').val('drop-at-location');
+				$.get('{% url "general:get_location_address" %}', {'id': $(this).val()}, function(data){
+						$('#loc_full_address').html(data.location)
+				});
+
+	})
+
+	// $('.open_loc_container').on('click', function(){
+	// 	$('.loc_container').addClass('hidden')
+	// 	//console.log($(this).parent().parent())
+	// 	//alert($(this).parent().parent().innerHTML())
+	// 	var id = $(this).attr('rel');
+	// 	var origin = $('#id_country_from option:selected').val();
+	//
+	// 	if (id == 'loc_container2'){
+	// 		//$('#id_shipping_option').val('drop-at-location');
+	//
+	// 		$.get('{% url "general:get_dropoff_locations" %}', {'origin': origin, 'destination': $('#id_country_to option:selected').val(), 'action': 'get-locations'},
+	// 							function(data){
+	// 								if (data.locations == '[]'){
+	// 									alert('No Drop off locations in '+origin + '. Please select a different shipping option.');
+	// 									//reset value
+	// 									$('#id_shipping_option').val('')
+	// 								}else{
+	// 									//$this_select = $('#loc_container2').find('.select-options')
+	// 									$.each($.parseJSON(data.locations), function(index, element){
+	// 										//$this_select.append('<li rel="'+element.id+'">'+element.city +' - ' +element.state+'</li>')
+	// 										$('#id_dropoff_location').append('<option value="'+element.id+'">'+element.city +' - ' +element.state+'</option>')
+	// 									})
+	// 									$('#'+id).removeClass('hidden');
+	// 								}
+	//
+	// 							})
+	// 	}else{
+	// 		$('#id_shipping_option').val('drop-at-postoffice');
+	//
+	// 		$.get('{% url "general:get_country_regions" %}', {'origin': origin}, function(data){
+	// 					populate_country_regions(origin, 'id_po_state', 'id_po_country')
+	//
+	// 					// $.each($.parseJSON(data.regions), function(index, element){
+	// 					// 	$('#id_po_state').append('<option value="'+element.name+'">'+element.name+'</option>')
+	// 					// });
+	// 					// $('#id_po_country').append('<option value="'+origin+'">'+origin+'</option>')
+	//
+	// 		})
+	//
+	// 		$('#'+id).removeClass('hidden');
+	// 	}
+	//
+	// 	return false;
+	// })
+
+
+
+
+
+	function select_shipping_option(id){                                                                                                                                                                                   // alert("its here");
+	    //$this =  $('#id_shipping_option');
+	    console.log(id)
+	    $('#id_shipping_option').val(id);
+	    if (id === "send-from-shop" || id === "drop-at-location"){
+	      console.log("1")
+	      //return true
+	        // $("#" + id).css({"background-color":"gray","border":"2px solid red"});
+	        // $("#send-from-shop").css({"background-color":"#3C983C","border":"2px solid #3C983C"});
+	        // $("#export-import").css({"background-color":"#3C983C","border":"2px solid #3C983C"});
+
+	        //$('#pick-up-location-form').removeClass('hidden');
+	        //$this.attr("value","pick-up-package");
+	        //$this.val("pick-up-package");
+	        // $this.val("pick-up-package");
+	        //$('#location_title').html('ENTER PICK UP LOCATION');
+	        //$('#pick-up-phone').removeClass('hidden');
+
+	    } else if(id === "pick-up-package"){
+				var origin = $('#id_country_from option:selected').val();
+				populate_country_regions(origin, 'id_pk_state', 'id_pk_country')
+	      //console.log("2")
+	      //require_input(id);
+	    }
+	        // $("#" + id).css({"background-color":"gray","border":"2px solid red"});
+	        // $("#export-import").css({"background-color":"#3C983C","border":"2px solid #3C983C"});
+	        // $("#pick-up-package").css({"background-color":"#3C983C","border":"2px solid #3C983C"});
+
+	        //$this.attr("value","send-from-shop");
+	        //$this.val("send-from-shop");
+	        //$('#pick-up-location-form').addClass('hidden');
+
+	        // for (var id =0; id < field_ids.length; id++){
+	        //     $('#' + field_ids[id]).attr("required", false);
+	        // }
+	    // } else if(id ==="export-import"){
+	    //     $("#" + id).css({"background-color":"gray","border":"2px solid red"});
+	    //     $("#send-from-shop").css({"background-color":"#3C983C","border":"2px solid #3C983C"});
+	    //     $("#pick-up-package").css({"background-color":"#3C983C","border":"2px solid #3C983C"});
+	    //
+	    //     $('#pick-up-location-form').removeClass('hidden');
+	    //     $this.attr("value", "export-import");
+	    //     $this.val("export-import");
+	    //     $('#location_title').html('ENTER POST OFFICE LOCATION');
+	    //     require_input(id);
+	    else {
+	      console.log("3")
+	        //require_input(id);
+	    }
+	}
+
+	function validate_index_shipping_selection(){
+            $this               = $('#id_shipping_option');
+            var origin          = $("#id_country_from option:selected").val();
+            var destination     = $("#id_country_to option:selected").val();
+            var WHaddress       = $('#id_WHaddress option:selected').val();
+            var shipping_type   = $('#id_shipping_option').val();
+
+            //alert(WHaddress)
+            if (origin === destination){
+                alert("You have not selected any origin and/or destination country");
+                return false;
+            }
+
+
+            if (!($this).val()){
+                alert("Please select an available shipping option.");
+                return false;
+            }
+
+
+            if (WHaddress === ""){
+                alert("Please select a warehouse address.")
+                return false;
+            }
+
+
+            if(shipping_type == "drop-at-postoffice"){
+                var field_ids = ['id_po_address','id_po_city','id_po_state','id_po_country','id_po_address1','id_po_address1','id_po_zipcode']
+
+                for (var id =0; id < field_ids.length; id++){
+                    if ($('#' + field_ids[id]).val() == ""){
+                        alert("Enter a valid address where the package is to be dropped off. All fields are required");
+                        return false;
+                    }
+                }
+        
+
+            }else if(shipping_type == "pick-up-package") {
+                var field_ids = ['id_pk_address','id_pk_city','id_pk_state','id_pk_country','id_pk_address1','id_pk_address1','id_pk_zipcode']
+
+                for (var id =0; id < field_ids.length; id++){
+                    if ($('#' + field_ids[id]).val() == ""){
+                        alert("Enter a valid address where the package is to be picked up from. All fields are required");
+                        return false;
+                    }
+                }
+            } else{
+
+                return true;
+            }  
+
+            return true;
+        }
+
+
+
+// function set_action(origin){
+//     if (origin === "Nigeria"){
+//         return '/export-landing-page'
+//         }
+//     return '/import/shipping/retrieve_modal_values'
+// }
+
+ // return
+// return '{% url "shipping:retrieve_modal_values" %}'
+
+
+function set_mm_country_option(origin){
+	if (!(origin === "")) {
+		if (origin === "Nigeria"){
+			$("#service-selection").addClass('hidden');
+			$("#id_shipping_option").attr("value", "Export");
+			// $("#id_shipping_option").val("Export");
+			$("#service-option-form").attr("action", "/export-landing-page");
+			$("#pick-up-location-form").addClass('hidden');
+			$("#send-from-shop").css({"background-color":"#3C983C","border":"2px solid #3C983C"});
+			$("#export-import").css({"background-color":"#3C983C","border":"2px solid #3C983C"});
+			$("#pick-up-package").css({"background-color":"#3C983C","border":"2px solid #3C983C"});
+		} else {
+			if ($("#id_shipping_option").val() && $("#id_shipping_option").val() !== "Export"){
+				$("#id_shipping_option").attr("value",$("#id_shipping_option").val());
+			} else {
+				$("#id_shipping_option").val("");
+			}
+			$("#service-selection").removeClass('hidden');
+			$("#service-option-form").attr("action", '/import/shipping/retrieve_modal_values' );
+		}
+	}
+
+}
+
+
+$('.select-options li').on('click', function(){
+	var selected = $(this).attr('rel');
+	if (!($(this).parent().parent().parent().hasClass('destination_countries'))){
+		//set_mm_country_option(selected);
+	}
+})
+
+$('.pickup_countries .input-group .select .select-options li').on('click', function(){
+	var selected = $(this).attr('rel');
+	 var service_option = $("#id_shipping_option").attr('value');
+	 // alert(service_option);
+	if (!($(this).hasClass('destination_countries'))){
+		// set_mm_country_option(service_option);
+		$("#id_shipping_option").attr('value',service_option);
+	}
+})
+
+
+
+
+
+
+
+// $(".swidget .select-options li").on('click', function(){
+// 	var shipment_type = $(this).attr('rel');
+// 	$.ajax({
+// 		url: "",
+// 		type:"GET",
+// 		data:{'promo-shipment-type':shipment_type},
+// 		success: function(data){
+// 			$("#promo-details").html(data);
+// 		},
+// 		error: function(data){
+// 			console.log("error connecting to view");
+// 		}
+// 	})
+// })
+//
+//
+// $("#join_promo").on('click', function(){
+// 	var origin = $(this).attr('origin');
+// 	var destination = $(this).attr('destination');
+// 	var promo_rate = $(this).attr('promo_rate');
+// 	var route = "<strong style='padding-left:20px;'> DIRECTION: " + origin + "   To   " + destination + "</strong>";
+// 	var option_origin = "<option selected value='" + origin + "'>" + origin + "</option>";
+// 	var option_destination = "<option selected value='" + destination + "'>" + destination + "</option>";
+//
+// 	var has_promo = "<input type='hidden' name='has_promo' value = '" + promo_rate + "'/>";
+//
+// 	$("#id_import_options").modal('show');
+// 	set_mm_country_option(origin);
+// 	$("#id_country_from").html(option_origin);
+// 	$("#id_country_to").html(option_destination);
+// 	$("#country-selection-div").addClass('hidden');
+// 	$("#promo-details-div").html(route);
+// 	$("#promo-details-div").append(has_promo);
+// 	$("#promo-details-div").removeClass('hidden');
+//
+// })
+</script>
+{% endblock extra_scripts %}
+<!-- onclick='return set_mm_country_option()' -->
+
+{% block modals %}
+	{% include 'zaposta_snippet/import-options-index-modal.html' %}
+{% endblock modals %}
+
+<script>
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip()
+	})
+</script>

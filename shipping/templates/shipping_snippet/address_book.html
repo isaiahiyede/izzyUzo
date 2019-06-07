@@ -1,0 +1,27 @@
+<div id="addresses_div">
+		<div class="col-md-12" style="padding-top:30px;">
+
+		{% for address in addresses %}
+			<div class="panel addr two" style="min-height: 178px;" address_id="{{address.pk}}">
+<!--				<a href="#eaddr" id="{{address.pk}}" data-toggle="modal" data-target="#eaddr" class="edit address"></a>-->
+					<!-- <a href="#" id="{{address.pk}}" style="position: absolute; left: 15px; top: 17px;"><i class="fa fa-check fa-lg" aria-hidden="true"></i></a> -->
+					<input type="checkbox" address_id="{{ address.pk }}" class="addr_chkbx" style="position: absolute; left: 15px; top: -4px;"/>
+					<a href="#" id="{{ address.pk }}" class="edit address"></a>
+					<a href="#" id="{{address.pk}}" class="delete address"></a>
+				<h3>{{ address.title }} {{ address.first_name.title }} {{ address.last_name.title }}</h3>
+				<p>{{ address.address_line1.title }}, {{ address.address_line2.title }}, {{ address.city.title }} {{ address.state }}, {{ address.country }}</p>
+				<p>{{address.telephone}}</p>
+				{% if address.email %}<p><strong>{{address.email}}</strong></p>{% endif %}
+			</div>
+
+
+			{% if forloop.counter|divisibleby:"2" %}
+
+			</div>
+			<div class="col-md-12" style="padding-top:15px;">
+			{% endif %}
+		{% endfor %}
+
+		</div>
+
+</div>

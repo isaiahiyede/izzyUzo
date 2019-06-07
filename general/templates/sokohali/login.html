@@ -1,0 +1,218 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="Sokohali.com - Login to your account and view dashboard, configure website, set shipping rates" />
+    <meta name="keywords" content="Sokohali.com - Login to your account and view dashboard, configure website, set shipping rates" />
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="{% static 'sokohali.ico' %}">
+
+    <title>Sokohali - Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'soko-admin/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+
+    <script src="https://use.fontawesome.com/a728b8f481.js"></script>
+
+    <link href="{% static 'soko-admin/css/lightgallery.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for the dashboard -->
+    <link href="{% static 'soko-admin/css/style.css' %}" rel="stylesheet">
+
+    <style>
+
+    .login .center_inner .lcont input{
+      border-radius: 0px;
+    }
+    
+    input[type="password"], textarea {
+          height: 48px;
+          min-width: 200px;
+          padding: 0;
+          -webkit-border-radius: 4px;
+          -moz-border-radius: 4px;
+          border-radius: 4px;
+          line-height: 48px;
+          color: rgb(121, 121, 121);
+          border: none;
+          box-shadow: none;
+          padding-left: 15px;
+          border: 2px solid rgb(231, 231, 231);
+          background: rgb(245, 245, 245);
+          min-width: 60px;
+          float: left;
+          position: relative;
+          }
+
+          .success{
+            color:green;
+          }
+          .warning{
+            color: red;
+          }
+    </style>
+
+</head>
+
+<body class="login">
+
+    <div class="content" style="text-align:center;">
+        <div class="floater_top"></div>
+        <div class="container">
+            <div class="floater_left"></div>
+            <div class="center_inner">
+                <div class="img">
+                    <a href="/"><img src="{% static 'soko-admin/img/logo.jpg' %}" /></a>
+                </div>
+              <form action="" method="POST">
+              {% csrf_token %}
+              <div>
+              
+             </div>
+                <div class="lcont">
+                    {% for msg in messages %}
+                      {% if forloop.last %}
+                        <span class="{{ msg.tags }}">{{ msg }}</span>
+                      {% endif %}
+                    {% endfor %}
+                    <!-- <div class="col-md-12 good"> -->
+                    <div class="col-md-12">
+                        <label>Username or Email Address:</label>
+                        <!-- <input type="text" placeholder="Username" required/> -->
+                        {{ form.username_email }}
+                    </div>
+                    <div class="col-md-12">
+                        <label>Password:</label>
+                        <!-- <input type="password" placeholder="Password" required/> -->
+                        {{ form.password }}
+                    </div>
+                    <div class="col-md-12">
+                        <button class="btn red">Log In</button>
+                    </div>
+                    <div class="col-md-12 fg">
+                        <span></span>
+                        <a href="#" data-toggle="modal" data-target="#myModal">Forgot Password?</a>
+                    </div>
+                    <div class="col-md-12" style="padding-bottom:0;">
+                        <a href="/register/" class="btn black">Register</a>
+                    </div>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Forgot my password</h4>
+        </div>
+        <form method="POST" action="{% url 'general:passwordrequest' %}" onsubmit="return checkForm(this);">
+          {% csrf_token %}
+          <div class="modal-body">
+              <label style="position:relative; left:30px;">Enter your Email Address.</label>
+              <input type="text" name="email" style="position:relative; left:30px; width: 225px;" placeholder="Email Address">
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success" onclick="myFunction()">SEND</button>
+          </div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'soko-admin/js/jquery.min.js' %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'soko-admin/js/bootstrap.min.js' %}"></script>
+
+    <script src="{% static 'soko-admin/js/script.js' %}"></script>
+    <script src="{% static 'soko-admin/js/jquery.sticky.js' %}"></script>
+
+
+<script>
+  function checkForm(form)
+  {
+    re=/@/;
+    if(!re.test(form.email.value)){
+      alert("Error: Please input an Email Address!")
+      return false;
+    }
+  }
+</script>
+
+<script>
+function myFunction() {
+    alert("A temporary password will be sent to the email provided!");
+}
+</script>
+
+    <script>
+        (function ($) {
+
+            //check if the browser width is less than or equal to the large dimension of an iPad
+            if ($(window).width() >= 767) {
+
+                $("#sticky_left").sticky({
+                    topSpacing: 220
+                });
+            }
+        })(jQuery);
+    </script>
+
+    <script>
+        $("tr:even").css("background-color", "rgb(248,248,248)");
+    </script>
+
+    <!-- Lightweight Gallery -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#lightgallery").lightGallery();
+        });
+    </script>
+    <!-- Lightweight Gallery -->
+
+    <script>
+        $('#ProcessModal').modal('hide');
+    </script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+
+    <!-- Calendar Angular JS Script -->
+    <!-- <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-animate.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-route.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-aria.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-messages.min.js'></script>
+    <script src='js/angular-material.js'></script>
+    <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js'></script> -->
+
+    <script src="{% static 'soko-admin/js/index.js' %}"></script>
+    <!-- Calendar Angular JS Script -->
+
+</body>
+
+</html>

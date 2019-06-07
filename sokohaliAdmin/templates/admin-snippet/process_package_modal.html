@@ -1,0 +1,319 @@
+{% load staticfiles %}
+{% load humanize %}
+<!-- Modal -->
+
+<div class="modal fade" tabindex="-1" role="dialog" id="ProcessModal" style="overflow-y:scroll!important;">
+        <div class="modal-dialog modal-big">
+            <form id="receiveItemForm" enctype="multipart/form-data" action="{% url 'sokohaliAdmin:process_package' package.tracking_number %}" method="post">
+			{% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Process Package</h4>
+                </div>
+                <div class="order">
+                    <div class="col-md-12">
+                        <h1>{{package.tracking_number}} <span class="label">{% if package.itemcount == 1 %}{{package.itemcount}} Item{% else %}{{package.itemcount}} Items{% endif %}</span><span class="label"></span></h1>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner long">
+                            <table width="80%" border="0" class="table bordered" id="get_selected_items">
+                                <tr>
+                                    <th></th>
+                                    <th>Tracking Number</th>
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                    <th>Listed Price</th>
+                                    <th>Status</th>
+                                </tr>
+                                {% for item in package.shippingitem_set.all %}
+                                <tr>
+
+                                  <td>
+                                     {% if item.status == "Not yet received" %}
+                                      <input class="admin_selected_items" type="checkbox" value="{{item.id}}" name="admin_selected_items" pkg_id="{{package.id}}">
+                                     {% else %}
+                                      <input class="admin_selected_items" type="checkbox" checked value="{{item.id}}" name="admin_selected_items" pkg_id="{{package.id}}">
+                                     {% endif %}
+                                  </td>
+                                    <td>{{item.courier_tracking_number}}</td>
+                                    <td>
+                                        {{item.description}}
+                                    </td>
+                                    <td>
+                                       {{item.quantity}}
+                                    </td>
+                                    <td>
+                                        ${{item.amount}}
+                                    </td>
+                                    <td>
+                                      {% if item.status == "Not yet received" %}
+                                        Not yet Received
+                                      {% else %}
+                                        Received
+                                      {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            <hr />
+                            <!-- <p class="nt">
+                               <label>
+                                    <input type="checkbox" name="checked_items" style="position:relative; margin-right:15px; top:7px;" />
+                                    All items in this package are complete
+                               </label>
+                            </p> -->
+                        </div>
+                        <!-- Body Inner Content -->
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn green" id="check_items_in_package" rel="s1">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <!-- modal-c -->
+                <input type="text" value="" id="put_selected_items" class="hidden" name="put_selected_items">
+
+                <div class="modal-c" id="s1">
+                    <div class="modal-body fixtop" style="overflow:scroll !important;">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner two">
+                            <div class="col-md-12" style="padding:0;">
+                                <div class="col-ting">
+                                    <div class="control-group file-upload" id="file-upload1">
+                                        <div class="col-md-3">
+                                            <a href="#" img-trackg-no="{{package.tracking_number}}.jpeg" id="show_modal" data-target="#testModal" data-toggle="modal"><img src="{{STATIC_URL}}soko-admin/img/camera.png"></a>
+											<!--<img id="itemImage1" src="" alt="">-->
+										</div>
+										<div class="col-md-9 pull-right">
+											<img id="itemImage1" src="" alt="Package Image" style="width:350px;height:200px; border:0;">
+										</div>
+                                        <div class="controls">
+                                            <input type="hidden" name="contact_image_1" id="pkgImage" />
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Body Inner Content -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn gray trigger left" rel="s0">Back</button>
+                            <button type="button" class="btn green" id="check_package_image" rel="s2">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <!-- modal-c -->
+                <div class="modal-c" id="s2">
+                    <div class="modal-body fixtop" style="overflow:scroll!important;">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner">
+                            <div class="col-md-6 number_class" style="padding-left:0;">
+                                <!-- <div class="col-md-12 prebox">
+                                    <div class="box active" id="pr1">
+                                        <h2>Small Envelope: 2 x 1 x 2 - 1lbs(0.5kg)</h2>
+                                    </div>
+                                    <div class="box" id="pr2">
+                                        <h2>Large Envelope: 10 x 4 x 12 - 6lbs(3kg)</h2>
+                                    </div>
+                                    <div class="box" id="pr3">
+                                        <h2>Hazmat: 6 x 2 x 12 - 10lbs(5kg)</h2>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-6" style="padding-left:0; position:relative; bottom:10px;">
+                                    <label>Length:</label>
+                                    <input type="text"  placeholder="Length (inches)"  id="pkg_length" name="box_length" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
+                                </div>
+                                <div class="col-md-6" style="padding-left:0; position:relative; bottom:10px;">
+                                    <label>Width:</label>
+                                    <input type="text"  placeholder="Width (inches)" id="pkg_width" name="box_width" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
+                                </div>
+                                <div class="col-md-6" style="padding-left:0; position:relative; bottom:10px;">
+                                    <label>Height:</label>
+                                    <input type="text"  placeholder="Height (inches)"  id="pkg_height" name="box_height" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
+                                </div>
+
+                                <div class="col-md-6" style="padding-left:0; position:relative; bottom:10px;">
+                                    <label>Weight:</label>
+                                    <input  style="margin-bottom:0;" type="text" id="pkg_weight" placeholder="Weight (lbs)" name="box_weight"/onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
+                                </div>
+                                <input value="{{package.id}}" type="text" id="pkg_id_here" class="hidden">
+
+                            </div>
+
+                            <!-- <div class="col-md-6" style="padding-right:0; padding-left:0; padding-top:15px;">
+                                <div class="col-md-12">
+                                    <h2>Envelopes</h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="itt">
+                                        <span class="active" rel="pr1">
+                                            <img src="{{STATIC_URL}}soko-admin/img/env1.png"/>
+                                        </span>
+                                        <span rel="pr2">
+                                         <img src="{{STATIC_URL}}soko-admin/img/env2.png"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h2>Vehicles</h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="itt">
+                                        <span>
+                                        <img src="{{STATIC_URL}}soko-admin/img/car1.png" style="margin-left:10px;"/>
+                                        </span>
+                                        <span>
+                                        <img src="{{STATIC_URL}}soko-admin/img/car2.png" style="margin-left:10px;"/>
+                                        </span>
+                                        <span>
+
+                                        </span>
+                                        <span> <img src="{{STATIC_URL}}soko-admin/img/car4.png"/></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h2>Containers</h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="itt">
+                                        <span></span>
+                                        <span>
+                                            <img src="{{STATIC_URL}}soko-admin/img/cont2.png"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <h2>Hazmat</h2>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="itt" style="padding-bottom:0;">
+                                        <span rel="pr3"> <img src="{{STATIC_URL}}soko-admin/img/nuc.png"/></span>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                        </div>
+                        <!-- Body Inner Content -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn gray trigger left" rel="s1">Back</button>
+                            <button type="button" class="btn green" id="check_package_dimensions" rel="s3">Continue <i class="fa fa-long-arrow-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal-c -->
+                <!-- modal-c -->
+                <div class="modal-c" id="s3">
+                    <div class="modal-body fixtop" style="overflow:scroll !important;">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner">
+                            <div class="col-md-6" style="padding-left:0;">
+                                <p>Client: <span>{{package.user.get_full_name}} /</span>
+                                    Amount paid:
+                                    {% if package.balance_paid_D %}
+                                        <span class="three">${{ package.balance_paid_D|floatformat:2|intcomma }}</span>
+                                    {% else %}
+                                        <span style="color:red;">$0.00</span><br/>
+                                    {% endif %}
+                                    {% if package.created_by_admin == True %}
+                                        <p class="title" style="position:relative; bottom:10px;">Delivery Address:
+                                        <span>{{package.get_default_destination_warehouse}}</span></p>
+                                    {% else %}
+                                        {% if package.local_pickup_address %}
+                                            <p class="title" style="position:relative; bottom:10px;">Delivery Address:
+                                            <span>{{package.local_pickup_address.full_address}}</span></p>
+                                        {% elif package.destination %}
+                                            <p class="title" style="position:relative; bottom:10px;">Delivery Address:
+                                            <span>{{package.destination.delivery_address}}</span></p>
+                                        {% elif package.delivery_address %}
+                                            <p class="title" style="position:relative; bottom:10px;">Delivery Address:
+                                            <span>{{package.delivery_address.address_line1}},{{package.delivery_address.address_line2}},
+                                            {{package.delivery_address.city}},{{package.delivery_address.state}},
+                                            {{package.delivery_address.country}}
+                                            {{package.delivery_address.telephone}}</span>
+                                            </p>
+                                        {% endif %}
+                                    {% endif %}
+                                    
+                                      <div id="get_dimensions" style="position: relative; bottom: 33px;">
+
+                                      </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-12 prebox">
+                                    <!-- <div class="box active">
+                                        <h2>Package Dimension: {{package.dimension}}</h2>
+                                    </div> -->
+                                    <!-- <div class="box active">
+                                        <h2>Envelope: 10 x 4 x 12 - 6lbs(3kg)</h2>
+                                    </div> -->
+                                </div>
+                                <p style="margin-bottom:0;">
+                                    Payment Method:<span>{{package.payment_method|upper}}</span><br/>
+                                    Delivery Option: <span style="padding-left:0;">{{ package.delivery_method }}</span><br/>
+                                    Shipping Method: <span style="padding-left:0;">{{ package.shipping_method }}</span><br/>
+                                </p>
+                                <p class="two">Handling Options: <span style="padding-left:0;">{% if package.insure %}Insurance  {% else %} Not Insured {% endif %}</span></p>
+                            </div>
+
+                        </div>
+                        <!-- Body Inner Content -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn gray trigger left" rel="s2">Back</button>
+                            <button type="submit" class="btn green" onclick="window.open('{% url "sokohaliAdmin:pkg_shipping_label" package.tracking_number %}')">Process Package</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal-c -->
+            </div>
+            <!-- /.modal-content -->
+
+        </div>
+        <!-- /.modal-dialog -->
+<!--        <div  id="status5" style="padding-bottom:10px;" >-->
+<!--				<div class="header">-->
+<!--					Take picture of Package.-->
+<!--					<span class="close"></span>-->
+<!--				</div>-->
+<!--				<div class="row-fluid">-->
+<!--					<video class="video_div" autoplay width="500px" height="350px"></video>-->
+<!--					<img src="" width="500px" height="300px" id="itemImage1">-->
+<!--				</div>-->
+<!--				<canvas class="canvas_div" style="display:none;"></canvas>-->
+<!--				<div class="row-fluid" style="text-align:center; padding-top:20px;">-->
+<!--					<a href="#" id="snapshot1" class="button orange" style="float: left; cursor: pointer">Capture</a>-->
+<!--					<input class="button" name="status5" style="float: right; margin-right: 98px;" type="submit" value="Save" id="submit">-->
+<!--					<input type="hidden" name="shipment_item_id" id="shipment_item_id"/>-->
+<!--					<input type="hidden" name="url" value="" id="url1">-->
+<!--				</div>-->
+<!--			</div>-->
+        </form>
+    </div>
+
+
+
+		<!--<div class="modal-box" id="status5" style="padding-bottom:10px;">
+				<div class="header">
+					Take picture of Package.
+					<span class="close"></span>
+				</div>
+				<div class="row-fluid">
+					<video class="video_div" autoplay width="500px" height="350px"></video>
+					<img src="" width="500px" height="300px" id="itemImage1">
+				</div>
+				<canvas class="canvas_div" style="display:none;"></canvas>
+				<div class="row-fluid" style="text-align:center; padding-top:20px;">
+					<a href="#" id="snapshot1" class="button orange" style="float: left; cursor: pointer">Capture</a>
+					<input class="button" name="status5" style="float: right; margin-right: 98px;" type="submit" value="Save" id="submit">
+					<input type="hidden" name="shipment_item_id" id="shipment_item_id"/>
+					<input type="hidden" name="url" value="" id="url1">
+				</div>
+			</div>	-->

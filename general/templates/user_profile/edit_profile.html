@@ -1,0 +1,103 @@
+{% extends "base/zaposta_base.html" %}
+
+
+{% block title %}Edit Profile{% endblock %}
+{% block extra_head %}
+<style>
+	div.modal-backdrop.fade.in{
+		z-index: 0 !important;
+	}
+	table td{
+		font-size: medium;
+		line-height: 70px !important;
+	}
+/*	footer .bottom {
+		position: fixed;
+
+	}*/
+
+	.bottom {
+	background-color: black !important;
+	}
+</style>
+
+{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+{% block st_content %}
+<!-- this is the wrapper for the content -->
+<div class="st-content-inner">
+	<!-- extra div for emulating position:fixed of the menu -->
+
+	<section id="main" class="payment_main">
+		<!-- place widget -->
+		<div class="wt two">
+			<div class="container" style="position:relative;">
+				<!--<img src="{{STATIC_URL}}zaposta/img/ism1.png" />
+				<p>21:04</p>
+				<img src="{{STATIC_URL}}zaposta/img/ism2.png" />
+				<p>London, UK</p>-->
+			</div>
+		</div>
+		<!-- place widget -->
+		<div class="hero two" id="payment_page">
+			<div class="container outer">
+				<div class="form">
+					<div class="inner" style="border:none!important;">
+						<!-- Register Account -->
+						<div class="container" id="register">
+							<div class="col-md-6 promo two d3" style="background: #0b71b9; min-height: 900px !important;">
+								<h1>
+									Account Details
+								</h1>
+								<div style="text-align: center;">
+									<h4>You can edit your Bio-data details here!!!
+									<br/>
+									</h4>
+								</div>
+								<!--<div class="col-md-6 promo two d3">-->
+								<a href="{{request.META.HTTP_REFERER }}" class="goback"><span class="glyphicon glyphicon-arrow-left"></span>Back</a>
+							</div>
+							<!-- Regular Account -->
+							<form id="editform" enctype="multipart/form-data" action="{% url 'general:edit_profile' request.user.username %}" method="post">
+								<div class="col-md-6 left" style="min-height: 900px !important;">
+									<h1>Edit Profile Information</h1>
+									{% csrf_token %}
+									{% for field in form %}
+									<div class="col-md-12">
+										<div class="col-md-3">
+											<label style="color: black; line-height: 50px;">{{ field.label }}:</label>
+										</div>
+										<div class="col-md-9">
+											{{ field }}
+										</div>
+									</div>
+									{% endfor %}
+									<div class="col-md-12 buttons" style="margin-top:9px;">
+										<input type="submit" class="btn blue" style="text-align: center; width: 69%;float: right; margin-right: 14px;"><span class="glyphicon glyphicon-repeat"></span>Submit
+									</div>
+								</div>
+							</form>
+							<!-- Regular Account -->
+						</div>
+						<!-- Register Account -->
+					</div>
+				</div>
+ 			</div>
+		</div>
+	</section> 
+	<!-- Main Section -->
+
+	<!-- FOOTER  -->
+	<footer class="black two" style="margin-top:429px;">
+		{% include 'zaposta_snippet/footer-bottom.html' %}
+	</footer>
+	<!-- FOOTER  -->
+	<!-- the content -->
+</div>
+<!-- /st-content-inner -->
+{% endblock %}

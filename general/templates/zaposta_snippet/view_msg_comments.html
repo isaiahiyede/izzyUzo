@@ -1,0 +1,64 @@
+<!-- Edit Shipment/Shopping Booking Modal -->
+<div class="modal clean three" id="compose" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel" style="display:none;">Mobile App</h4>
+            </div>
+            <div class="modal-body green">
+                <div class="row-fluid">
+                    <div class="right">
+                        <div class="right_inner">
+                            <h1>Original Message</h1>
+                            <h4>{{message.related_to}} | {{message.booking_ref}} | {{message.created_on|date:'M-d-Y'}}</h4>
+                            <div class="col-md-12">
+                                <div class="gline {% if comment.user.is_staff %}two{% endif %}">
+                                    <span>{{message.user.get_full_name}}</span></hr>
+                                    <p>{{message.message}}</p>
+                                    <span>on {{message.created_on}}</span>
+                                </div>
+                            </div>
+                            
+                            <h1>Added Comments</h1>
+                            {% for comment in message.messagecentercomment_set.all %}
+                                
+                                <div class="col-md-12">
+                                    <div class="gline {% if comment.user.is_staff %}two{% endif %}">
+                                        <span>{{comment.user.get_full_name}}</span>
+                                        <p>{{comment.message}}</p>
+                                        <span>on {{comment.date}}</span>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-12">
+                                    <div class="gline">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed egestas nec orci ac feugiat. Donec molestie dictum turpis ac interdum. In elementum erat turpis, vitae hendrerit nisl tristique eget.</p>
+                                        <span>02.04.2015</span>
+                                    </div>
+                                </div>-->
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <form action="{% url 'general:my_messages' %}" method="POST" id="add_comment_to_message">
+                        {% csrf_token %}
+                    <div class="t" style="min-height: 35vh;">
+                    <textarea name="message_body" required></textarea>
+                    <input type="text" class="hidden" value="{{message.pk}}" name="message_id">
+                    <input type="text" class="hidden" value="add_comment_to_message" name="add_comment_to_message">
+                    <input type="text" class="hidden" value="{{message.booking_ref}}" name="booking_ref">
+
+                        <div class="btns" style="padding-top: 90px;">
+                            <a href="#" class="btn" style="display: none;"><span class="glyphicon glyphicon-repeat"></span>Clear</a>
+                            <a href="#" id="add_comment_btn" rel="add_comment_to_message" message_id="{{message.pk}}" class="btn_add_item">Submit</a>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<!--     <div class="divLoading"></div>
+ --></div>
+<!-- Edit Shipment Modal -->

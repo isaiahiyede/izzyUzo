@@ -1,0 +1,421 @@
+{% load staticfiles %}
+{% load humanize %}
+<!-- Modal -->
+<style>
+
+.dotted {
+    border: 1px dotted #000;
+    border-style: none none dashed;
+    color: #fff;
+    background-color: #fff;
+    }
+
+h3{
+    font-weight: bolder;
+}
+
+.myStyle{
+    position: relative;
+    top: -15px;
+}
+
+input[type='radio']{
+    border: 2px solid #000;
+}
+
+.inpl:before{
+ content:"*" ;
+color:red
+}
+
+</style>
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="EditPackageModal">
+
+    <div class="modal-dialog modal-big">
+
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h1 class="modal-title">Edit Package:&nbsp;
+                    {{package.tracking_number}} <span class="label"></span>
+                    <span class="label"></span>
+                </h1>
+            </div>
+
+            <!-- <div class="order">
+                    <div class="col-md-12">
+                        <h1>{{package.tracking_number}} <span class="label">{{package.itemcount}} Items</span><span class="label"></span></h1>
+                    </div>
+            </div> -->
+
+            <!-- Modal Body -->
+            <div class="modal-body" style="overflow-y:scroll !important;">
+
+              <form name="editing_pkg_form" id="editing_pkg_form"  
+              {% if package.shipment_type == "fixed_weight" %} 
+              action="{% url 'sokohaliAdmin:edit_fxd_package' package.tracking_number %}"
+              {% else %} action="{% url 'sokohaliAdmin:process_package' package.tracking_number %}"
+              {% endif %} method="POST">
+               {% csrf_token %}
+
+                <div class="col-md-12 hidden dimensions">
+                    <p style="position:relative; top:15px;"><strong> DIMENSIONS/WEIGHT:</strong></p>
+                     <div class="col-md-3">
+                        <label>Length:</label>
+                            <input type="text" placeholder="Length" {% if not package.origin_warehouse == subscriber.warehousemember %} readonly="readonly" {% endif %} id="pkg_length" value="{{package.box_length}}" name="box_length" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Width:</label>
+                        <input type="text" placeholder="Width" {% if not package.origin_warehouse == subscriber.warehousemember %} readonly="readonly"{% endif %} id="pkg_width"  value="{{package.box_width}}" name="box_width" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
+                    </div>
+
+                    <input type="text" class="hidden" name="edit" value="edit" id="edit">
+                    <input type="text" class="hidden" name="edit_fxd_wgt" value="edit_fxd_wgt" id="edit_fxd_wgt">
+
+
+                    <div class="col-md-3">
+                        <label>Height:</label>
+                        <input type="text" placeholder="Height" {% if not package.origin_warehouse == subscriber.warehousemember %} readonly="readonly"{% endif %} id="pkg_height"  value="{{package.box_height}}" name="box_height" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Weight:</label>
+                        <input type="text" placeholder="Weight" {% if not package.origin_warehouse == subscriber.warehousemember %} readonly="readonly"{% endif %} id="pkg_weight"  value="{{package.box_weight}}" name="box_weight" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
+                    </div>
+                </div>
+
+
+                 <!-- Question: who can edit handling option?
+                      Ans: The marketer whose site the package was created --> 
+                <div class="col-md-12">
+                  <p style="position:relative; top:15px;"><strong>HANDLING OPTION:</strong></p>
+                  {% if subscriber == package.get_package_subscriber %}
+                    <div class="col-md-3" style="position:relative; top:-10px;">
+                        <label>
+                            {% if package.insure %}
+                            <input style="position:relative; right:5px; bottom:1px;" type="checkbox" name="pkg_handling_option" id="pkg_handling_option"
+                            value="Insurance" checked />Insurance
+                            {% else %}
+                             <input style="position:relative; right:5px; bottom:1px;" type="checkbox" name="pkg_handling_option" id="pkg_handling_option"
+                            value="Insurance" />Insurance
+                            {% endif %}
+                        </label>
+                    </div>
+                 {% else %}
+                   <div class="col-md-3" style="position:relative; top:-10px;">
+                       <label>
+                           {% if package.insure %}
+                           <input style="position:relative; right:5px; bottom:1px;" type="checkbox" name="pkg_handling_option" id="pkg_handling_option"
+                           value="Insurance" disabled="disabled" checked />Insurance
+                           <input type="hidden" name="pkg_handling_option" id="pkg_handling_option" value="Insurance"/>
+                           {% else %}
+                            <input style="position:relative; right:5px; bottom:1px;" type="checkbox" name="pkg_handling_option" id="pkg_handling_option"
+                           value="Insurance" disabled="disabled" />Insurance
+                           <input type="hidden" name="pkg_handling_option" id="pkg_handling_option" value="Insurance"/>
+                           {% endif %}
+                       </label>
+                   </div>
+                 {% endif %}
+
+
+                  <!-- Question: who can edit package unit as necessary?
+                       Ans: The warehouse processing the package --> 
+                  {% if package.origin_warehouse == subscriber.warehousemember %}
+                    <div class="col-md-6 pull-right 
+                    {% if package.shipment_type == 'fixed_weight' %} hidden {% endif %}" style="position:relative; bottom:45px; left:205px">
+                        <div class="col-md-3">
+                            <label>
+                                <input style="position:relative; right:2px; top:5px;" type="radio" name="pkg_unit" id="pkg_unit_kg" value="kg" />kg(s)
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <label>
+                                <input style="position:relative; right:2px; top:5px;" type="radio" name="pkg_unit" id="pkg_unit_lb"
+                                value="lb" checked/>lb(s)
+                            </label>
+                        </div>
+                    </div>
+
+                  {% else %}
+                    <div class="col-md-6 pull-right" style="position:relative; bottom:45px; left:205px">
+                        <div class="col-md-3">
+                            <label>
+                                <input style="position:relative; right:2px; top:5px;" type="radio" name="pkg_unit" id="pkg_unit_kg" disabled="disabled" />kg(s)
+                            </label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>
+                                <input style="position:relative; right:2px; top:5px;" type="radio" name="pkg_unit" id="pkg_unit_lb" disabled="disabled" checked/>lb(s)
+                                <input type="hidden" name="pkg_unit" id="pkg_unit_lb" value="lb"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+
+                <!-- Question: who can edit shippng method?
+                     Ans: The warehouse processing the package -->   
+                {% if package.origin_warehouse == subscriber.warehousemember %}
+
+                    <div class="col-md-12" style="position:relative; top:-30px; right:16px;">
+                  <p style="position:relative; top:15px;"><strong>SHIPPING METHOD:</strong></p>
+
+                    <div class="col-md-3 myStyle">
+                        <label>
+                            {% if package.shipping_method == "Air Freight" %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_air" value="Air Freight" checked/>Air Freight
+                            {% else %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_air" value="Air Freight" />Air Freight
+                            {% endif %}
+                        </label>
+                    </div>
+
+                    <div class="col-md-3 myStyle">
+                        <label>
+                            {% if package.shipping_method == "Sea Freight" %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_sea" value="Sea Freight" checked/>Sea Freight
+                            {% else %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_sea" value="Sea Freight" />Sea Freight
+                            {% endif %}
+                        </label>
+                    </div>
+
+                     <div class="col-md-3 myStyle">
+                        <label>
+                            {% if package.shipping_method == "Express" %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_exp" value="Express" checked/>Express
+                            {% else %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_exp" value="Express" />Express
+                            {% endif %}
+                        </label>
+                    </div>
+                    </div>
+
+                {% else %}
+
+                    <div class="col-md-12" style="position:relative; top:-30px;">
+                  <p style="position:relative; top:15px;"><strong>SHIPPING METHOD:</strong></p>
+
+                    <div class="col-md-3 myStyle">
+                        <label>
+                            {% if package.shipping_method == "Air Freight" %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_air" disabled="disabled" checked/>Air Freight
+                                <input type="hidden" value="Air Freight" name="pkg_ship_method" />
+                            {% else %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_air" value="Air Freight" disabled="disabled"/>Air Freight
+                            {% endif %}
+                        </label>
+                    </div>
+
+                    <div class="col-md-3 myStyle">
+                        <label>
+                            {% if package.shipping_method == "Sea Freight" %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_sea" value="Sea Freight" disabled="disabled" checked/>Sea Freight
+                                <input type="hidden" value="Sea Freight" name="pkg_ship_method" />
+                            {% else %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_sea" value="Sea Freight" disabled="disabled"/>Sea Freight
+                            {% endif %}
+                        </label>
+                    </div>
+
+                    <div class="col-md-3 myStyle">
+                        <label>
+                            {% if package.shipping_method == "Express" %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_sea" value="Express" disabled="disabled" checked/>Express
+                                <input type="hidden" value="Express" name="pkg_ship_method" />
+                            {% else %}
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_ship_method"
+                                id="pkg_ship_method_sea" value="Express" disabled="disabled"/>Express
+                            {% endif %}
+                        </label>
+                    </div>
+                    </div>
+
+                {% endif %}
+
+
+                <!-- Question: who can edit vat and service charges shipping charges?
+                      Ans: The The marketer whose site the package was created --> 
+                {% if package.shipment_type == "fixed_weight" %} 
+                     
+                <div class="charges col-md-12" style="position:relative; top:-45px; right: 0px;">
+                    <p style="position:relative; top:15px;"></p><strong>STANDARD CHARGES:</strong></p>
+
+                        {% if subscriber == package.get_package_subscriber %}
+
+                        <div class="col-md-3" style="position:relative; bottom:20px;">
+                            <label>
+                                <input style="position:relative; right:5px; bottom:1px;" type="checkbox" 
+                                {% if package.VAT_charge_D > 0 %} checked {% endif %}  name="vat" id="vat" >
+                             VAT </label>
+                        </div>
+                    
+                        <div class="col-md-3" style="position:relative; bottom:20px;">
+                            <label> 
+                                <input style="position:relative; right:5px; bottom:1px;" type="checkbox" 
+                                {% if package.service_charge_D  > 0 %} checked {% endif %} name="service_charge" name="service_charge" id="service_charge" >
+                            SERVICE CHARGE </label>
+                        </div>
+
+                        {% else %}
+
+                         <div class="col-md-3" style="position:relative; bottom:20px;">
+                            <label>
+                                <input style="position:relative; right:5px; bottom:1px;" type="checkbox" 
+                                {% if package.VAT_charge_D > 0 %} checked {% endif %}  disabled="disabled" name="vat" id="vat" >
+                                <input type="hidden" name="vat" id="vat"/>
+
+                             VAT </label>
+                        </div>
+                    
+                        <div class="col-md-3" style="position:relative; bottom:20px;">
+                            <label> 
+                                <input style="position:relative; right:5px; bottom:1px;" type="checkbox" 
+                                {% if package.service_charge_D  > 0 %} checked {% endif %} disabled="disabled" name="service_charge" name="service_charge" id="service_charge" >
+                                <input type="hidden" name="service_charge" id="service_charge"/>
+
+                            SERVICE CHARGE </label>
+                        </div>
+
+                        {% endif %}
+                </div>
+
+                {% endif %}
+
+
+                <!-- Question: who can edit shippng method?
+                     Ans: The warehouse processing the package -->
+                <div class="late_charges {% if not package.shipment_type == 'fixed_weight' %} hidden {% endif %} 
+                    col-md-12" 
+                    style="position:relative; top:-65px; right: 0px;">
+                    <label>Additional Charges($):</label>
+
+                    {% if package.origin_warehouse == subscriber.warehousemember %}
+
+                        {% if package.additional_charges_D %}
+                            <input type="number" name="late_charge" id="late_charge" value="{{package.additional_charges_D }}">
+                        {% else %}
+                            <input type="number" name="late_charge" id="late_charge" value="">
+                        {% endif %}
+
+                    {% else %}
+
+                        {% if package.additional_charges_D %}
+                            <input type="number" name="late_charge" id="late_charge" value="{{package.additional_charges_D }}" disabled="disabled">
+                            <input type="hidden" name="late_charge" id="late_charge">
+                        {% else %}
+                            <input type="number" name="late_charge" id="late_charge" value="" disabled="disabled">
+                            <input type="hidden" name="late_charge" id="late_charge">
+                        {% endif %}
+
+                    {% endif %}
+                </div>
+
+                <div class="col-md-12 hidden" style="position:relative; top:-55px;">
+                  <p style="position:relative; top:15px;"> DELIVERY METHOD:</p>
+
+                  {% if package.delivery_method == 'Office pickup' or package.delivery_method == "Home delivery" %}
+                        <div class="col-md-3 myStyle">
+                            <label>
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_delivery_method" id="pkg_delivery_method_office"
+                                value="Office pickup" />Office Pickup
+                            </label>
+                        </div>
+
+                        <div class="col-md-3 myStyle">
+                            <label>
+                                <input style="position:relative; right:5px; top:5px;" type="radio" name="pkg_delivery_method" id="pkg_delivery_method_home"
+                                value="Home delivery" />Home Delivery
+                            </label>
+                        </div>
+
+                   {% else %}
+
+                       <div class="col-md-3 myStyle">
+                            <label>
+                                <input style="position:relative; right:5px; top:5px;" type="checkbox" name="pkg_delivery_method" id="pkg_delivery_method_return"
+                                value="Return Address" />Return Address
+                            </label>
+                        </div>
+
+                        <div class="col-md-3 myStyle">
+                            <label>
+                                <input style="position:relative; right:5px; top:5px;" type="checkbox" name="pkg_delivery_method" id="pkg_delivery_method_delivery"
+                                value="Delivery Address" />Delivery Address
+                            </label>
+                        </div>
+
+                    {% endif %}
+
+                      <div class="col-md-6 get_locations hidden">
+                          <div class="col-md-6" style="float:left; padding-left:0; padding-top:15px;">
+                              <div class="select_scroll">
+                                <select style="position: relative; width: 150%; height: 48px; bottom: 10px;" name="source" id="dm_location" class="custom-select sources" placeholder="pick up location">
+                                  <option value="no selection"> Select location </option>
+                                  {% for location in office_pickup_locations %}
+                                    <option value="{{ location.id }}" >{{ location.city }},{{location.state}}</option>
+                                  {% endfor %}
+                                </select>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="col-md-6 hidden get_address_form" style="position:relative; top:-75px;">
+                      <div class="tinner1">
+                            <div class="col-md-12">
+                                <h2 style="position: relative; top: 13px; left: 13px;">NEW SHIPPING ADDRESS FORM</h2>
+                            </div>
+                                {% for field in form %}
+                                    {% if forloop.first %}
+                                    <div class="col-md-12"> {% endif %}
+                                        <div class="col-md-6">
+                                            <label class="inpl">{{ field.label }}:</label>
+                                            {{ field }}
+                                        </div>
+                                    {% if forloop.counter|divisibleby:'2' %}
+                                        </div>
+                                        <div class="col-md-12">
+                                    {% endif %}
+                                {% endfor %}
+                                </div>
+                            </div>
+                         </div>
+
+                       </div>
+                </div>
+
+                <button type="submit" class="btn btn-default hidden">Submit</button>
+
+               </form>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary left" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" id="pkg_editing" class="btn green">
+                    Submit
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

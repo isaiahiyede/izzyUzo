@@ -1,0 +1,127 @@
+<div id="create_booking">
+
+    <div class="col-md-12" id="form1" style="position:relative; bottom:145px;">
+
+        <div class="col-md-12">
+			<div class="span12" style="position:relative; padding-top:130px; font-weight:400; margin-top:  30px; margin-left: 10px;">
+                    <b>Name:</b> <span class="subtil1">{{user.first_name}} {{user.last_name}}</span>&nbsp;
+                    <b>Address:</b> {{user.address}}, {{user.city}}, {{user.state}}, {{user.country}}, {{user.telephone}}&nbsp;
+                    <b>E-mail:</b> {{user.user.email}}
+            </div>
+		</div>
+
+	    <div class="col-md-12">
+			<div id="add_item" class="col-md-6 form">
+
+				  <form id="add_item_form">
+					{% csrf_token %}
+	                <div class="span12" style="margin-top: 20px; margin-right: 5px;">
+
+						<div class="col-md-12" style="position:relative; bottom: 26px; right:6px;">
+							<label>Package Type:</label>
+							<!-- <div class="col-md-6">
+								<h5 style="position:relative; left:6px;">Fixed Weight</h5><input name ="pkg_type" id ="id_export"
+								pkg_type="export" user_id="user.pk" type="radio" value="Export" style="position:relative; top:-30px; left:-17px"/>
+							</div> -->
+							<div class="col-md-6" style="position:relative; bottom:14px;">
+								<h5 style="position:relative; left:6px;">Fixed Weight</h5><input name ="pkg_type" id ="id_FixedWeight"
+								pkg_type="FixedWeight" user_id="{{user.pk}}" type="radio" value="FixedWeight" style="position:relative; top:-30px; left:-17px"/>
+							</div>
+							<div class="col-md-6" style="position:relative; bottom:14px;">
+								<h5 style="position:relative; left:8px;">Regular</h5><input name ="pkg_type" id ="id_import" pkg_type="Regular" user_id="{{user.pk}}" type="radio" value="Import" style="margin-left: 0px; position:relative; top:-30px; left:-15px"/>
+							</div>
+
+							<div class="col-md-12 mm_routes hidden" style="position:relative; bottom:37px; right:5px;">
+		                        <select class ="myselect3" id="shipping_direction3" style="width:93% !important;" name="shipping_direction3" required>
+		                            <option sh_chain="" value="">Select shipping route</option>
+		                        {% for route in marketer_routes %}
+		                            <option sh_chain="{{route.id}}" value="{{route}}">{{route}}</option>
+		                        {% endfor %}
+		                        </select> 
+		                    </div>
+
+						</div>
+
+						<div class="fixedWeight hidden" style="position:relative; bottom:60px; right:20px;">
+
+							<div class="col-md-6" id='new_fixed_weight_cat'>
+							  <label>Category:</label>
+							    <select id="fixed_weight_categories" style="height:34px; width:93% !important;"
+								  <option value="Select Category">Select Category</option>
+								    {% for category in fixed_weight_category %}
+									  <option cat_id="{{category.pk}}" value="{{category.description}}">{{category.description}}</option>
+									{% endfor %}
+							    </select>
+							</div>
+
+							<div class="col-md-6">
+								<label>Rate(Price/Unit in $):</label>
+								<input style="height:35px;" name ="fixed_rate" id ="fixed_rate" type="text" class="longinput"/>
+							</div>
+						</div>
+
+						<div class="import hidden" id="imp" style="position:relative; bottom:60px; right:20px;">
+							<div class="col-md-6">
+								<label>Tracking Number:</label>
+								<input style="height:35px;" name ="cb_courier_trk" id ="id_cb_courier_trk" type="text" class="longinput" placeholder = "Optional"/>
+							</div>
+							<div class="col-md-6">
+								<label>Description:</label>
+								<input style="height:35px;" name ="cb_description" id ="id_cb_description" type="text" class="longinput"/>
+							</div>
+						</div>
+
+						<div style="position:relative; right:20px; bottom: 40px;" class="qty_val hidden">
+							<div class="col-md-6" style="position:relative; bottom:20px;">
+								<label>Quantity:</label>
+								<input style="height:35px;" type="text" name="cb_quantity" id="id_cb_quantity" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')"/>
+							</div>
+
+							<div class="col-md-6" style="position:relative; bottom:20px;">
+								<label>Value ($):</label>
+								<input style="height:35px;" type="text" name="cb_total_value" id="id_cb_total_value" onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')" />
+							</div>
+						</div>
+
+						<div class="col-md-12 hidden extra_charges" style="position:relative; right:5px; bottom:60px;">
+							<label>Extra Charges($):</label>
+							<input style="height:35px; width:92%" name ="extra_charges" id ="extra_charges" type="text" 
+							class="longinput" placeholder="Extra charges(Sum total of trucking, loading etc..)" />
+						</div>
+
+						<div class="col-md-12 hidden fxd_wgt_desc">
+						<label for="textarea" style="position: relative; bottom: 40px;">More Information:</label>
+							<textarea rows="4" cols="50" id="fxd_wgt_desc" 
+								style=" position: relative;
+								    max-width: 92%;
+								    width: 92%;
+								    line-height: 20px;
+								    bottom: 40px;
+								    right: 5px;">
+							</textarea>
+						</div>
+
+						<input type="hidden" id="user_id" value="{{user.pk}}" />
+						<input type="hidden" id="admin_id" value="{{request.user.username}}" />
+
+		              <div class="span12 show_add_item_link hidden">
+		                <!--<a href="#" class="button gray" rel="step2" id="back_create_booking">Back</a>-->
+						<a href="#" class="button pull-right" id="cb_add_item" style="position: relative;right: 35px; bottom:35px;"><strong>Add Item</strong></a>
+		              </div>
+	                </div>
+	              </form>
+
+	        </div>
+		</div>
+	</div>
+
+	<input type="hidden" name="fxd_wgt_id" id="fxd_wgt_id" value="">               
+
+    <div class="col-md-12"  style="position:relative; left:390px; bottom:345px;">
+    	<!--<span id="msg_not" style="color: green;">{{alert}}</span>-->
+		<div id="item_list">
+         <!--include 'admin-snippet/cb_item_list.html'-->
+		</div>
+	</div>
+
+</div>

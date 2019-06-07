@@ -1,0 +1,98 @@
+{% load humanize %}
+{% load custom_tags %}
+
+
+<form id="detail_form" action="" method="POST">
+    <div class="col-md-6 left">
+    {% if pay_method == 'Card' or pay_method == 'sub_payment' %}<h1> {% if obj or subscriber %}PAY {% else %}BUY CREDIT {% endif %}WITH CREDIT/DEBIT CARD</h1>{% endif %}
+    {% if pay_method == 'SokoPay' %}<h1>Pay with soko-pay credit</h1>{% endif %}
+
+    <p style="margin-top:0;">Please complete the form below.</p><br/>
+
+    {% if alert %}
+    <label style="color: red;">{{ alert }}</label> <br/>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+        <!--<p style="color: red;">{{ message }}</p>-->
+        <h3 style="color: red; float: left;">{{ message }}</h3>
+        {% endfor %}
+    {% endif %}
+
+    {% csrf_token %}
+
+    {% if obj %}
+    <div class="col-md-12">
+        <input type="text" value = "Tracking Number: {{ obj.tracking_number }}" readonly style="color: blue;"/>
+        <input type="hidden" name="tracking_number" value="{{ obj.tracking_number }}"/>
+    </div>
+
+    <!-- <div class="col-md-12">
+        <input type="text" {% if obj.order_balance_N %} value="Balance (=N=): {{ obj.balance_N|floatformat:2|intcomma }}" {% else %} value="Balance (=N=): {{ obj.balance_N|floatformat:2|intcomma }}" {% endif %} disabled="disabled" style="color: red;"/>
+    </div> -->
+    <div class="col-md-12">
+        <input type="text" value="Balance ($): {{ obj.balance_D|floatformat:2|intcomma }}" disabled="disabled" style="color: red;"/>
+    </div>
+    {% endif %}
+    
+    {% if subscriber %}
+    <div class="col-md-12">
+        <label style="color: black;">Pay To:</label>
+        <input type="text"  name= "owner" value = "{{ owner }}" readonly style="color: blue;"/>
+    </div>
+    <div class="col-md-12">
+        <label style="color: black;">Amount due:</label>
+        <input type="text" name="amount" value="${{ amount }}" readonly style="color: blue;"/>
+    </div>
+
+     <div class="col-md-12">
+        <label style="color: black;">Sokohali management fee (10%):</label>
+        <input type="text" name="soko-fee" value="${{sokofee}}" readonly style="color: blue;"/>
+    </div>
+    <div class="col-md-12">
+        <label style="color: black;">Total:</label>
+        <input type="text" name="total-amt"  id="id_amount" value="${{ total_amount }}" disabled="disabled" style="color: red;"/>
+    </div>
+    <input type="hidden" name="txn_ref" value="{{txn_ref}}"/>
+    {% endif %}
+    
+    {% if pay_method == 'SokoPay' %}
+    <div class="col-md-12">
+        <input type="text" name="amount" id="id_amount" value="Amount ($): {{ obj.balance_D|floatformat:2|intcomma }}" readonly />
+    </div>
+    <!--div class="col-md-12">
+        <!-- <input type="text" value="Credit Available (=N=): {{ user_credit_amount_N|floatformat:2|intcomma }}" disabled="disabled"  {% if user_credit_amount_N > 0 %} style="color: green ;" {% endif %}/> -->
+        <!--<input type="number" name="amount" id="id_amount" placeholder="Enter Amount in (=N=)" required />
+    </div>-->
+    {% endif %}
+
+
+    {% if pay_method == 'Card' %}
+    {% if obj %}
+    <div class="col-md-12">
+        <input type="text" name="amount" id="id_amount" value="Amount (=N=): {{ obj.balance_N|floatformat:2|intcomma }}" readonly />
+    </div>
+    {% else %}
+    <div class="col-md-12">
+        <input type="text" name="amount" id="id_amount" placeholder="Amount($)"/>
+    </div>
+    {% endif %}
+
+    <div class="col-md-12">
+        <!--<input type="text" value="Reference Number: {{txn_ref}}" readonly style="color: green;"/>-->
+        <input type="hidden" name="txn_ref" value="{{txn_ref}}"/>
+    </div>
+    {% endif %}
+    
+    
+    
+
+    <div class="col-md-12 buttons" style="margin-top:9px;">
+        <!--<a href="#" class="btn blue" onclick="updateInterswitchAmount()">Proceed</a>-->
+        <a href="#" class="btn blue" id="proceed">Proceed</a>
+        <!--<a href="#" class="rst" onclick="formReset('submit2gtpay_form')"><span class="glyphicon glyphicon-repeat"></span>Reset</a>-->
+
+    </div>
+    </div>
+</form>

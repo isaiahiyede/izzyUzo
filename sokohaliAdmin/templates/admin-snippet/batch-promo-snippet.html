@@ -1,0 +1,28 @@
+{% for promo in promos %}
+    <tr>
+        <td>{{ promo.origin }} - {{ promo.destination }} </td>
+        <td>{{ promo.estimated_departure_time|date }}</td>
+        <td>{{ promo.shipment_type }}</td>
+        <td>{{ promo.available_space }}</td>
+        <td>{{ promo.current_rate }}</td>
+        <td>
+        	<a  href="" title="edit promo"><i class="fa fa-edit"></i></a>
+        	&nbsp; &nbsp;
+        	<a  href="" title ="delete promo"><i class="fa fa-trash"></i></a>
+
+        	&nbsp; &nbsp;
+        	{% if promo.is_active %}
+        		<a  href="" title="stop promo"><i class="fa fa-times text-danger"></i></a>
+        	{% else %}
+        		<a  href="" title="start promo"><i class="fa fa-check text-success"></i></a>
+        	{% endif %}
+        </td>
+    </tr>
+{% empty %}
+    <tr>
+        <td colspan="6">No Current promo found.</td>
+    </tr>
+{% endfor %}
+
+
+

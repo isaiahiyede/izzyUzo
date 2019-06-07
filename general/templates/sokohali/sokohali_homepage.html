@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<!-- saved from url=(0050)http://getbootstrap.com/examples/starter-template/ -->
+<html lang="en">
+
+{% block head %}
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="author" content="">
+
+    {% block meta_desc_key %}
+    <meta name="description" content="Sokohali.com - Global Network of Delivery Businesses. Setup the network you need to start and expand your international delivery business. Offer your facilities to other delivery businesses. Make the world your market, deliver to customers everywhere in competitive and flexible ways. Offer your facilities to other shippers who want to complete their delivery chains. Rent the services you don’t have, anywhere, to complete your delivery chain." />
+    <meta name="keywords" content="Sokohali.com - Global Network of Delivery Businesses. Offer your facilities.Rent Facilities.Offer Different Services.Offer Different Services.Offer your facilities to other shippers who want to complete their delivery chains.Setup the networks you need to start your international delivery business." />
+    {% endblock %}
+
+
+    <link rel="shortcut icon" href="{% static 'sokohali.ico' %}">
+
+    {% block title %}<title>Sokohali - Global Network of Delivery Businesses</title>{% endblock %}
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static "sokohalihomepage/css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700' rel='stylesheet' type='text/css'>
+
+    <script src="https://use.fontawesome.com/a728b8f481.js"></script>
+
+    <link href="{% static "sokohalihomepage/css/unslider.css" %}" rel="stylesheet">
+    <link href="{% static "sokohalihomepage/css/unslider-dots.css" %}" rel="stylesheet">
+
+
+    <!-- Custom styles for the dashboard -->
+    <link href="{% static "sokohalihomepage/css/style.css" %}" rel="stylesheet">
+
+</head>
+
+{% endblock %}
+
+{% block bodytag %}<body>{% endblock %}
+    <!-- Top Navigation -->
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="top_social">
+            <div class="container">
+                <div class="right">
+                    <!-- <p>Follow Us:</p>
+                    <a href="https://www.facebook.com/Sokohali/">
+                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/company/sokohali">
+                        <i class="fa fa-linkedin" aria-hidden="true"></i>
+                    </a>
+                    <a href="https://twitter.com/sokohali">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a> -->
+                </div>
+            </div>
+        </div>
+        <div class="container">
+
+            <div class="navbar-header">
+
+
+                <div class="menu navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <div id="nav-toggle">
+                        <span></span>
+                        <p>MENU</p>
+                    </div>
+                </div>
+
+                <a class="navbar-brand" href="/">
+                </a>
+            </div>
+
+            <!-- <a href="#Joinwaitinglist" class="btn red mobile_add" data-toggle="modal" data-target="#Joinwaitinglist">Register Now</a> -->
+
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+                    <li>
+                        <a href="{% url 'general:about' %}">
+                           About
+                        </a>
+                    </li>
+
+                    <li class="dropdown large">
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-th-large" aria-hidden="true"></i>What you can do</a>
+                        {% block actions %}
+                        <ul class="dropdown-menu">
+                            <li> <a href="#overview1">Offer Facilities</a> </li>
+                            <li><a href="#overview2">Rent Facilities</a></li>
+                            <li><a href="#overview3">Offer Different Services</a></li>
+                            <li><a href="#overview4">More Features</a></li>
+                        </ul>
+                        {% endblock %}
+
+                    </li>
+                    <li>
+                        <a href="{% url 'general:business_settings' %}">
+                            Business Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'general:contact' %}">
+                            Contact
+                        </a>
+                    </li>
+                    <li>
+                      {% if request.user.is_authenticated %}
+                      <a href="/sokohali/logout/">Logout</a>
+                      {% else %}
+                      <a href="/register/">Register Now</a>
+                      {% endif %}
+                    </li>
+                    <li>
+                      {% if request.user.is_authenticated %}
+                      <a href="{% url 'sokohaliAdmin:client_dashboard' %}">Dashboard</a>
+                      {% endif %}
+                    </li>
+
+                    <li class="dropdown last" style="display:none;">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            More
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Other Service 1</a></li>
+                            <li><a href="#">Other Service 2</a></li>
+                            <li><a href="#">Other Service 3</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+
+        </div>
+    </nav>
+    <!-- Top Navigation -->
+    {% block contents %}
+    <!-- Section -->
+    <section class="hero">
+        <div class="container" style="text-align:center;">
+            <h1>Global Network of Delivery Businesses</h1>
+            <h2 style="padding-bottom:30px;">
+              Get the <strong>software tools</strong> you need to start/expand your delivery business. <strong>Free one month subscription</strong>.<br/>
+               Connect and share facilities with other delivery businesses to form a global delivery network.<br/>
+               <strong>Make the world your market</strong>; deliver to customers everywhere in competitive and flexible ways.
+            <p>
+            {% for msg in messages %}
+                <script>
+                    function show_alert(){
+                    var alert = '<p style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</p>';
+                    document.write(alert);
+                    }
+                    display = window.setTimeout(show_alert(), 1000);
+                    window.clearTimeout(display);
+                </script>
+            {% endfor %}
+            </p>
+            <div class="play"><span></span>
+
+            </div>
+            <!-- <h2 style="padding-bottom:30px;">Setup the network you need to start your international delivery business. Offer your facilities to other delivery businesses.<br/> <strong>Web and mobile applications to power multiple delivery service types.</strong></h2>
+            <div class="play"><span></span></div> -->
+        </div>
+        <div class="steps">
+            <div class="item three active">
+                <div class="dot"></div>
+                <a href="#overview1" class="circle">
+                    <div class="slider_icon">
+                        <ul>
+                            <li>
+                                <img src="{% static "sokohalihomepage/img/icon7.png" %}"/>
+                            </li>
+                            <li>
+                                <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                            </li>
+                            <li>
+                                <img src="{% static "sokohalihomepage/img/icon4.png" %}" />
+                            </li>
+                            <li>
+                                <img src="{% static "sokohalihomepage/img/icon5.png" %}" />
+                            </li>
+                            <li>
+                                <img src="{% static "sokohalihomepage/img/icon6.png" %}" />
+                            </li>
+                        </ul>
+                    </div>
+                </a>
+                <div class="slider_txt">
+                    <ul>
+                        <li>
+                            <p>Marketing Member /
+                                <br/> Postal Center</p>
+                        </li>
+                        <li>
+                            <p>Local Distribution
+                                <br/> Partner</p>
+                        </li>
+                        <li>
+                            <p>Warehouse +
+                                <br/> Processing Member</p>
+                        </li>
+                        <li>
+                            <p>Shipping Member</p>
+                        </li>
+                        <li>
+                            <p>Customs Clearing
+                                <br/> Member</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="widget">
+            <div class="bk"></div>
+            <div class="container">
+
+                <div class="col-md-3">
+                    <div class="img">
+                        <div class="circle">
+                            <img src="{% static "sokohalihomepage/img/icon1l.png" %}"/>
+                        </div>
+                        <div class="circle" style="left:102px;">
+                            <img src="{% static "sokohalihomepage/img/icon2l.png" %}"/>
+                        </div>
+                        <div class="circle" style="left:178px;"></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="left">
+                        <p><strong>Join the waiting list</strong>Sokohali is currently in a controlled beta launch.
+                        </p>
+
+                     <form action="{% url 'general:joinwaitinglist' %}" method="POST">
+                        {% csrf_token %}
+                        <input style="height:48px;" type="email" placeholder="Enter your email" name="email" required/>
+                        <button type="submit" class="btn round red" >
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="padding-right:0; padding-left:15px;">
+                    <div class="right">
+                        <p><strong>Have a look at our demo.</strong></p>
+                        <a href="{% url 'general:demopage' %}" class="btn green">View Demo</a>
+<!--                         <a href="{% url 'general:demopage' %}" class="btn green">View Demo</a>
+ -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section -->
+
+        <!-- Section -->
+    <section id="overview5" style="border-bottom:none;" class="small_section">
+        <div class="container">
+            <div class="col-md-12" style="padding-bottom:30px;">
+                <h1><span></span>Who is on the network?</h1>
+                <h2 style="margin-bottom:15px;"> Sokohali is better with a broader network. See some of the current members on the Sokohali network.
+
+                </h2>
+            </div>
+
+
+            <div class="col-md-12" style="text-align:center; margin-bottom:45px;">
+                <!-- btn -->
+                <a href="/"><div class="panel col-md-2" style="border:none !important;" >
+                    <div class="img">
+                        <img src="{% static "sokohalihomepage/img/PRECISION.jpg" %}" />
+                    </div>
+                </div></a><!-- btn -->
+                <a href="/"><div class="panel col-md-2" style="border:none !important;">
+                    <div class="img">
+                        <img src="{% static "sokohalihomepage/img/gig.jpg" %}" />
+                    </div>
+                </div></a>
+                <a href="/"><div class="panel col-md-2" style="border:none !important;">
+                    <div class="img" style="padding-top: 29px;">
+                        <img src="{% static "sokohalihomepage/img/volk1.png" %}"/>
+                    </div>
+                </div></a>
+                <a href="/"><div class="panel col-md-2" style="border:none !important;">
+                    <div class="img">
+                        <img src="{% static "sokohalihomepage/img/abc.jpg" %}" />
+                    </div>
+                </div></a>
+                <a href="/"><div class="panel col-md-2" style="border:none !important;">
+                    <div class="img" style="padding-top: 47px;">
+                        <img src="{% static "sokohalihomepage/img/usps.jpg" %}" />
+                    </div>
+                </div></a>
+                <a href="/"><div class="panel col-md-2" style="border:none !important;">
+                    <div class="img">
+                        <img src="{% static "sokohalihomepage/img/redstar.jpg" %}" />
+                    </div>
+                </div></a>
+                <a href="/"><div class="panel col-md-2" style="border:none !important;">
+                    <div class="img">
+                        <img src="{% static "sokohalihomepage/img/smatposticon.png" %}" style="margin-top:80px;"/>
+                    </div>
+                </div></a>
+                <a href="/"><div class="panel col-md-2" style="border:none !important;">
+                    <div class="img">
+                        <img src="{% static "sokohalihomepage/img/ccpshipping.png" %}" style="margin-top:40px;"/>
+                    </div>
+                </div></a>
+            </div>
+
+            <div class="col-md-12" style="text-align:center;">
+                <!-- btn -->
+<!--                 <a href="#" class="btn black">Join now</a>
+ -->                <!-- btn -->
+            </div>
+
+        </div>
+    </section>
+    <!-- Section -->
+
+    <!-- Section -->
+    <section id="overview1">
+        <div class="container">
+            <div class="col-md-12" style="padding-bottom:30px;">
+                <h1><span>What you can do:</span> Offer Your Facilities</h1>
+                <h2 style="margin-bottom:15px;">Make the best of your assets. Offer your facilities to <br/>other shippers who want to complete their delivery chains.
+</h2>
+            </div>
+            <div class="users">
+<!--                 <h1><span>Memeber Type:</span></h1>
+ -->                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <div class="cselect">
+                        <div class="inner"></div>
+                    </div>
+                    <li role="presentation" class="active two">
+                        <a href="#t1" aria-controls="t1" role="tab" data-toggle="tab">
+                            <span class="circle"><img src="{% static "sokohalihomepage/img/icon7.png" %}"/></span>Marketing Member /
+                            <br/> Postal Centre
+                        </a>
+                    </li>
+                    <li role="presentation" class="two">
+                        <a href="#t2" aria-controls="t2" role="tab" data-toggle="tab">
+                            <span class="circle"><img src="{% static "sokohalihomepage/img/icon3.png" %}"></span>Local Distribution Partner</a>
+                    </li>
+                    <li role="presentation" class="two">
+                        <a href="#t3" aria-controls="t3" role="tab" data-toggle="tab">
+                            <span class="circle">
+                            <img src="{% static "sokohalihomepage/img/icon4.png" %}"/>
+                        </span> Warehouse +
+                            <br/> Processing Member</a>
+                    </li>
+                    <li role="presentation"><a href="#t4" aria-controls="t4" role="tab" data-toggle="tab"><span class="circle"><img src="{% static "sokohalihomepage/img/icon5.png" %}"/></span> Shipping Member</a></li>
+                    <li role="presentation" class="two">
+                        <a href="#t5" aria-controls="t5" role="tab" data-toggle="tab">
+                            <span class="circle"><img src="{% static "sokohalihomepage/img/icon6.png" %}"/></span> Customs Clearing Member
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <!-- Tab #1 -->
+                    <div role="tabpanel" class="tab-pane active" id="t1">
+                        <div class="steps">
+                            <div class="progress"></div>
+                            <div class="smcircle">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Origin)</span>
+                            </div>
+                            <div class="item disabled black">
+                                <div class="dcircle">
+                                    <img src="{% static "sokohalihomepage/img/icon1.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">
+                                    You are the <strong>Marketing Member / Postal Centre</strong> and will set up the The online store, Storefront
+                                </div>
+                            </div>
+                            <div class="item two red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon2.png" %}" />
+                                </div>
+                                <div class="tooltip top">
+                                    Set up the Sokohali <strong>integrated payment systems</strong>
+                                </div>
+                            </div>
+                            <div class="item red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">Set up the <strong>Local Distribution member from origin country that will deliver from customer to warehouse</strong>
+                                </div>
+                            </div>
+                            <div class="item two red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon4.png" %}" />
+                                </div>
+                                <div class="tooltip top">Set up the <strong>warehouse that will process packages for your customers</strong>
+                                </div>
+                            </div>
+                            <div class="item red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon5.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">The <strong>Shipping member that will book your
+shipments</strong>
+                                </div>
+                            </div>
+                            <div class="item two red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon6.png" %}" />
+                                </div>
+                                <div class="tooltip top">The <strong>Customs Clearing Agent that will clear your
+customer’s goods</strong>
+                                </div>
+                            </div>
+                            <div class="item red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">The <strong>Local Distribution
+member in destination country that will deliver to the door</strong>
+                                </div>
+                            </div>
+                            <div class="smcircle two">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Destination)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tab #1 -->
+                    <!-- Tab #2 -->
+                    <div role="tabpanel" class="tab-pane" id="t2">
+                        <div class="steps">
+                            <div class="progress"></div>
+                            <div class="smcircle">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Origin)</span>
+                            </div>
+                            <div class="item green disabled">
+                                <div class="dcircle">
+                                    <img src="{% static "sokohalihomepage/img/icon1.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">
+                                    Your <strong>Storefront is active</strong>
+                                </div>
+                            </div>
+                            <div class="item green two">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon2.png" %}" />
+                                </div>
+                                <div class="tooltip top">
+                                    Sokohali <strong>integrated payment systems are active</strong>
+                                </div>
+                            </div>
+                            <div class="item black disabled">
+                                <div class="dcircle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">Offer<strong>Local Distribution member in Nigeria</strong>
+                                </div>
+                            </div>
+                            <div class="item two red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon4.png" %}" />
+                                </div>
+                                <div class="tooltip top">Offer<strong>warehouse services that will process packages for your customers</strong>
+                                </div>
+                            </div>
+                            <div class="item red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon5.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">Offer<strong>Shipping services that will book
+shipments for your customers</strong>
+                                </div>
+                            </div>
+                            <div class="item two red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon6.png" %}" />
+                                </div>
+                                <div class="tooltip top">Offer<strong>Customs Clearing services that will clear your
+customer’s goods</strong>
+                                </div>
+                            </div>
+                            <div class="item red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">Offer<strong>Local Distribution
+service for USA(by invitation only) </strong>
+                                </div>
+                            </div>
+                            <div class="smcircle two">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Destination)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tab #2 -->
+                    <!-- Tab #3 -->
+                    <div role="tabpanel" class="tab-pane" id="t3">
+                        <div class="steps">
+                            <div class="progress"></div>
+                            <div class="smcircle">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Origin)</span>
+                            </div>
+                            <div class="item green disabled">
+                                <div class="dcircle">
+                                    <img src="{% static "sokohalihomepage/img/icon1.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">
+                                    Your <strong>Storefront is active</strong>
+                                </div>
+                            </div>
+                            <div class="item green two">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon2.png" %}" />
+                                </div>
+                                <div class="tooltip top">
+                                    Sokohali <strong>integrated payment systems are active</strong>
+                                </div>
+                            </div>
+                            <div class="item green">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">The <strong>Local Distribution member from origin country that will deliver from customer to warehouse is active</strong>
+                                </div>
+                            </div>
+                            <div class="item two black disabled">
+                                <div class="dcircle">
+                                    <img src="{% static "sokohalihomepage/img/icon4.png" %}" />
+                                </div>
+                                <div class="tooltip top">You are a <strong>Warehouse and Processing Memmber</strong> that will process packages for your customers
+                                </div>
+                            </div>
+                            <div class="item red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon5.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">Set up the <strong>Shipping member that will book your
+shipments</strong>
+                                </div>
+                            </div>
+                            <div class="item two red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon6.png" %}" />
+                                </div>
+                                <div class="tooltip top">Set up the <strong>Customs Clearing Agent that will clear your
+customer’s goods</strong>
+                                </div>
+                            </div>
+                            <div class="item red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">Set up the <strong>Local Distribution
+member in destination country that will deliver to the door</strong>
+                                </div>
+                            </div>
+                            <div class="smcircle two">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Destination)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tab #4 -->
+                    <div role="tabpanel" class="tab-pane" id="t4">
+                        <div class="steps">
+                            <div class="progress"></div>
+                            <div class="smcircle">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Origin)</span>
+                            </div>
+                            <div class="item green disabled">
+                                <div class="dcircle">
+                                    <img src="{% static "sokohalihomepage/img/icon1.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">
+                                    Your <strong>Storefront is active</strong>
+                                </div>
+                            </div>
+                            <div class="item green two">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon2.png" %}" />
+                                </div>
+                                <div class="tooltip top">
+                                    Sokohali <strong>integrated payment systems are active</strong>
+                                </div>
+                            </div>
+                            <div class="item green">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">The <strong>Local Distribution member for Nigeria that will deliver from customer to warehouse is active</strong>
+                                </div>
+                            </div>
+                            <div class="item green two">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon4.png" %}" />
+                                </div>
+                                <div class="tooltip top">You are a <strong>warehouse and processing member</strong> that will process packages for your customers
+                                </div>
+                            </div>
+                            <div class="item red black disabled">
+                                <div class="dcircle">
+                                    <img src="{% static "sokohalihomepage/img/icon5.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">You are the <strong>Shipping Member</strong> that will book your shipments
+                                </div>
+                            </div>
+                            <div class="item two red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon6.png" %}" />
+                                </div>
+                                <div class="tooltip top">Set up the <strong>Customs Clearing Agent that will clear your
+customer’s goods</strong>
+                                </div>
+                            </div>
+                            <div class="item red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">Set up the <strong>Local Distribution
+member for USA that will deliver to the door</strong>
+                                </div>
+                            </div>
+                            <div class="smcircle two">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Destination)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tab #4 -->
+                    <!-- Tab #5 -->
+                    <div role="tabpanel" class="tab-pane" id="t5">
+                        <div class="steps">
+                            <div class="progress"></div>
+                            <div class="smcircle">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Origin)</span>
+                            </div>
+                            <div class="item green disabled">
+                                <div class="dcircle">
+                                    <img src="{% static "sokohalihomepage/img/icon1.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">
+                                    Your <strong>Storefront is active</strong>
+                                </div>
+                            </div>
+                            <div class="item green two">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon2.png" %}" />
+                                </div>
+                                <div class="tooltip top">
+                                    Sokohali <strong>integrated payment systems are active</strong>
+                                </div>
+                            </div>
+                            <div class="item green">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">The <strong>Local Distribution member for Nigeria that will deliver from customer to warehouse is active</strong>
+                                </div>
+                            </div>
+                            <div class="item two green">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon4.png" %}" />
+                                </div>
+                                <div class="tooltip top">The <strong>warehouse and processing member</strong> that will process packages for your customers
+                                </div>
+                            </div>
+                            <div class="item green">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon5.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">The <strong>Shipping member that will book your
+shipments</strong>
+                                </div>
+                            </div>
+                            <div class="item two black disabled">
+                                <div class="dcircle">
+                                    <img src="{% static "sokohalihomepage/img/icon6.png" %}" />
+                                </div>
+                                <div class="tooltip top">You are the <strong>Customs Clearing Agent</strong> that will clear your customer’s goods
+                                </div>
+                            </div>
+                            <div class="item red">
+                                <div class="circle">
+                                    <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                                </div>
+                                <div class="tooltip bottom">Set up the <strong>Local Distribution
+member for USA that will deliver to the door</strong>
+                                </div>
+                            </div>
+                            <div class="smcircle two">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span>Your Customers <br/>(Destination)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tab #5 -->
+                </div>
+
+                <!-- <div class="bott">
+                    <h1><span>Click on a member type to view options</span></h1>
+                </div> -->
+            </div>
+
+        </div>
+    </section>
+    <!-- Section -->
+
+    <!-- Section -->
+    <section id="overview2">
+        <!-- Service Popup In Section -->
+        <div class="ft">
+            <div class="overlay"></div>
+            <div class="screen">
+                <div class="container">
+                    <!-- Inner Right -->
+                    <div class="inner two" id="s0">
+                        <span class="close" aria-hidden="true">&times;</span>
+                        <div class="slider">
+                            <ul>
+                                <li>My slide</li>
+                                <li>Another slide</li>
+                                <li>My last slide</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <h1>POSTAL CENTER</h1>
+                            <p>A Postal Centre can offer full delivery services to her customers. Sokohali offers a customisable storefront where a member can add their company logo, personalize their web app, host on their own website(optional) etc. Postal centres also earn by offering drop off and pickup sites to other members.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Inner Right -->
+                    <!-- Inner Right -->
+                    <div class="inner two" id="s1">
+                        <span class="close" aria-hidden="true">&times;</span>
+                        <div class="slider">
+                            <ul>
+                                <li>My slide</li>
+                                <li>Another slide</li>
+                                <li>My last slide</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <h1>Local Distribution For origin Country</h1>
+                            <P><strong>Local distributor:</strong> The local distributor is part of the first and last mile delivery chain. As a local distributor, you deliver to a warehouse member for processing or perform last mile delivery to end users.
+
+                                <br/>
+                                <br/>
+                            <strong>Home delivery agent:</strong> home delivery agents are part of the last mile delivery chain. Once verified by a postal centre, an agent can deliver packages with their vehicle to end users in their city. Vehicle types required include; bicycle, motorcycle, car, van..</p>
+                        </div>
+                    </div>
+                    <!-- Inner Right -->
+                    <!-- Inner Left -->
+                    <div class="inner" id="s2">
+                        <span class="close" aria-hidden="true">&times;</span>
+                        <div class="slider">
+                            <ul>
+                                <li>My slide</li>
+                                <li>Another slide</li>
+                                <li>My last slide</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <h1>Warehouse and Processing</h1>
+                            <p>
+                                Warehousing/processing: the warehousing and processing member rents out warehousing space to others for receiving, packaging and sorting of shipments.
+                                </p>
+                        </div>
+                    </div>
+                    <!-- Inner Left -->
+                    <!-- Inner Left -->
+                    <div class="inner" id="s3">
+                        <span class="close" aria-hidden="true">&times;</span>
+                        <div class="slider">
+                            <ul>
+                                <li>My slide</li>
+                                <li>Another slide</li>
+                                <li>My last slide</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <h1>Shipping</h1>
+                            <p>Shipping member: this member can book shipments for members to the destination country. A shipping member MUST be a licensed shipper with IAC or IATA certifications.
+
+                                </p>
+                        </div>
+                    </div>
+                    <!-- Inner Left -->
+                    <!-- Inner Left -->
+                    <div class="inner" id="s4">
+                        <span class="close" aria-hidden="true">&times;</span>
+                        <div class="slider">
+                            <ul>
+                                <li>My slide</li>
+                                <li>Another slide</li>
+                                <li>My last slide</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <h1>Customs Clearing</h1>
+                            <p>Customs Clearing Agent: This is a member authorized by customs at their location to process incoming cargo through customs. They are also called customs and forwarding agents.
+
+                        </div>
+                    </div>
+                    <!-- Inner Left -->
+                    <!-- Inner Left -->
+                    <div class="inner" id="s5">
+                        <span class="close" aria-hidden="true">&times;</span>
+                        <div class="slider">
+                            <ul>
+                                <li>My slide</li>
+                                <li>Another slide</li>
+                                <li>My last slide</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-12">
+                            <h1>Local Distribution For Destination Country</h1>
+                            <p><strong>Local Distribution:</strong> members must have a registered Company in addition to a nationwide delivery network. This member is strictly by invitation only.
+                            <br/>
+                            <br/>
+                            <strong>Home Delivery:</strong> Agents do not need to have registered company  but MUST be a verified individual by a Postal Centre member.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Inner Left -->
+                </div>
+            </div>
+        </div>
+        <!-- Service Popup In Section -->
+        <div class="container">
+            <div class="col-md-12" style="padding-bottom:120px;">
+                <h1><span>What you can do:</span> Rent Facilities</h1>
+                <h2 style="margin-bottom:15px;">Rent the services you don’t have, anywhere, to complete your delivery chain.
+                </h2>
+                <h2><strong>Setup the networks you need to start your international delivery business.</strong></h2>
+                <h1><span>Click on a member type to view options</span></h1>
+            </div>
+
+            <div class="steps t">
+                <div class="progress"></div>
+                <div class="smcircle">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <span>Your Customers <br/>(Origin)</span>
+                </div>
+                <div class="item three red">
+                    <div class="circle" rel="s0">
+                        <img src="{% static "sokohalihomepage/img/icon1.png" %}" />
+                    </div>
+                    <div class="tooltip bottom">
+                        Marketing Member / Postal Centre to manage the online store, <strong>Storefront</strong>
+                    </div>
+                </div>
+                <div class="item two green disabled">
+                    <div class="dcircle">
+                        <img src="{% static "sokohalihomepage/img/icon2.png" %}" />
+                    </div>
+                    <div class="tooltip top">
+                        Sokohali <strong>Integrated Payment Systems</strong>
+                    </div>
+                </div>
+                <div class="item three red">
+                    <div class="circle" rel="s1">
+                        <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                    </div>
+                    <div class="tooltip bottom">The <strong>Local Distribution Member from origin country</strong> that will deliver from customer to warehouse
+                    </div>
+                </div>
+                <div class="item two tt red">
+                    <div class="circle" rel="s2">
+                        <img src="{% static "sokohalihomepage/img/icon4.png" %}" />
+                    </div>
+                    <div class="tooltip top">The <strong>Warehouse</strong> that will process packages for your customers
+                    </div>
+                </div>
+                <div class="item red">
+                    <div class="circle" rel="s3">
+                        <img src="{% static "sokohalihomepage/img/icon5.png" %}" />
+                    </div>
+                    <div class="tooltip bottom">The <strong>Shipping Member</strong> that will book your shipments
+                    </div>
+                </div>
+                <div class="item two red">
+                    <div class="circle" rel="s4">
+                        <img src="{% static "sokohalihomepage/img/icon6.png" %}" />
+                    </div>
+                    <div class="tooltip top">The <strong>Customs Clearing Agent</strong> that will clear your customer’s goods
+                    </div>
+                </div>
+                <div class="item red">
+                    <div class="circle" rel="s5">
+                        <img src="{% static "sokohalihomepage/img/icon3.png" %}" />
+                    </div>
+                    <div class="tooltip bottom">The <strong>Local Distribution
+Member in the destination country</strong> that will deliver to the door
+                    </div>
+                </div>
+                <div class="smcircle two">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <span>Your Customers <br/>(Destination)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bott">
+            <h1><span></span></h1>
+        </div>
+    </section>
+    <!-- Section -->
+    <!-- Section -->
+    <section id="overview3" class="shipping_green services">
+        <div class="container sh">
+            <div class="col-md-12" style="padding-bottom:30px;">
+                <h1><span>What you can do:</span> Offer Different Services</h1>
+                <h2 style="margin-bottom:15px; display:none;">
+                </h2>
+            </div>
+        </div>
+        <!-- Service Slider -->
+        <div class="page_slider">
+            <ul>
+                <li>
+                    <!-- Bottom Content Widget  -->
+                    <div class="bottomwid">
+                        <div class="container">
+                            <div class="panel green">
+                                <h1>Shipping Service</h1>
+                                <p>Sell and deliver goods constantly from any origin to any destination in the world, by renting the facilities and services of other members on the Sokohali network.<br/>
+                                Flexible service options include (Air, Sea, Land, Import , Export, pick-up, drop-off, and ship-from-store.</p>ß
+
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel fullwidth" style="text-align:center; padding:0;">
+                                    <img src="{% static "sokohalihomepage/img/icon2l.png" %}" />
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="panel fullwidth">
+                                    <!--<p>Try it Free, <strong>Inside “learn more”View a demo of Sokohali shipping software.</strong></p>-->
+                                    <p><strong>Have a look at our demo.</strong></p>
+<!--                                     <a href="http://smatpost.sokohali.com" class="btn green">View Demo</a>
+ -->                                    <a href="{% url 'general:demopage' %}" class="btn green">View Demo</a>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Bottom Content Widget  -->
+                </li>
+                <!-- Add more li for more services slides  -->
+            </ul>
+        </div>
+        <!-- Service Slider -->
+    </section>
+    <!-- Section -->
+    <!-- Section -->
+    {% block more_features %}
+    <section id="overview4">
+        <div class="container">
+            <div class="col-md-12" style="padding-bottom:30px;">
+                <h1><span></span>More Features</h1>
+                <h2 style="margin-bottom:15px;">
+</h2>
+            </div>
+            <!-- Features Panel Grid -->
+            <div class="col-md-12 features">
+                <div class="col-md-6">
+                    <div class="panel">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i1.png" %}" />
+                        </div>
+                        <p>Apps to make booking and ordering easy</p>
+                    </div>
+                    <div class="panel two">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i21.png" %}" />
+                        </div>
+                        <p>Strong security with ID verification and fraud reporting systems</p>
+                    </div>
+                    <div class="panel two">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i31.png" %}" />
+                        </div>
+                        <p>Flexible shipping options: import/export, drop off, pickup, ship-from-store</p>
+                    </div>
+                    <div class="panel two">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i6.png" %}" />
+                        </div>
+                        <p>Integrated and secure payment system</p>
+                    </div>
+                    <div class="panel two">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i9.png" %}" />
+                        </div>
+                        <p>Print AWBs, BLs, shipping and hazmat labels and shipment manifests automatically</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="panel two">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i5.png" %}" />
+                        </div>
+                        <p>Flexible package processing on mobile with cloud enabled label printing</p>
+                    </div>
+                    <div class="panel">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i71.png" %}" />
+                        </div>
+                        <p>Robust messaging and status update systems</p>
+                    </div>
+                    <div class="panel mobc">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i81.png" %}"/>
+                        </div>
+                        <p>Cost estimation, invoicing and tracking</p>
+                    </div>
+                    <div class="panel">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i2.png" %}" />
+                        </div>
+                        <p>See important business analytics</p>
+                    </div>
+                    <div class="panel">
+                        <div class="img">
+                            <img src="{% static "sokohalihomepage/img/i3.png" %}" />
+                        </div>
+                        <p>Customisable search engine optimised website</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Features Panel Grid -->
+            <div class="col-md-12" style="text-align:center; padding-top:30px;">
+                <!-- btn -->
+                <a href="#" class="btn green">View All Features</a>
+                <!-- btn -->
+            </div>
+        </div>
+    </section>
+    {% endblock %}
+    <!-- Section -->
+
+    {% endblock %}
+
+    {% block footer %}
+    <footer>
+        <div class="container">
+            <div class="panel"></div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <!-- <ul>
+                    <li>
+                        <a href="#">Legal</a>
+                    </li>
+                    <li>
+                        <a href="#">Help</a>
+                    </li>
+                    <li>
+                        <a href="#">Support</a>
+                    </li>
+                </ul> -->
+                <p style="float: left"><a href="/legal/">Terms and Conditions</a></p>
+                <p style="float:right;"> © Sokohali. All rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    {% endblock %}
+
+    {% block modal %}
+        {% include 'joinwaitinglist.html' %}
+    {% endblock %}
+
+    {% block scripts %}
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static "sokohalihomepage/js/jquery.min.js" %}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static "sokohalihomepage/js/bootstrap.min.js" %}"></script>
+
+    <script src="{% static "sokohalihomepage/js/script.js" %}"></script>
+    <script src="{% static "sokohalihomepage/js/unslider.js" %}"></script>
+
+    <script>
+        jQuery(document).ready(function ($) {
+            $('.slider').unslider({
+                arrows: false
+            });
+        });
+    </script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $('.page_slider').unslider({
+                arrows: false,
+                animation: 'fade'
+            });
+
+        });
+    </script>
+    <script>
+        jQuery(document).ready(function ($) {
+            $('.slider_icon').unslider({
+                arrows: false,
+                autoplay: true,
+                nav: false,
+                infinite: true
+            });
+        });
+
+        jQuery(document).ready(function ($) {
+            $('.slider_txt').unslider({
+                arrows: false,
+                autoplay: true,
+                nav: false,
+                infinite: true
+            });
+        });
+    </script>
+    {% endblock %}
+
+</body>
+
+</html>

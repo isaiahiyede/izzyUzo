@@ -1,0 +1,148 @@
+{% extends "base/zaposta_base.html" %}
+
+
+{% block title %}Select Payment Option{% endblock %}
+{% block extra_head %}
+<style>
+    div.modal-backdrop.fade.in{
+        z-index: 0 !important;
+    }
+    .shipping.two{
+        /*width: 370px !important;*/
+        border-style: solid;
+        border-radius: 10px;
+        border-color: black;
+    }
+    .shipping.two p{
+        color: black;
+    }
+    /*.shopping.two{
+        width: 370px !important;
+    }*/
+</style>
+
+{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+{% block st_content %}
+<!-- this is the wrapper for the content -->
+                <div class="st-content-inner">
+                    <!-- extra div for emulating position:fixed of the menu -->
+                    <!-- Main Section -->
+                    <section id="main" class="payment_main">
+                        <!-- place widget -->
+                        <div class="wt two">
+                            <div class="container" style="position:relative;">
+                                <!--<img src="img/ism1.png" />
+                                <p>21:04</p>
+                                <img src="img/ism2.png" />
+                                <p>London, UK</p>-->
+                            </div>
+                        </div>
+                        <!-- place widget -->
+                        <div class="hero t" id="payment_page">
+                            <div class="container outer">
+
+                                <div class="landing col-md-12" style="position: relative; padding-top: 38px;">
+                                    <div class="shipping two col-md-6">
+                                        <div class="col-md-12">
+                                                {% if not mm.banking_details %}
+                                                    <div style="padding-top: 50px; text-align: center;">
+                                                        <img src="{{STATIC_URL}}shopping/images/payment_icon3.png" style="margin-left: 10px;"/>
+                                                        <img src="{{STATIC_URL}}shopping/images/uba_copy.png" style="margin-left: 10px; "/>
+                                                    </div>
+                                                    <div>
+                                                        <a href="#" style="position: relative;width: 250px; top:18px;" class="btn">Bank Deposit Not available</a>
+                                                    </div>
+                                                {% else %}
+                                                
+                                                    {% for bank in mm.banking_details %}
+                                                        <div class="" style="margin-top: 0px;">
+                                                            <p>Bank: {{bank.bank}} | 
+                                                               Account Name: {{bank.account_name}} | 
+                                                               Account Number: {{bank.account_no}}
+                                                            </p>
+                                                        </div>
+                                                    {% endfor %}
+                                                    <!--<img src="{{STATIC_URL}}shopping/images/uba_copy.png" style="margin-left: 10px; margin-top: 10px;"/>-->
+                                                    <!--<h4>Account Name: Sokohali</h4>
+                                                    <h4>UBA Account: 1019192708</h4>-->
+                                                    <div>
+                                                        <a href="{% url 'soko_pay:pay_by_bank_deposit' tracking_number %}" style="position: relative;width: 250px; top:30px; margin-top: 0px!important;" class="btn">Bank Deposit</a>
+                                                    </div>
+                                                {% endif %}
+                                        </div>
+                                                
+                                                <!--<a href="#" class="btn">Bank Deposit</a>-->
+                                    </div>
+                                       
+
+                                    <div class="shipping two col-md-6">
+                                        <div class="col-md-12">
+                                            <div style="padding-top: 50px; text-align: center;">
+                                                <img src="{{STATIC_URL}}sokohali/img/soko_pay_thumb.jpg" style="margin-left: 10px; width: 15%;"/>  <!-- IMG -->
+                                            </div>
+
+                                            <div>
+                                                <!--<a href="{% url 'soko_pay:add_funds' %}" class="btn">Bank Deposit</a>-->
+                                                <a href="{% url 'soko_pay:pay_balance' %}?tracking_number={{ tracking_number }}&pay_method=SokoPay" class="btn" style="margin-top: 93px;">SokoPay</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="shipping two col-md-6">
+                                        <div class="col-md-12">
+                                            <div style="padding-top: 50px; text-align: center;">
+                                                <img src="{{STATIC_URL}}export/img/cc/verve.png" width="70px" height="30px"/>
+                                                <img src="{{STATIC_URL}}shopping/images/mastercard.png" width="70px" style="margin-left: 10px;"/>  <!-- IMG -->
+                                                <img src="{{STATIC_URL}}shopping/images/visa.png" width="70px" style="margin-left: 10px;"/>  <!-- IMG -->
+                                            </div>
+
+                                            <div style="padding-top: 30px;">
+                                                <a href="{% url 'soko_pay:pay_balance' %}?tracking_number={{ tracking_number }}&pay_method=Card" class="btn" style="width: 40%;">Pay</a>
+                                                <!--<span>Coming Soon...</span>-->
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="shipping two col-md-6">
+                                        <div class="col-md-12">
+                                            <div style="padding-top: 50px; text-align: center;">
+                                                <img src="{{STATIC_URL}}export/img/cc/paypal.png" style="margin-left: 10px; height: 70px;"/>  <!-- IMG -->
+                                            </div>
+
+                                            <div>
+
+                                               <a href="{% url 'soko_pay:pay_balance' %}?tracking_number={{ tracking_number }}&pay_method=PP" class="btn" style="margin-top: 93px;">PayPal</a>
+
+<!--                                                 <a href="#"</a>
+ -->                                            
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                    <!-- Main Section -->
+
+                    <!-- FOOTER  -->
+                    <footer class="black two">
+                        {% include 'zaposta_snippet/footer-bottom.html' %}
+                    </footer>
+                    <!-- FOOTER  -->
+                </div>
+                <!-- /st-content-inner -->
+
+<!-- /st-content-inner -->
+{% endblock %}

@@ -1,0 +1,18 @@
+{% for item in promo %}
+<div class="col-md-12">
+    <label>Estimated Departure Date:</label>
+    <input class="res" type="text" disabled value="{{ item.estimated_departure_time|date }} - {{ item.origin }} - {{ item.destination }}"/>
+</div>
+<div class="col-md-12">
+    <label>Available space</label>
+    <input class="res" disabled type="text" value="{{ item.available_space }}" placeholder="8 spots left" />
+</div>
+<div class="col-md-12">
+    <label>Current rate: <span style="font-weight:normal;">{{item.weight_range_at_rate }} minimum for this price.</span> </label>
+    <input class="res" disabled type="text" value = "${{ item.current_rate }}" placeholder="$1.20/lbs" />
+</div>
+{% empty %}
+    <div class="col-md-12">
+        <p>No <strong>{{ shipment_type|title }}</strong> Promotions available at this time </p>
+    </div>
+{% endfor %}

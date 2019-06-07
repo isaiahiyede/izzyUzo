@@ -1,0 +1,95 @@
+<div class="col-md-9" style="position:relative;" id="replaceThisAjayiDiv">
+
+    {% for reply in message_obj %}
+
+    <div class="panel panel-primary" style='position:relative; min-height:0px;'>
+
+        <div class="panel-heading" id="accordion" style="color: #000;
+         background-color:white; border-color:white; padding:5px 20px 5px;">
+            {{reply.user.get_full_name}}/{{reply.booking_ref}}&nbsp; &nbsp;
+            {% if reply.new %}<span class="glyphicon glyphicon-comment" title="New Message" style="color:royalblue;"></span>{% endif %} 
+            <div class="btn-group pull-right">
+                <a type="button" class="myCollaspe" data-toggle="collapse" 
+                data-parent="#accordion" href="#">
+                    <span class="glyphicon glyphicon-pencil" title="Add comment"></span>
+                </a>
+                <a href="{% url 'sokohaliAdmin:msg-cntr-archv' reply.id 'archive' %}" onclick="return confirm('Are you sure you want to archive this message thread?')">                                                             
+                    <span class="glyphicon glyphicon-file" title="Archive" style="position:relative; left:10px; cursor:pointer"></span>
+                </a>
+            </div>
+
+
+        </div>
+
+                
+
+        <div class="panel-collapse collapse">
+           <div class="panel-body">
+            <ul class="chat">
+
+                {% for comment in reply.messagecentercomment_set.all %}
+
+                {% if not comment.user.is_staff %}
+                <li class="left clearfix"><span class="chat-img pull-left">
+                    <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
+                </span>
+                    <div class="chat-body clearfix">
+                        <div class="header">
+                            <strong class="primary-font">{{comment.user.username}}</strong> <small class="pull-right text-muted">
+                                <span class="glyphicon glyphicon-time"></span>{{comment.date}}</small>
+                        </div>
+
+                        <p>
+                            {{comment.message}}
+                        </p>
+
+                    </div>
+                </li>
+
+                {% elif comment.user.is_staff %}
+                <li class="right clearfix"><span class="chat-img pull-right">
+                    <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
+                </span>
+                    <div class="chat-body clearfix">
+                        <div class="header">
+                            <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>{{comment.date}}</small>
+                            <strong class="pull-right primary-font">{{comment.user.username}}</strong>
+                        </div>
+
+                        <p class="pull-right add_here">
+                            {{comment.message}}
+                        </p>
+
+
+                    </div>
+                </li>
+
+                {% else %}
+                    <p>
+                        No message
+                    </p>
+
+                {% endif %}    
+
+                {% endfor %}
+
+             </ul>
+           </div>
+
+            <div class="panel-footer">
+            <div class="input-group">
+                <input id="btn-input" type="text" class="form-control input-sm message" placeholder="Type your message here..." />
+                <input class="hidden book_ref" type="text" value="{{reply.id}}" >
+                <span class="input-group-btn">
+                    <button class="btn btn-warning btn-sm btn-chat">
+                        Send</button>
+                </span>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    {% empty %}
+        <h3>No Messages in this Category</h3>
+    {% endfor %}
+</div

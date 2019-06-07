@@ -1,0 +1,161 @@
+{% extends "base/zaposta_base.html" %}
+{% load humanize %}
+
+{% block title %}{% if action_type == "pay_by_bank_deposit" %}Pay By Bank Deposit{% else %}Soko Pay Add Funds{% endif %}{% endblock %}
+{% block extra_head %}
+
+<style>
+	div.modal-backdrop.fade.in{
+		z-index: 0 !important;
+	};
+</style>
+
+{% endblock %}
+
+{% block body_head %}
+<body>
+{% endblock %}
+
+
+{% block st_content %}
+<!-- this is the wrapper for the content -->
+<div class="st-content-inner">
+	<!-- extra div for emulating position:fixed of the menu -->
+
+	<section id="main" class="payment_main">
+						<!-- place widget -->
+		<div class="wt two">
+			<div class="container" style="position:relative;">
+				<!--<img src="{{STATIC_URL}}zaposta/img/ism1.png" />
+				<p>21:04</p>
+				<img src="{{STATIC_URL}}zaposta/img/ism2.png" />
+				<p>London, UK</p>-->
+			</div>
+		</div>
+		<!-- place widget -->
+		<div class="hero two" id="payment_page">
+			<div class="container outer">
+				<div class="form">
+					<div class="inner">
+						<!-- Register Account -->
+						<div class="container" id="register">
+
+
+							<div class="col-md-6 promo two d3" style="background: #0b71b9;">
+								<h1>
+									Pay to any of the accounts at our partner banks:
+								</h1>
+								<div style="text-align: center;">
+									{% for bank in mm.banking_details %}
+									<h4>Bank: {{bank.bank}}</h4>
+									<h4>Account Name: {{bank.account_name}}</h4>
+									<h4>Account Number: {{bank.account_no}}</h4>
+									{% endfor %}
+									<!--<img src="{{STATIC_URL}}shopping/images/uba_copy.png"/>
+									<h4>UBA Account: 1019192708</h4>-->
+								</div>
+
+							<!--<div class="col-md-6 promo two d3">-->
+								<a href="{{request.META.HTTP_REFERER }}" class="goback"><span class="glyphicon glyphicon-arrow-left"></span>Back</a>
+							</div>
+							<!-- Regular Account -->
+							<form id="bank_deposit_form" action="" method="post">
+							<div class="col-md-6 left">
+								{% if action_type == 'pay_by_bank_deposit' %}
+								<h1>{{ header_msg }}</h1>
+								{% else %}
+								<h1>Add Funds to your account</h1>
+								{% endif %}
+								<p style="margin-top:0;">Complete the form below to provide us with the details of your bank deposit / wire transfer.
+								{% if error_alert %}
+								<br/>
+								<span style="color: red;">{{error_alert}}</span>
+								{% endif %}
+								</p>
+								{% csrf_token %}
+
+								<div class="col-md-12">
+									{% if action_type == 'pay_by_bank_deposit' %}
+									<select name="payment_channel" id="id_payment_channel" required {% if form.payment_channel.errors %}style="border-color: red;"{% endif %}>
+									{% else %}
+									<select name="purchase_type_1" id="id_purchase_type_1" required {% if form.purchase_type_1.errors %}style="border-color: red;"{% endif %}>
+									{% endif %}
+										<option value="">Transaction Type</option>
+										<option value="Bank Deposit">Bank Deposit</option>
+										<option value="Wire Transfer">Wire Transfer</option>
+									</select>
+								</div>
+								<!--<div class="col-md-12">
+									<select name="bank" id="id_bank" required {% if form.bank.errors %}style="border-color: red;"{% endif %}>
+										<option value="">Select Bank</option>
+										<!--<option value="Fidelity Bank">Fidelity Bank</option>-->
+										<!--<option value="GT Bank">GT Bank</option>
+										<option value="UBA">UBA</option>-->
+										<!--<option value="Zenith Bank">Zenith Bank</option>-->
+									<!--</select>
+								</div>-->
+								<div class="col-md-12">
+									<select name="bank" id="id_bank" required {% if form.bank.errors %}style="border-color: red;"{% endif %}>
+										<option value="">Select Bank</option>
+										{% for bank in mm.banking_details %}
+										<option value="{{bank.bank}}">{{bank.bank}}</option>
+										{% endfor %}
+										<!--<option value="Zenith Bank">Zenith Bank</option>-->
+									</select>
+								</div>
+								<div class="col-md-12 {% if form.amount.errors %}error{% endif %}">
+									{% if shop_or_ship or pkg %}
+									<input type="text" name="amountz" value="$ {{balance_D|floatformat:2|intcomma}}" readonly="readonly" style="color: red;"/>
+									{% elif local_pkg %}
+									<input type="text" name="amountt" value="{{balance_D|floatformat:2|intcomma}}" readonly="readonly" style="color: red;"/>
+									{% else %}
+									<input type="text" name="amount" placeholder="Amount Paid (=N=)" />
+									{% endif %}
+								</div>
+								<div class="col-md-12">
+									<input type="text" name="teller_no"  placeholder="Teller Number" />
+								</div>
+
+								<!--<input type="hidden" name="package" value="{pkg.tracking_number}}"/-->
+								<input type="hidden" name="user" id="id_amount" value="{{ user.id }}"/>
+								<input type="hidden" name="amount" id="id_currency" value="{{balance_D}}"/>
+								<input type="hidden" name="ref_no" id="ref_no" value="{{ ref_no }}"/>
+
+								<div class="col-md-12">
+									<input type="text" style="color: #3AB54B;" value="Payment Ref No: {{ref_no}}" disabled="disabled"/>
+								</div>
+								<div class="col-md-12">
+									<input type="text" style="color: #3AB54B;" value="Date: {{todaysdate|date:'d-m-Y'}}" disabled="disabled"/>
+								</div>
+								<div class="col-md-12 buttons" style="margin-top:9px;">
+									{% if action_type == 'pay_by_bank_deposit' %}
+									<a href="#" class="btn blue" onclick="submitForm('bank_deposit_form')">Pay</a>
+									{% else %}
+									<a href="#" class="btn blue" onclick="submitForm('bank_deposit_form')">Add Funds</a>
+									{% endif %}
+									<a href="#" class="rst" onclick="formReset('bank_deposit_form')"><span class="glyphicon glyphicon-repeat"></span>Reset</a>
+
+								</div>
+							</div>
+							</form>
+							<!-- Regular Account -->
+						</div>
+						<!-- Register Account -->
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</section>
+	<!-- Main Section -->
+
+	<!-- FOOTER  -->
+	<footer class="black two" style="margin-top:276px;">
+		{% include 'zaposta_snippet/footer-bottom.html' %}
+	</footer>
+	<!-- FOOTER  -->
+	<!-- the content -->
+
+</div>
+<!-- /st-content-inner -->
+{% endblock %}

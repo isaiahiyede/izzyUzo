@@ -1,0 +1,83 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="EditShopModal" style="overflow-y:scroll!important;">
+        <div class="modal-dialog modal-big">
+		<form method="POST" enctype="multipart/form-data" 
+		action="{% url 'sokohaliAdmin:shopping_edit' %}" >
+			{% csrf_token %}
+            <div class="modal-content">
+				
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Process Trucking Job</h4>
+                </div>
+                
+                <!-- modal-c -->
+                <div class="modal-c open" id="s0">
+                    <div class="modal-body fixtop">
+                        <!-- Body Inner Content -->
+                        <div class="body-inner long" style="padding-top: 30px !important;">
+
+
+						    <div class="col-md-12">
+								
+								
+
+								<div class="col-md-6 form-group" style="position: relative;top: 22px;">
+								<label>COURIER TRACKING NUMBER</label>
+									<input type="text" style="height:48px;" class="form-control" type="text" name="courier_tracking_number" id="id_courier_tracking_number" 
+									value="{{form.courier_tracking_number.value}}" style="position:relative;margin-top: 25px";>
+								</div><br>
+
+								<div class="col-md-6 form-group">
+									<LABEL>DESCRIPTION</LABEL>
+									<input type="text" style="height:48px;" class="form-control" class="form-control"  name="description" 
+									value="{{form.description.value}}" 
+									id="id_description"> 
+								</div><br>
+
+								<input type="hidden" name="item_id" value="{{item_id}}">
+
+
+								<div class="col-md-6 form-group">
+									<LABEL>AMOUNT PAID</LABEL>
+									<input type="text" class="form-control"  style="height:48px;" 
+									name="amount_paid" id="id_amount_paid" 
+									value="{{form.amount_paid.value}}">
+								</div><br>
+
+								<div class="col-md-6 form-group">
+									<LABEL>BALANCE</LABEL>
+									<input type="text" class="form-control"  style="height:48px;" 
+									name="balance" id="id_balance" 
+									value="{{form.balance.value}}">
+								</div><br>
+
+								<div class="col-md-6 form-group">
+									<LABEL>STATUS</LABEL>
+									{{form.status_2}}
+								</div><br>
+
+								<div class="col-md-6 form-group">
+									<LABEL>STAGE</LABEL>
+									{{form.status}}
+								</div><br>
+
+								<div class="col-md-6 form-group">
+									<LABEL>WEIGHT(LBS)</LABEL>
+									<input type="text" class="form-control"  style="height:48px;" 
+									name="weight" id="id_weight" 
+									value="{{form.weight.value}}">
+								</div><br>
+
+								
+							</div> 
+                        </div>
+                        <!-- Body Inner Content -->
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn green pull-right" name="Submit" value="Submit">
+                    </div>
+                </div>
+			</div>
+		  </form>
+		</div>
+</div>

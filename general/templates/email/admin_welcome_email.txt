@@ -1,0 +1,5 @@
+<h3>HURRAY!!!</h3>
+<p>Welcome Aboard to the best online shipping platform</p>
+<p>We are so excited to have you on board!!</p>
+<p>Your Account has been successfully registered</p>
+<p>Your password is your email address and it is strongly advised you change it on your first login.</p>

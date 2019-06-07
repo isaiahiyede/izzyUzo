@@ -1,0 +1,14 @@
+<html>
+    <body onload="document.submit2ebiz_form.submit()">       
+        <form name="submit2ebiz_form" 
+        action="https://sandbox.ebizcharge.com/interface/epayform/" target="_self" method="GET"/>
+            <input type="hidden"    name="UMkey"     value="_W6qzSmCe4EoD468RI3wmrC6mw9nvLB2"/>
+            <input type="hidden"    name="UMcommand" value="sale"/>
+            <input type="hidden"    name="UMamount"  value="{{ amount }}"/>
+            <input type="hidden"    name="UMinvoice" value="{{ invoice }}"/>
+            <input type="hidden"    name="UMhash"    value="{{ ebizHash }}"/>
+             <input type="hidden"   name="UMredirApproved" value="http://127.0.0.1:8000/confirm_ebiz_payment/"/>
+<!--              <input type="hidden" name="UMredirApproved" value="http://127.0.0.1:8000/client/confirm_ebiz_payment/"/>
+ -->        </form>
+    </body>
+</html>

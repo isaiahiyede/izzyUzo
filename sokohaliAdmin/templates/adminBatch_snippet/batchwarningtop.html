@@ -1,0 +1,58 @@
+{% load custom_filters %}
+
+<div class="sticky_msg">
+            <div class="container">
+              
+                <div class="col-md-12">
+                    <!-- Alert Warning -->
+                    <div style="margin:15px 0px 5px 0px;">
+                    {% for msg in messages %}
+                        <script>
+                            function show_alert(){
+                            var alert = '<p style="padding-left: 15px;" class="text-{{ msg.tags }} bg-{{ msg.tags }}">{{ msg }}</p>';
+                            document.write(alert);
+                            }
+                            display = window.setTimeout(show_alert(), 1000);
+                            window.clearTimeout(display);
+                        </script>
+                    {% endfor %}
+                    </div>
+                <!-- Alert Warning -->
+                     <div class="alert alert-danger alert-dismissible" role="alert">
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {% get_active_batches request as activeBatches %}
+                        {% if not activeBatches %}
+                            <strong>Warning! No active batch(es) to assign packages too. Please create new batches.
+                            </strong>
+                        {% elif activeBatches %}
+                            <strong>You have {{activeBatches}} active batch(es) to assign packages too</strong>
+                        {% endif %}
+
+                        <!-- pagination here  -->
+                        <div class="pagination" style="position:relative; font-size:30px; margin:0px; left:300px;">
+                            <span class="step-links">
+                                {% if batches.has_previous %}
+                                    <a style="font-size:20px;" href="?page={{ batches.previous_page_number }}">&laquo;</a>
+                                {% else %}
+                                    <a style="font-size:20px;" class="hidden">&laquo;</a>
+
+                                {% endif %}
+
+                                <span style="font-size:20px;" class="current">
+                                    Page {{ batches.number }} of {{ batches.paginator.num_pages }}.
+                                </span>
+
+                                {% if batches.has_next %}
+                                    <a style="font-size:20px;" href="?page={{ batches.next_page_number }}">&raquo;</a>
+                                {% else %}
+                                    <a style="font-size:20px;" class="hidden">&raquo;</a>
+
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Alert Warning -->
+                </div>
+            </div>
+        </div>
