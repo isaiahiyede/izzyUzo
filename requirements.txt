@@ -25,7 +25,7 @@ pycrypto==2.6.1
 pyparsing==2.0.3
 python-utils==2.0.0
 pytz==2014.7
-PyYAML==3.12
+PyYAML==5.4
 reportlab==3.2.0
 requests==2.11.1
 shellescape==3.4.1
